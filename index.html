@@ -97,7 +97,6 @@
         margin-top: 12px;
     }
 
-    /* Estilo das corridas para parecer a lista de "Última Atividade" do print */
     #corridas div {
         background: #25211e;
         padding: 15px;
@@ -110,6 +109,12 @@
     #corridas p {
         margin: 4px 0;
         font-size: 14px;
+    }
+
+    #corridas button {
+        padding: 10px;
+        font-size: 13px;
+        margin-top: 10px;
     }
 
     #tipoUser {
@@ -127,7 +132,6 @@
 </style>
 
     <script>
-        // Suas chaves reais do TNP MoB
         const firebaseConfig = {
             apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23CGX1SLWmlsQ",
             authDomain: "tnp-mob.firebaseapp.com",
@@ -162,7 +166,7 @@
         </div>
 
         <div id="app" style="display:none;">
-            <p>Olá, você é: <strong id="tipoUser" style="color:var(--primary)"></strong></p>
+            <p>Olá, você é: <strong id="tipoUser"></strong></p>
 
             <div id="passageiro" style="display:none;">
                 <input id="origem" placeholder="📍 Onde você está?">
@@ -172,18 +176,17 @@
 
             <div id="motorista" style="display:none;">
                 <button onclick="ficarOnline()">Ficar Disponível Online</button>
-                <hr style="border: 0.5px solid #333; margin: 20px 0;">
-                <h4 style="margin: 0;">Chamadas Próximas:</h4>
+                <hr>
+                <h4 style="margin: 0; color: var(--tnp-gold);">Chamadas Próximas:</h4>
                 <div id="corridas"></div>
             </div>
             
-            <button class="secondary-btn" style="border-color: #666; color: #999; margin-top: 30px;" onclick="location.reload()">Sair</button>
+            <button class="secondary-btn" style="border-color: #444; color: #888; margin-top: 30px;" onclick="location.reload()">Sair</button>
         </div>
     </div>
 </div>
 
 <script>
-// CADASTRO
 function cadastrar() {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
@@ -191,21 +194,18 @@ function cadastrar() {
 
     auth.createUserWithEmailAndPassword(email, senha)
     .then((userCredential) => {
-        const user = userCredential.user;
-        return db.collection("usuarios").doc(user.uid).set({ email, tipo });
+        return db.collection("usuarios").doc(userCredential.user.uid).set({ email, tipo });
     })
-    .then(() => alert("Conta criada com sucesso!"))
+    .then(() => alert("Conta criada!"))
     .catch(e => alert(e.message));
 }
 
-// LOGIN
 function logar() {
     const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
     auth.signInWithEmailAndPassword(email, senha).catch(e => alert(e.message));
 }
 
-// SESSÃO (IDENTIFICA QUEM LOGOU)
 auth.onAuthStateChanged(user => {
     if (user) {
         document.getElementById("login").style.display = "none";
@@ -225,62 +225,51 @@ auth.onAuthStateChanged(user => {
     }
 });
 
-// PASSAGEIRO: CRIAR CORRIDA
 function criarCorrida() {
     const origem = document.getElementById("origem").value;
     const destino = document.getElementById("destino").value;
-    const user = auth.currentUser;
-
-    if(!origem || !destino) return alert("Preencha origem e destino!");
+    if(!origem || !destino) return alert("Preencha os campos!");
 
     db.collection("corridas").add({
-        passageiroId: user.uid,
+        passageiroId: auth.currentUser.uid,
         origem,
         destino,
         status: "procurando",
         motoristaId: null,
-        data: new Date()
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => alert("Procurando motoristas..."));
 }
 
-// MOTORISTA: ONLINE
 function ficarOnline() {
-    const user = auth.currentUser;
-    db.collection("motoristas").doc(user.uid).set({ online: true }, { merge: true });
-    alert("Você está online e visível!");
+    db.collection("motoristas").doc(auth.currentUser.uid).set({ online: true }, { merge: true });
+    alert("Você está online!");
 }
 
-// MOTORISTA: OUVIR CHAMADAS
 function ouvirCorridas() {
-    db.collection("corridas")
-    .where("status", "==", "procurando")
+    db.collection("corridas").where("status", "==", "procurando")
     .onSnapshot(snapshot => {
         const div = document.getElementById("corridas");
-        div.innerHTML = "";
-        if(snapshot.empty) div.innerHTML = "<p style='color:#666; font-size:14px;'>Nenhuma chamada no momento...</p>";
+        div.innerHTML = snapshot.empty ? "<p style='color:#666; font-size:13px; margin-top:10px;'>Aguardando chamadas...</p>" : "";
 
         snapshot.forEach(doc => {
-            const corrida = doc.data();
+            const c = doc.data();
             div.innerHTML += `
                 <div>
-                    <p style="margin:0; font-size:14px;"><strong>De:</strong> ${corrida.origem}</p>
-                    <p style="margin:5px 0; font-size:14px;"><strong>Para:</strong> ${corrida.destino}</p>
-                    <button onclick="aceitarCorrida('${doc.id}')">ACEITAR CORRIDA</button>
+                    <p><strong>De:</strong> ${c.origem}</p>
+                    <p><strong>Para:</strong> ${c.destino}</p>
+                    <button onclick="aceitarCorrida('${doc.id}')">Aceitar</button>
                 </div>
             `;
         });
     });
 }
 
-// MOTORISTA: ACEITAR
 function aceitarCorrida(id) {
-    const user = auth.currentUser;
     db.collection("corridas").doc(id).update({
         status: "aceita",
-        motoristaId: user.uid
-    }).then(() => alert("Corrida aceita! Vá ao encontro do passageiro."));
+        motoristaId: auth.currentUser.uid
+    }).then(() => alert("Corrida aceita!"));
 }
 </script>
-
 </body>
 </html>
