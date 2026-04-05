@@ -1,0 +1,201 @@
+já tenho um:
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>TNP MOB</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #3e2723;
+  color: white;
+  text-align: center;
+}
+input, button {
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background: #795548;
+  color: white;
+}
+</style>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_DOMINIO",
+  projectId: "SEU_PROJECT_ID",
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+
+</head>
+<body>
+
+<h2>TNP MOB 🚗</h2>
+
+<!-- LOGIN -->
+<div id="login">
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="senha" placeholder="Senha"><br>
+
+  <select id="tipo">
+    <option value="passageiro">Passageiro</option>
+    <option value="motorista">Motorista</option>
+  </select><br>
+
+  <button onclick="cadastrar()">Cadastrar</button>
+  <button onclick="logar()">Login</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;">
+
+  <h3 id="tipoUser"></h3>
+
+  <!-- PASSAGEIRO -->
+  <div id="passageiro" style="display:none;">
+    <input id="origem" placeholder="Origem"><br>
+    <input id="destino" placeholder="Destino"><br>
+    <button onclick="criarCorrida()">Chamar corrida</button>
+  </div>
+
+  <!-- MOTORISTA -->
+  <div id="motorista" style="display:none;">
+    <button onclick="ficarOnline()">Ficar Online</button>
+    <h4>Corridas disponíveis:</h4>
+    <div id="corridas"></div>
+  </div>
+
+</div>
+
+<script>
+
+// CADASTRO
+function cadastrar() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const tipo = document.getElementById("tipo").value;
+
+  auth.createUserWithEmailAndPassword(email, senha)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      return db.collection("usuarios").doc(user.uid).set({
+        email,
+        tipo
+      });
+    })
+    .then(() => alert("Cadastrado!"))
+    .catch(e => alert(e.message));
+}
+
+// LOGIN
+function logar() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+
+  auth.signInWithEmailAndPassword(email, senha)
+    .catch(e => alert(e.message));
+}
+
+// SESSÃO
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("app").style.display = "block";
+
+    db.collection("usuarios").doc(user.uid).get().then(doc => {
+      const tipo = doc.data().tipo;
+
+      document.getElementById("tipoUser").innerText = tipo;
+
+      if (tipo === "passageiro") {
+        document.getElementById("passageiro").style.display = "block";
+      }
+
+      if (tipo === "motorista") {
+        document.getElementById("motorista").style.display = "block";
+        ouvirCorridas();
+      }
+    });
+  }
+});
+
+// CRIAR CORRIDA
+function criarCorrida() {
+  const origem = document.getElementById("origem").value;
+  const destino = document.getElementById("destino").value;
+  const user = auth.currentUser;
+
+  db.collection("corridas").add({
+    passageiroId: user.uid,
+    origem,
+    destino,
+    status: "procurando",
+    motoristaId: null
+  });
+
+  alert("Corrida criada!");
+}
+
+// MOTORISTA ONLINE
+function ficarOnline() {
+  const user = auth.currentUser;
+
+  db.collection("motoristas").doc(user.uid).set({
+    online: true
+  }, { merge: true });
+
+  alert("Você está online!");
+}
+
+// OUVIR CORRIDAS
+function ouvirCorridas() {
+  db.collection("corridas")
+    .where("status", "==", "procurando")
+    .onSnapshot(snapshot => {
+      const div = document.getElementById("corridas");
+      div.innerHTML = "";
+
+      snapshot.forEach(doc => {
+        const corrida = doc.data();
+
+        div.innerHTML += `
+          <div style="border:1px solid white; margin:5px;">
+            <p>${corrida.origem} → ${corrida.destino}</p>
+            <button onclick="aceitarCorrida('${doc.id}')">Aceitar</button>
+          </div>
+        `;
+      });
+    });
+}
+
+// ACEITAR CORRIDA
+function aceitarCorrida(id) {
+  const user = auth.currentUser;
+
+  db.collection("corridas").doc(id).update({
+    status: "aceita",
+    motoristaId: user.uid
+  });
+
+  alert("Corrida aceita!");
+}
+
+</script>
+
+</body>
+</html>
