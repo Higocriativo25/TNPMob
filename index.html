@@ -25,20 +25,27 @@ button {
 </style>
 
 <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_DOMINIO",
-  projectId: "SEU_PROJECT_ID",
-};
+  // Suas chaves reais do print
+  const firebaseConfig = {
+    apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
+    authDomain: "tnp-mob.firebaseapp.com",
+    projectId: "tnp-mob",
+    storageBucket: "tnp-mob.firebasestorage.app",
+    messagingSenderId: "775995955512",
+    appId: "1:775995955512:web:07d865e4480e0bf33909cd"
+  };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+  // Inicialização
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  
+  console.log("Firebase conectado com sucesso!");
 </script>
 
 </head>
