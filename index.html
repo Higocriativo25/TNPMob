@@ -1,92 +1,124 @@
-já tenho um:
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>TNP MOB</title>
-
 <style>
-body {
-  font-family: Arial;
-  background: #3e2723;
-  color: white;
-  text-align: center;
-}
-input, button {
-  margin: 5px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-button {
-  background: #795548;
-  color: white;
-}
-</style>
+  :root {
+    --primary: #f57c00;
+    --bg: #121212;
+    --card: #1e1e1e;
+    --text: #ffffff;
+  }
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
 
-<script>
-  // Suas chaves reais do print
-  const firebaseConfig = {
-    apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
-    authDomain: "tnp-mob.firebaseapp.com",
-    projectId: "tnp-mob",
-    storageBucket: "tnp-mob.firebasestorage.app",
-    messagingSenderId: "775995955512",
-    appId: "1:775995955512:web:07d865e4480e0bf33909cd"
-  };
+  .container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 
-  // Inicialização
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+  .card {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+  }
+
+  h2 { color: var(--primary); margin-bottom: 25px; font-size: 28px; }
   
-  console.log("Firebase conectado com sucesso!");
-</script>
+  input, select {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: 1px solid #333;
+    background: #2c2c2c;
+    color: white;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #f57c00, #ff9800);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  button:active { transform: scale(0.98); }
+
+  .secondary-btn {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    margin-top: 10px;
+  }
+
+  #corridas div {
+    background: #2c2c2c;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 10px 0;
+    text-align: left;
+    border-left: 4px solid var(--primary);
+  }
+</style>
 
 </head>
 <body>
 
-<h2>TNP MOB 🚗</h2>
+<div class="container">
+    <div class="card">
+      <h2>TNP MoB 🚗</h2>
 
-<!-- LOGIN -->
-<div id="login">
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="senha" placeholder="Senha"><br>
+      <div id="login">
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha (6+ dígitos)">
+        
+        <select id="tipo">
+          <option value="passageiro">Sou Passageiro</option>
+          <option value="motorista">Sou Motorista</option>
+        </select>
 
-  <select id="tipo">
-    <option value="passageiro">Passageiro</option>
-    <option value="motorista">Motorista</option>
-  </select><br>
+        <button onclick="logar()">Entrar</button>
+        <button class="secondary-btn" onclick="cadastrar()">Criar Nova Conta</button>
+      </div>
 
-  <button onclick="cadastrar()">Cadastrar</button>
-  <button onclick="logar()">Login</button>
-</div>
+      <div id="app" style="display:none;">
+        <p>Olá, você é: <strong id="tipoUser" style="color:var(--primary)"></strong></p>
 
-<!-- APP -->
-<div id="app" style="display:none;">
+        <div id="passageiro" style="display:none;">
+          <input id="origem" placeholder="📍 Onde você está?">
+          <input id="destino" placeholder="🏁 Para onde vamos?">
+          <button onclick="criarCorrida()">Chamar Carona Agora</button>
+        </div>
 
-  <h3 id="tipoUser"></h3>
-
-  <!-- PASSAGEIRO -->
-  <div id="passageiro" style="display:none;">
-    <input id="origem" placeholder="Origem"><br>
-    <input id="destino" placeholder="Destino"><br>
-    <button onclick="criarCorrida()">Chamar corrida</button>
-  </div>
-
-  <!-- MOTORISTA -->
-  <div id="motorista" style="display:none;">
-    <button onclick="ficarOnline()">Ficar Online</button>
-    <h4>Corridas disponíveis:</h4>
-    <div id="corridas"></div>
-  </div>
-
-</div>
+        <div id="motorista" style="display:none;">
+          <button onclick="ficarOnline()">Ficar Disponível Online</button>
+          <hr style="border: 0.5px solid #333; margin: 20px 0;">
+          <h4>Chamadas Próximas:</h4>
+          <div id="corridas"></div>
+        </div>
+        
+        <button class="secondary-btn" style="border-color: #666; color: #999;" onclick="location.reload()">Sair</button>
+      </div>
+    </div>
+  </div>
 
 <script>
 
