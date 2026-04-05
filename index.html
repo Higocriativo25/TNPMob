@@ -132,19 +132,22 @@
 </style>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23CGX1SLWmlsQ",
-            authDomain: "tnp-mob.firebaseapp.com",
-            projectId: "tnp-mob",
-            storageBucket: "tnp-mob.firebasestorage.app",
-            messagingSenderId: "775995955512",
-            appId: "1:775995955512:web:07d865e4480e0bf33909cd"
-        };
+    // Configuração corrigida com a chave exata do seu painel
+    const firebaseConfig = {
+        apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ", 
+        authDomain: "tnp-mob.firebaseapp.com",
+        projectId: "tnp-mob",
+        storageBucket: "tnp-mob.firebasestorage.app",
+        messagingSenderId: "775995955512",
+        appId: "1:775995955512:web:07d865e4480e0bf33909cd"
+    };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-    </script>
+    // Inicialização correta para o seu código atual
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+</script>
+
 </head>
 <body>
 
