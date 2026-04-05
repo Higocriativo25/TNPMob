@@ -183,16 +183,9 @@
                 <h4 style="margin: 0; color: var(--tnp-gold);">Chamadas Próximas:</h4>
                 <div id="corridas"></div>
             </div>
+
+            <button class="secondary-btn" style="border-color: #444; color: #888; margin-top: 30px;" onclick="location.reload()">Sair</button>
             
-            // FUNÇÃO PARA SAIR REALMENTE (PARA O LOOP)
-function deslogar() {
-    auth.signOut().then(() => {
-        // Agora que o Firebase deslogou, limpamos a tela
-        document.getElementById("app").style.display = "none";
-        document.getElementById("login").style.display = "block";
-        alert("Você saiu com segurança!");
-    }).catch(e => alert("Erro ao sair: " + e.message));
-}
         </div>
     </div>
 </div>
@@ -281,6 +274,16 @@ function aceitarCorrida(id) {
         motoristaId: auth.currentUser.uid
     }).then(() => alert("Corrida aceita!"));
 }
+    // FUNÇÃO PARA SAIR REALMENTE (PARA O LOOP)
+function deslogar() {
+    auth.signOut().then(() => {
+        // Agora que o Firebase deslogou, limpamos a tela
+        document.getElementById("app").style.display = "none";
+        document.getElementById("login").style.display = "block";
+        alert("Você saiu com segurança!");
+    }).catch(e => alert("Erro ao sair: " + e.message));
+}
+    
 </script>
 </body>
 </html>
