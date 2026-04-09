@@ -136,53 +136,80 @@
         }
     });
 
-    function carregarMotoristas() {
-        const listaDiv = document.getElementById('lista_motoristas');
+    // 1. Função principal para carregar todos os cadastros
+function carregarCadastros() {
+    const listaDiv = document.getElementById('lista_motoristas');
+    listaDiv.innerHTML = ""; // Limpa antes de carregar
 
-        db.collection("motoristas").onSnapshot(snapshot => {
-            listaDiv.innerHTML = "";
+    // Lista de coleções que queremos monitorar
+    const colecoes = ["motoristas", "usuarios"];
+
+    colecoes.forEach(colecao => {
+        db.collection(colecao).onSnapshot(snapshot => {
+            // Removemos os cards antigos dessa coleção específica para não duplicar no tempo real
+            document.querySelectorAll(`.card-${colecao}`).forEach(el => el.remove());
+
             snapshot.forEach(doc => {
-                const m = doc.data();
+                const data = doc.data();
                 const id = doc.id;
 
-                // Mapeamento baseado no seu novo código de cadastro
-                const nomeDisplay = m.cnh?.nome || m.nome || "Sem Nome";
-                const whatsDisplay = m.whatsapp || m.telefonePrincipal || "Não informado";
-                const veiculoDisplay = m.veiculo ? `${m.veiculo.modelo} (${m.veiculo.placa})` : "Dados ausentes";
-                const tnpDisplay = m.idTNP || m.idTnp || "N/A";
-                
-                // Tratamento flexível para o campo status (string ou objeto)
-                let statusTxt = "pendente";
-                if (typeof m.status === 'string') {
-                    statusTxt = m.status;
-                } else if (m.status && m.status.geral) {
-                    statusTxt = m.status.geral;
-                }
+                // Identifica se é motorista ou usuário para a etiqueta
+                const ehMotorista = data.tipo === 'motorista';
+                const corTipo = ehMotorista ? '#4d2b1a' : '#2a2623';
 
+                // Mapeamento de dados (ajustado para ambas as coleções)
+                const nome = data.nome || data.cnh?.nome || "Sem Nome";
+                const whats = data.whatsapp || data.telefonePrincipal || "N/A";
+                const statusTxt = typeof data.status === 'string' ? data.status : (data.status?.geral || "pendente");
                 const corStatus = statusTxt === 'aprovado' ? 'var(--Success)' : (statusTxt === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
 
                 listaDiv.innerHTML += `
-                    <div class="card_motorista">
+                    <div class="card_motorista card-${colecao}" style="border-left: 5px solid ${corTipo}">
                         <div class="card_header">
-                            <strong>${nomeDisplay}</strong>
+                            <div>
+                                <small style="display:block; color:var(--Fame_gold); font-size:0.6rem; text-transform:uppercase;">${colecao.slice(0,-1)}</small>
+                                <strong>${nome}</strong>
+                            </div>
                             <span class="status_tag" style="background: ${corStatus}">${statusTxt}</span>
                         </div>
-                        <div class="info_group"><span class="label">ID TNP:</span> ${tnpDisplay}</div>
-                        <div class="info_group"><span class="label">WhatsApp:</span> ${whatsDisplay}</div>
-                        <div class="info_group"><span class="label">Veículo:</span> ${veiculoDisplay}</div>
-                        <div class="info_group"><span class="label">E-mail:</span> ${m.email || 'N/A'}</div>
                         
+                        <div class="info_group"><span class="label">ID TNP:</span> ${data.idTNP || data.idTnp || 'N/A'}</div>
+                        <div class="info_group"><span class="label">WhatsApp:</span> ${whats}</div>
+                        ${ehMotorista ? `<div class="info_group"><span class="label">Veículo:</span> ${data.veiculo?.modelo || 'N/A'}</div>` : ''}
+                        <div class="info_group"><span class="label">E-mail:</span> ${data.email || 'N/A'}</div>
+
                         <div class="btn_group">
-                            <button class="btn btn_doc" onclick="alert('Uploads em desenvolvimento')">VER DOCS</button>
-                            <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado')">APROVAR</button>
-                            <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado')">RECUSAR</button>
+                            <button class="btn btn_doc" onclick="verDocumentos('${id}', '${colecao}')">VER DOCS</button>
+                            <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado', '${colecao}')">APROVAR</button>
+                            <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado', '${colecao}')">RECUSAR</button>
                         </div>
                     </div>
                 `;
             });
-            if(snapshot.empty) listaDiv.innerHTML = "Nenhum motorista cadastrado.";
         });
+    });
+}
+
+// 2. Ajuste na função de mudar status para aceitar a coleção
+function mudarStatus(id, novo, colecao) {
+    db.collection(colecao).doc(id).update({
+        status: novo,
+        "status.geral": novo,
+        "status.atualizadoEm": new Date()
+    }).catch(e => alert("Erro: " + e.message));
+}
+
+// 3. Lembre-se de atualizar a chamada dentro do onAuthStateChanged:
+auth.onAuthStateChanged(user => {
+    if (user && user.uid === ADMIN_UID) {
+        document.getElementById('Login_Area').style.display = 'none';
+        document.getElementById('Admin_Dashboard').style.display = 'block';
+        carregarCadastros(); // Nome novo da função
+    } else {
+        document.getElementById('Login_Area').style.display = 'block';
+        document.getElementById('Admin_Dashboard').style.display = 'none';
     }
+});
 
     function mudarStatus(id, novo) {
         // Atualiza o campo de forma compatível com o novo cadastro
