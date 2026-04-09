@@ -1,54 +1,203 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Login Admin</title>
-    <style>
-        body { background: #111; color: white; font-family: sans-serif; text-align: center; padding-top: 100px; }
-        input { padding: 10px; margin: 5px; width: 250px; }
-        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; }
-    </style>
-</head>
-<body>
-    <h2>🔐 Login Administrativo</h2>
-    <input type="email" id="email" placeholder="Seu E-mail"><br>
-    <input type="password" id="senha" placeholder="Sua Senha"><br>
-    <button onclick="logar()">Entrar</button>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - TNP MoB</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --Fame_dark: #121212;
+            --Fame_card: #1e1b19;
+            --Fame_gold: #c5a98d;
+            --Fame_text: #e0e0e0;
+            --Fame_muted: #8e8e8e;
+            --Fame_input: #2a2623;
+            --Fame_brown: #4d2b1a;
+            --Success: #28a745;
+            --Danger: #dc3545;
+        }
+
+        body {
+            background-color: #000;
+            color: var(--Fame_text);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        /* Estilo dos Cards de Motorista */
+        .card_motorista {
+            background: var(--Fame_card);
+            border: 1px solid var(--Fame_brown);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .card_header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .status_tag {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .info_group { margin-bottom: 10px; font-size: 0.9rem; }
+        .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; }
+
+        /* Botões */
+        .btn_group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .btn_aprovar { background: var(--Success); color: white; }
+        .btn_recusar { background: var(--Danger); color: white; }
+        .btn_doc { background: var(--Fame_input); color: var(--Fame_gold); border: 1px solid var(--Fame_gold); }
+        .btn:hover { opacity: 0.8; }
+
+        /* Login Screen */
+        #Login_Area { text-align: center; margin-top: 100px; }
+        input { 
+            width: 100%; padding: 12px; margin: 10px 0; 
+            background: var(--Fame_input); border: 1px solid var(--Fame_brown); 
+            color: white; border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="Login_Area">
+            <h1 style="color: var(--Fame_gold);">🔐 Admin TNP MoB</h1>
+            <input type="email" id="adm_email" placeholder="E-mail do Administrador">
+            <input type="password" id="adm_senha" placeholder="Senha">
+            <button class="btn btn_aprovar" style="width: 100%;" onclick="logarAdmin()">ACESSAR PAINEL</button>
+        </div>
+
+        <div id="Admin_Dashboard" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="color: var(--Fame_gold);">Motoristas</h2>
+                <button onclick="firebase.auth().signOut()" style="background: none; border: none; color: red; cursor: pointer;">Sair</button>
+            </div>
+            <hr style="border: 0; border-top: 1px solid var(--Fame_brown); margin: 20px 0;">
+            
+            <div id="lista_motoristas">
+                <p style="text-align: center;">Buscando cadastros...</p>
+            </div>
+        </div>
+    </div>
 
     <script>
-    // ⚠️ ATENÇÃO: Use o bloco de configurações que você já tem no adim.html
-    const firebaseConfig = {
-        apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
-        authDomain: "tnp-mob.firebaseapp.com",
-        projectId: "tnp-mob",
-        storageBucket: "tnp-mob.firebasestorage.app",
-        messagingSenderId: "775995955512",
-        appId: "1:775995955512:web:07d865e4480e0bf33909cd"
-    };
+        // Configurações do seu Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
+            authDomain: "tnp-mob.firebaseapp.com",
+            projectId: "tnp-mob",
+            storageBucket: "tnp-mob.firebasestorage.app",
+            messagingSenderId: "775995955512",
+            appId: "1:775995955512:web:07d865e4480e0bf33909cd"
+        };
 
-    firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22";
 
-    function logar() {
-        const email = document.getElementById("email").value;
-        const senha = document.getElementById("senha").value;
+        // 1. Função de Login
+        function logarAdmin() {
+            const email = document.getElementById('adm_email').value;
+            const senha = document.getElementById('adm_senha').value;
 
-        // Tenta fazer o login
-        firebase.auth().signInWithEmailAndPassword(email, senha)
-            .then((userCredential) => {
-                // Verifica se o UID de quem logou é o seu
-                if (userCredential.user.uid === "OoRgSNe5gChgvFFJvL3m812NgC22") {
-                    window.location.href = "adim.html"; // Redireciona para seu painel
-                } else {
-                    alert("Você não tem permissão de administrador!");
-                    firebase.auth().signOut();
-                }
-            })
-            .catch(erro => { 
-                alert("Erro ao entrar: " + erro.message); 
+            auth.signInWithEmailAndPassword(email, senha)
+                .catch(erro => alert("Erro: " + erro.message));
+        }
+
+        // 2. Observador de Autenticação
+        auth.onAuthStateChanged(user => {
+            if (user && user.uid === ADMIN_UID) {
+                document.getElementById('Login_Area').style.display = 'none';
+                document.getElementById('Admin_Dashboard').style.display = 'block';
+                carregarMotoristas();
+            } else {
+                document.getElementById('Login_Area').style.display = 'block';
+                document.getElementById('Admin_Dashboard').style.display = 'none';
+                if(user) auth.signOut(); // Desloga se não for o admin
+            }
+        });
+
+        // 3. Carregar Motoristas em Tempo Real
+        function carregarMotoristas() {
+            const listaDiv = document.getElementById('lista_motoristas');
+
+            db.collection("motoristas").orderBy("nome").onSnapshot(snapshot => {
+                listaDiv.innerHTML = "";
+                
+                snapshot.forEach(doc => {
+                    const m = doc.data();
+                    const id = doc.id;
+                    const statusCor = m.status === 'aprovado' ? '#28a745' : (m.status === 'recusado' ? '#dc3545' : '#ffc107');
+
+                    const card = `
+                        <div class="card_motorista">
+                            <div class="card_header">
+                                <strong>${m.nome || 'Sem nome'}</strong>
+                                <span class="status_tag" style="background: ${statusCor}">${m.status || 'pendente'}</span>
+                            </div>
+                            <div class="info_group"><span class="label">WhatsApp:</span> ${m.whatsapp || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Veículo:</span> ${m.veiculo_modelo || m.veiculo?.modelo || ''} (${m.veiculo_placa || m.veiculo?.placa || ''})</div>
+                            <div class="info_group"><span class="label">ID TNP:</span> ${m.idTNP || 'Não informado'}</div>
+                            
+                            <div class="btn_group">
+                                <button class="btn btn_doc" onclick="window.open('${m.foto_cnh_frente || '#'}', '_blank')">VER DOCS</button>
+                                <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado')">APROVAR</button>
+                                <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado')">RECUSAR</button>
+                            </div>
+                        </div>
+                    `;
+                    listaDiv.innerHTML += card;
+                });
+
+                if(snapshot.empty) listaDiv.innerHTML = "<p style='text-align:center'>Nenhum motorista encontrado.</p>";
             });
-    }
-</script>
+        }
+
+        // 4. Mudar Status (Aprovar/Recusar)
+        function mudarStatus(id, novoStatus) {
+            db.collection("motoristas").doc(id).update({
+                status: novoStatus
+            }).then(() => {
+                console.log("Status atualizado para " + novoStatus);
+            }).catch(erro => alert("Erro ao atualizar: " + erro.message));
+        }
+    </script>
 </body>
 </html>
