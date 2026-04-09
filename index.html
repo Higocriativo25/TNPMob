@@ -3,287 +3,984 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TNP MoB 🚗</title>
+    <title>TNP MoB 🚗 - Login</title>
 
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
     <style>
-    :root {
-        --tnp-dark: #121212;      /* Fundo principal */
-        --tnp-card: #1e1b19;      /* Fundo dos cards (marrom café) */
-        --tnp-gold: #c5a98d;      /* Dourado/Bege dos botões */
-        --tnp-text: #e0e0e0;      /* Texto claro */
-        --tnp-muted: #8e8e8e;     /* Texto secundário */
-        --tnp-input: #2a2623;     /* Fundo dos campos */
-    }
+        :root {
+            --Fame_dark: #121212;
+            --Fame_card: #1e1b19;
+            --Fame_gold: #c5a98d;
+            --Fame_text: #e0e0e0;
+            --Fame_muted: #8e8e8e;
+            --Fame_input: #2a2623;
+            --Fame_brown: #4d2b1a;
+        }
 
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: var(--tnp-dark);
-        color: var(--tnp-text);
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-        width: 100%;
-        max-width: 420px;
-        padding: 20px;
-    }
+        body {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
 
-    .card {
-        background: var(--tnp-card);
-        padding: 30px 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-        text-align: center;
-        border: 1px solid rgba(255,255,255,0.03);
-    }
+        .Fame_moldura {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #1a1a1a;
+            border: 3px solid var(--Fame_brown);
+            border-radius: 0;
+            box-shadow: inset 0 0 20px var(--Fame_brown);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-    h2 { 
-        color: var(--tnp-gold); 
-        margin-bottom: 30px; 
-        font-size: 24px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-    
-    input, select {
-        width: 100%;
-        padding: 14px;
-        margin: 8px 0;
-        border-radius: 8px;
-        border: 1px solid #3a3531;
-        background: var(--tnp-input);
-        color: white;
-        font-size: 15px;
-        box-sizing: border-box;
-        outline: none;
-    }
+        @media (min-width: 768px) {
+            .Fame_moldura {
+                width: 95%;
+                max-width: 450px;
+                height: 90vh;
+                border-radius: 30px;
+            }
+        }
 
-    input:focus {
-        border-color: var(--tnp-gold);
-    }
+        .Fame_content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
 
-    button {
-        width: 100%;
-        padding: 15px;
-        margin-top: 20px;
-        border-radius: 8px;
-        border: none;
-        background: var(--tnp-gold);
-        color: #1e1b19;
-        font-size: 15px;
-        font-weight: 700;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: opacity 0.2s;
-    }
+        .Login_header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
 
-    button:hover {
-        opacity: 0.9;
-    }
+        .Login_header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
 
-    .secondary-btn {
-        background: transparent;
-        border: 1px solid #3a3531;
-        color: var(--tnp-gold);
-        margin-top: 12px;
-    }
+        .Login_form_group {
+            margin-bottom: 1.25rem;
+        }
 
-    #corridas div {
-        background: #25211e;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 12px 0;
-        text-align: left;
-        border-bottom: 2px solid var(--tnp-gold);
-    }
+        .Login_form_group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--Fame_muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
 
-    #corridas p {
-        margin: 4px 0;
-        font-size: 14px;
-    }
+        .Login_form_group input,
+        .Login_form_group select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--Fame_input);
+            border: 1px solid #3a3531;
+            border-radius: 0.5rem;
+            color: var(--Fame_text);
+            font-size: 0.95rem;
+        }
 
-    #corridas button {
-        padding: 10px;
-        font-size: 13px;
-        margin-top: 10px;
-    }
+        .Login_btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
 
-    #tipoUser {
-        color: var(--tnp-gold);
-        background: rgba(197, 169, 141, 0.1);
-        padding: 2px 8px;
-        border-radius: 4px;
-    }
+        .Login_btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-    hr {
-        border: 0;
-        border-top: 1px solid #3a3531;
-        margin: 25px 0;
-    }
-</style>
+        .Login_btn_primary {
+            background-color: var(--Fame_gold);
+            color: var(--Fame_card);
+        }
 
-    <script>
-    // Configuração corrigida com a chave exata do seu painel
-    const firebaseConfig = {
-        apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ", 
-        authDomain: "tnp-mob.firebaseapp.com",
-        projectId: "tnp-mob",
-        storageBucket: "tnp-mob.firebasestorage.app",
-        messagingSenderId: "775995955512",
-        appId: "1:775995955512:web:07d865e4480e0bf33909cd"
-    };
+        .Login_btn_secondary {
+            background-color: transparent;
+            border: 1px solid #3a3531;
+            color: var(--Fame_gold);
+        }
 
-    // Inicialização correta para o seu código atual
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-</script>
+        .Login_error {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
 
+        .Login_screen {
+            display: none !important;
+        }
+
+        .Login_screen.active {
+            display: block !important;
+        }
+
+        .Login_checkbox_group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .Login_checkbox_group input {
+            width: auto;
+        }
+
+        .Login_hidden {
+            display: none;
+        }
+
+        .Login_step_title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--Fame_gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .Login_file_input_label {
+            display: block;
+            padding: 0.75rem;
+            background-color: var(--Fame_input);
+            border: 1px solid #3a3531;
+            border-radius: 0.5rem;
+            color: var(--Fame_text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .Login_file_input_label:hover {
+            border-color: var(--Fame_gold);
+        }
+
+        .Login_file_input {
+            display: none;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #3a3531;
+            margin: 1.5rem 0;
+        }
+    </style>
 </head>
+
 <body>
+    <div id="Login_container_main" class="Fame_moldura">
+        <div id="Login_content_area" class="Fame_content">
 
-<div class="container">
-    <div class="card">
-        <h2>TNP MoB 🚗</h2>
-
-        <div id="login">
-            <input type="email" id="email" placeholder="E-mail">
-            <input type="password" id="senha" placeholder="Senha (6+ dígitos)">
-            
-            <select id="tipo">
-                <option value="passageiro">Sou Passageiro</option>
-                <option value="motorista">Sou Motorista</option>
-            </select>
-
-            <button onclick="logar()">Entrar</button>
-            <button class="secondary-btn" onclick="cadastrar()">Criar Nova Conta</button>
-        </div>
-
-        <div id="app" style="display:none;">
-            <p>Olá, você é: <strong id="tipoUser"></strong></p>
-
-            <div id="passageiro" style="display:none;">
-                <input id="origem" placeholder="📍 Onde você está?">
-                <input id="destino" placeholder="🏁 Para onde vamos?">
-                <button onclick="criarCorrida()">Chamar Carona Agora</button>
+            <div class="Login_header">
+                <h1>TNP MoB 🚗</h1>
             </div>
 
-            <div id="motorista" style="display:none;">
-                <button onclick="ficarOnline()">Ficar Disponível Online</button>
+            <!-- TELA 1: LOGIN -->
+            <div id="Login_screen_main" class="Login_screen active">
+                <div class="Login_error" id="Login_error_main"></div>
+                <div class="Login_form_group">
+                    <label for="Login_input_email">E-mail</label>
+                    <input type="email" id="Login_input_email" placeholder="seu@email.com">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_input_password">Senha</label>
+                    <input type="password" id="Login_input_password" placeholder="••••••••">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_select_tipo_login">Entrar como</label>
+                    <select id="Login_select_tipo_login">
+                        <option value="passageiro">Passageiro</option>
+                        <option value="motorista">Motorista</option>
+                    </select>
+                </div>
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_logar()">ENTRAR</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_email')">CRIAR CONTA</button>
+            </div>
+
+            <!-- TELA 2: CADASTRO - EMAIL E SENHA -->
+            <div id="Login_screen_email" class="Login_screen">
+                <div class="Login_error" id="Login_error_email"></div>
+                <h3 class="Login_step_title">Criar Conta</h3>
+                
+                <div class="Login_form_group">
+                    <label for="Login_cad_nome">Nome Completo / Razão Social</label>
+                    <input type="text" id="Login_cad_nome" placeholder="Seu nome ou nome da empresa">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_email">E-mail</label>
+                    <input type="email" id="Login_cad_email" placeholder="seu@email.com">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_cad_password">Senha (min. 6 dígitos)</label>
+                    <input type="password" id="Login_cad_password" placeholder="••••••••">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_cad_password_conf">Confirmar Senha</label>
+                    <input type="password" id="Login_cad_password_conf" placeholder="••••••••">
+                </div>
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_proximoEmail()">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_main')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 3: CONFIRMAÇÃO DE EMAIL -->
+            <div id="Login_screen_email_confirmacao" class="Login_screen">
+                <div class="Login_error" id="Login_error_email_confirmacao"></div>
+                <h3 class="Login_step_title">Confirmar E-mail</h3>
+                <div class="Login_form_group">
+                    <label for="Login_input_codigo_email">Código de Confirmação</label>
+                    <input type="text" id="Login_input_codigo_email" placeholder="0000" maxlength="4">
+                </div>
+                <p style="font-size: 0.8rem; color: var(--Fame_muted); text-align: center; margin: 1rem 0;">Código padrão: 1234</p>
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_validarEmailCodigo()">VALIDAR</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_email')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 4: TELEFONES -->
+            <div id="Login_screen_telefones" class="Login_screen">
+                <div class="Login_error" id="Login_error_telefones"></div>
+                <h3 class="Login_step_title">Telefones</h3>
+                
+                <div class="Login_form_group">
+                    <label for="Login_cad_whatsapp">WhatsApp para Confirmação</label>
+                    <input type="tel" id="Login_cad_whatsapp" placeholder="(00) 00000-0000">
+                </div>
+                
+                <button class="Login_btn Login_btn_primary" id="Login_btn_enviar_zap" onclick="Login_func_enviarZap()">ENVIAR CÓDIGO VIA WHATSAPP</button>
+
+                <div id="Login_area_confirmacao_zap" class="Login_hidden" style="margin-top: 15px;">
+                    <div class="Login_form_group">
+                        <label for="Login_cad_codigo_zap">Código Recebido</label>
+                        <input type="text" id="Login_cad_codigo_zap" placeholder="0000" maxlength="4">
+                    </div>
+                    <button class="Login_btn Login_btn_primary" onclick="Login_func_validarZap()">VALIDAR WHATSAPP</button>
+                </div>
+
                 <hr>
-                <h4 style="margin: 0; color: var(--tnp-gold);">Chamadas Próximas:</h4>
-                <div id="corridas"></div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_tel_pessoal">Telefone Pessoal (Opcional)</label>
+                    <input type="tel" id="Login_cad_tel_pessoal" placeholder="(00) 00000-0000">
+                    <div class="Login_checkbox_group">
+                        <input type="checkbox" id="Login_check_mesmo_tel" onchange="Login_func_copiarTelefone()">
+                        <label for="Login_check_mesmo_tel" style="text-transform: none; margin-bottom: 0;">Mesmo do WhatsApp</label>
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_irPara('Login_screen_tipo')">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_email_confirmacao')">VOLTAR</button>
             </div>
 
-            <button class="secondary-btn" style="border-color: #444; color: #888; margin-top: 30px;" onclick="location.reload()">Sair</button>
-            
+            <!-- TELA 5: TIPO DE CONTA -->
+            <div id="Login_screen_tipo" class="Login_screen">
+                <div class="Login_error" id="Login_error_tipo"></div>
+                <h3 class="Login_step_title">Tipo de Cadastro</h3>
+                
+                <div class="Login_form_group">
+                    <label for="Login_select_tipo_final">Eu quero ser</label>
+                    <select id="Login_select_tipo_final" onchange="Login_func_toggleMotoristaFields()">
+                        <option value="passageiro">Passageiro</option>
+                        <option value="motorista">Motorista</option>
+                    </select>
+                </div>
+
+                <div id="Login_area_motorista" class="Login_hidden">
+                    <div class="Login_form_group">
+                        <label for="Login_select_veiculo">Tipo de Veículo</label>
+                        <select id="Login_select_veiculo">
+                            <option value="">Selecione...</option>
+                            <option value="carro">Carro (4 rodas)</option>
+                            <option value="moto">Moto</option>
+                            <option value="bike">Bicicleta</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_irParaIdentidade()">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_telefones')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 6: DOCUMENTAÇÃO BÁSICA -->
+            <div id="Login_screen_identidade" class="Login_screen">
+                <div class="Login_error" id="Login_error_identidade"></div>
+                <h3 class="Login_step_title">Identificação</h3>
+
+                <div class="Login_form_group">
+                    <label for="Login_select_doc_tipo">Tipo de Documento</label>
+                    <select id="Login_select_doc_tipo" onchange="Login_func_toggleDocFields()">
+                        <option value="cpf">CPF (Pessoa Física)</option>
+                        <option value="cnpj">CNPJ (Pessoa Jurídica)</option>
+                    </select>
+                </div>
+
+                <div id="Login_area_cpf">
+                    <div class="Login_form_group">
+                        <label for="Login_input_cpf">Número do CPF</label>
+                        <input type="text" id="Login_input_cpf" placeholder="000.000.000-00">
+                    </div>
+                </div>
+
+                <div id="Login_area_cnpj" class="Login_hidden">
+                    <div class="Login_form_group">
+                        <label for="Login_input_cnpj">Número do CNPJ</label>
+                        <input type="text" id="Login_input_cnpj" placeholder="00.000.000/0000-00">
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_irPara('Login_screen_endereco')">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_tipo')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 7: ENDEREÇO -->
+            <div id="Login_screen_endereco" class="Login_screen">
+                <div class="Login_error" id="Login_error_endereco"></div>
+                <h3 class="Login_step_title">Seu Endereço</h3>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_cep">CEP</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="Login_cad_cep" placeholder="00000-000" maxlength="9">
+                        <button class="Login_btn Login_btn_primary" style="margin-top:0; width: auto; padding: 0.5rem;" onclick="Login_func_buscarCep()">BUSCAR</button>
+                    </div>
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_rua">Rua / Logradouro</label>
+                    <input type="text" id="Login_cad_rua" placeholder="Nome da rua">
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_numero">Número</label>
+                        <input type="text" id="Login_cad_numero" placeholder="Nº">
+                    </div>
+                    <div class="Login_form_group" style="flex: 2;">
+                        <label for="Login_cad_complemento">Complemento</label>
+                        <input type="text" id="Login_cad_complemento" placeholder="Apt, Bloco...">
+                    </div>
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_referencia">Ponto de Referência</label>
+                    <input type="text" id="Login_cad_referencia" placeholder="Ex: Perto do mercado">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_bairro">Bairro</label>
+                    <input type="text" id="Login_cad_bairro" placeholder="Seu bairro">
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="Login_form_group" style="flex: 3;">
+                        <label for="Login_cad_cidade">Cidade</label>
+                        <input type="text" id="Login_cad_cidade" placeholder="Sua cidade">
+                    </div>
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_estado">UF</label>
+                        <input type="text" id="Login_cad_estado" placeholder="UF" maxlength="2">
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_proximoEndereco()">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_identidade')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 8: DADOS DO VEÍCULO (SÓ MOTORISTA) -->
+            <div id="Login_screen_veiculo" class="Login_screen">
+                <div class="Login_error" id="Login_error_veiculo"></div>
+                <h3 class="Login_step_title">Dados do Veículo</h3>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_placa">Placa</label>
+                    <input type="text" id="Login_cad_placa" placeholder="ABC-1234">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_cad_modelo">Marca / Modelo</label>
+                    <input type="text" id="Login_cad_modelo" placeholder="Ex: Honda Civic">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_cad_renavam">RENAVAM</label>
+                    <input type="text" id="Login_cad_renavam" placeholder="Número do Renavam">
+                </div>
+                <div class="Login_form_group">
+                    <label for="Login_cad_chassi">Chassi</label>
+                    <input type="text" id="Login_cad_chassi" placeholder="Número do Chassi">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_ano">Ano</label>
+                        <input type="number" id="Login_cad_ano" placeholder="2020">
+                    </div>
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_cor">Cor</label>
+                        <input type="text" id="Login_cad_cor" placeholder="Preto">
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" onclick="Login_func_irParaFotos()">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_endereco')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 9: FOTOS E DOCUMENTOS -->
+            <div id="Login_screen_fotos" class="Login_screen">
+                <div class="Login_error" id="Login_error_fotos"></div>
+                <h3 class="Login_step_title">Fotos e Documentos</h3>
+
+                <div class="Login_form_group">
+                    <label for="Login_file_perfil">Sua Foto de Perfil (Rosto)</label>
+                    <label for="Login_file_perfil" class="Login_file_input_label" id="Login_label_perfil">SELECIONAR FOTO</label>
+                    <input type="file" id="Login_file_perfil" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_file_carteira_aberta">Carteira Aberta (Frente e Verso)</label>
+                    <select id="Login_select_carteira_tipo" style="margin-bottom: 5px;">
+                        <option value="a">Carteira A</option>
+                        <option value="b">Carteira B</option>
+                        <option value="c">Carteira C</option>
+                        <option value="d">Carteira D</option>
+                        <option value="e">Carteira E</option>
+                    </select>
+                    <label for="Login_file_carteira_aberta" class="Login_file_input_label" id="Login_label_carteira_aberta">SELECIONAR FOTO</label>
+                    <input type="file" id="Login_file_carteira_aberta" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_file_endereco">Comprovante de Endereço</label>
+                    <label for="Login_file_endereco" class="Login_file_input_label" id="Login_label_endereco">SELECIONAR FOTO</label>
+                    <input type="file" id="Login_file_endereco" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_file_selfie">Selfie segurando Documento</label>
+                    <label for="Login_file_selfie" class="Login_file_input_label" id="Login_label_selfie">SELECIONAR FOTO</label>
+                    <input type="file" id="Login_file_selfie" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                </div>
+
+                <div id="Login_area_fotos_veiculo" class="Login_hidden">
+                    <div class="Login_form_group">
+                        <label for="Login_file_documento_veiculo">Documento do Veículo (CRLV)</label>
+                        <label for="Login_file_documento_veiculo" class="Login_file_input_label" id="Login_label_documento_veiculo">SELECIONAR FOTO</label>
+                        <input type="file" id="Login_file_documento_veiculo" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                    </div>
+                </div>
+
+                <div id="Login_area_motorista_cnh" class="Login_hidden">
+                    <hr>
+                    <div class="Login_form_group">
+                        <label for="Login_cad_cnh_nome">Nome Completo na CNH</label>
+                        <input type="text" id="Login_cad_cnh_nome" placeholder="Nome como está no doc">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="Login_form_group" style="flex: 1;">
+                            <label for="Login_cad_cnh_categoria">Categoria</label>
+                            <input type="text" id="Login_cad_cnh_categoria" placeholder="Ex: AB">
+                        </div>
+                        <div class="Login_form_group" style="flex: 2;">
+                            <label for="Login_cad_cnh_data_emissao">Data de Emissão</label>
+                            <input type="date" id="Login_cad_cnh_data_emissao">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="Login_btn Login_btn_primary" id="Login_btn_proximo_tnp" onclick="Login_func_irPara('Login_screen_tnp')">PRÓXIMO</button>
+                <button class="Login_btn Login_btn_secondary" id="Login_btn_voltar_fotos" onclick="Login_func_voltarDeFotos()">VOLTAR</button>
+            </div>
+
+            <!-- TELA 10: ID TNP -->
+            <div id="Login_screen_tnp" class="Login_screen">
+                <div class="Login_error" id="Login_error_tnp"></div>
+                <h3 class="Login_step_title">ID da TNP</h3>
+
+                <div class="Login_form_group">
+                    <label for="Login_input_id_tnp">Digite seu ID da TNP</label>
+                    <input type="text" id="Login_input_id_tnp" placeholder="Seu ID TNP">
+                </div>
+
+                <button class="Login_btn Login_btn_secondary" onclick="window.open('https://app.todosnospodemos.com.br/cadastro/125752', '_blank')">CLIQUE AQUI PARA PEGAR SEU ID</button>
+                <button class="Login_btn Login_btn_secondary" onclick="window.open('https://www.instagram.com/reels/DV9AoPWjflN/', '_blank')">SAIBA COMO PEGAR SEU ID NA TNP</button>
+
+                <hr>
+
+                <button class="Login_btn Login_btn_primary" id="Login_btn_finalizar" onclick="Login_func_finalizarCadastro()">FINALIZAR CADASTRO</button>
+                <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_fotos')">VOLTAR</button>
+            </div>
+
         </div>
     </div>
-</div>
 
-<script>
-function cadastrar() {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const tipo = document.getElementById("tipo").value;
+    <script>
+        // ========== CONFIGURAÇÃO FIREBASE ==========
+        const Login_config_firebase = {
+            apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
+            authDomain: "tnp-mob.firebaseapp.com",
+            projectId: "tnp-mob",
+            storageBucket: "tnp-mob.firebasestorage.app",
+            messagingSenderId: "775995955512",
+            appId: "1:775995955512:web:07d865e4480e0bf33909cd"
+        };
 
-    auth.createUserWithEmailAndPassword(email, senha)
-    .then((userCredential) => {
-        return db.collection("usuarios").doc(userCredential.user.uid).set({ email, tipo });
-    })
-    .then(() => alert("Conta criada!"))
-    .catch(e => alert(e.message));
-}
+        firebase.initializeApp(Login_config_firebase);
+        const Login_auth = firebase.auth();
+        const Login_db = firebase.firestore();
+        const Login_storage = firebase.storage();
 
-function logar() {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    auth.signInWithEmailAndPassword(email, senha).catch(e => alert(e.message));
-}
+        // ========== VARIÁVEIS GLOBAIS ==========
+        let Login_var_zapValidado = false;
+        let Login_var_emailValidado = false;
+        let Login_var_codigoGerado = null;
+        let Login_var_tipoUsuario = 'passageiro';
 
-auth.onAuthStateChanged(user => {
-    if (user) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("app").style.display = "block";
-
-        db.collection("usuarios").doc(user.uid).get().then(doc => {
-            const tipo = doc.data().tipo;
-            document.getElementById("tipoUser").innerText = tipo.toUpperCase();
-
-            if (tipo === "passageiro") {
-                document.getElementById("passageiro").style.display = "block";
-            } else if (tipo === "motorista") {
-                document.getElementById("motorista").style.display = "block";
-                ouvirCorridas();
+        // ========== NAVEGAÇÃO ==========
+        function Login_func_irPara(Login_param_telaId) {
+            console.log("Navegando para:", Login_param_telaId);
+            const Login_const_telas = document.querySelectorAll('.Login_screen');
+            Login_const_telas.forEach(Login_item_s => Login_item_s.classList.remove('active'));
+            const Login_const_telaAlvo = document.getElementById(Login_param_telaId);
+            if (Login_const_telaAlvo) {
+                Login_const_telaAlvo.classList.add('active');
+                document.getElementById('Login_content_area').scrollTop = 0;
             }
-        });
-    }
-});
+            Login_func_limparErros();
+        }
 
-function criarCorrida() {
-    const origem = document.getElementById("origem").value;
-    const destino = document.getElementById("destino").value;
-    if(!origem || !destino) return alert("Preencha os campos!");
+        function Login_func_limparErros() {
+            document.querySelectorAll('.Login_error').forEach(Login_item_e => {
+                Login_item_e.textContent = '';
+                Login_item_e.style.display = 'none';
+            });
+        }
 
-    db.collection("corridas").add({
-        passageiroId: auth.currentUser.uid,
-        origem,
-        destino,
-        status: "procurando",
-        motoristaId: null,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => alert("Procurando motoristas..."));
-}
+        function Login_func_mostrarErro(Login_param_id, Login_param_msg) {
+            const Login_const_err = document.getElementById(Login_param_id);
+            if (Login_const_err) {
+                Login_const_err.textContent = Login_param_msg;
+                Login_const_err.style.display = 'block';
+                Login_const_err.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
 
-function ficarOnline() {
-    db.collection("motoristas").doc(auth.currentUser.uid).set({ online: true }, { merge: true });
-    alert("Você está online!");
-}
+        // ========== TELA 1: LOGIN ==========
+        function Login_func_logar() {
+            const Login_const_email = document.getElementById('Login_input_email').value;
+            const Login_const_pass = document.getElementById('Login_input_password').value;
+            const Login_const_tipoLogin = document.getElementById('Login_select_tipo_login').value;
 
-function ouvirCorridas() {
-    db.collection("corridas").where("status", "==", "procurando")
-    .onSnapshot(snapshot => {
-        const div = document.getElementById("corridas");
-        div.innerHTML = snapshot.empty ? "<p style='color:#666; font-size:13px; margin-top:10px;'>Aguardando chamadas...</p>" : "";
+            if(!Login_const_email || !Login_const_pass) return Login_func_mostrarErro('Login_error_main', 'Preencha todos os campos');
 
-        snapshot.forEach(doc => {
-            const c = doc.data();
-            div.innerHTML += `
-                <div>
-                    <p><strong>De:</strong> ${c.origem}</p>
-                    <p><strong>Para:</strong> ${c.destino}</p>
-                    <button onclick="aceitarCorrida('${doc.id}')">Aceitar</button>
-                </div>
-            `;
-        });
-    });
-}
+            Login_auth.signInWithEmailAndPassword(Login_const_email, Login_const_pass)
+            .then(async (Login_item_userCredential) => {
+                const Login_const_uid = Login_item_userCredential.user.uid;
+                const Login_const_pasta = Login_const_tipoLogin === 'motorista' ? 'motoristas' : 'usuarios';
+                
+                let Login_item_doc = await Login_db.collection(Login_const_pasta).doc(Login_const_uid).get();
+                
+                if(!Login_item_doc.exists) {
+                    return Login_func_mostrarErro('Login_error_main', "Usuário não encontrado nesta categoria.");
+                }
 
-function aceitarCorrida(id) {
-    db.collection("corridas").doc(id).update({
-        status: "aceita",
-        motoristaId: auth.currentUser.uid
-    }).then(() => alert("Corrida aceita!"));
-}
-    // FUNÇÃO PARA SAIR REALMENTE (PARA O LOOP)
-function deslogar() {
-    auth.signOut().then(() => {
-        // Agora que o Firebase deslogou, limpamos a tela
-        document.getElementById("app").style.display = "none";
-        document.getElementById("login").style.display = "block";
-        alert("Você saiu com segurança!");
-    }).catch(e => alert("Erro ao sair: " + e.message));
-}
-    
-</script>
+                const Login_item_user = Login_item_doc.data();
+                const Login_const_statusGeral = (typeof Login_item_user.status === 'object') ? Login_item_user.status.geral : Login_item_user.status;
+                
+                if(Login_const_statusGeral !== "aprovado") {
+                    return alert("Seu cadastro está em análise. Por favor, aguarde a aprovação.");
+                }
+
+                alert("Login realizado com sucesso!");
+            })
+            .catch(Login_item_e => Login_func_mostrarErro('Login_error_main', "Erro ao entrar: Verifique e-mail e senha."));
+        }
+
+        // ========== TELA 2: EMAIL E SENHA ==========
+        function Login_func_proximoEmail() {
+            const Login_const_nome = document.getElementById('Login_cad_nome').value;
+            const Login_const_email = document.getElementById('Login_cad_email').value;
+            const Login_const_pass = document.getElementById('Login_cad_password').value;
+            const Login_const_conf = document.getElementById('Login_cad_password_conf').value;
+
+            if(!Login_const_nome) return Login_func_mostrarErro('Login_error_email', 'Preencha seu nome ou razão social');
+            if(!Login_const_email || !Login_const_pass || !Login_const_conf) return Login_func_mostrarErro('Login_error_email', 'Preencha todos os campos');
+            if(Login_const_pass !== Login_const_conf) return Login_func_mostrarErro('Login_error_email', 'Senhas não conferem');
+            if(Login_const_pass.length < 6) return Login_func_mostrarErro('Login_error_email', 'Senha muito curta');
+
+            Login_func_irPara('Login_screen_email_confirmacao');
+        }
+
+        // ========== TELA 3: CONFIRMAÇÃO DE EMAIL ==========
+        function Login_func_validarEmailCodigo() {
+            const Login_const_cod = document.getElementById('Login_input_codigo_email').value;
+            if(Login_const_cod === '1234') {
+                Login_var_emailValidado = true;
+                Login_func_irPara('Login_screen_telefones');
+            } else {
+                Login_func_mostrarErro('Login_error_email_confirmacao', 'Código incorreto');
+            }
+        }
+
+        // ========== TELA 4: TELEFONES ==========
+        function Login_func_enviarZap() {
+            const Login_const_zap = document.getElementById('Login_cad_whatsapp').value;
+            if(Login_const_zap.length < 10) return Login_func_mostrarErro('Login_error_telefones', 'WhatsApp inválido');
+            Login_var_codigoGerado = Math.floor(1000 + Math.random() * 9000);
+            const Login_const_msg = encodeURIComponent(`Seu código TNP MoB: ${Login_var_codigoGerado}`);
+            const Login_const_link = `https://wa.me/55319XXXXXXXX?text=${Login_const_msg}`;
+            window.open(Login_const_link, '_blank');
+            document.getElementById('Login_area_confirmacao_zap').classList.remove('Login_hidden');
+            alert('Enviamos uma mensagem para o WhatsApp. Digite o código recebido.');
+        }
+
+        function Login_func_validarZap() {
+            const Login_const_cod = document.getElementById('Login_cad_codigo_zap').value;
+            if(Login_const_cod == Login_var_codigoGerado) {
+                Login_var_zapValidado = true;
+                alert('WhatsApp validado com sucesso!');
+            } else {
+                Login_func_mostrarErro('Login_error_telefones', 'Código incorreto');
+            }
+        }
+
+        function Login_func_copiarTelefone() {
+            const Login_const_check = document.getElementById('Login_check_mesmo_tel');
+            const Login_const_zap = document.getElementById('Login_cad_whatsapp').value;
+            const Login_const_pessoal = document.getElementById('Login_cad_tel_pessoal');
+            if(Login_const_check.checked) Login_const_pessoal.value = Login_const_zap;
+        }
+        
+        // Compactar imagem usando Canvas
+        function Login_func_compactarImagem(Login_param_arquivo, Login_param_maxWidth = 1000, Login_param_maxHeight = 1000, Login_param_qualidade = 0.7) {
+            return new Promise((Login_param_resolve) => {
+                const Login_const_reader = new FileReader();
+                Login_const_reader.readAsDataURL(Login_param_arquivo);
+                Login_const_reader.onload = (Login_item_event) => {
+                    const Login_const_img = new Image();
+                    Login_const_img.src = Login_item_event.target.result;
+                    Login_const_img.onload = () => {
+                        const Login_const_canvas = document.createElement('canvas');
+                        let Login_var_width = Login_const_img.width;
+                        let Login_var_height = Login_const_img.height;
+
+                        if (Login_var_width > Login_var_height) {
+                            if (Login_var_width > Login_param_maxWidth) {
+                                Login_var_height *= Login_param_maxWidth / Login_var_width;
+                                Login_var_width = Login_param_maxWidth;
+                            }
+                        } else {
+                            if (Login_var_height > Login_param_maxHeight) {
+                                Login_var_width *= Login_param_maxHeight / Login_var_height;
+                                Login_var_height = Login_param_maxHeight;
+                            }
+                        }
+
+                        Login_const_canvas.width = Login_var_width;
+                        Login_const_canvas.height = Login_var_height;
+                        const Login_const_ctx = Login_const_canvas.getContext('2d');
+                        Login_const_ctx.drawImage(Login_const_img, 0, 0, Login_var_width, Login_var_height);
+                        
+                        Login_const_canvas.toBlob((Login_item_blob) => {
+                            Login_param_resolve(Login_item_blob);
+                        }, 'image/jpeg', Login_param_qualidade);
+                    };
+                };
+            });
+        }
+
+        async function Login_func_uploadImagem(Login_param_arquivo, Login_param_caminho) {
+            if(!Login_param_arquivo) return null;
+            
+            // Compactar antes de subir
+            const Login_const_blobCompactado = await Login_func_compactarImagem(Login_param_arquivo);
+            
+            return new Promise((Login_param_resolve, Login_param_reject) => {
+                const Login_const_ref = Login_storage.ref(Login_param_caminho);
+                const Login_const_uploadTask = Login_const_ref.put(Login_const_blobCompactado);
+                
+                Login_const_uploadTask.on('state_changed', 
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload ' + Login_param_caminho + ' is ' + progress + '% done');
+                    }, 
+                    (Login_item_error) => Login_param_reject(Login_item_error), 
+                    async () => {
+                        const Login_const_url = await Login_const_uploadTask.snapshot.ref.getDownloadURL();
+                        Login_param_resolve(Login_const_url);
+                    }
+                );
+            });
+        }
+
+        function Login_func_toggleMotoristaFields() {
+            const Login_const_tipo = document.getElementById('Login_select_tipo_final').value;
+            const Login_const_area = document.getElementById('Login_area_motorista');
+            const Login_const_areaCnh = document.getElementById('Login_area_motorista_cnh');
+            Login_var_tipoUsuario = Login_const_tipo;
+            if(Login_const_tipo === 'motorista') {
+                Login_const_area.classList.remove('Login_hidden');
+                Login_const_areaCnh.classList.remove('Login_hidden');
+            } else {
+                Login_const_area.classList.add('Login_hidden');
+                Login_const_areaCnh.classList.add('Login_hidden');
+            }
+        }
+
+        function Login_func_toggleDocFields() {
+            const Login_const_tipoDoc = document.getElementById('Login_select_doc_tipo').value;
+            const Login_const_areaCpf = document.getElementById('Login_area_cpf');
+            const Login_const_areaCnpj = document.getElementById('Login_area_cnpj');
+            if(Login_const_tipoDoc === 'cpf') {
+                Login_const_areaCpf.classList.remove('Login_hidden');
+                Login_const_areaCnpj.classList.add('Login_hidden');
+            } else {
+                Login_const_areaCpf.classList.add('Login_hidden');
+                Login_const_areaCnpj.classList.remove('Login_hidden');
+            }
+        }
+
+        function Login_func_irParaIdentidade() {
+            const Login_const_tipo = document.getElementById('Login_select_tipo_final').value;
+            if(Login_const_tipo === 'motorista') {
+                const Login_const_veiculo = document.getElementById('Login_select_veiculo').value;
+                if(!Login_const_veiculo) return Login_func_mostrarErro('Login_error_tipo', 'Selecione o tipo de veículo');
+            }
+            Login_func_irPara('Login_screen_identidade');
+        }
+
+        function Login_func_buscarCep() {
+            const Login_const_cep = document.getElementById('Login_cad_cep').value.replace(/\D/g, '');
+            if(Login_const_cep.length !== 8) return;
+            fetch(`https://viacep.com.br/ws/${Login_const_cep}/json/`)
+                .then(Login_item_res => Login_item_res.json())
+                .then(Login_item_data => {
+                    if(!Login_item_data.erro) {
+                        document.getElementById('Login_cad_rua').value = Login_item_data.logradouro;
+                        document.getElementById('Login_cad_bairro').value = Login_item_data.bairro;
+                        document.getElementById('Login_cad_cidade').value = Login_item_data.localidade;
+                        document.getElementById('Login_cad_estado').value = Login_item_data.uf;
+                    }
+                });
+        }
+
+        function Login_func_proximoEndereco() {
+            const Login_const_cep = document.getElementById('Login_cad_cep').value;
+            const Login_const_rua = document.getElementById('Login_cad_rua').value;
+            const Login_const_numero = document.getElementById('Login_cad_numero').value;
+            if(!Login_const_cep || !Login_const_rua || !Login_const_numero) return Login_func_mostrarErro('Login_error_endereco', 'Preencha os campos obrigatórios');
+            if(Login_var_tipoUsuario === 'motorista') Login_func_irPara('Login_screen_veiculo');
+            else Login_func_irParaFotos();
+        }
+
+        function Login_func_mostrarNomeArquivo(Login_param_input) {
+            const Login_const_labelId = 'Login_label_' + Login_param_input.id.replace('Login_file_', '');
+            const Login_const_label = document.getElementById(Login_const_labelId);
+            if(Login_param_input.files && Login_param_input.files[0]) Login_const_label.textContent = Login_param_input.files[0].name;
+        }
+
+        function Login_func_irParaFotos() {
+            const Login_const_area = document.getElementById('Login_area_fotos_veiculo');
+            if(Login_var_tipoUsuario === 'motorista') Login_const_area.classList.remove('Login_hidden');
+            else Login_const_area.classList.add('Login_hidden');
+            Login_func_irPara('Login_screen_fotos');
+        }
+
+        function Login_func_voltarDeFotos() {
+            if(Login_var_tipoUsuario === 'motorista') Login_func_irPara('Login_screen_veiculo');
+            else Login_func_irPara('Login_screen_endereco');
+        }
+
+        function Login_func_resetTotal() {
+            console.log("Iniciando Reset Total...");
+            
+            // 1. Deslogar do Firebase
+            Login_auth.signOut().catch(e => console.log("Erro ao deslogar:", e));
+
+            // 2. Limpar todos os inputs e selects
+            const Login_const_inputs = document.querySelectorAll('input');
+            Login_const_inputs.forEach(i => {
+                if(i.type === 'checkbox' || i.type === 'radio') i.checked = false;
+                else i.value = '';
+            });
+
+            const Login_const_selects = document.querySelectorAll('select');
+            Login_const_selects.forEach(s => s.selectedIndex = 0);
+
+            // 3. Resetar labels de arquivos
+            const Login_const_labels = document.querySelectorAll('.Login_file_input_label');
+            Login_const_labels.forEach(l => l.textContent = 'SELECIONAR FOTO');
+
+            // 4. Resetar variáveis globais
+            Login_var_zapValidado = false;
+            Login_var_emailValidado = false;
+            Login_var_codigoGerado = null;
+            Login_var_tipoUsuario = 'passageiro';
+
+            // 5. Esconder áreas condicionais
+            document.getElementById('Login_area_confirmacao_zap').classList.add('Login_hidden');
+            document.getElementById('Login_area_motorista').classList.add('Login_hidden');
+            document.getElementById('Login_area_motorista_cnh').classList.add('Login_hidden');
+            document.getElementById('Login_area_cnpj').classList.add('Login_hidden');
+            document.getElementById('Login_area_cpf').classList.remove('Login_hidden');
+
+            // 6. Voltar para a tela de login inicial
+            Login_func_irPara('Login_screen_main');
+            
+            console.log("Reset Total concluído.");
+        }
+
+        async function Login_func_finalizarCadastro() {
+            const Login_const_nome = document.getElementById('Login_cad_nome').value;
+            const Login_const_email = document.getElementById('Login_cad_email').value;
+            const Login_const_pass = document.getElementById('Login_cad_password').value;
+            const Login_const_telPessoal = document.getElementById('Login_cad_tel_pessoal').value;
+            const Login_const_tipo = Login_var_tipoUsuario;
+            const Login_const_idTnp = document.getElementById('Login_input_id_tnp').value;
+            
+            const Login_const_tipoDoc = document.getElementById('Login_select_doc_tipo').value;
+            const Login_const_cpf = document.getElementById('Login_input_cpf').value;
+            const Login_const_cnpj = document.getElementById('Login_input_cnpj').value;
+
+            if(!Login_const_idTnp) return Login_func_mostrarErro('Login_error_tnp', 'O ID da TNP é obrigatório');
+            if(Login_const_tipoDoc === 'cpf' && !Login_const_cpf) return Login_func_mostrarErro('Login_error_tnp', 'Preencha o CPF');
+            if(Login_const_tipoDoc === 'cnpj' && !Login_const_cnpj) return Login_func_mostrarErro('Login_error_tnp', 'Preencha o CNPJ');
+
+            const Login_const_fotoPerfil = document.getElementById('Login_file_perfil').files[0];
+            const Login_const_fotoCarteira = document.getElementById('Login_file_carteira_aberta').files[0];
+            const Login_const_fotoEndereco = document.getElementById('Login_file_endereco').files[0];
+            const Login_const_fotoSelfie = document.getElementById('Login_file_selfie').files[0];
+
+            if(!Login_var_emailValidado || !Login_var_zapValidado) {
+                return Login_func_mostrarErro('Login_error_tnp', 'Valide e-mail e WhatsApp primeiro');
+            }
+
+            const Login_const_btn = document.getElementById('Login_btn_finalizar');
+            Login_const_btn.disabled = true;
+            Login_const_btn.innerText = "CADASTRANDO... AGUARDE";
+
+            try {
+                const Login_item_userCredential = await Login_auth.createUserWithEmailAndPassword(Login_const_email, Login_const_pass);
+                const Login_const_uid = Login_item_userCredential.user.uid;
+                const Login_const_pasta = Login_const_tipo === 'motorista' ? 'motoristas' : 'usuarios';
+
+                const Login_const_dadosIniciais = {
+                    uid: Login_const_uid,
+                    nome: Login_const_nome,
+                    email: Login_const_email,
+                    tipo: Login_const_tipo,
+                    idTnp: Login_const_idTnp,
+                    status: { geral: "pendente", atualizadoEm: new Date() },
+                    criadoEm: new Date(),
+                    telefonePrincipal: Login_const_telPessoal,
+                    identidade: { 
+                        tipo: Login_const_tipoDoc,
+                        cpf: Login_const_cpf,
+                        cnpj: Login_const_cnpj,
+                        carteiraTipo: document.getElementById('Login_select_carteira_tipo').value
+                    },
+                    endereco: {
+                        cep: document.getElementById('Login_cad_cep').value,
+                        rua: document.getElementById('Login_cad_rua').value,
+                        numero: document.getElementById('Login_cad_numero').value,
+                        complemento: document.getElementById('Login_cad_complemento').value,
+                        referencia: document.getElementById('Login_cad_referencia').value,
+                        bairro: document.getElementById('Login_cad_bairro').value,
+                        cidade: document.getElementById('Login_cad_cidade').value,
+                        estado: document.getElementById('Login_cad_estado').value
+                    },
+                    fotos: { status: "processando" }
+                };
+
+                if(Login_const_tipo === 'motorista') {
+                    Login_const_dadosIniciais.veiculo = {
+                        placa: document.getElementById('Login_cad_placa').value,
+                        modelo: document.getElementById('Login_cad_modelo').value,
+                        renavam: document.getElementById('Login_cad_renavam').value,
+                        chassi: document.getElementById('Login_cad_chassi').value,
+                        ano: document.getElementById('Login_cad_ano').value,
+                        cor: document.getElementById('Login_cad_cor').value
+                    };
+                    Login_const_dadosIniciais.cnh = {
+                        nome: document.getElementById('Login_cad_cnh_nome').value,
+                        categoria: document.getElementById('Login_cad_cnh_categoria').value,
+                        dataEmissao: document.getElementById('Login_cad_cnh_data_emissao').value
+                    };
+                }
+
+                await Login_db.collection(Login_const_pasta).doc(Login_const_uid).set(Login_const_dadosIniciais);
+                
+                alert('Dados enviados! Iniciando upload das fotos...');
+                
+                // Upload das fotos
+                const Login_const_uploads = [];
+                if(Login_const_fotoPerfil) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoPerfil, `${Login_const_pasta}/${Login_const_uid}/perfil.jpg`).then(Login_item_url => ({key: 'perfil', url: Login_item_url})));
+                if(Login_const_fotoCarteira) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoCarteira, `${Login_const_pasta}/${Login_const_uid}/carteira.jpg`).then(Login_item_url => ({key: 'carteira', url: Login_item_url})));
+                if(Login_const_fotoEndereco) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoEndereco, `${Login_const_pasta}/${Login_const_uid}/endereco.jpg`).then(Login_item_url => ({key: 'endereco', url: Login_item_url})));
+                if(Login_const_fotoSelfie) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoSelfie, `${Login_const_pasta}/${Login_const_uid}/selfie.jpg`).then(Login_item_url => ({key: 'selfie', url: Login_item_url})));
+                
+                if (Login_const_tipo === 'motorista') {
+                    const Login_const_fotoDocVeiculo = document.getElementById('Login_file_documento_veiculo').files[0];
+                    if(Login_const_fotoDocVeiculo) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoDocVeiculo, `${Login_const_pasta}/${Login_const_uid}/veiculo.jpg`).then(Login_item_url => ({key: 'veiculo', url: Login_item_url})));
+                }
+
+                const Login_const_resultados = await Promise.all(Login_const_uploads);
+                const Login_const_fotosUrls = {};
+                Login_const_resultados.forEach(Login_item_res => {
+                    Login_const_fotosUrls[Login_item_res.key] = Login_item_res.url;
+                });
+
+                await Login_db.collection(Login_const_pasta).doc(Login_const_uid).update({
+                    fotos: Login_const_fotosUrls,
+                    "fotos.status": "concluido"
+                });
+
+                alert('Cadastro concluído com sucesso! Você será redirecionado para o login.');
+                
+                // Reset Total
+                Login_func_resetTotal();
+
+            } catch (Login_item_error) {
+                console.error("Erro no cadastro:", Login_item_error);
+                Login_func_mostrarErro('Login_error_tnp', "Erro: " + Login_item_error.message);
+                Login_const_btn.disabled = false;
+                Login_const_btn.innerText = "FINALIZAR CADASTRO";
+            }
+        }
+    </script>
 </body>
 </html>
