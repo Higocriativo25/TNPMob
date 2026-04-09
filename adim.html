@@ -1,3 +1,88 @@
+
+
+Iniciar teste gratuito
+
+Compartilhar
+Lite
+Analisei os códigos do seu sistema de cadastro e do painel administrativo. Identifiquei que, embora a estrutura base esteja funcional, faltam campos essenciais para a segurança jurídica, operação financeira e conformidade com aplicativos de mobilidade.
+Abaixo apresento o relatório dos dados faltantes e as melhorias recomendadas:
+1. Campos Faltantes: Motorista
+O cadastro atual foca em dados básicos, mas para uma operação profissional, você precisará de:
+Categoria
+Campos Faltantes Recomendados
+Por que é necessário?
+Documentação
+CPF do titular da CNH (se diferente), Data de Nascimento, Sexo
+Validação de antecedentes criminais e seguros.
+Veículo
+Renavam, CRLV Digital, Categoria (Comum, Premium, etc.)
+Verificação de regularidade do veículo junto ao DETRAN.
+Financeiro
+Chave PIX, Banco, Agência e Conta
+Automatização de repasses e pagamentos.
+Segurança
+Antecedentes Criminais (Upload/Link), Selfie com Documento
+Segurança dos passageiros e conformidade legal.
+2. Campos Faltantes: Usuário (Passageiro)
+O cadastro de usuário está muito simplificado, o que pode gerar problemas de segurança e cobrança:
+Categoria
+Campos Faltantes Recomendados
+Por que é necessário?
+Identificação
+CPF (obrigatório), Data de Nascimento
+Evitar contas fakes e permitir cobranças legais.
+Pagamento
+Cartão de Crédito Salvo (Token), Saldo em Carteira
+Garantia de pagamento antes do início da corrida.
+Segurança
+Contato de Emergência, Foto de Perfil
+Protocolos de segurança em caso de incidentes.
+3. Observações Técnicas no Código
+Validação de CPF/CNPJ: O código atual apenas verifica se o campo está preenchido, mas não valida se o número é real ou válido.
+Fluxo de Endereço: No painel admin, você exibe rua e número, mas no código de cadastro (Tela 4), vi apenas a validação de WhatsApp. Certifique-se de que a tela de endereço está salvando todos os campos (bairro, cidade, estado, cep) para que o admin não exiba "undefined".
+Status do Cadastro: No admin, você usa status.geral, mas no cadastro inicial, alguns campos podem ser salvos como strings simples. É importante padronizar para evitar erros de leitura no painel.
+Dica para a Foto: Como você mencionou que o campo da foto está pendente, recomendo que, quando implementar, utilize o Firebase Storage (que já está configurado no seu código) para gerar uma URL pública e salvá-la no Firestore dentro do objeto do usuário/motorista.
+Deseja que eu ajude a estruturar o código para algum desses campos específicos agora?
+pasted_content.txt
+Texto · 24.62 KB
+pasted_content_2.txt
+Texto · 10.89 KB
+Ver todos os arquivos nesta tarefa
+Como foi este resultado?
+GOSTARIA TAMBEM DE UM CAMPO DE BUSCA NO MEU PAINEL ADM ONDE POSSO ESTÁ ACHANDO O CADASTRO PELO NOME. CPF, CNPJ, NUMERO DA CARTEIRA
+Lite
+Com certeza! Vou adicionar um campo de busca inteligente ao seu Painel Admin que permitirá localizar cadastros instantaneamente por Nome, CPF, CNPJ ou Número da CNH. Estou preparando o código atualizado para você.
+Identifiquei que os cadastros de usuário e motorista estão incompletos, faltando campos essenciais como dados de documentação, financeiro e segurança. Planejo incluir um campo de busca inteligente no painel.
+
+Concluí a integração do campo de busca no painel e criei a documentação de uso. Próximo passo: revisar e entregar as atualizações ao usuário.
+
+Lite
+Implementei o campo de busca inteligente no seu Painel Admin. Agora você pode localizar qualquer cadastro instantaneamente por Nome, CPF, CNPJ ou Número da CNH.
+🚀 O que foi adicionado:
+Busca por Nome: Localiza usuários e motoristas pelo nome (completo ou parcial).
+Busca por Documento: Filtra por CPF, CNPJ ou CNH (aceita números com ou sem pontos/traços).
+Busca Combinada: Você pode buscar por "Nome + CPF" para resultados ainda mais precisos.
+Limpeza Rápida: Botão para resetar a busca e voltar a ver todos os cadastros.
+Contador de Resultados: Exibe quantos cadastros foram encontrados na busca.
+📦 Arquivos Entregues:
+painel_admin_atualizado.html: O código completo do seu painel com a busca integrada e funcional.
+GUIA_BUSCA_PAINEL.md: Um guia rápido explicando como usar cada funcionalidade da busca.
+🛠️ Como instalar:
+Basta substituir o código do seu arquivo HTML atual pelo conteúdo do arquivo painel_admin_atualizado.html que enviei em anexo. As configurações do seu Firebase já estão mantidas no código.
+Deseja que eu ajude com mais alguma funcionalidade, como filtros por status (Aprovado/Pendente) ou exportação de dados?
+painel_admin_atualizado.html
+Código · 16.52 KB
+Guia de Uso: Campo de Busca do Painel Admin
+Markdown · 4.89 KB
+Ver todos os arquivos nesta tarefa
+Tarefa concluída
+Como foi este resultado?
+Sugestões de acompanhamento
+
+
+
+
+painel_admin_atualizado.html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -31,7 +116,7 @@
             min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 600px; padding: 20px; }
+        .container { width: 100%; max-width: 900px; padding: 20px; }
 
         .card_motorista {
             background: var(--Fame_card);
@@ -63,9 +148,9 @@
         .info_group { margin-bottom: 8px; font-size: 0.9rem; }
         .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; }
 
-        .btn_group { display: flex; gap: 10px; margin-top: 15px; }
+        .btn_group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn {
-            flex: 1; padding: 10px; border: none; border-radius: 8px;
+            flex: 1; min-width: 100px; padding: 10px; border: none; border-radius: 8px;
             cursor: pointer; font-weight: bold; transition: 0.3s;
         }
         .btn_aprovar { background: var(--Success); color: white; }
@@ -74,11 +159,118 @@
         .btn:hover { opacity: 0.8; }
 
         #Login_Area { text-align: center; margin-top: 100px; }
-        input { 
+        input, select { 
             width: 100%; padding: 12px; margin: 10px 0; 
             background: #2a2623; border: 1px solid var(--Fame_brown); 
             color: white; border-radius: 8px; box-sizing: border-box;
         }
+
+        /* Estilos para o campo de busca */
+        .search_container {
+            background: var(--Fame_card);
+            border: 1px solid var(--Fame_brown);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .search_title {
+            color: var(--Fame_gold);
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .search_inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .search_inputs input {
+            margin: 0;
+        }
+
+        .search_buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn_buscar {
+            flex: 1;
+            background: var(--Fame_gold);
+            color: #000;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn_buscar:hover {
+            opacity: 0.8;
+        }
+
+        .btn_limpar {
+            flex: 1;
+            background: #2a2623;
+            color: var(--Fame_gold);
+            border: 1px solid var(--Fame_gold);
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn_limpar:hover {
+            opacity: 0.8;
+        }
+
+        .search_results {
+            color: var(--Fame_gold);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .header_dashboard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header_dashboard h2 {
+            color: var(--Fame_gold);
+            margin: 0;
+        }
+
+        .btn_sair {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .btn_sair:hover {
+            opacity: 0.8;
+        }
+
+        .no_results {
+            text-align: center;
+            color: var(--Fame_gold);
+            padding: 40px 20px;
+            font-style: italic;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -92,16 +284,35 @@
     </div>
 
     <div id="Admin_Dashboard" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="color: var(--Fame_gold); margin: 0;">Motoristas</h2>
-            <button onclick="auth.signOut()" style="background:none; border:none; color:red; cursor:pointer; font-weight:bold;">Sair</button>
+        <div class="header_dashboard">
+            <h2>Gerenciamento de Cadastros</h2>
+            <button class="btn_sair" onclick="auth.signOut()">Sair</button>
         </div>
+
+        <!-- CAMPO DE BUSCA -->
+        <div class="search_container">
+            <div class="search_title">🔍 Buscar Cadastro</div>
+            
+            <div class="search_inputs">
+                <input type="text" id="search_nome" placeholder="Buscar por Nome">
+                <input type="text" id="search_documento" placeholder="CPF, CNPJ ou CNH">
+            </div>
+
+            <div class="search_buttons">
+                <button class="btn_buscar" onclick="executarBusca()">BUSCAR</button>
+                <button class="btn_limpar" onclick="limparBusca()">LIMPAR</button>
+            </div>
+
+            <div class="search_results" id="search_results"></div>
+        </div>
+
+        <!-- LISTA DE CADASTROS -->
         <div id="lista_motoristas">Buscando dados...</div>
     </div>
 </div>
 
 <script>
-    // Configuração com a chave que você confirmou
+    // Configuração Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
         authDomain: "tnp-mob.firebaseapp.com",
@@ -114,7 +325,11 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const auth = firebase.auth();
-    const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22"; // ID do Higo Valadares
+    const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22";
+
+    // Variáveis globais para armazenar dados
+    let todosOsCadastros = [];
+    let cadastrosFiltrados = [];
 
     function logarAdmin() {
         const email = document.getElementById('adm_email').value;
@@ -129,117 +344,188 @@
         if (user && user.uid === ADMIN_UID) {
             loginDiv.style.display = 'none';
             dashDiv.style.display = 'block';
-            carregarMotoristas();
+            carregarCadastros();
         } else {
             loginDiv.style.display = 'block';
             dashDiv.style.display = 'none';
         }
     });
 
-    // 1. Função principal para carregar todos os cadastros
-function carregarCadastros() {
-    const listaDiv = document.getElementById('lista_motoristas');
-    const colecoes = ["motoristas", "usuarios"];
+    // Carregar todos os cadastros
+    function carregarCadastros() {
+        const listaDiv = document.getElementById('lista_motoristas');
+        const colecoes = ["motoristas", "usuarios"];
+        todosOsCadastros = [];
 
-    colecoes.forEach(colecao => {
-        db.collection(colecao).onSnapshot(snapshot => {
-            // Limpa apenas os cards da coleção atual para atualizar em tempo real
-            document.querySelectorAll(`.card-${colecao}`).forEach(el => el.remove());
+        colecoes.forEach(colecao => {
+            db.collection(colecao).onSnapshot(snapshot => {
+                // Remove cadastros da coleção anterior
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    
+                    // Armazena na array global
+                    const indice = todosOsCadastros.findIndex(c => c.id === id);
+                    if (indice >= 0) {
+                        todosOsCadastros[indice] = { ...data, id, colecao };
+                    } else {
+                        todosOsCadastros.push({ ...data, id, colecao });
+                    }
+                });
 
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const id = doc.id;
-                const ehMotorista = data.tipo === 'motorista';
-
-                // Dados de Identidade
-                const documento = data.identidade?.tipo === 'cpf' ? data.identidade?.cpf : data.identidade?.cnpj;
-                const statusTxt = typeof data.status === 'string' ? data.status : (data.status?.geral || "pendente");
-                const corStatus = statusTxt === 'aprovado' ? 'var(--Success)' : (statusTxt === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
-
-                listaDiv.innerHTML += `
-                    <div class="card_motorista card-${colecao}" style="border-left: 5px solid ${ehMotorista ? 'var(--Fame_brown)' : '#2a2623'}">
-                        <div class="card_header">
-                            <div>
-                                <small style="color:var(--Fame_gold); font-size:0.7rem;">${colecao.toUpperCase()} | ${data.identidade?.tipo?.toUpperCase() || 'DOC'}</small>
-                                <h3 style="margin:5px 0;">${data.nome || data.cnh?.nome || "Sem Nome"}</h3>
-                            </div>
-                            <span class="status_tag" style="background: ${corStatus}">${statusTxt}</span>
-                        </div>
-
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                            <div class="info_group"><span class="label">ID TNP:</span> ${data.idTnp || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Doc:</span> ${documento || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Zap:</span> ${data.telefonePrincipal || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Email:</span> <small>${data.email || 'N/A'}</small></div>
-                        </div>
-
-                        <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                            <span class="label" style="display:block; margin-bottom:5px; font-size:0.7rem;">📍 ENDEREÇO</span>
-                            <div class="info_group" style="font-size:0.8rem;">
-                                ${data.endereco?.rua}, ${data.endereco?.numero} - ${data.endereco?.bairro}<br>
-                                ${data.endereco?.cidade}/${data.endereco?.estado} - CEP: ${data.endereco?.cep}
-                            </div>
-                        </div>
-
-                        ${ehMotorista ? `
-                            <div style="border-top: 1px solid #333; padding-top: 15px;">
-                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                    <div>
-                                        <span class="label" style="font-size:0.7rem;">🚗 VEÍCULO</span>
-                                        <div class="info_group">${data.veiculo?.modelo} (${data.veiculo?.ano})</div>
-                                        <div class="info_group"><span class="label">Placa:</span> ${data.veiculo?.placa}</div>
-                                        <div class="info_group"><span class="label">Cor:</span> ${data.veiculo?.cor}</div>
-                                    </div>
-                                    <div>
-                                        <span class="label" style="font-size:0.7rem;">🪪 CNH (${data.cnh?.categoria})</span>
-                                        <div class="info_group">${data.cnh?.numero}</div>
-                                        <div class="info_group"><span class="label">Emissão:</span> ${data.cnh?.dataEmissao}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ` : ''}
-
-                        <div class="btn_group">
-                            <button class="btn btn_doc" onclick="verDocumentos('${id}', '${colecao}')">VER DOCS</button>
-                            <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado', '${colecao}')">APROVAR</button>
-                            <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado', '${colecao}')">RECUSAR</button>
-                        </div>
-                    </div>
-                `;
+                // Se não há busca ativa, exibe todos
+                if (!document.getElementById('search_nome').value && !document.getElementById('search_documento').value) {
+                    exibirCadastros(todosOsCadastros);
+                }
             });
         });
-    });
-}
-
-// 2. Ajuste na função de mudar status para aceitar a coleção
-function mudarStatus(id, novo, colecao) {
-    db.collection(colecao).doc(id).update({
-        status: novo,
-        "status.geral": novo,
-        "status.atualizadoEm": new Date()
-    }).catch(e => alert("Erro: " + e.message));
-}
-
-// 3. Lembre-se de atualizar a chamada dentro do onAuthStateChanged:
-auth.onAuthStateChanged(user => {
-    if (user && user.uid === ADMIN_UID) {
-        document.getElementById('Login_Area').style.display = 'none';
-        document.getElementById('Admin_Dashboard').style.display = 'block';
-        carregarCadastros(); // Nome novo da função
-    } else {
-        document.getElementById('Login_Area').style.display = 'block';
-        document.getElementById('Admin_Dashboard').style.display = 'none';
     }
-});
 
-    function mudarStatus(id, novo) {
-        // Atualiza o campo de forma compatível com o novo cadastro
-        db.collection("motoristas").doc(id).update({ 
+    // Função de busca
+    function executarBusca() {
+        const nome = document.getElementById('search_nome').value.toLowerCase().trim();
+        const documento = document.getElementById('search_documento').value.trim();
+
+        if (!nome && !documento) {
+            alert('Digite pelo menos um critério de busca');
+            return;
+        }
+
+        cadastrosFiltrados = todosOsCadastros.filter(cadastro => {
+            let correspondenciaNome = true;
+            let correspondenciaDocumento = true;
+
+            // Busca por nome
+            if (nome) {
+                const nomeCompleto = (cadastro.nome || cadastro.cnh?.nome || '').toLowerCase();
+                correspondenciaNome = nomeCompleto.includes(nome);
+            }
+
+            // Busca por documento (CPF, CNPJ ou CNH)
+            if (documento) {
+                const cpf = (cadastro.identidade?.cpf || '').replace(/\D/g, '');
+                const cnpj = (cadastro.identidade?.cnpj || '').replace(/\D/g, '');
+                const cnh = (cadastro.cnh?.numero || '').replace(/\D/g, '');
+                const docLimpo = documento.replace(/\D/g, '');
+
+                correspondenciaDocumento = cpf.includes(docLimpo) || cnpj.includes(docLimpo) || cnh.includes(docLimpo);
+            }
+
+            return correspondenciaNome && correspondenciaDocumento;
+        });
+
+        exibirCadastros(cadastrosFiltrados);
+        
+        const resultadoDiv = document.getElementById('search_results');
+        resultadoDiv.textContent = `Encontrados ${cadastrosFiltrados.length} resultado(s)`;
+    }
+
+    // Limpar busca
+    function limparBusca() {
+        document.getElementById('search_nome').value = '';
+        document.getElementById('search_documento').value = '';
+        document.getElementById('search_results').textContent = '';
+        exibirCadastros(todosOsCadastros);
+    }
+
+    // Exibir cadastros
+    function exibirCadastros(cadastros) {
+        const listaDiv = document.getElementById('lista_motoristas');
+        listaDiv.innerHTML = '';
+
+        if (cadastros.length === 0) {
+            listaDiv.innerHTML = '<div class="no_results">Nenhum cadastro encontrado</div>';
+            return;
+        }
+
+        cadastros.forEach(data => {
+            const id = data.id;
+            const colecao = data.colecao;
+            const ehMotorista = data.tipo === 'motorista';
+
+            const documento = data.identidade?.tipo === 'cpf' ? data.identidade?.cpf : data.identidade?.cnpj;
+            const statusTxt = typeof data.status === 'string' ? data.status : (data.status?.geral || "pendente");
+            const corStatus = statusTxt === 'aprovado' ? 'var(--Success)' : (statusTxt === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
+
+            listaDiv.innerHTML += `
+                <div class="card_motorista" style="border-left: 5px solid ${ehMotorista ? 'var(--Fame_brown)' : '#2a2623'}">
+                    <div class="card_header">
+                        <div>
+                            <small style="color:var(--Fame_gold); font-size:0.7rem;">${colecao.toUpperCase()} | ${data.identidade?.tipo?.toUpperCase() || 'DOC'}</small>
+                            <h3 style="margin:5px 0;">${data.nome || data.cnh?.nome || "Sem Nome"}</h3>
+                        </div>
+                        <span class="status_tag" style="background: ${corStatus}">${statusTxt}</span>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div class="info_group"><span class="label">ID TNP:</span> ${data.idTnp || 'N/A'}</div>
+                        <div class="info_group"><span class="label">Doc:</span> ${documento || 'N/A'}</div>
+                        <div class="info_group"><span class="label">Zap:</span> ${data.telefonePrincipal || 'N/A'}</div>
+                        <div class="info_group"><span class="label">Email:</span> <small>${data.email || 'N/A'}</small></div>
+                    </div>
+
+                    <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
+                        <span class="label" style="display:block; margin-bottom:5px; font-size:0.7rem;">📍 ENDEREÇO</span>
+                        <div class="info_group" style="font-size:0.8rem;">
+                            ${data.endereco?.rua || 'N/A'}, ${data.endereco?.numero || 'N/A'} - ${data.endereco?.bairro || 'N/A'}<br>
+                            ${data.endereco?.cidade || 'N/A'}/${data.endereco?.estado || 'N/A'} - CEP: ${data.endereco?.cep || 'N/A'}
+                        </div>
+                    </div>
+
+                    ${ehMotorista ? `
+                        <div style="border-top: 1px solid #333; padding-top: 15px;">
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div>
+                                    <span class="label" style="font-size:0.7rem;">🚗 VEÍCULO</span>
+                                    <div class="info_group">${data.veiculo?.modelo || 'N/A'} (${data.veiculo?.ano || 'N/A'})</div>
+                                    <div class="info_group"><span class="label">Placa:</span> ${data.veiculo?.placa || 'N/A'}</div>
+                                    <div class="info_group"><span class="label">Cor:</span> ${data.veiculo?.cor || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <span class="label" style="font-size:0.7rem;">🪪 CNH (${data.cnh?.categoria || 'N/A'})</span>
+                                    <div class="info_group">${data.cnh?.numero || 'N/A'}</div>
+                                    <div class="info_group"><span class="label">Emissão:</span> ${data.cnh?.dataEmissao || 'N/A'}</div>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="btn_group">
+                        <button class="btn btn_doc" onclick="verDocumentos('${id}', '${colecao}')">VER DOCS</button>
+                        <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado', '${colecao}')">APROVAR</button>
+                        <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado', '${colecao}')">RECUSAR</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // Mudar status
+    function mudarStatus(id, novo, colecao) {
+        db.collection(colecao).doc(id).update({
             status: novo,
-            "status.geral": novo, // Mantém compatibilidade com versões antigas do banco
+            "status.geral": novo,
             "status.atualizadoEm": new Date()
-        }).catch(e => alert("Erro ao atualizar: " + e.message));
+        }).then(() => {
+            alert(`Status atualizado para: ${novo}`);
+        }).catch(e => alert("Erro: " + e.message));
     }
+
+    // Ver documentos (placeholder)
+    function verDocumentos(id, colecao) {
+        alert(`Documentos do cadastro: ${id} (${colecao})`);
+        // Aqui você pode implementar um modal ou página de visualização de documentos
+    }
+
+    // Permitir busca ao pressionar Enter
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('search_nome').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') executarBusca();
+        });
+        document.getElementById('search_documento').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') executarBusca();
+        });
+    });
 </script>
 
 </body>
