@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin - TNP MoB</title>
+    <title>Painel Admin Completo - TNP MoB</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -19,6 +19,7 @@
             --Success: #28a745;
             --Danger: #dc3545;
             --Warning: #ffc107;
+            --Info: #17a2b8;
         }
 
         body {
@@ -31,14 +32,14 @@
             min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 900px; padding: 20px; }
+        .container { width: 100%; max-width: 1000px; padding: 20px; }
 
         .card_motorista {
             background: var(--Fame_card);
             border: 1px solid var(--Fame_brown);
             padding: 20px;
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
@@ -53,34 +54,57 @@
 
         .status_tag {
             font-size: 0.7rem;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 5px;
             text-transform: uppercase;
             font-weight: bold;
             color: #000;
         }
 
-        .info_group { margin-bottom: 8px; font-size: 0.9rem; }
-        .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; }
+        .info_section {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .section_title {
+            display: block;
+            color: var(--Fame_gold);
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(197, 169, 141, 0.2);
+            padding-bottom: 3px;
+        }
+
+        .info_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .info_group { font-size: 0.85rem; line-height: 1.4; }
+        .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; opacity: 0.8; }
 
         .btn_group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .btn {
-            flex: 1; min-width: 100px; padding: 10px; border: none; border-radius: 8px;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
+            flex: 1; min-width: 120px; padding: 12px; border: none; border-radius: 8px;
+            cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 0.85rem;
         }
         .btn_aprovar { background: var(--Success); color: white; }
         .btn_recusar { background: var(--Danger); color: white; }
         .btn_doc { background: #2a2623; color: var(--Fame_gold); border: 1px solid var(--Fame_gold); }
-        .btn:hover { opacity: 0.8; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        #Login_Area { text-align: center; margin-top: 100px; }
+        #Login_Area { text-align: center; margin-top: 100px; max-width: 400px; margin-left: auto; margin-right: auto; }
         input, select { 
             width: 100%; padding: 12px; margin: 10px 0; 
             background: #2a2623; border: 1px solid var(--Fame_brown); 
             color: white; border-radius: 8px; box-sizing: border-box;
         }
 
-        /* Estilos para o campo de busca */
         .search_container {
             background: var(--Fame_card);
             border: 1px solid var(--Fame_brown);
@@ -90,102 +114,20 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
-        .search_title {
-            color: var(--Fame_gold);
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
+        .search_title { color: var(--Fame_gold); font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; }
+        .search_inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .search_inputs input { margin: 0; }
+        .search_buttons { display: flex; gap: 10px; }
+        .btn_buscar { flex: 2; background: var(--Fame_gold); color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; }
+        .btn_limpar { flex: 1; background: #2a2623; color: var(--Fame_gold); border: 1px solid var(--Fame_gold); padding: 12px; border-radius: 8px; cursor: pointer; }
 
-        .search_inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+        .header_dashboard { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn_sair { background: none; border: none; color: #dc3545; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        
+        @media (max-width: 600px) {
+            .search_inputs { grid-template-columns: 1fr; }
+            .info_grid { grid-template-columns: 1fr; }
         }
-
-        .search_inputs input {
-            margin: 0;
-        }
-
-        .search_buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn_buscar {
-            flex: 1;
-            background: var(--Fame_gold);
-            color: #000;
-            font-weight: bold;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn_buscar:hover {
-            opacity: 0.8;
-        }
-
-        .btn_limpar {
-            flex: 1;
-            background: #2a2623;
-            color: var(--Fame_gold);
-            border: 1px solid var(--Fame_gold);
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn_limpar:hover {
-            opacity: 0.8;
-        }
-
-        .search_results {
-            color: var(--Fame_gold);
-            font-size: 0.9rem;
-            margin-top: 10px;
-            font-style: italic;
-        }
-
-        .header_dashboard {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .header_dashboard h2 {
-            color: var(--Fame_gold);
-            margin: 0;
-        }
-
-        .btn_sair {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .btn_sair:hover {
-            opacity: 0.8;
-        }
-
-        .no_results {
-            text-align: center;
-            color: var(--Fame_gold);
-            padding: 40px 20px;
-            font-style: italic;
-        }
-
-        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -200,34 +142,28 @@
 
     <div id="Admin_Dashboard" style="display: none;">
         <div class="header_dashboard">
-            <h2>Gerenciamento de Cadastros</h2>
+            <h2 style="color: var(--Fame_gold); margin: 0;">Gestão de Cadastros</h2>
             <button class="btn_sair" onclick="auth.signOut()">Sair</button>
         </div>
 
-        <!-- CAMPO DE BUSCA -->
         <div class="search_container">
-            <div class="search_title">🔍 Buscar Cadastro</div>
-            
+            <div class="search_title">🔍 Buscar por Nome, CPF, CNPJ ou CNH</div>
             <div class="search_inputs">
-                <input type="text" id="search_nome" placeholder="Buscar por Nome">
-                <input type="text" id="search_documento" placeholder="CPF, CNPJ ou CNH">
+                <input type="text" id="search_nome" placeholder="Nome do usuário/motorista">
+                <input type="text" id="search_documento" placeholder="Documento (Apenas números)">
             </div>
-
             <div class="search_buttons">
-                <button class="btn_buscar" onclick="executarBusca()">BUSCAR</button>
+                <button class="btn_buscar" onclick="executarBusca()">FILTRAR CADASTROS</button>
                 <button class="btn_limpar" onclick="limparBusca()">LIMPAR</button>
             </div>
-
-            <div class="search_results" id="search_results"></div>
+            <div id="search_results" style="margin-top:10px; font-size:0.8rem; color:var(--Fame_gold);"></div>
         </div>
 
-        <!-- LISTA DE CADASTROS -->
-        <div id="lista_motoristas">Buscando dados...</div>
+        <div id="lista_cadastros">Carregando dados...</div>
     </div>
 </div>
 
 <script>
-    // Configuração Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
         authDomain: "tnp-mob.firebaseapp.com",
@@ -242,9 +178,7 @@
     const auth = firebase.auth();
     const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22";
 
-    // Variáveis globais para armazenar dados
     let todosOsCadastros = [];
-    let cadastrosFiltrados = [];
 
     function logarAdmin() {
         const email = document.getElementById('adm_email').value;
@@ -253,42 +187,30 @@
     }
 
     auth.onAuthStateChanged(user => {
-        const loginDiv = document.getElementById('Login_Area');
-        const dashDiv = document.getElementById('Admin_Dashboard');
-        
         if (user && user.uid === ADMIN_UID) {
-            loginDiv.style.display = 'none';
-            dashDiv.style.display = 'block';
-            carregarCadastros();
+            document.getElementById('Login_Area').style.display = 'none';
+            document.getElementById('Admin_Dashboard').style.display = 'block';
+            carregarDados();
         } else {
-            loginDiv.style.display = 'block';
-            dashDiv.style.display = 'none';
+            document.getElementById('Login_Area').style.display = 'block';
+            document.getElementById('Admin_Dashboard').style.display = 'none';
         }
     });
 
-    // Carregar todos os cadastros
-    function carregarCadastros() {
-        const listaDiv = document.getElementById('lista_motoristas');
+    function carregarDados() {
         const colecoes = ["motoristas", "usuarios"];
         todosOsCadastros = [];
 
         colecoes.forEach(colecao => {
             db.collection(colecao).onSnapshot(snapshot => {
-                // Remove cadastros da coleção anterior
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = doc.id;
-                    
-                    // Armazena na array global
-                    const indice = todosOsCadastros.findIndex(c => c.id === id);
-                    if (indice >= 0) {
-                        todosOsCadastros[indice] = { ...data, id, colecao };
-                    } else {
-                        todosOsCadastros.push({ ...data, id, colecao });
-                    }
+                    const index = todosOsCadastros.findIndex(c => c.id === id);
+                    const item = { ...data, id, colecao };
+                    if (index >= 0) todosOsCadastros[index] = item;
+                    else todosOsCadastros.push(item);
                 });
-
-                // Se não há busca ativa, exibe todos
                 if (!document.getElementById('search_nome').value && !document.getElementById('search_documento').value) {
                     exibirCadastros(todosOsCadastros);
                 }
@@ -296,151 +218,128 @@
         });
     }
 
-    // Função de busca
     function executarBusca() {
         const nome = document.getElementById('search_nome').value.toLowerCase().trim();
-        const documento = document.getElementById('search_documento').value.trim();
+        const docBusca = document.getElementById('search_documento').value.replace(/\D/g, '');
 
-        if (!nome && !documento) {
-            alert('Digite pelo menos um critério de busca');
-            return;
-        }
-
-        cadastrosFiltrados = todosOsCadastros.filter(cadastro => {
-            let correspondenciaNome = true;
-            let correspondenciaDocumento = true;
-
-            // Busca por nome
-            if (nome) {
-                const nomeCompleto = (cadastro.nome || cadastro.cnh?.nome || '').toLowerCase();
-                correspondenciaNome = nomeCompleto.includes(nome);
-            }
-
-            // Busca por documento (CPF, CNPJ ou CNH)
-            if (documento) {
-                const cpf = (cadastro.identidade?.cpf || '').replace(/\D/g, '');
-                const cnpj = (cadastro.identidade?.cnpj || '').replace(/\D/g, '');
-                const cnh = (cadastro.cnh?.numero || '').replace(/\D/g, '');
-                const docLimpo = documento.replace(/\D/g, '');
-
-                correspondenciaDocumento = cpf.includes(docLimpo) || cnpj.includes(docLimpo) || cnh.includes(docLimpo);
-            }
-
-            return correspondenciaNome && correspondenciaDocumento;
+        const filtrados = todosOsCadastros.filter(c => {
+            const nomeMatch = (c.nome || c.cnh?.nome || "").toLowerCase().includes(nome);
+            const docMatch = (c.identidade?.cpf || "").replace(/\D/g, "").includes(docBusca) || 
+                             (c.identidade?.cnpj || "").replace(/\D/g, "").includes(docBusca) ||
+                             (c.cnh?.numero || "").replace(/\D/g, "").includes(docBusca);
+            return nomeMatch && (docBusca === "" || docMatch);
         });
 
-        exibirCadastros(cadastrosFiltrados);
-        
-        const resultadoDiv = document.getElementById('search_results');
-        resultadoDiv.textContent = `Encontrados ${cadastrosFiltrados.length} resultado(s)`;
+        exibirCadastros(filtrados);
+        document.getElementById('search_results').innerText = `Exibindo ${filtrados.length} de ${todosOsCadastros.length} cadastros.`;
     }
 
-    // Limpar busca
     function limparBusca() {
-        document.getElementById('search_nome').value = '';
-        document.getElementById('search_documento').value = '';
-        document.getElementById('search_results').textContent = '';
+        document.getElementById('search_nome').value = "";
+        document.getElementById('search_documento').value = "";
+        document.getElementById('search_results').innerText = "";
         exibirCadastros(todosOsCadastros);
     }
 
-    // Exibir cadastros
-    function exibirCadastros(cadastros) {
-        const listaDiv = document.getElementById('lista_motoristas');
-        listaDiv.innerHTML = '';
+    function formatarData(timestamp) {
+        if (!timestamp) return "N/A";
+        const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
+        return date.toLocaleDateString('pt-BR') + " " + date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    }
 
-        if (cadastros.length === 0) {
-            listaDiv.innerHTML = '<div class="no_results">Nenhum cadastro encontrado</div>';
-            return;
-        }
+    function exibirCadastros(lista) {
+        const listaDiv = document.getElementById('lista_cadastros');
+        listaDiv.innerHTML = "";
 
-        cadastros.forEach(data => {
-            const id = data.id;
-            const colecao = data.colecao;
+        lista.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
+
+        lista.forEach(data => {
             const ehMotorista = data.tipo === 'motorista';
-
-            const documento = data.identidade?.tipo === 'cpf' ? data.identidade?.cpf : data.identidade?.cnpj;
-            const statusTxt = typeof data.status === 'string' ? data.status : (data.status?.geral || "pendente");
-            const corStatus = statusTxt === 'aprovado' ? 'var(--Success)' : (statusTxt === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
-
+            const statusGeral = data.status?.geral || data.status || "pendente";
+            const corStatus = statusGeral === 'aprovado' ? 'var(--Success)' : (statusGeral === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
+            
             listaDiv.innerHTML += `
-                <div class="card_motorista" style="border-left: 5px solid ${ehMotorista ? 'var(--Fame_brown)' : '#2a2623'}">
+                <div class="card_motorista" style="border-left: 6px solid ${ehMotorista ? 'var(--Fame_brown)' : 'var(--Info)'}">
                     <div class="card_header">
                         <div>
-                            <small style="color:var(--Fame_gold); font-size:0.7rem;">${colecao.toUpperCase()} | ${data.identidade?.tipo?.toUpperCase() || 'DOC'}</small>
-                            <h3 style="margin:5px 0;">${data.nome || data.cnh?.nome || "Sem Nome"}</h3>
+                            <small style="color:var(--Fame_gold); font-size:0.7rem; font-weight:bold;">
+                                ${data.colecao.toUpperCase()} | ID TNP: ${data.idTnp || 'N/A'}
+                            </small>
+                            <h3 style="margin:5px 0; color:white;">${data.nome || data.cnh?.nome || "SEM NOME"}</h3>
+                            <small style="color:var(--Fame_muted);">Cadastrado em: ${formatarData(data.criadoEm)}</small>
                         </div>
-                        <span class="status_tag" style="background: ${corStatus}">${statusTxt}</span>
+                        <div style="text-align:right;">
+                            <span class="status_tag" style="background: ${corStatus}">${statusGeral}</span>
+                            <div style="font-size:0.6rem; margin-top:5px; color:var(--Fame_muted);">Atu: ${formatarData(data.status?.atualizadoEm)}</div>
+                        </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
-                        <div class="info_group"><span class="label">ID TNP:</span> ${data.idTnp || 'N/A'}</div>
-                        <div class="info_group"><span class="label">Doc:</span> ${documento || 'N/A'}</div>
-                        <div class="info_group"><span class="label">Zap:</span> ${data.telefonePrincipal || 'N/A'}</div>
-                        <div class="info_group"><span class="label">Email:</span> <small>${data.email || 'N/A'}</small></div>
+                    <div class="info_section">
+                        <span class="section_title">👤 Identificação e Contato</span>
+                        <div class="info_grid">
+                            <div class="info_group"><span class="label">E-mail:</span> ${data.email || 'N/A'}</div>
+                            <div class="info_group"><span class="label">WhatsApp:</span> ${data.telefonePrincipal || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Tipo Doc:</span> ${data.identidade?.tipo?.toUpperCase() || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Doc:</span> ${data.identidade?.cpf || data.identidade?.cnpj || 'N/A'}</div>
+                        </div>
                     </div>
 
-                    <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; margin-bottom: 15px;">
-                        <span class="label" style="display:block; margin-bottom:5px; font-size:0.7rem;">📍 ENDEREÇO</span>
-                        <div class="info_group" style="font-size:0.8rem;">
-                            ${data.endereco?.rua || 'N/A'}, ${data.endereco?.numero || 'N/A'} - ${data.endereco?.bairro || 'N/A'}<br>
-                            ${data.endereco?.cidade || 'N/A'}/${data.endereco?.estado || 'N/A'} - CEP: ${data.endereco?.cep || 'N/A'}
+                    <div class="info_section">
+                        <span class="section_title">📍 Endereço</span>
+                        <div class="info_group">
+                            ${data.endereco?.rua || 'N/A'}, ${data.endereco?.numero || 'N/A'} ${data.endereco?.complemento ? '- ' + data.endereco.complemento : ''}<br>
+                            ${data.endereco?.bairro || 'N/A'} - ${data.endereco?.cidade || 'N/A'}/${data.endereco?.estado || 'N/A'}<br>
+                            <span class="label">CEP:</span> ${data.endereco?.cep || 'N/A'} | <span class="label">Ref:</span> ${data.endereco?.referencia || 'N/A'}
                         </div>
                     </div>
 
                     ${ehMotorista ? `
-                        <div style="border-top: 1px solid #333; padding-top: 15px;">
-                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                                <div>
-                                    <span class="label" style="font-size:0.7rem;">🚗 VEÍCULO</span>
-                                    <div class="info_group">${data.veiculo?.modelo || 'N/A'} (${data.veiculo?.ano || 'N/A'})</div>
-                                    <div class="info_group"><span class="label">Placa:</span> ${data.veiculo?.placa || 'N/A'}</div>
-                                    <div class="info_group"><span class="label">Cor:</span> ${data.veiculo?.cor || 'N/A'}</div>
-                                </div>
-                                <div>
-                                    <span class="label" style="font-size:0.7rem;">🪪 CNH (${data.cnh?.categoria || 'N/A'})</span>
-                                    <div class="info_group">${data.cnh?.numero || 'N/A'}</div>
-                                    <div class="info_group"><span class="label">Emissão:</span> ${data.cnh?.dataEmissao || 'N/A'}</div>
-                                </div>
-                            </div>
+                    <div class="info_section" style="border-top: 1px dashed var(--Fame_brown); padding-top:15px;">
+                        <span class="section_title">🚗 Dados do Veículo</span>
+                        <div class="info_grid">
+                            <div class="info_group"><span class="label">Modelo:</span> ${data.veiculo?.modelo || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Placa:</span> ${data.veiculo?.placa || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Ano:</span> ${data.veiculo?.ano || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Cor:</span> ${data.veiculo?.cor || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Renavam:</span> ${data.veiculo?.renavam || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Chassi:</span> ${data.veiculo?.chassi || 'N/A'}</div>
                         </div>
+                    </div>
+
+                    <div class="info_section">
+                        <span class="section_title">🪪 Dados da CNH</span>
+                        <div class="info_grid">
+                            <div class="info_group"><span class="label">Nº Registro:</span> ${data.cnh?.numero || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Categoria:</span> ${data.cnh?.categoria || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Emissão:</span> ${data.cnh?.dataEmissao || 'N/A'}</div>
+                            <div class="info_group"><span class="label">Nome CNH:</span> ${data.cnh?.nome || 'N/A'}</div>
+                        </div>
+                    </div>
                     ` : ''}
 
                     <div class="btn_group">
-                        <button class="btn btn_doc" onclick="verDocumentos('${id}', '${colecao}')">VER DOCS</button>
-                        <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado', '${colecao}')">APROVAR</button>
-                        <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado', '${colecao}')">RECUSAR</button>
+                        <button class="btn btn_doc" onclick="alert('Funcionalidade de fotos pendente de ativação no plano.')">VER DOCUMENTOS</button>
+                        <button class="btn btn_aprovar" onclick="mudarStatus('${data.id}', 'aprovado', '${data.colecao}')">APROVAR</button>
+                        <button class="btn btn_recusar" onclick="mudarStatus('${data.id}', 'recusado', '${data.colecao}')">RECUSAR</button>
                     </div>
                 </div>
             `;
         });
     }
 
-    // Mudar status
     function mudarStatus(id, novo, colecao) {
+        if(!confirm(`Deseja realmente alterar o status para ${novo.toUpperCase()}?`)) return;
+        
         db.collection(colecao).doc(id).update({
             status: novo,
             "status.geral": novo,
             "status.atualizadoEm": new Date()
         }).then(() => {
-            alert(`Status atualizado para: ${novo}`);
-        }).catch(e => alert("Erro: " + e.message));
+            alert("Status atualizado com sucesso!");
+        }).catch(e => alert("Erro ao atualizar: " + e.message));
     }
 
-    // Ver documentos (placeholder)
-    function verDocumentos(id, colecao) {
-        alert(`Documentos do cadastro: ${id} (${colecao})`);
-        // Aqui você pode implementar um modal ou página de visualização de documentos
-    }
-
-    // Permitir busca ao pressionar Enter
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('search_nome').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') executarBusca();
-        });
-        document.getElementById('search_documento').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') executarBusca();
-        });
-    });
+    document.addEventListener('keypress', (e) => { if(e.key === 'Enter') executarBusca(); });
 </script>
 
 </body>
