@@ -39,7 +39,6 @@
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
         .card_header {
@@ -61,127 +60,156 @@
         }
 
         .info_group { margin-bottom: 8px; font-size: 0.9rem; }
-        .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; }
+        .label { color: var(--Fame_gold); font-weight: bold; }
 
         .btn_group { display: flex; gap: 10px; margin-top: 15px; }
         .btn {
-            flex: 1; padding: 10px; border: none; border-radius: 8px;
-            cursor: pointer; font-weight: bold; transition: 0.3s;
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
         }
+
         .btn_aprovar { background: var(--Success); color: white; }
         .btn_recusar { background: var(--Danger); color: white; }
         .btn_doc { background: #2a2623; color: var(--Fame_gold); border: 1px solid var(--Fame_gold); }
-        .btn:hover { opacity: 0.8; }
 
         #Login_Area { text-align: center; margin-top: 100px; }
-        input { 
-            width: 100%; padding: 12px; margin: 10px 0; 
-            background: #2a2623; border: 1px solid var(--Fame_brown); 
-            color: white; border-radius: 8px; box-sizing: border-box;
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #2a2623;
+            border: 1px solid var(--Fame_brown);
+            color: white;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="Login_Area">
-            <h1 style="color: var(--Fame_gold);">🔐 Admin TNP MoB</h1>
-            <input type="email" id="adm_email" placeholder="E-mail">
-            <input type="password" id="adm_senha" placeholder="Senha">
-            <button class="btn btn_aprovar" style="width: 100%;" onclick="logarAdmin()">ACESSAR PAINEL</button>
-        </div>
+<div class="container">
 
-        <div id="Admin_Dashboard" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="color: var(--Fame_gold);">Motoristas</h2>
-                <button onclick="auth.signOut()" style="background:none; border:none; color:red; cursor:pointer;">Sair</button>
-            </div>
-            <div id="lista_motoristas">Buscando...</div>
-        </div>
+    <div id="Login_Area">
+        <h1 style="color: var(--Fame_gold);">🔐 Admin TNP MoB</h1>
+        <input type="email" id="adm_email" placeholder="E-mail">
+        <input type="password" id="adm_senha" placeholder="Senha">
+        <button class="btn btn_aprovar" onclick="logarAdmin()">ACESSAR PAINEL</button>
     </div>
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
-            authDomain: "tnp-mob.firebaseapp.com",
-            projectId: "tnp-mob",
-            storageBucket: "tnp-mob.firebasestorage.app",
-            messagingSenderId: "775995955512",
-            appId: "1:775995955512:web:07d865e4480e0bf33909cd"
-        };
+    <div id="Admin_Dashboard" style="display: none;">
+        <div style="display:flex;justify-content:space-between;">
+            <h2 style="color: var(--Fame_gold);">Motoristas</h2>
+            <button onclick="auth.signOut()" style="background:none;border:none;color:red;">Sair</button>
+        </div>
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22";
+        <div id="lista_motoristas">Carregando...</div>
+    </div>
 
-        function logarAdmin() {
-            const email = document.getElementById('adm_email').value;
-            const senha = document.getElementById('adm_senha').value;
-            auth.signInWithEmailAndPassword(email, senha).catch(e => alert("Erro: " + e.message));
-        }
+</div>
 
-        auth.onAuthStateChanged(user => {
-            if (user && user.uid === ADMIN_UID) {
-                document.getElementById('Login_Area').style.display = 'none';
-                document.getElementById('Admin_Dashboard').style.display = 'block';
-                carregarMotoristas();
-            } else {
-                document.getElementById('Login_Area').style.display = 'block';
-                document.getElementById('Admin_Dashboard').style.display = 'none';
-            }
+<script>
+const firebaseConfig = {
+    apiKey: "SUA_API_KEY",
+    authDomain: "tnp-mob.firebaseapp.com",
+    projectId: "tnp-mob"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+const auth = firebase.auth();
+const ADMIN_UID = "OoRgSNe5gChgvFFJvL3m812NgC22";
+
+function logarAdmin() {
+    const email = document.getElementById('adm_email').value;
+    const senha = document.getElementById('adm_senha').value;
+    auth.signInWithEmailAndPassword(email, senha)
+        .catch(e => alert("Erro: " + e.message));
+}
+
+auth.onAuthStateChanged(user => {
+    if (user && user.uid === ADMIN_UID) {
+        Login_Area.style.display = 'none';
+        Admin_Dashboard.style.display = 'block';
+        carregarMotoristas();
+    } else {
+        Login_Area.style.display = 'block';
+        Admin_Dashboard.style.display = 'none';
+    }
+});
+
+function carregarMotoristas() {
+    const listaDiv = document.getElementById('lista_motoristas');
+
+    db.collection("motoristas").onSnapshot(snapshot => {
+        listaDiv.innerHTML = "";
+
+        snapshot.forEach(doc => {
+            const m = doc.data();
+            const id = doc.id;
+
+            const nome = m.nome || m.cnh?.nome || "Sem nome";
+            const telefone = m.telefonePrincipal || "Não informado";
+            const veiculo = m.veiculo 
+                ? `${m.veiculo.modelo} (${m.veiculo.placa})` 
+                : "Sem veículo";
+
+            const documento = m.identidade?.cpf || m.identidade?.cnpj || "N/A";
+            const idTnp = m.idTnp || "N/A";
+
+            const status = m.status?.geral || "pendente";
+
+            const cor =
+                status === 'aprovado' ? 'var(--Success)' :
+                status === 'recusado' ? 'var(--Danger)' :
+                'var(--Warning)';
+
+            listaDiv.innerHTML += `
+                <div class="card_motorista">
+                    <div class="card_header">
+                        <strong>${nome}</strong>
+                        <span class="status_tag" style="background:${cor}">${status}</span>
+                    </div>
+
+                    <div class="info_group"><span class="label">ID TNP:</span> ${idTnp}</div>
+                    <div class="info_group"><span class="label">Telefone:</span> ${telefone}</div>
+                    <div class="info_group"><span class="label">Documento:</span> ${documento}</div>
+                    <div class="info_group"><span class="label">Veículo:</span> ${veiculo}</div>
+                    <div class="info_group"><span class="label">Email:</span> ${m.email || 'N/A'}</div>
+
+                    <div class="btn_group">
+                        <button class="btn btn_doc" onclick="alert('Uploads ainda não ativados')">
+                            VER DOCS
+                        </button>
+                        <button class="btn btn_aprovar" onclick="mudarStatus('${id}','aprovado')">
+                            APROVAR
+                        </button>
+                        <button class="btn btn_recusar" onclick="mudarStatus('${id}','recusado')">
+                            RECUSAR
+                        </button>
+                    </div>
+                </div>
+            `;
         });
 
-        function carregarMotoristas() {
-            const listaDiv = document.getElementById('lista_motoristas');
-
-            db.collection("motoristas").onSnapshot(snapshot => {
-                listaDiv.innerHTML = "";
-                snapshot.forEach(doc => {
-                    const m = doc.data();
-                    const id = doc.id;
-
-                    // TRATAMENTO DOS DADOS (Caminhos corretos do seu Firestore)
-                    const nomeStr = m.cnh?.nome || "Sem Nome";
-                    const zapStr = m.whatsapp || m.telefone || "Não informado";
-                    const veiculoStr = m.veiculo ? `${m.veiculo.modelo} (${m.veiculo.placa})` : "Dados do veículo ausentes";
-                    
-                    // Garante que o status seja um texto e não um objeto
-                    let statusTxt = "pendente";
-                    if (typeof m.status === 'string') {
-                        statusTxt = m.status;
-                    } else if (m.status && m.status.atual) { // Caso o status seja um objeto {atual: '...'}
-                        statusTxt = m.status.atual;
-                    }
-
-                    const corStatus = statusTxt === 'aprovado' ? 'var(--Success)' : (statusTxt === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
-
-                    listaDiv.innerHTML += `
-                        <div class="card_motorista">
-                            <div class="card_header">
-                                <strong>${nomeStr}</strong>
-                                <span class="status_tag" style="background: ${corStatus}">${statusTxt}</span>
-                            </div>
-                            <div class="info_group"><span class="label">WhatsApp:</span> ${zapStr}</div>
-                            <div class="info_group"><span class="label">Veículo:</span> ${veiculoStr}</div>
-                            <div class="info_group"><span class="label">E-mail:</span> ${m.email || 'N/A'}</div>
-                            
-                            <div class="btn_group">
-                                <button class="btn btn_doc" onclick="window.open('${m.foto_cnh_frente || '#'}', '_blank')">VER DOCS</button>
-                                <button class="btn btn_aprovar" onclick="mudarStatus('${id}', 'aprovado')">APROVAR</button>
-                                <button class="btn btn_recusar" onclick="mudarStatus('${id}', 'recusado')">RECUSAR</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                if(snapshot.empty) listaDiv.innerHTML = "Nenhum motorista encontrado.";
-            });
+        if (snapshot.empty) {
+            listaDiv.innerHTML = "Nenhum motorista encontrado.";
         }
+    });
+}
 
-        function mudarStatus(id, novo) {
-            db.collection("motoristas").doc(id).update({ status: novo })
-                .catch(e => alert("Erro ao atualizar: " + e.message));
-        }
-    </script>
+function mudarStatus(id, novo) {
+    db.collection("motoristas").doc(id).update({
+        "status.geral": novo,
+        "status.atualizadoEm": new Date()
+    })
+    .catch(e => alert("Erro: " + e.message));
+}
+</script>
+
 </body>
 </html>
