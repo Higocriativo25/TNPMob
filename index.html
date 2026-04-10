@@ -298,7 +298,7 @@
                 <hr>
 
                 <div class="Login_form_group">
-                    <label for="Login_cad_tel_pessoal">Telefone Pessoal (Opcional)</label>
+                    <label for="Login_cad_tel_pessoal">Telefone Pessoal (Obrigatório)</label>
                     <input type="tel" id="Login_cad_tel_pessoal" placeholder="(00) 00000-0000">
                     <div class="Login_checkbox_group">
                         <input type="checkbox" id="Login_check_mesmo_tel" onchange="Login_func_copiarTelefone()">
@@ -310,13 +310,12 @@
                 <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_email_confirmacao')">VOLTAR</button>
             </div>
 
-            <!-- TELA 5: TIPO DE CONTA -->
+            <!-- TELA 5: TIPO DE USUÁRIO -->
             <div id="Login_screen_tipo" class="Login_screen">
                 <div class="Login_error" id="Login_error_tipo"></div>
                 <h3 class="Login_step_title">Tipo de Cadastro</h3>
-                
                 <div class="Login_form_group">
-                    <label for="Login_select_tipo_final">Eu quero ser</label>
+                    <label for="Login_select_tipo_final">Você é:</label>
                     <select id="Login_select_tipo_final" onchange="Login_func_toggleMotoristaFields()">
                         <option value="passageiro">Passageiro</option>
                         <option value="motorista">Motorista</option>
@@ -328,9 +327,8 @@
                         <label for="Login_select_veiculo">Tipo de Veículo</label>
                         <select id="Login_select_veiculo">
                             <option value="">Selecione...</option>
-                            <option value="carro">Carro (4 rodas)</option>
+                            <option value="carro">Carro</option>
                             <option value="moto">Moto</option>
-                            <option value="bike">Bicicleta</option>
                         </select>
                     </div>
                 </div>
@@ -339,29 +337,29 @@
                 <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_telefones')">VOLTAR</button>
             </div>
 
-            <!-- TELA 6: DOCUMENTAÇÃO BÁSICA -->
+            <!-- TELA 6: IDENTIDADE -->
             <div id="Login_screen_identidade" class="Login_screen">
                 <div class="Login_error" id="Login_error_identidade"></div>
-                <h3 class="Login_step_title">Identificação</h3>
-
+                <h3 class="Login_step_title">Documentação</h3>
+                
                 <div class="Login_form_group">
                     <label for="Login_select_doc_tipo">Tipo de Documento</label>
                     <select id="Login_select_doc_tipo" onchange="Login_func_toggleDocFields()">
-                        <option value="cpf">CPF (Pessoa Física)</option>
-                        <option value="cnpj">CNPJ (Pessoa Jurídica)</option>
+                        <option value="cpf">CPF</option>
+                        <option value="cnpj">CNPJ</option>
                     </select>
                 </div>
 
                 <div id="Login_area_cpf">
                     <div class="Login_form_group">
-                        <label for="Login_input_cpf">Número do CPF</label>
+                        <label for="Login_input_cpf">CPF</label>
                         <input type="text" id="Login_input_cpf" placeholder="000.000.000-00">
                     </div>
                 </div>
 
                 <div id="Login_area_cnpj" class="Login_hidden">
                     <div class="Login_form_group">
-                        <label for="Login_input_cnpj">Número do CNPJ</label>
+                        <label for="Login_input_cnpj">CNPJ</label>
                         <input type="text" id="Login_input_cnpj" placeholder="00.000.000/0000-00">
                     </div>
                 </div>
@@ -373,51 +371,49 @@
             <!-- TELA 7: ENDEREÇO -->
             <div id="Login_screen_endereco" class="Login_screen">
                 <div class="Login_error" id="Login_error_endereco"></div>
-                <h3 class="Login_step_title">Seu Endereço</h3>
-
-                <div class="Login_form_group">
-                    <label for="Login_cad_cep">CEP</label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="text" id="Login_cad_cep" placeholder="00000-000" maxlength="9">
-                        <button class="Login_btn Login_btn_primary" style="margin-top:0; width: auto; padding: 0.5rem;" onclick="Login_func_buscarCep()">BUSCAR</button>
+                <h3 class="Login_step_title">Endereço</h3>
+                
+                <div style="display: flex; gap: 10px;">
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_cep">CEP</label>
+                        <input type="text" id="Login_cad_cep" placeholder="00000-000" onblur="Login_func_buscarCep()">
                     </div>
-                </div>
-
-                <div class="Login_form_group">
-                    <label for="Login_cad_rua">Rua / Logradouro</label>
-                    <input type="text" id="Login_cad_rua" placeholder="Nome da rua">
+                    <div class="Login_form_group" style="flex: 2;">
+                        <label for="Login_cad_rua">Rua</label>
+                        <input type="text" id="Login_cad_rua" placeholder="Nome da rua">
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 10px;">
                     <div class="Login_form_group" style="flex: 1;">
                         <label for="Login_cad_numero">Número</label>
-                        <input type="text" id="Login_cad_numero" placeholder="Nº">
+                        <input type="text" id="Login_cad_numero" placeholder="123">
                     </div>
                     <div class="Login_form_group" style="flex: 2;">
                         <label for="Login_cad_complemento">Complemento</label>
-                        <input type="text" id="Login_cad_complemento" placeholder="Apt, Bloco...">
+                        <input type="text" id="Login_cad_complemento" placeholder="Apto, Sala, etc.">
                     </div>
                 </div>
 
                 <div class="Login_form_group">
                     <label for="Login_cad_referencia">Ponto de Referência</label>
-                    <input type="text" id="Login_cad_referencia" placeholder="Ex: Perto do mercado">
-                </div>
-
-                <div class="Login_form_group">
-                    <label for="Login_cad_bairro">Bairro</label>
-                    <input type="text" id="Login_cad_bairro" placeholder="Seu bairro">
+                    <input type="text" id="Login_cad_referencia" placeholder="Próximo a...">
                 </div>
 
                 <div style="display: flex; gap: 10px;">
-                    <div class="Login_form_group" style="flex: 3;">
-                        <label for="Login_cad_cidade">Cidade</label>
-                        <input type="text" id="Login_cad_cidade" placeholder="Sua cidade">
+                    <div class="Login_form_group" style="flex: 2;">
+                        <label for="Login_cad_bairro">Bairro</label>
+                        <input type="text" id="Login_cad_bairro" placeholder="Seu bairro">
                     </div>
                     <div class="Login_form_group" style="flex: 1;">
                         <label for="Login_cad_estado">UF</label>
-                        <input type="text" id="Login_cad_estado" placeholder="UF" maxlength="2">
+                        <input type="text" id="Login_cad_estado" placeholder="MG" maxlength="2">
                     </div>
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_cidade">Cidade</label>
+                    <input type="text" id="Login_cad_cidade" placeholder="Sua cidade">
                 </div>
 
                 <button class="Login_btn Login_btn_primary" onclick="Login_func_proximoEndereco()">PRÓXIMO</button>
@@ -428,27 +424,11 @@
             <div id="Login_screen_veiculo" class="Login_screen">
                 <div class="Login_error" id="Login_error_veiculo"></div>
                 <h3 class="Login_step_title">Dados do Veículo</h3>
-
-                <div class="Login_form_group">
-                    <label for="Login_cad_placa">Placa</label>
-                    <input type="text" id="Login_cad_placa" placeholder="ABC-1234">
-                </div>
-                <div class="Login_form_group">
-                    <label for="Login_cad_modelo">Marca / Modelo</label>
-                    <input type="text" id="Login_cad_modelo" placeholder="Ex: Honda Civic">
-                </div>
-                <div class="Login_form_group">
-                    <label for="Login_cad_renavam">RENAVAM</label>
-                    <input type="text" id="Login_cad_renavam" placeholder="Número do Renavam">
-                </div>
-                <div class="Login_form_group">
-                    <label for="Login_cad_chassi">Chassi</label>
-                    <input type="text" id="Login_cad_chassi" placeholder="Número do Chassi">
-                </div>
+                
                 <div style="display: flex; gap: 10px;">
                     <div class="Login_form_group" style="flex: 1;">
-                        <label for="Login_cad_ano">Ano</label>
-                        <input type="number" id="Login_cad_ano" placeholder="2020">
+                        <label for="Login_cad_placa">Placa</label>
+                        <input type="text" id="Login_cad_placa" placeholder="ABC-1234">
                     </div>
                     <div class="Login_form_group" style="flex: 1;">
                         <label for="Login_cad_cor">Cor</label>
@@ -456,32 +436,52 @@
                     </div>
                 </div>
 
+                <div class="Login_form_group">
+                    <label for="Login_cad_modelo">Marca / Modelo</label>
+                    <input type="text" id="Login_cad_modelo" placeholder="Ex: Fiat Uno 1.0">
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <div class="Login_form_group" style="flex: 1;">
+                        <label for="Login_cad_ano">Ano</label>
+                        <input type="number" id="Login_cad_ano" placeholder="2020">
+                    </div>
+                    <div class="Login_form_group" style="flex: 2;">
+                        <label for="Login_cad_renavam">RENAVAM</label>
+                        <input type="text" id="Login_cad_renavam" placeholder="00000000000">
+                    </div>
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_cad_chassi">Chassi (Opcional)</label>
+                    <input type="text" id="Login_cad_chassi" placeholder="Digite o chassi">
+                </div>
+
                 <button class="Login_btn Login_btn_primary" onclick="Login_func_irParaFotos()">PRÓXIMO</button>
                 <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_endereco')">VOLTAR</button>
             </div>
 
-            <!-- TELA 9: FOTOS E DOCUMENTOS -->
+            <!-- TELA 9: FOTOS -->
             <div id="Login_screen_fotos" class="Login_screen">
                 <div class="Login_error" id="Login_error_fotos"></div>
-                <h3 class="Login_step_title">Fotos e Documentos</h3>
-
+                <h3 class="Login_step_title">Fotos dos Documentos</h3>
+                
                 <div class="Login_form_group">
-                    <label for="Login_file_perfil">Sua Foto de Perfil (Rosto)</label>
+                    <label for="Login_file_perfil">Foto de Perfil (Rosto)</label>
                     <label for="Login_file_perfil" class="Login_file_input_label" id="Login_label_perfil">SELECIONAR FOTO</label>
                     <input type="file" id="Login_file_perfil" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
                 </div>
 
                 <div class="Login_form_group">
-                    <label for="Login_file_carteira_aberta">Carteira Aberta (Frente e Verso)</label>
-                    <select id="Login_select_carteira_tipo" style="margin-bottom: 5px;">
-                        <option value="a">Carteira A</option>
-                        <option value="b">Carteira B</option>
-                        <option value="c">Carteira C</option>
-                        <option value="d">Carteira D</option>
-                        <option value="e">Carteira E</option>
-                    </select>
-                    <label for="Login_file_carteira_aberta" class="Login_file_input_label" id="Login_label_carteira_aberta">SELECIONAR FOTO</label>
-                    <input type="file" id="Login_file_carteira_aberta" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                    <label for="Login_file_cnh_frente">Frente da Carteira</label>
+                    <label for="Login_file_cnh_frente" class="Login_file_input_label" id="Login_label_cnh_frente">SELECIONAR FRENTE</label>
+                    <input type="file" id="Login_file_cnh_frente" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
+                </div>
+
+                <div class="Login_form_group">
+                    <label for="Login_file_cnh_verso">Verso da Carteira</label>
+                    <label for="Login_file_cnh_verso" class="Login_file_input_label" id="Login_label_cnh_verso">SELECIONAR VERSO</label>
+                    <input type="file" id="Login_file_cnh_verso" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
                 </div>
 
                 <div class="Login_form_group">
@@ -491,7 +491,7 @@
                 </div>
 
                 <div class="Login_form_group">
-                    <label for="Login_file_selfie">Selfie segurando Documento</label>
+                    <label for="Login_file_selfie">Selfie com Documento</label>
                     <label for="Login_file_selfie" class="Login_file_input_label" id="Login_label_selfie">SELECIONAR FOTO</label>
                     <input type="file" id="Login_file_selfie" class="Login_file_input" accept="image/*" onchange="Login_func_mostrarNomeArquivo(this)">
                 </div>
@@ -509,6 +509,10 @@
                     <div class="Login_form_group">
                         <label for="Login_cad_cnh_nome">Nome Completo na CNH</label>
                         <input type="text" id="Login_cad_cnh_nome" placeholder="Nome como está no doc">
+                    </div>
+                    <div class="Login_form_group">
+                        <label for="Login_cad_cnh_numero">Número da CNH</label>
+                        <input type="text" id="Login_cad_cnh_numero" placeholder="Número do registro">
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <div class="Login_form_group" style="flex: 1;">
@@ -680,18 +684,20 @@
 
         function Login_func_copiarTelefone() {
             const Login_const_check = document.getElementById('Login_check_mesmo_tel');
-            const Login_const_zap = document.getElementById('Login_cad_whatsapp').value;
+            const Login_const_zap = document.getElementById('Login_cad_whatsapp');
             const Login_const_pessoal = document.getElementById('Login_cad_tel_pessoal');
-            if(Login_const_check.checked) Login_const_pessoal.value = Login_const_zap;
+            if(Login_const_check.checked) Login_const_pessoal.value = Login_const_zap.value;
         }
         
         // Compactar imagem usando Canvas
-        function Login_func_compactarImagem(Login_param_arquivo, Login_param_maxWidth = 1000, Login_param_maxHeight = 1000, Login_param_qualidade = 0.7) {
-            return new Promise((Login_param_resolve) => {
+        function Login_func_compactarImagem(Login_param_arquivo, Login_param_maxWidth = 800, Login_param_maxHeight = 800, Login_param_qualidade = 0.7) {
+            return new Promise((Login_param_resolve, Login_param_reject) => {
                 const Login_const_reader = new FileReader();
+                Login_const_reader.onerror = (e) => Login_param_reject(e);
                 Login_const_reader.readAsDataURL(Login_param_arquivo);
                 Login_const_reader.onload = (Login_item_event) => {
                     const Login_const_img = new Image();
+                    Login_const_img.onerror = (e) => Login_param_reject(e);
                     Login_const_img.src = Login_item_event.target.result;
                     Login_const_img.onload = () => {
                         const Login_const_canvas = document.createElement('canvas');
@@ -716,7 +722,11 @@
                         Login_const_ctx.drawImage(Login_const_img, 0, 0, Login_var_width, Login_var_height);
                         
                         Login_const_canvas.toBlob((Login_item_blob) => {
-                            Login_param_resolve(Login_item_blob);
+                            if (Login_item_blob) {
+                                Login_param_resolve(Login_item_blob);
+                            } else {
+                                Login_param_reject(new Error("Erro ao converter canvas para blob"));
+                            }
                         }, 'image/jpeg', Login_param_qualidade);
                     };
                 };
@@ -726,12 +736,24 @@
         async function Login_func_uploadImagem(Login_param_arquivo, Login_param_caminho) {
             if(!Login_param_arquivo) return null;
             
-            // Compactar antes de subir
-            const Login_const_blobCompactado = await Login_func_compactarImagem(Login_param_arquivo);
+            console.log("Iniciando processamento de imagem:", Login_param_caminho);
+            
+            let Login_var_arquivoParaSubir = Login_param_arquivo;
+            try {
+                // Compactar antes de subir (se for imagem compatível)
+                if (Login_param_arquivo.type.startsWith('image/')) {
+                    Login_var_arquivoParaSubir = await Login_func_compactarImagem(Login_param_arquivo);
+                }
+            } catch (e) {
+                console.warn("Falha na compactação, subindo arquivo original:", e);
+                Login_var_arquivoParaSubir = Login_param_arquivo;
+            }
             
             return new Promise((Login_param_resolve, Login_param_reject) => {
-                const Login_const_ref = Login_storage.ref(Login_param_caminho);
-                const Login_const_uploadTask = Login_const_ref.put(Login_const_blobCompactado);
+                const Login_const_ref = Login_storage.ref().child(Login_param_caminho);
+                // Definir metadados para garantir que o Firebase trate como imagem
+                const Login_const_metadata = { contentType: Login_var_arquivoParaSubir.type || 'image/jpeg' };
+                const Login_const_uploadTask = Login_const_ref.put(Login_var_arquivoParaSubir, Login_const_metadata);
                 
                 Login_const_uploadTask.on('state_changed', 
                     (snapshot) => {
@@ -843,7 +865,11 @@
 
             // 3. Resetar labels de arquivos
             const Login_const_labels = document.querySelectorAll('.Login_file_input_label');
-            Login_const_labels.forEach(l => l.textContent = 'SELECIONAR FOTO');
+            Login_const_labels.forEach(l => {
+                if (l.id === 'Login_label_cnh_frente') l.textContent = 'SELECIONAR FRENTE';
+                else if (l.id === 'Login_label_cnh_verso') l.textContent = 'SELECIONAR VERSO';
+                else l.textContent = 'SELECIONAR FOTO';
+            });
 
             // 4. Resetar variáveis globais
             Login_var_zapValidado = false;
@@ -876,12 +902,14 @@
             const Login_const_cpf = document.getElementById('Login_input_cpf').value;
             const Login_const_cnpj = document.getElementById('Login_input_cnpj').value;
 
-            if(!Login_const_idTnp) return Login_func_mostrarErro('Login_error_tnp', 'O ID da TNP é obrigatório');
+            if(!Login_const_idTnp) return Login_func_mostrarErro('Login_error_tnp', 'Preencha o ID da TNP');
             if(Login_const_tipoDoc === 'cpf' && !Login_const_cpf) return Login_func_mostrarErro('Login_error_tnp', 'Preencha o CPF');
             if(Login_const_tipoDoc === 'cnpj' && !Login_const_cnpj) return Login_func_mostrarErro('Login_error_tnp', 'Preencha o CNPJ');
 
+            // FOTOS (Opcionais enquanto o upload estiver comentado)
             const Login_const_fotoPerfil = document.getElementById('Login_file_perfil').files[0];
-            const Login_const_fotoCarteira = document.getElementById('Login_file_carteira_aberta').files[0];
+            const Login_const_fotoCnhFrente = document.getElementById('Login_file_cnh_frente').files[0];
+            const Login_const_fotoCnhVerso = document.getElementById('Login_file_cnh_verso').files[0];
             const Login_const_fotoEndereco = document.getElementById('Login_file_endereco').files[0];
             const Login_const_fotoSelfie = document.getElementById('Login_file_selfie').files[0];
 
@@ -910,8 +938,7 @@
                     identidade: { 
                         tipo: Login_const_tipoDoc,
                         cpf: Login_const_cpf,
-                        cnpj: Login_const_cnpj,
-                        carteiraTipo: document.getElementById('Login_select_carteira_tipo').value
+                        cnpj: Login_const_cnpj
                     },
                     endereco: {
                         cep: document.getElementById('Login_cad_cep').value,
@@ -923,7 +950,7 @@
                         cidade: document.getElementById('Login_cad_cidade').value,
                         estado: document.getElementById('Login_cad_estado').value
                     },
-                    fotos: { status: "processando" }
+                    fotos: { status: "aguardando_plano" }
                 };
 
                 if(Login_const_tipo === 'motorista') {
@@ -937,6 +964,7 @@
                     };
                     Login_const_dadosIniciais.cnh = {
                         nome: document.getElementById('Login_cad_cnh_nome').value,
+                        numero: document.getElementById('Login_cad_cnh_numero').value,
                         categoria: document.getElementById('Login_cad_cnh_categoria').value,
                         dataEmissao: document.getElementById('Login_cad_cnh_data_emissao').value
                     };
@@ -944,34 +972,58 @@
 
                 await Login_db.collection(Login_const_pasta).doc(Login_const_uid).set(Login_const_dadosIniciais);
                 
-                alert('Dados enviados! Iniciando upload das fotos...');
+                console.log("Documento criado no Firestore. Uploads pausados (aguardando plano).");
                 
-                // Upload das fotos
+                /* 
+                ================================================================================
+                PARA ATIVAR O UPLOAD (QUANDO O PLANO FOR PAGO):
+                Remova os comentários (/* e * /) desta seção abaixo.
+                ================================================================================
+                
                 const Login_const_uploads = [];
-                if(Login_const_fotoPerfil) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoPerfil, `${Login_const_pasta}/${Login_const_uid}/perfil.jpg`).then(Login_item_url => ({key: 'perfil', url: Login_item_url})));
-                if(Login_const_fotoCarteira) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoCarteira, `${Login_const_pasta}/${Login_const_uid}/carteira.jpg`).then(Login_item_url => ({key: 'carteira', url: Login_item_url})));
-                if(Login_const_fotoEndereco) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoEndereco, `${Login_const_pasta}/${Login_const_uid}/endereco.jpg`).then(Login_item_url => ({key: 'endereco', url: Login_item_url})));
-                if(Login_const_fotoSelfie) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoSelfie, `${Login_const_pasta}/${Login_const_uid}/selfie.jpg`).then(Login_item_url => ({key: 'selfie', url: Login_item_url})));
+                const Login_func_addUpload = (file, path, key) => {
+                    if (file) {
+                        Login_const_uploads.push(
+                            Login_func_uploadImagem(file, path)
+                                .then(url => ({key, url}))
+                                .catch(err => {
+                                    console.error(`Erro no upload de ${key}:`, err);
+                                    throw new Error(`Falha ao subir ${key}: ${err.message || 'Erro desconhecido'}`);
+                                })
+                        );
+                    }
+                };
+
+                Login_func_addUpload(Login_const_fotoPerfil, `${Login_const_pasta}/${Login_const_uid}/perfil.jpg`, 'perfil');
+                Login_func_addUpload(Login_const_fotoCnhFrente, `${Login_const_pasta}/${Login_const_uid}/cnh_frente.jpg`, 'cnh_frente');
+                Login_func_addUpload(Login_const_fotoCnhVerso, `${Login_const_pasta}/${Login_const_uid}/cnh_verso.jpg`, 'cnh_verso');
+                Login_func_addUpload(Login_const_fotoEndereco, `${Login_const_pasta}/${Login_const_uid}/endereco.jpg`, 'endereco');
+                Login_func_addUpload(Login_const_fotoSelfie, `${Login_const_pasta}/${Login_const_uid}/selfie.jpg`, 'selfie');
                 
                 if (Login_const_tipo === 'motorista') {
                     const Login_const_fotoDocVeiculo = document.getElementById('Login_file_documento_veiculo').files[0];
-                    if(Login_const_fotoDocVeiculo) Login_const_uploads.push(Login_func_uploadImagem(Login_const_fotoDocVeiculo, `${Login_const_pasta}/${Login_const_uid}/veiculo.jpg`).then(Login_item_url => ({key: 'veiculo', url: Login_item_url})));
+                    Login_func_addUpload(Login_const_fotoDocVeiculo, `${Login_const_pasta}/${Login_const_uid}/veiculo.jpg`, 'veiculo');
                 }
 
-                const Login_const_resultados = await Promise.all(Login_const_uploads);
-                const Login_const_fotosUrls = {};
-                Login_const_resultados.forEach(Login_item_res => {
-                    Login_const_fotosUrls[Login_item_res.key] = Login_item_res.url;
-                });
+                if (Login_const_uploads.length > 0) {
+                    alert('Dados enviados! Mantenha a tela aberta até o fim do upload das fotos.');
+                    const Login_const_resultados = await Promise.all(Login_const_uploads);
+                    const Login_const_fotosUrls = {};
+                    Login_const_resultados.forEach(Login_item_res => {
+                        Login_const_fotosUrls[Login_item_res.key] = Login_item_res.url;
+                    });
 
-                await Login_db.collection(Login_const_pasta).doc(Login_const_uid).update({
-                    fotos: Login_const_fotosUrls,
-                    "fotos.status": "concluido"
-                });
+                    await Login_db.collection(Login_const_pasta).doc(Login_const_uid).update({
+                        fotos: Login_const_fotosUrls,
+                        "fotos.status": "concluido"
+                    });
+                }
+                ================================================================================
+                FIM DA SEÇÃO DE UPLOAD
+                ================================================================================
+                */
 
                 alert('Cadastro concluído com sucesso! Você será redirecionado para o login.');
-                
-                // Reset Total
                 Login_func_resetTotal();
 
             } catch (Login_item_error) {
