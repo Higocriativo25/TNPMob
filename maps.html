@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNP MoB 🚗 - Mapa, Rota e Preço</title>
+
+    <style>
+        :root {
+            --Fame_dark: #121212;
+            --Fame_brown: #4d2b1a;
+            --Fame_gold: #c5a98d;
+            --Fame_text: #e0e0e0;
+            --Fame_input: #2a2623;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #000; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+
+        /* MOLDURA FAME */
+        .Fame_moldura {
+            position: relative; width: 100%; height: 100vh; background: #1a1a1a;
+            border: 3px solid var(--Fame_brown); box-shadow: inset 0 0 20px var(--Fame_brown);
+            overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        @media (min-width: 768px) { .Fame_moldura { width: 95%; max-width: 450px; height: 90vh; border-radius: 30px; } }
+
+        /* MAPA FUNDO */
+        #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1; }
+
+        /* INTERFACE DE BUSCA (FLUTUANTE) */
+        .Busca_container {
+            position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; z-index: 10;
+        }
+
+        .Busca_card {
+            background: rgba(30, 27, 25, 0.95); border: 1px solid var(--Fame_brown);
+            border-radius: 15px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .Busca_input {
+            width: 100%; padding: 12px; background: var(--Fame_input); border: 1px solid #3a3531;
+            border-radius: 8px; color: #fff; margin-bottom: 10px; font-size: 0.9rem; outline: none;
+        }
+
+        .Busca_input:focus { border-color: var(--Fame_gold); }
+
+        /* CARD DE RESULTADO / PREÇO */
+        .Preco_card {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; background: #1e1b19; border-top: 4px solid var(--Fame_gold);
+            border-radius: 20px; padding: 20px; z-index: 10; display: none; 
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.6);
+        }
+
+        .Preco_valor { font-size: 1.8rem; color: var(--Fame_gold); font-weight: bold; margin-bottom: 5px; }
+        .Preco_detalhes { font-size: 0.85rem; color: #8e8e8e; margin-bottom: 20px; }
+
+        .Btn_confirmar {
+            width: 100%; padding: 14px; background: var(--Fame_gold); color: #1e1b19;
+            border: none; border-radius: 10px; font-weight: bold; cursor: pointer; 
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        }
+
+        .Btn_confirmar:active { transform: scale(0.98); }
+
+        /* ESTILO PARA AS SUGESTÕES DO GOOGLE (AUTOCOMPLETE) */
+        .pac-container {
+            background-color: #1e1b19; border: 1px solid var(--Fame_brown);
+            border-top: none; font-family: inherit; z-index: 9999 !important;
+            border-radius: 0 0 10px 10px;
+        }
+        .pac-item { border-top: 1px solid #3a3531; padding: 10px; color: #e0e0e0; cursor: pointer; }
+        .pac-item:hover { background-color: #2a2623; }
+        .pac-item-query { color: #fff; font-size: 14px; }
+        .pac-matched { color: var(--Fame_gold); }
+    </style>
+
+    <!-- Script Google Maps com bibliotecas de Places (Sugestões) -->
+    <!-- Lembre-se de adicionar sua API KEY no lugar de SUA_API_KEY -->
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=SUA_API_KEY&libraries=places&callback=initMap">
+    </script>
+</head>
+
+<body>
+    <div class="Fame_moldura">
+        <!-- Mapa de Fundo -->
+        <div id="map"></div>
+
+        <!-- Interface de Busca Superior -->
+        <div class="Busca_container">
+            <div class="Busca_card">
+                <input type="text" id="input_origem" class="Busca_input" placeholder="Minha localização atual">
+                <input type="text" id="input_destino" class="Busca_input" placeholder="Para onde vamos?">
+                <button class="Btn_confirmar" onclick="calcularCorrida()">CALCULAR ROTA</button>
+            </div>
+        </div>
+
+        <!-- Card de Preço Inferior -->
+        <div id="card_resultado" class="Preco_card">
+            <div id="res_valor" class="Preco_valor">R$ 0,00</div>
+            <div id="res_detalhes" class="Preco_detalhes">Distância: 0km | Tempo: 0min</div>
+            <button class="Btn_confirmar" onclick="alert('Solicitando motorista...')">SOLICITAR TNP MoB</button>
+        </div>
+    </div>
+
+    <script>
+        let map, directionsService, directionsRenderer;
+        let autocompleteOrigem, autocompleteDestino;
+
+        function initMap() {
+            // Coordenadas iniciais (São Paulo)
+            const centro = { lat: -23.5505, lng: -46.6333 };
+            
+            // Inicializa o Mapa com estilo escuro
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 14,
+                center: centro,
+                disableDefaultUI: true,
+                styles: [
+                    { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+                    { featureType: "road", elementType: "geometry", stylers: [{ color: "#38414e" }] },
+                    { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] }
+                ]
+            });
+
+            // Configura serviços de rota
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                polylineOptions: { strokeColor: "#c5a98d", strokeWeight: 5 }
+            });
+
+            // Configura Sugestões de Endereço (Autocomplete)
+            const options = {
+                componentRestrictions: { country: "br" },
+                fields: ["address_components", "geometry", "name"],
+                types: ["address"]
+            };
+
+            autocompleteOrigem = new google.maps.places.Autocomplete(document.getElementById("input_origem"), options);
+            autocompleteDestino = new google.maps.places.Autocomplete(document.getElementById("input_destino"), options);
+
+            // Foca o mapa no local escolhido
+            autocompleteDestino.addListener("place_changed", () => {
+                const place = autocompleteDestino.getPlace();
+                if (place.geometry) map.setCenter(place.geometry.location);
+            });
+        }
+
+        function calcularCorrida() {
+            const origem = document.getElementById("input_origem").value;
+            const destino = document.getElementById("input_destino").value;
+
+            if (!origem || !destino) {
+                alert("Por favor, preencha origem e destino.");
+                return;
+            }
+
+            const request = {
+                origin: origem,
+                destination: destino,
+                travelMode: 'DRIVING'
+            };
+
+            directionsService.route(request, function(result, status) {
+                if (status == 'OK') {
+                    directionsRenderer.setDirections(result);
+                    
+                    const leg = result.routes[0].legs[0];
+                    const distanciaKM = leg.distance.value / 1000; 
+                    const tempoMinutos = leg.duration.value / 60;   
+
+                    // TABELA DE PREÇOS TNP MoB
+                    const TARIFA_MINIMA = 6.50;
+                    const VALOR_KM = 2.00;
+                    const VALOR_MINUTO = 0.25;
+                    const TAXA_BASE = 0.00; // Você pode adicionar uma taxa base se quiser
+
+                    // CÁLCULO FINAL
+                    let precoTotal = TAXA_BASE + (distanciaKM * VALOR_KM) + (tempoMinutos * VALOR_MINUTO);
+                    
+                    // APLICA TARIFA MÍNIMA
+                    if (precoTotal < TARIFA_MINIMA) precoTotal = TARIFA_MINIMA;
+
+                    // EXIBE RESULTADOS NO CARD
+                    document.getElementById("card_resultado").style.display = "block";
+                    document.getElementById("res_valor").innerText = "R$ " + precoTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    document.getElementById("res_detalhes").innerText = `Distância: ${leg.distance.text} | Tempo: ${leg.duration.text}`;
+                } else {
+                    alert("Não foi possível calcular a rota. Verifique os endereços ou sua chave de API.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
