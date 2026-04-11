@@ -421,12 +421,33 @@
                     </select>
                 </div>
                 
-                <div id="Login_area_selecao_veiculo" class="Login_form_group Login_hidden">
-                    <label for="Login_select_veiculo_tipo">Tipo de Veículo</label>
-                    <select id="Login_select_veiculo_tipo" onchange="Login_func_saveLocal('Login_select_veiculo_tipo', this.value)">
-                        <option value="carro">Carro 🚗</option>
-                        <option value="moto">Moto 🏍️</option>
-                    </select>
+                <div id="Login_area_selecao_veiculo" class="Login_hidden">
+                    <div class="Login_form_group">
+                        <label for="Login_select_veiculo_tipo">Tipo de Veículo</label>
+                        <select id="Login_select_veiculo_tipo" onchange="Login_func_saveLocal('Login_select_veiculo_tipo', this.value)">
+                            <option value="carro">Carro 🚗</option>
+                            <option value="moto">Moto 🏍️</option>
+                        </select>
+                    </div>
+
+                    <div class="Login_form_group">
+                        <label for="Login_cad_cnh_nome">Nome Completo na CNH</label>
+                        <input type="text" id="Login_cad_cnh_nome" placeholder="Nome como está no doc" oninput="Login_func_saveLocal('Login_cad_cnh_nome', this.value)">
+                    </div>
+                    <div class="Login_form_group">
+                        <label for="Login_cad_cnh_numero">Número da CNH (mín. 11 dígitos)</label>
+                        <input type="text" id="Login_cad_cnh_numero" placeholder="Somente números" maxlength="11" oninput="Login_func_maskNumOnly(this); Login_func_saveLocal('Login_cad_cnh_numero', this.value)">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div class="Login_form_group" style="flex: 1;">
+                            <label for="Login_cad_cnh_categoria">Categoria</label>
+                            <input type="text" id="Login_cad_cnh_categoria" placeholder="Ex: AB" oninput="Login_func_saveLocal('Login_cad_cnh_categoria', this.value)">
+                        </div>
+                        <div class="Login_form_group" style="flex: 2;">
+                            <label for="Login_cad_cnh_data_emissao">Data de Emissão</label>
+                            <input type="date" id="Login_cad_cnh_data_emissao" oninput="Login_func_saveLocal('Login_cad_cnh_data_emissao', this.value)">
+                        </div>
+                    </div>
                 </div>
 
                 <button class="Login_btn Login_btn_primary" onclick="Login_func_proximoTipo()">PRÓXIMO</button>
@@ -602,25 +623,7 @@
                         </div>
                     </div>
 
-                    <hr>
-                    <div class="Login_form_group">
-                        <label for="Login_cad_cnh_nome">Nome Completo na CNH</label>
-                        <input type="text" id="Login_cad_cnh_nome" placeholder="Nome como está no doc" oninput="Login_func_saveLocal('Login_cad_cnh_nome', this.value)">
-                    </div>
-                    <div class="Login_form_group">
-                        <label for="Login_cad_cnh_numero">Número da CNH (mín. 11 dígitos)</label>
-                        <input type="text" id="Login_cad_cnh_numero" placeholder="Somente números" maxlength="11" oninput="Login_func_maskNumOnly(this); Login_func_saveLocal('Login_cad_cnh_numero', this.value)">
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <div class="Login_form_group" style="flex: 1;">
-                            <label for="Login_cad_cnh_categoria">Categoria</label>
-                            <input type="text" id="Login_cad_cnh_categoria" placeholder="Ex: AB" oninput="Login_func_saveLocal('Login_cad_cnh_categoria', this.value)">
-                        </div>
-                        <div class="Login_form_group" style="flex: 2;">
-                            <label for="Login_cad_cnh_data_emissao">Data de Emissão</label>
-                            <input type="date" id="Login_cad_cnh_data_emissao" oninput="Login_func_saveLocal('Login_cad_cnh_data_emissao', this.value)">
-                        </div>
-                    </div>
+
                 </div>
 
                 <button class="Login_btn Login_btn_primary" id="Login_btn_proximo_fotos" onclick="Login_func_proximoFotos()">PRÓXIMO</button>
@@ -644,6 +647,24 @@
 
                 <button class="Login_btn Login_btn_primary" id="Login_btn_finalizar" onclick="Login_func_finalizarCadastro()">FINALIZAR CADASTRO</button>
                 <button class="Login_btn Login_btn_secondary" onclick="Login_func_irPara('Login_screen_fotos')">VOLTAR</button>
+            </div>
+
+            <!-- TELA 10: BEM VINDO USUÁRIO -->
+            <div id="Login_screen_welcome_usuario" class="Login_screen">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding-top: 50px;">
+                    <h2 style="color: var(--Fame_gold); font-size: 1.8rem; margin-bottom: 20px;">BEM VINDO QUERIDO USUÁRIO</h2>
+                    <p style="color: #ffffff; font-size: 1.2rem; font-weight: bold; margin-bottom: 30px;">TNP MoB 🚗</p>
+                    <button class="Login_btn Login_btn_secondary" style="max-width: 200px;" onclick="location.reload()">SAIR</button>
+                </div>
+            </div>
+
+            <!-- TELA 11: BEM VINDO MOTORISTA -->
+            <div id="Login_screen_welcome_motorista" class="Login_screen">
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding-top: 50px;">
+                    <h2 style="color: var(--Fame_gold); font-size: 1.8rem; margin-bottom: 20px;">BEM VINDO QUERIDO MOTORISTA</h2>
+                    <p style="color: #ffffff; font-size: 1.2rem; font-weight: bold; margin-bottom: 30px;">TNP MoB 🚗</p>
+                    <button class="Login_btn Login_btn_secondary" style="max-width: 200px;" onclick="location.reload()">SAIR</button>
+                </div>
             </div>
 
         </div>
@@ -783,7 +804,12 @@
                 const status = (typeof user.status === 'object') ? user.status.geral : user.status;
                 
                 if(status !== "aprovado") return alert("Seu cadastro está em análise.");
-                alert("Login realizado com sucesso!");
+                
+                if(tipo === 'motorista') {
+                    Login_func_irPara('Login_screen_welcome_motorista');
+                } else {
+                    Login_func_irPara('Login_screen_welcome_usuario');
+                }
             })
             .catch(e => Login_func_mostrarErro('Login_error_main', "Erro ao entrar: Verifique e-mail e senha."));
         }
@@ -917,6 +943,28 @@
         }
 
         function Login_func_proximoTipo() {
+            if(Login_var_tipoUsuario === 'motorista') {
+                const cnhNum = document.getElementById('Login_cad_cnh_numero').value;
+                const cnhNome = document.getElementById('Login_cad_cnh_nome').value;
+                const cnhCat = document.getElementById('Login_cad_cnh_categoria').value;
+                const cnhData = document.getElementById('Login_cad_cnh_data_emissao').value;
+                
+                if(!cnhNum || !cnhNome || !cnhCat || !cnhData) {
+                    alert('Por favor, preencha todos os dados da CNH.');
+                    return;
+                }
+                if(cnhNum.length < 11) {
+                    alert('CNH inválida (mínimo 11 dígitos).');
+                    return;
+                }
+                
+                const nomeCadastro = document.getElementById('Login_cad_nome').value.trim().toUpperCase();
+                const nomeCNH = cnhNome.trim().toUpperCase();
+                if(nomeCadastro !== nomeCNH) {
+                    alert('O nome do cadastro deve ser exatamente igual ao nome na CNH.');
+                    return;
+                }
+            }
             Login_func_irPara('Login_screen_documento');
         }
 
@@ -1179,20 +1227,6 @@
             const obrigatorias = ['perfil', 'residencia', 'carteira_frente', 'carteira_verso'];
             if(Login_var_tipoUsuario === 'motorista') {
                 obrigatorias.push('crlv');
-                const cnhNum = document.getElementById('Login_cad_cnh_numero').value;
-                const cnhNome = document.getElementById('Login_cad_cnh_nome').value;
-                const cnhCat = document.getElementById('Login_cad_cnh_categoria').value;
-                const cnhData = document.getElementById('Login_cad_cnh_data_emissao').value;
-                
-                if(!cnhNum || !cnhNome || !cnhCat || !cnhData) return Login_func_mostrarErro('Login_error_fotos', 'Preencha todos os dados da CNH.');
-                if(cnhNum.length < 11) return Login_func_mostrarErro('Login_error_fotos', 'CNH inválida (mínimo 11 dígitos).');
-                
-                // Validação de Nome Igual à Carteira (Motorista)
-                const nomeCadastro = document.getElementById('Login_cad_nome').value.trim().toUpperCase();
-                const nomeCNH = cnhNome.trim().toUpperCase();
-                if(nomeCadastro !== nomeCNH) {
-                    return Login_func_mostrarErro('Login_error_fotos', 'O nome do cadastro deve ser exatamente igual ao nome na CNH.');
-                }
             }
 
             for(let key of obrigatorias) {
@@ -1300,6 +1334,8 @@
                 btn.innerText = "FINALIZAR CADASTRO";
             }
         }
+		// ========== TELA 10: página de boas vindas usuário ==========
+		// ========== TELA 10: página de boas vindas motorista ==========
     </script>
 </body>
 </html>
