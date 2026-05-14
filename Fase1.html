@@ -1852,6 +1852,42 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 </div>
 </div>
 
+<!-- MODAL: CADASTRO DE MOTORISTA PENDENTE -->
+<div id="PRIMEIRAPAG_Login_modal_motorista_pendente" class="PASSAGEIROPAG_Login_modal_documento_overlay">
+
+    <div class="PASSAGEIROPAG_Login_modal_documento_box">
+
+        <div class="PASSAGEIROPAG_Login_modal_documento_icone">🚗</div>
+
+        <h3>Cadastro de motorista em andamento</h3>
+
+        <p>
+            Identificamos que você iniciou um cadastro para trabalhar como motorista.
+            Para sua segurança, esse cadastro precisa ser concluído antes de acessar a área do motorista.
+        </p>
+
+        <div class="PASSAGEIROPAG_Login_modal_documento_aviso">
+            Você deseja continuar de onde parou ou desistir do cadastro de motorista
+            e seguir apenas como passageiro?
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="PRIMEIRAPAG_Login_func_continuarCadastroMotoristaPendente()"
+        >
+            CONTINUAR CADASTRO DE MOTORISTA
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="PRIMEIRAPAG_Login_func_desistirCadastroMotorista()"
+        >
+            DESISTIR E CONTINUAR COMO PASSAGEIRO
+        </button>
+
+    </div>
+</div>
+
 <!-- TELA MOTORISTA 1: CATEGORIA PRINCIPAL - PREFIXO MOTORISTAPAG -->
 <div id="MOTORISTAPAG_Login_screen_categoria" class="PRIMEIRAPAG_Login_screen">
 
@@ -3480,10 +3516,15 @@ function PRIMEIRAPAG_Login_func_logar() {
             const PRIMEIRAPAG_user = PRIMEIRAPAG_docUsuario.data();
 
             // LOGIN COMO PASSAGEIRO
-            if (PRIMEIRAPAG_tipo === 'passageiro') {
-                PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
-                return;
-            }
+				if (PRIMEIRAPAG_tipo === 'passageiro') {
+				if (PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(PRIMEIRAPAG_user)) {
+				PRIMEIRAPAG_Login_func_abrirCardMotoristaPendente(PRIMEIRAPAG_user);
+				return;
+			}
+
+				PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
+				return;
+			}
 
             // LOGIN COMO MOTORISTA
             if (PRIMEIRAPAG_tipo === 'motorista') {
@@ -3597,9 +3638,171 @@ function PRIMEIRAPAG_Login_func_logar() {
             );
         });
 }
+// ========== TRATAMENTO CADASTRO DE MOTORISTA PENDENTE==========		
 		
-		
-		
+let PRIMEIRAPAG_Login_var_usuarioMotoristaPendente = null;
+
+function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
+    if (!dadosUsuario) return false;
+
+    const etapa = dadosUsuario.etapaCadastro || "";
+    const etapaMotorista = dadosUsuario.etapaCadastroMotorista || "";
+
+    const temPerfilMotorista =
+        dadosUsuario.perfis &&
+        dadosUsuario.perfis.motorista === true;
+
+    if (!temPerfilMotorista) return false;
+
+    const etapasMotoristaPendentes = [
+        "selfie",
+        "motorista_categoria",
+        "motorista_cnh",
+        "motorista_foto_cnh",
+        "motorista_selfie_cnh",
+        "motorista_veiculo",
+        "motorista_documento_veiculo",
+        "motorista_foto_veiculo",
+        "motorista_pagamento",
+        "motorista_termos"
+    ];
+
+    const etapasMotoristaInternas = [
+        "categoria",
+        "cnh",
+        "foto_cnh",
+        "selfie_cnh",
+        "veiculo",
+        "documento_veiculo",
+        "foto_veiculo",
+        "pagamento",
+        "termos"
+    ];
+
+    return (
+        etapasMotoristaPendentes.includes(etapa) ||
+        etapasMotoristaInternas.includes(etapaMotorista)
+    );
+}
+
+function PRIMEIRAPAG_Login_func_abrirCardMotoristaPendente(dadosUsuario) {
+    PRIMEIRAPAG_Login_var_usuarioMotoristaPendente = dadosUsuario;
+
+    const modal = document.getElementById('PRIMEIRAPAG_Login_modal_motorista_pendente');
+
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente() {
+    const modal = document.getElementById('PRIMEIRAPAG_Login_modal_motorista_pendente');
+
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function PRIMEIRAPAG_Login_func_continuarCadastroMotoristaPendente() {
+    const dadosUsuario = PRIMEIRAPAG_Login_var_usuarioMotoristaPendente;
+
+    if (!dadosUsuario) {
+        PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente();
+        return;
+    }
+
+    PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente();
+
+    const etapa = dadosUsuario.etapaCadastro || "";
+    const etapaMotorista = dadosUsuario.etapaCadastroMotorista || "";
+
+    if (dadosUsuario.selfieEnviada !== true || etapa === "selfie") {
+        PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
+        return;
+    }
+
+    if (etapa === "motorista_categoria" || etapaMotorista === "categoria") {
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+        return;
+    }
+
+    if (etapa === "motorista_cnh" || etapaMotorista === "cnh") {
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+        return;
+    }
+
+    if (etapa === "motorista_foto_cnh" || etapaMotorista === "foto_cnh") {
+        if (document.getElementById('MOTORISTAPAG_Login_screen_foto_cnh')) {
+            PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
+        } else {
+            PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+        }
+        return;
+    }
+
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+}
+
+async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente();
+        return;
+    }
+
+    const confirmar = confirm(
+        "Tem certeza que deseja desistir do cadastro de motorista e continuar apenas como passageiro?"
+    );
+
+    if (!confirmar) return;
+
+    try {
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                tipo: "passageiro",
+                perfis: {
+                    passageiro: true,
+                    motorista: false
+                },
+                etapaCadastroMotorista: "",
+                motoristaStatus: "cancelado_pelo_usuario",
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                podeAceitarCorrida: false,
+                etapaCadastroMotorista: "cancelado",
+                status: {
+                    geral: "cancelado_pelo_usuario",
+                    atualizadoEm: new Date()
+                },
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente();
+
+        const docAtualizado = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        PRIMEIRAPAG_Login_func_retornarEtapaCadastro(docAtualizado.data() || {});
+
+    } catch (erro) {
+        console.error("ERRO AO DESISTIR DO CADASTRO DE MOTORISTA:", erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'PRIMEIRAPAG_Login_error_main',
+            'Não foi possível cancelar o cadastro de motorista agora. Tente novamente.'
+        );
+    }
+}		
 		
 // ========== TELAS INICIAIS: TERMOS E PERMISSÕES parte foi apagado pra melhor controle==========
 
