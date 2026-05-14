@@ -4793,6 +4793,7 @@ async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
 // ========== MOTORISTA TELA 2: DADOS DO MOTORISTA ==========
 
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
+	
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
@@ -4965,12 +4966,10 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
         // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
 
     } catch (erro) {
-        console.error("ERRO REAL AO SALVAR CNH:", erro.code, erro.message);
+        console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
 
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = 'CONTINUAR';
-        }
+        btn.disabled = false;
+        btn.innerText = 'CONTINUAR';
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
@@ -4978,6 +4977,67 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
         );
     }
 }
+// 1. Função para limpar o CPF (remover pontos e traços)
+function MOTORISTAPAG_Login_func_limparCpf(valor) {
+    return valor ? valor.replace(/\D/g, "") : "";
+}
+
+// 2. Função para validar o formato da CNH (11 dígitos)
+function MOTORISTAPAG_Login_func_validarNumeroCnh(cnh) {
+    return cnh.length === 11;
+}
+
+// 3. Máscara para o campo de Número da CNH (apenas números, max 11)
+function MOTORISTAPAG_Login_func_maskNumeroCnh(input) {
+    let v = input.value.replace(/\D/g, "");
+    if (v.length > 11) v = v.substring(0, 11);
+    input.value = v;
+}
+
+// 4. Máscara para o campo de CPF na tela de motorista
+function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
+    let v = input.value.replace(/\D/g, "");
+    if (v.length > 11) v = v.substring(0, 11);
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    input.value = v;
+}
+// 1. Função para mostrar o card de conflito e mascarar o e-mail
+function MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dados) {
+    const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
+    const spanEmail = document.getElementById('MOTORISTAPAG_Login_email_mascarado_cpf');
+    
+    if (card) card.style.display = 'block';
+    
+    if (spanEmail && dados.emailVinculado) {
+        // Mascara o e-mail (ex: jo**@gmail.com)
+        const email = dados.emailVinculado;
+        const partes = email.split('@');
+        const inicio = partes[0].substring(0, 2);
+        spanEmail.innerText = `E-mail vinculado: ${inicio}***@${partes[1]}`;
+    }
+}
+
+// 2. Funções dos botões que aparecem no card de conflito
+function MOTORISTAPAG_Login_func_orientarEntrarContaExistente() {
+    alert("Por favor, saia desta conta e faça login com o e-mail vinculado ao seu CPF.");
+    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+}
+
+function MOTORISTAPAG_Login_func_recuperarSenhaCpfConflito() {
+    alert("Redirecionando para recuperação de senha...");
+    // Aqui você pode chamar sua função de reset de senha
+}
+
+function MOTORISTAPAG_Login_func_solicitarTrocaEmailCpf() {
+    alert("Sua solicitação de troca de e-mail foi enviada para análise do suporte.");
+}
+
+function MOTORISTAPAG_Login_func_naoReconhecoCpf() {
+    alert("Nossa equipe de segurança entrará em contato para verificar sua identidade.");
+}
+
 
 
 
