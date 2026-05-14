@@ -4681,6 +4681,117 @@ PRIMEIRAPAG_Login_func_mostrarErro(
 }
 }
 
+// ========== MOTORISTA TELA 1: CATEGORIA PRINCIPAL ==========
+
+function MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal(categoria) {
+    const inputCategoria = document.getElementById('MOTORISTAPAG_Login_categoria_principal');
+
+    const cardCarro = document.getElementById('MOTORISTAPAG_Login_card_categoria_carro');
+    const cardMoto = document.getElementById('MOTORISTAPAG_Login_card_categoria_moto');
+    const cardUtilitario = document.getElementById('MOTORISTAPAG_Login_card_categoria_utilitario');
+
+    if (!inputCategoria || !cardCarro || !cardMoto || !cardUtilitario) {
+        console.error("ERRO: Elementos da categoria do motorista não encontrados.");
+        return;
+    }
+
+    inputCategoria.value = categoria;
+
+    cardCarro.classList.remove('active');
+    cardMoto.classList.remove('active');
+    cardUtilitario.classList.remove('active');
+
+    if (categoria === 'carro') {
+        cardCarro.classList.add('active');
+    }
+
+    if (categoria === 'moto') {
+        cardMoto.classList.add('active');
+    }
+
+    if (categoria === 'utilitario') {
+        cardUtilitario.classList.add('active');
+    }
+}
+
+async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_categoria');
+    const categoria = document.getElementById('MOTORISTAPAG_Login_categoria_principal')?.value;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Sua sessão expirou. Faça login novamente.'
+        );
+    }
+
+    if (!categoria) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Escolha uma categoria para continuar.'
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'SALVANDO...';
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                categoriaPrincipal: categoria,
+                etapaCadastroMotorista: 'cnh',
+                atualizadoEm: new Date(),
+
+                status: {
+                    geral: 'cadastro_iniciado',
+                    atualizadoEm: new Date()
+                }
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                tipo: 'motorista',
+                perfis: {
+                    passageiro: true,
+                    motorista: true
+                },
+                etapaCadastro: 'motorista_cnh',
+                etapaCadastroMotorista: 'cnh',
+                motoristaStatus: 'cadastro_iniciado',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
+
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+
+    } catch (erro) {
+        console.error("ERRO REAL AO SALVAR CATEGORIA:", erro.code, erro.message);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Não foi possível salvar a categoria agora. Verifique sua conexão e tente novamente.'
+        );
+    }
+}
+
+// ========== MOTORISTA TELA 2: DADOS DO MOTORISTA ==========
+
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
