@@ -3349,8 +3349,7 @@ function PRIMEIRAPAG_Login_func_logar() {
                             if (document.getElementById('MOTORISTAPAG_Login_screen_categoria')) {
                                 PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
                             } else {
-                                alert("Você está na etapa de categoria do motorista. Agora vamos criar essa tela.");
-                                PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+                            PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
                             }
 
                             return;
@@ -3387,9 +3386,12 @@ function PRIMEIRAPAG_Login_func_logar() {
                     }
                 }
 
-                alert("Você ainda não iniciou ou concluiu o cadastro de motorista. Entre como passageiro para continuar.");
-                PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
-                return;
+                PRIMEIRAPAG_Login_func_mostrarErro(
+    'PRIMEIRAPAG_Login_error_main',
+    'Esta conta ainda não tem cadastro de motorista ativo. Se quiser continuar como passageiro, selecione Passageiro e entre novamente.'
+);
+
+return;
             }
         })
         .catch((erro) => {
