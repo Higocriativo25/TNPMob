@@ -4681,159 +4681,20 @@ PRIMEIRAPAG_Login_func_mostrarErro(
 }
 }
 
-<!-- TELA MOTORISTA 1: CATEGORIA PRINCIPAL - PREFIXO MOTORISTAPAG -->
-function MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal(categoria) {
-    document.getElementById('MOTORISTAPAG_Login_categoria_principal').value = categoria;
-
-    const cards = [
-        'MOTORISTAPAG_Login_card_categoria_carro',
-        'MOTORISTAPAG_Login_card_categoria_moto',
-        'MOTORISTAPAG_Login_card_categoria_utilitario'
-    ];
-
-    cards.forEach(id => {
-        const card = document.getElementById(id);
-        if (card) {
-            card.classList.remove('active');
-        }
-    });
-
-    const cardSelecionado = document.getElementById(
-        'MOTORISTAPAG_Login_card_categoria_' + categoria
-    );
-
-    if (cardSelecionado) {
-        cardSelecionado.classList.add('active');
-    }
-}
-
-async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
-    const user = PRIMEIRAPAG_Login_auth.currentUser;
-    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_categoria');
-    const categoria = document.getElementById('MOTORISTAPAG_Login_categoria_principal').value;
-
-    if (!user) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_categoria',
-            'Sua sessão expirou. Volte e faça login novamente.'
-        );
-    }
-
-    if (!categoria) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_categoria',
-            'Escolha uma categoria principal para continuar.'
-        );
-    }
-
-    btn.disabled = true;
-    btn.innerText = 'SALVANDO...';
-
-    try {
-        let categoriaNome = '';
-
-        if (categoria === 'carro') {
-            categoriaNome = 'Carro';
-        }
-
-        if (categoria === 'moto') {
-            categoriaNome = 'Moto';
-        }
-
-        if (categoria === 'utilitario') {
-            categoriaNome = 'Entrega / Utilitário';
-        }
-
-        await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                tipoVeiculoPrincipal: categoria,
-                tipoVeiculoPrincipalNome: categoriaNome,
-
-                categoriaPrincipal: '',
-                categoriaFinal: '',
-                categoriaDefinidaPeloAdmin: false,
-                categoriaStatus: 'aguardando_analise',
-
-                etapaCadastroMotorista: 'cnh',
-                atualizadoEm: new Date()
-            }, { merge: true });
-
-        await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(user.uid)
-            .set({
-                etapaCadastro: 'motorista_cnh',
-                etapaCadastroMotorista: 'cnh',
-                atualizadoEm: new Date()
-            }, { merge: true });
-
-        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
-return;
-
-    } catch (erro) {
-        console.error('ERRO AO SALVAR CATEGORIA DO MOTORISTA:', erro);
-
-        PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_categoria',
-            'Não foi possível salvar a categoria agora. Verifique sua conexão e tente novamente.'
-        );
-    }
-
-    btn.disabled = false;
-    btn.innerText = 'CONTINUAR';
-}
-
-function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
-    let valor = input.value.replace(/\D/g, '');
-
-    if (valor.length > 11) {
-        valor = valor.slice(0, 11);
-    }
-
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
-    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
-    input.value = valor;
-}
-
-function MOTORISTAPAG_Login_func_limparCpf(valor) {
-    return String(valor || '').replace(/\D/g, '');
-}
-function MOTORISTAPAG_Login_func_maskNumeroCnh(input) {
-    let valor = input.value.replace(/\D/g, '');
-
-    if (valor.length > 11) {
-        valor = valor.slice(0, 11);
-    }
-
-    input.value = valor;
-}
-function MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh) {
-    numeroCnh = String(numeroCnh || '').replace(/\D/g, '');
-
-    if (numeroCnh.length !== 11) {
-        return false;
-    }
-
-    // Bloqueia sequências falsas tipo 00000000000, 11111111111...
-    if (/^(\d)\1{10}$/.test(numeroCnh)) {
-        return false;
-    }
-
-    return true;
-}
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
     const numeroCnh = document
-    .getElementById('MOTORISTAPAG_Login_input_cnh_numero')
-    .value
-    .replace(/\D/g, '');
-    const cpfCnhFormatado = document.getElementById('MOTORISTAPAG_Login_input_cnh_cpf').value.trim();
+        .getElementById('MOTORISTAPAG_Login_input_cnh_numero')
+        .value
+        .replace(/\D/g, '');
+
+    const cpfCnhFormatado = document
+        .getElementById('MOTORISTAPAG_Login_input_cnh_cpf')
+        .value
+        .trim();
+
     const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
     const categoriaCnh = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria').value;
     const validadeCnh = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade').value;
@@ -4846,25 +4707,25 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!numeroCnh) {
-    return PRIMEIRAPAG_Login_func_mostrarErro(
-        'MOTORISTAPAG_Login_error_cnh',
-        'Digite o número da CNH.'
-    );
-}
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite o número da CNH.'
+        );
+    }
 
-if (!MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh)) {
-    return PRIMEIRAPAG_Login_func_mostrarErro(
-        'MOTORISTAPAG_Login_error_cnh',
-        'Digite um número de CNH válido com 11 números.'
-    );
-}
+    if (!MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh)) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite um número de CNH válido com 11 números.'
+        );
+    }
 
-if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
-    return PRIMEIRAPAG_Login_func_mostrarErro(
-        'MOTORISTAPAG_Login_error_cnh',
-        'Digite um CPF válido para o titular da CNH.'
-    );
-}
+    if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite um CPF válido para o titular da CNH.'
+        );
+    }
 
     if (!categoriaCnh) {
         return PRIMEIRAPAG_Login_func_mostrarErro(
@@ -4880,10 +4741,46 @@ if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
         );
     }
 
-    btn.disabled = true;
-    btn.innerText = 'SALVANDO...';
-
     try {
+        const documentoId = 'cpf_' + cpfCnh;
+
+        const documentoRef = PRIMEIRAPAG_Login_db
+            .collection('documentosUsuarios')
+            .doc(documentoId);
+
+        const documentoSnap = await documentoRef.get();
+
+        if (documentoSnap.exists) {
+            const dadosDocumento = documentoSnap.data() || {};
+
+            if (dadosDocumento.uid && dadosDocumento.uid !== user.uid) {
+                MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dadosDocumento);
+
+                return PRIMEIRAPAG_Login_func_mostrarErro(
+                    'MOTORISTAPAG_Login_error_cnh',
+                    'Este CPF já está vinculado a outra conta. Escolha uma das opções abaixo para continuar com segurança.'
+                );
+            }
+        }
+
+        btn.disabled = true;
+        btn.innerText = 'SALVANDO...';
+
+        // 1. Cria ou atualiza o vínculo do CPF com este usuário
+        await PRIMEIRAPAG_Login_db
+            .collection('documentosUsuarios')
+            .doc(documentoId)
+            .set({
+                uid: user.uid,
+                tipoDocumento: 'cpf',
+                documentoNumero: cpfCnh,
+                documentoFormatado: cpfCnhFormatado,
+                emailVinculado: user.email || '',
+                usadoEm: 'cadastro_motorista_cnh',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        // 2. Salva os dados da CNH no cadastro do motorista
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
             .doc(user.uid)
@@ -4895,17 +4792,26 @@ if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
                 cnhValidade: validadeCnh,
 
                 etapaCadastroMotorista: 'foto_cnh',
-                atualizadoEm: new Date()
+                atualizadoEm: new Date(),
+
+                status: {
+                    geral: 'cadastro_iniciado',
+                    atualizadoEm: new Date()
+                }
             }, { merge: true });
 
+        // 3. Atualiza a etapa no documento geral do usuário
         await PRIMEIRAPAG_Login_db
             .collection('usuarios')
             .doc(user.uid)
             .set({
                 cpf: cpfCnh,
                 cpfFormatado: cpfCnhFormatado,
+
                 etapaCadastro: 'motorista_foto_cnh',
                 etapaCadastroMotorista: 'foto_cnh',
+                motoristaStatus: 'cadastro_iniciado',
+
                 atualizadoEm: new Date()
             }, { merge: true });
 
@@ -4929,9 +4835,6 @@ if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
         );
     }
 }
-
-
-
 
 
 
