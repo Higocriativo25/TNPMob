@@ -4814,45 +4814,16 @@ function MOTORISTAPAG_Login_func_maskNumeroCnh(input) {
 function MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh) {
     numeroCnh = String(numeroCnh || '').replace(/\D/g, '');
 
-    if (numeroCnh.length !== 11) return false;
-
-    if (/^(\d)\1{10}$/.test(numeroCnh)) return false;
-
-    const base = numeroCnh.substring(0, 9);
-    const dvInformado1 = parseInt(numeroCnh.charAt(9), 10);
-    const dvInformado2 = parseInt(numeroCnh.charAt(10), 10);
-
-    let soma1 = 0;
-
-    for (let i = 0; i < 9; i++) {
-        soma1 += parseInt(base.charAt(i), 10) * (i + 2);
+    if (numeroCnh.length !== 11) {
+        return false;
     }
 
-    let dv1 = soma1 % 11;
-    let incremento = 0;
-
-    if (dv1 === 10) {
-        dv1 = 0;
-        incremento = 2;
+    // Bloqueia sequências falsas tipo 00000000000, 11111111111...
+    if (/^(\d)\1{10}$/.test(numeroCnh)) {
+        return false;
     }
 
-    let soma2 = 0;
-
-    for (let i = 0; i < 9; i++) {
-        soma2 += parseInt(base.charAt(i), 10) * (i + 3);
-    }
-
-    let dv2 = (soma2 % 11) - incremento;
-
-    if (dv2 < 0) {
-        dv2 += 11;
-    }
-
-    if (dv2 === 10) {
-        dv2 = 0;
-    }
-
-    return dv1 === dvInformado1 && dv2 === dvInformado2;
+    return true;
 }
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
