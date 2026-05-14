@@ -1852,6 +1852,91 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 </div>
 </div>
 
+<!-- TELA MOTORISTA 1: CATEGORIA PRINCIPAL - PREFIXO MOTORISTAPAG -->
+<div id="MOTORISTAPAG_Login_screen_categoria" class="PRIMEIRAPAG_Login_screen">
+
+    <div class="PRIMEIRAPAG_Login_error" id="MOTORISTAPAG_Login_error_categoria"></div>
+
+    <h3 class="PRIMEIRAPAG_Login_step_title">Categoria do motorista</h3>
+
+    <div class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Como você pretende trabalhar?</h4>
+        <p>
+            Escolha sua categoria principal. A categoria final será definida durante
+            a análise dos seus documentos pela equipe TNP MoB.
+        </p>
+    </div>
+
+    <input type="hidden" id="MOTORISTAPAG_Login_categoria_principal" value="carro">
+
+    <div class="PRIMEIRAPAG_Login_tipo_cards">
+
+        <div
+            id="MOTORISTAPAG_Login_card_categoria_carro"
+            class="PRIMEIRAPAG_Login_tipo_card active"
+            onclick="MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal('carro')"
+        >
+            <span>🚗</span>
+            Carro
+            <small class="QUARTAPAG_Login_tipo_card_desc">
+                Corridas com passageiros
+            </small>
+        </div>
+
+        <div
+            id="MOTORISTAPAG_Login_card_categoria_moto"
+            class="PRIMEIRAPAG_Login_tipo_card"
+            onclick="MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal('moto')"
+        >
+            <span>🏍️</span>
+            Moto
+            <small class="QUARTAPAG_Login_tipo_card_desc">
+                Mototáxi ou entregas
+            </small>
+        </div>
+
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_tipo_cards PRIMEIRAPAG_Login_mt_14">
+
+        <div
+            id="MOTORISTAPAG_Login_card_categoria_utilitario"
+            class="PRIMEIRAPAG_Login_tipo_card"
+            onclick="MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal('utilitario')"
+        >
+            <span>🚚</span>
+            Entrega / Utilitário
+            <small class="QUARTAPAG_Login_tipo_card_desc">
+                Cargas e futuras parcerias
+            </small>
+        </div>
+
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_aviso_analise PRIMEIRAPAG_Login_mt_18">
+        Você não precisa escolher agora entre Tradicional, Comfort, Black, Lady,
+        Mototáxi ou Entregador. Essa definição será feita na análise.
+    </div>
+
+    <div style="padding-bottom:120px;">
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_categoria"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_salvarCategoriaPrincipal()"
+        >
+            CONTINUAR
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie')"
+        >
+            VOLTAR
+        </button>
+    </div>
+
+</div>
+
 <!-- TELA 7: ÁREA DO PASSAGEIRO / CONVITE PARA COMPLETAR CADASTRO - PREFIXO SEXTAPAG -->
 <div id="SEXTAPAG_Login_screen_area_passageiro" class="PRIMEIRAPAG_Login_screen">
 
@@ -4166,6 +4251,112 @@ PRIMEIRAPAG_Login_func_mostrarErro(
     'Não foi possível salvar sua foto agora. Verifique sua conexão e tente novamente.'
 );
 }
+}
+
+<!-- TELA MOTORISTA 1: CATEGORIA PRINCIPAL - PREFIXO MOTORISTAPAG -->
+function MOTORISTAPAG_Login_func_selecionarCategoriaPrincipal(categoria) {
+    document.getElementById('MOTORISTAPAG_Login_categoria_principal').value = categoria;
+
+    const cards = [
+        'MOTORISTAPAG_Login_card_categoria_carro',
+        'MOTORISTAPAG_Login_card_categoria_moto',
+        'MOTORISTAPAG_Login_card_categoria_utilitario'
+    ];
+
+    cards.forEach(id => {
+        const card = document.getElementById(id);
+        if (card) {
+            card.classList.remove('active');
+        }
+    });
+
+    const cardSelecionado = document.getElementById(
+        'MOTORISTAPAG_Login_card_categoria_' + categoria
+    );
+
+    if (cardSelecionado) {
+        cardSelecionado.classList.add('active');
+    }
+}
+
+async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_categoria');
+    const categoria = document.getElementById('MOTORISTAPAG_Login_categoria_principal').value;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Sua sessão expirou. Volte e faça login novamente.'
+        );
+    }
+
+    if (!categoria) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Escolha uma categoria principal para continuar.'
+        );
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'SALVANDO...';
+
+    try {
+        let categoriaNome = '';
+
+        if (categoria === 'carro') {
+            categoriaNome = 'Carro';
+        }
+
+        if (categoria === 'moto') {
+            categoriaNome = 'Moto';
+        }
+
+        if (categoria === 'utilitario') {
+            categoriaNome = 'Entrega / Utilitário';
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                tipoVeiculoPrincipal: categoria,
+                tipoVeiculoPrincipalNome: categoriaNome,
+
+                categoriaPrincipal: '',
+                categoriaFinal: '',
+                categoriaDefinidaPeloAdmin: false,
+                categoriaStatus: 'aguardando_analise',
+
+                etapaCadastroMotorista: 'cnh',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                etapaCadastro: 'motorista_cnh',
+                etapaCadastroMotorista: 'cnh',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        alert('Categoria salva. Próximo passo: dados da CNH.');
+
+        // Próxima tela ainda vamos criar
+        // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+
+    } catch (erro) {
+        console.error('ERRO AO SALVAR CATEGORIA DO MOTORISTA:', erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_categoria',
+            'Não foi possível salvar a categoria agora. Verifique sua conexão e tente novamente.'
+        );
+    }
+
+    btn.disabled = false;
+    btn.innerText = 'CONTINUAR';
 }
 
 // ========== TELA 7: ÁREA DO PASSAGEIRO COM PREFIXO SEXTAPAG ==========
