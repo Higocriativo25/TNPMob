@@ -4796,19 +4796,28 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
-    const numeroCnh = document
-        .getElementById('MOTORISTAPAG_Login_input_cnh_numero')
-        .value
-        .replace(/\D/g, '');
+    const inputNumero = document.getElementById('MOTORISTAPAG_Login_input_cnh_numero');
+    const inputCpf = document.getElementById('MOTORISTAPAG_Login_input_cnh_cpf');
+    const selectCategoria = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria');
+    const inputValidade = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade');
 
-    const cpfCnhFormatado = document
-        .getElementById('MOTORISTAPAG_Login_input_cnh_cpf')
-        .value
-        .trim();
+    // limpa marcações antigas
+    [inputNumero, inputCpf, selectCategoria, inputValidade].forEach(campo => {
+        if (campo) campo.classList.remove('error');
+    });
 
+    if (!inputNumero || !inputCpf || !selectCategoria || !inputValidade) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Erro interno: campos da CNH não encontrados.'
+        );
+    }
+
+    const numeroCnh = inputNumero.value.replace(/\D/g, '');
+    const cpfCnhFormatado = inputCpf.value.trim();
     const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
-    const categoriaCnh = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria').value;
-    const validadeCnh = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade').value;
+    const categoriaCnh = selectCategoria.value;
+    const validadeCnh = inputValidade.value;
 
     if (!user) {
         return PRIMEIRAPAG_Login_func_mostrarErro(
@@ -4818,6 +4827,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!numeroCnh) {
+        inputNumero.classList.add('error');
+
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite o número da CNH.'
@@ -4825,13 +4836,26 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh)) {
+        inputNumero.classList.add('error');
+
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite um número de CNH válido com 11 números.'
         );
     }
 
+    if (!cpfCnh) {
+        inputCpf.classList.add('error');
+
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite o CPF do titular da CNH.'
+        );
+    }
+
     if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
+        inputCpf.classList.add('error');
+
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite um CPF válido para o titular da CNH.'
@@ -4839,6 +4863,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!categoriaCnh) {
+        selectCategoria.classList.add('error');
+
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Selecione a categoria da CNH.'
@@ -4846,6 +4872,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!validadeCnh) {
+        inputValidade.classList.add('error');
+
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Informe a validade da CNH.'
@@ -4874,8 +4902,10 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
             }
         }
 
-        btn.disabled = true;
-        btn.innerText = 'SALVANDO...';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'SALVANDO...';
+        }
 
         // 1. Cria ou atualiza o vínculo do CPF com este usuário
         await PRIMEIRAPAG_Login_db
@@ -4935,10 +4965,12 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
         // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
 
     } catch (erro) {
-        console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
+        console.error("ERRO REAL AO SALVAR CNH:", erro.code, erro.message);
 
-        btn.disabled = false;
-        btn.innerText = 'CONTINUAR';
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
