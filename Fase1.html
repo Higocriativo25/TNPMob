@@ -1463,7 +1463,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <div class="PRIMEIRAPAG_Login_status_box PRIMEIRAPAG_Login_text_left">
         O TNP MoB poderá coletar e usar informações como nome, e-mail, WhatsApp,
-        CPF/CNPJ, selfie, endereço, localização, dados de corrida, avaliações e informações
+        CPF, selfie, endereço, localização, dados de corrida, avaliações e informações
         necessárias para segurança da plataforma.
         <br><br>
         Esses dados ajudam no funcionamento do app, prevenção de fraudes, suporte,
@@ -1937,6 +1937,164 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 </div>
 
+<!-- TELA MOTORISTA 2: DADOS DA CNH - PREFIXO MOTORISTAPAG -->
+<div id="MOTORISTAPAG_Login_screen_cnh" class="PRIMEIRAPAG_Login_screen">
+
+    <div class="PRIMEIRAPAG_Login_error" id="MOTORISTAPAG_Login_error_cnh"></div>
+
+    <h3 class="PRIMEIRAPAG_Login_step_title">Dados da CNH</h3>
+
+    <div class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Carteira de motorista</h4>
+        <p>
+            Informe os dados da sua CNH. O CPF informado precisa ser do titular da carteira
+            e será usado para proteger sua conta e evitar cadastros duplicados.
+        </p>
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_cnh_numero">Número da CNH</label>
+        <input
+            type="tel"
+            id="MOTORISTAPAG_Login_input_cnh_numero"
+            placeholder="Digite o número da CNH"
+            maxlength="20"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_cnh_cpf">CPF do titular da CNH</label>
+        <input
+            type="tel"
+            id="MOTORISTAPAG_Login_input_cnh_cpf"
+            placeholder="Digite o CPF do titular"
+            maxlength="14"
+            oninput="MOTORISTAPAG_Login_func_maskCpfCnh(this)"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_select_cnh_categoria">Categoria da CNH</label>
+        <select id="MOTORISTAPAG_Login_select_cnh_categoria">
+            <option value="">Selecione</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="AB">AB</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="E">E</option>
+        </select>
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_cnh_validade">Validade da CNH</label>
+        <input
+            type="date"
+            id="MOTORISTAPAG_Login_input_cnh_validade"
+        >
+    </div>
+
+    <div
+        id="MOTORISTAPAG_Login_card_cpf_conflito"
+        class="PRIMEIRAPAG_Login_status_box"
+        style="display:none;"
+    >
+        <strong>CPF já vinculado a outra conta</strong><br><br>
+
+        Encontramos uma conta cadastrada com este CPF.
+        Para sua segurança, precisamos confirmar a titularidade antes de liberar
+        o cadastro de motorista.
+
+        <br><br>
+
+        <span id="MOTORISTAPAG_Login_email_mascarado_cpf">
+            e-mail cadastrado
+        </span>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_orientarEntrarContaExistente()"
+        >
+            ENTRAR NA CONTA
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_recuperarSenhaCpfConflito()"
+        >
+            RECUPERAR SENHA
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_solicitarTrocaEmailCpf()"
+        >
+            SOLICITAR TROCA DE E-MAIL
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_naoReconhecoCpf()"
+        >
+            NÃO RECONHEÇO ESSA CONTA
+        </button>
+    </div>
+
+    <div style="padding-bottom:120px;">
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_cnh"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_salvarDadosCnh()"
+        >
+            CONTINUAR
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria')"
+        >
+            VOLTAR
+        </button>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- TELA 7: ÁREA DO PASSAGEIRO / CONVITE PARA COMPLETAR CADASTRO - PREFIXO SEXTAPAG -->
 <div id="SEXTAPAG_Login_screen_area_passageiro" class="PRIMEIRAPAG_Login_screen">
 
@@ -2047,16 +2205,19 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
             >
                 CPF
             </div>
+			
+			 </div>
+    </div>
+			
 
-            <div
+ <!--           <div
                 id="SETIMAPAG_Login_card_cnpj"
                 class="PRIMEIRAPAG_Login_tipo_card"
                 onclick="SETIMAPAG_Login_func_selecionarTipoDocumento('cnpj')"
             >
                 CNPJ
-            </div>
-        </div>
-    </div>
+            </div>-->
+    
 
     <div class="PRIMEIRAPAG_Login_form_group">
         <label id="SETIMAPAG_Login_label_cpf_cnpj" for="SETIMAPAG_Login_input_cpf_cnpj">CPF</label>
@@ -2407,7 +2568,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     Gênero: <span id="DECIMAPRIMEIRAPAG_Login_rev_genero">-</span>
 
     <div style="margin-top:10px; font-size:12px; opacity:0.85;">
-        O CPF/CNPJ não pode ser alterado pelo usuário depois de salvo.
+        O CPF não pode ser alterado pelo usuário depois de salvo.
     </div>
 
     <button
@@ -4403,10 +4564,8 @@ async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
                 atualizadoEm: new Date()
             }, { merge: true });
 
-        alert('Categoria salva. Próximo passo: dados da CNH.');
-
-        // Próxima tela ainda vamos criar
-        // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+return;
 
     } catch (erro) {
         console.error('ERRO AO SALVAR CATEGORIA DO MOTORISTA:', erro);
@@ -4420,6 +4579,155 @@ async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
     btn.disabled = false;
     btn.innerText = 'CONTINUAR';
 }
+
+function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
+    let valor = input.value.replace(/\D/g, '');
+
+    if (valor.length > 11) {
+        valor = valor.slice(0, 11);
+    }
+
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+
+    input.value = valor;
+}
+
+function MOTORISTAPAG_Login_func_limparCpf(valor) {
+    return String(valor || '').replace(/\D/g, '');
+}
+
+async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
+
+    const numeroCnh = document.getElementById('MOTORISTAPAG_Login_input_cnh_numero').value.trim();
+    const cpfCnhFormatado = document.getElementById('MOTORISTAPAG_Login_input_cnh_cpf').value.trim();
+    const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
+    const categoriaCnh = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria').value;
+    const validadeCnh = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade').value;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Sua sessão expirou. Volte e faça login novamente.'
+        );
+    }
+
+    if (!numeroCnh) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite o número da CNH.'
+        );
+    }
+
+    if (cpfCnh.length !== 11) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Digite um CPF válido para o titular da CNH.'
+        );
+    }
+
+    if (!categoriaCnh) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Selecione a categoria da CNH.'
+        );
+    }
+
+    if (!validadeCnh) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Informe a validade da CNH.'
+        );
+    }
+
+    btn.disabled = true;
+    btn.innerText = 'SALVANDO...';
+
+    try {
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                cnhNumero: numeroCnh,
+                cnhCpfTitular: cpfCnh,
+                cnhCpfTitularFormatado: cpfCnhFormatado,
+                cnhCategoria: categoriaCnh,
+                cnhValidade: validadeCnh,
+
+                etapaCadastroMotorista: 'foto_cnh',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                cpf: cpfCnh,
+                cpfFormatado: cpfCnhFormatado,
+                etapaCadastro: 'motorista_foto_cnh',
+                etapaCadastroMotorista: 'foto_cnh',
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        btn.disabled = false;
+        btn.innerText = 'CONTINUAR';
+
+        alert('Dados da CNH salvos. Próximo passo: foto da CNH.');
+
+        // Próxima tela vamos criar depois:
+        // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
+
+    } catch (erro) {
+        console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
+
+        btn.disabled = false;
+        btn.innerText = 'CONTINUAR';
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Não foi possível salvar os dados da CNH agora. Verifique sua conexão e tente novamente.'
+        );
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ========== TELA 7: ÁREA DO PASSAGEIRO COM PREFIXO SEXTAPAG ==========
 
@@ -4845,7 +5153,7 @@ function SETIMAPAG_Login_func_mostrarDocumentoDuplicado() {
     if (erroBox) {
         erroBox.innerHTML = `
             <div style="margin-bottom:10px;">
-                Este CPF/CNPJ já está cadastrado em outra conta.
+                Este CPF já está cadastrado em outra conta.
             </div>
 
             <div style="
@@ -4935,7 +5243,7 @@ async function SETIMAPAG_Login_func_carregarDadosParaEdicao() {
     SETIMAPAG_Login_inputDoc.disabled = false;
     SETIMAPAG_Login_inputDoc.style.opacity = "0.65";
     SETIMAPAG_Login_inputDoc.style.cursor = "not-allowed";
-    SETIMAPAG_Login_inputDoc.title = "CPF/CNPJ não pode ser alterado depois de salvo.";
+    SETIMAPAG_Login_inputDoc.title = "CPF não pode ser alterado depois de salvo.";
 
     document.getElementById('SETIMAPAG_Login_card_cpf').style.pointerEvents = "none";
     document.getElementById('SETIMAPAG_Login_card_cnpj').style.pointerEvents = "none";
@@ -5215,7 +5523,7 @@ documentoFormatado: SETIMAPAG_Login_documentoJaSalvo
     if (SETIMAPAG_Login_msgErro === "DOCUMENTO_NAO_PODE_ALTERAR") {
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'SETIMAPAG_Login_error_dados_pessoais',
-            'CPF/CNPJ não pode ser alterado por aqui. Para corrigir esse dado, fale com o suporte.'
+            'CPF não pode ser alterado por aqui. Para corrigir esse dado, fale com o suporte.'
         );
     }
 
@@ -5237,7 +5545,7 @@ documentoFormatado: SETIMAPAG_Login_documentoJaSalvo
     ) {
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'SETIMAPAG_Login_error_dados_pessoais',
-            'Documento inválido. Confira o CPF/CNPJ informado.'
+            'Documento inválido. Confira o CPF informado.'
         );
     }
 
