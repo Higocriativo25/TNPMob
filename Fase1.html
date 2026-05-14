@@ -3317,81 +3317,83 @@ function PRIMEIRAPAG_Login_func_logar() {
 
             // LOGIN COMO MOTORISTA
             if (PRIMEIRAPAG_tipo === 'motorista') {
+
+                // Se ainda não chegou na etapa de motorista, continua o cadastro normal.
+                // Assim a pessoa chega na tela Tipo de Conta sem receber alerta.
                 if (
-                    PRIMEIRAPAG_user.perfis &&
-                    PRIMEIRAPAG_user.perfis.motorista === true
+                    !PRIMEIRAPAG_user.perfis ||
+                    PRIMEIRAPAG_user.perfis.motorista !== true
                 ) {
-                    const PRIMEIRAPAG_docMotorista = await PRIMEIRAPAG_Login_db
-                        .collection('motoristas')
-                        .doc(PRIMEIRAPAG_uid)
-                        .get();
-
-                    if (PRIMEIRAPAG_docMotorista.exists) {
-                        const PRIMEIRAPAG_motorista = PRIMEIRAPAG_docMotorista.data();
-
-                        const PRIMEIRAPAG_etapaUsuario = PRIMEIRAPAG_user.etapaCadastro || "";
-                        const PRIMEIRAPAG_etapaMotorista = PRIMEIRAPAG_motorista.etapaCadastroMotorista || "";
-
-                        // 1. Se ainda não enviou selfie de perfil, volta para selfie
-                        if (
-                            PRIMEIRAPAG_user.selfieEnviada !== true ||
-                            PRIMEIRAPAG_etapaUsuario === "selfie"
-                        ) {
-                            PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
-                            return;
-                        }
-
-                        // 2. Se está na etapa de categoria do motorista
-                        if (
-                            PRIMEIRAPAG_etapaUsuario === "motorista_categoria" ||
-                            PRIMEIRAPAG_etapaMotorista === "categoria"
-                        ) {
-                            if (document.getElementById('MOTORISTAPAG_Login_screen_categoria')) {
-                                PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
-                            } else {
-                            PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
-                            }
-
-                            return;
-                        }
-
-                        // 3. Se está na etapa de CNH
-                        if (
-                            PRIMEIRAPAG_etapaUsuario === "motorista_cnh" ||
-                            PRIMEIRAPAG_etapaMotorista === "cnh"
-                        ) {
-                            if (document.getElementById('MOTORISTAPAG_Login_screen_cnh')) {
-                                PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
-                            } else {
-                                alert("Você está na etapa de CNH. Essa tela será criada no próximo passo.");
-                                PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
-                            }
-
-                            return;
-                        }
-
-                        const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
-                            ? PRIMEIRAPAG_motorista.status.geral
-                            : "";
-
-                        // 4. Se já estiver aprovado
-                        if (PRIMEIRAPAG_statusMotorista === "aprovado") {
-                            PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
-                            return;
-                        }
-
-                        // 5. Caso esteja incompleto ou em análise
-                        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
-                        return;
-                    }
+                    PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
+                    return;
                 }
 
-                PRIMEIRAPAG_Login_func_mostrarErro(
-    'PRIMEIRAPAG_Login_error_main',
-    'Esta conta ainda não tem cadastro de motorista ativo. Se quiser continuar como passageiro, selecione Passageiro e entre novamente.'
-);
+                const PRIMEIRAPAG_docMotorista = await PRIMEIRAPAG_Login_db
+                    .collection('motoristas')
+                    .doc(PRIMEIRAPAG_uid)
+                    .get();
 
-return;
+                // Se o perfil motorista ainda não foi criado, continua o cadastro normal.
+                if (!PRIMEIRAPAG_docMotorista.exists) {
+                    PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
+                    return;
+                }
+
+                const PRIMEIRAPAG_motorista = PRIMEIRAPAG_docMotorista.data();
+
+                const PRIMEIRAPAG_etapaUsuario = PRIMEIRAPAG_user.etapaCadastro || "";
+                const PRIMEIRAPAG_etapaMotorista = PRIMEIRAPAG_motorista.etapaCadastroMotorista || "";
+
+                // 1. Se ainda não enviou selfie de perfil, volta para selfie
+                if (
+                    PRIMEIRAPAG_user.selfieEnviada !== true ||
+                    PRIMEIRAPAG_etapaUsuario === "selfie"
+                ) {
+                    PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
+                    return;
+                }
+
+                // 2. Se está na etapa de categoria do motorista
+                if (
+                    PRIMEIRAPAG_etapaUsuario === "motorista_categoria" ||
+                    PRIMEIRAPAG_etapaMotorista === "categoria"
+                ) {
+                    if (document.getElementById('MOTORISTAPAG_Login_screen_categoria')) {
+                        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+                    } else {
+                        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+                    }
+
+                    return;
+                }
+
+                // 3. Se está na etapa de CNH
+                if (
+                    PRIMEIRAPAG_etapaUsuario === "motorista_cnh" ||
+                    PRIMEIRAPAG_etapaMotorista === "cnh"
+                ) {
+                    if (document.getElementById('MOTORISTAPAG_Login_screen_cnh')) {
+                        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+                    } else {
+                        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+                    }
+
+                    return;
+                }
+
+                const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
+                    ? PRIMEIRAPAG_motorista.status.geral
+                    : "";
+
+                // 4. Se já estiver aprovado
+                if (PRIMEIRAPAG_statusMotorista === "aprovado") {
+                    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+                    return;
+                }
+
+                // 5. Caso esteja incompleto ou em análise
+                PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+                return;
             }
         })
         .catch((erro) => {
