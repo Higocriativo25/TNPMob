@@ -1991,11 +1991,12 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     <div class="PRIMEIRAPAG_Login_form_group">
         <label for="MOTORISTAPAG_Login_input_cnh_numero">Número da CNH</label>
         <input
-            type="tel"
-            id="MOTORISTAPAG_Login_input_cnh_numero"
-            placeholder="Digite o número da CNH"
-            maxlength="20"
-        >
+    type="tel"
+    id="MOTORISTAPAG_Login_input_cnh_numero"
+    placeholder="Digite os 11 números da CNH"
+    maxlength="11"
+    oninput="MOTORISTAPAG_Login_func_maskNumeroCnh(this)"
+>
     </div>
 
     <div class="PRIMEIRAPAG_Login_form_group">
@@ -3767,6 +3768,7 @@ async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
                     passageiro: true,
                     motorista: false
                 },
+				etapaCadastro: "entrada_app",
                 etapaCadastroMotorista: "",
                 motoristaStatus: "cancelado_pelo_usuario",
                 atualizadoEm: new Date()
@@ -4800,12 +4802,66 @@ function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
 function MOTORISTAPAG_Login_func_limparCpf(valor) {
     return String(valor || '').replace(/\D/g, '');
 }
+function MOTORISTAPAG_Login_func_maskNumeroCnh(input) {
+    let valor = input.value.replace(/\D/g, '');
 
+    if (valor.length > 11) {
+        valor = valor.slice(0, 11);
+    }
+
+    input.value = valor;
+}
+function MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh) {
+    numeroCnh = String(numeroCnh || '').replace(/\D/g, '');
+
+    if (numeroCnh.length !== 11) return false;
+
+    if (/^(\d)\1{10}$/.test(numeroCnh)) return false;
+
+    const base = numeroCnh.substring(0, 9);
+    const dvInformado1 = parseInt(numeroCnh.charAt(9), 10);
+    const dvInformado2 = parseInt(numeroCnh.charAt(10), 10);
+
+    let soma1 = 0;
+
+    for (let i = 0; i < 9; i++) {
+        soma1 += parseInt(base.charAt(i), 10) * (i + 2);
+    }
+
+    let dv1 = soma1 % 11;
+    let incremento = 0;
+
+    if (dv1 === 10) {
+        dv1 = 0;
+        incremento = 2;
+    }
+
+    let soma2 = 0;
+
+    for (let i = 0; i < 9; i++) {
+        soma2 += parseInt(base.charAt(i), 10) * (i + 3);
+    }
+
+    let dv2 = (soma2 % 11) - incremento;
+
+    if (dv2 < 0) {
+        dv2 += 11;
+    }
+
+    if (dv2 === 10) {
+        dv2 = 0;
+    }
+
+    return dv1 === dvInformado1 && dv2 === dvInformado2;
+}
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
-    const numeroCnh = document.getElementById('MOTORISTAPAG_Login_input_cnh_numero').value.trim();
+    const numeroCnh = document
+    .getElementById('MOTORISTAPAG_Login_input_cnh_numero')
+    .value
+    .replace(/\D/g, '');
     const cpfCnhFormatado = document.getElementById('MOTORISTAPAG_Login_input_cnh_cpf').value.trim();
     const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
     const categoriaCnh = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria').value;
@@ -4819,18 +4875,25 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     }
 
     if (!numeroCnh) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_cnh',
-            'Digite o número da CNH.'
-        );
-    }
+    return PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_cnh',
+        'Digite o número da CNH.'
+    );
+}
 
-    if (cpfCnh.length !== 11) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_cnh',
-            'Digite um CPF válido para o titular da CNH.'
-        );
-    }
+if (!MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh)) {
+    return PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_cnh',
+        'Digite um número de CNH válido com 11 números.'
+    );
+}
+
+if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
+    return PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_cnh',
+        'Digite um CPF válido para o titular da CNH.'
+    );
+}
 
     if (!categoriaCnh) {
         return PRIMEIRAPAG_Login_func_mostrarErro(
@@ -5158,19 +5221,94 @@ function SETIMAPAG_Login_func_maskCpfCnpj(SETIMAPAG_Login_input) {
 function SETIMAPAG_Login_func_validarDocumentoBasico(SETIMAPAG_Login_tipo, SETIMAPAG_Login_valor) {
     const SETIMAPAG_Login_numeros = SETIMAPAG_Login_valor.replace(/\D/g, "");
 
-    if (SETIMAPAG_Login_tipo === 'cpf' && SETIMAPAG_Login_numeros.length !== 11) {
-        return false;
+    // CPF
+    if (SETIMAPAG_Login_tipo === 'cpf') {
+        if (SETIMAPAG_Login_numeros.length !== 11) {
+            return false;
+        }
+
+        if (/^(\d)\1{10}$/.test(SETIMAPAG_Login_numeros)) {
+            return false;
+        }
+
+        let soma = 0;
+
+        for (let i = 0; i < 9; i++) {
+            soma += parseInt(SETIMAPAG_Login_numeros.charAt(i), 10) * (10 - i);
+        }
+
+        let resto = soma % 11;
+        let digito1 = resto < 2 ? 0 : 11 - resto;
+
+        if (digito1 !== parseInt(SETIMAPAG_Login_numeros.charAt(9), 10)) {
+            return false;
+        }
+
+        soma = 0;
+
+        for (let i = 0; i < 10; i++) {
+            soma += parseInt(SETIMAPAG_Login_numeros.charAt(i), 10) * (11 - i);
+        }
+
+        resto = soma % 11;
+        let digito2 = resto < 2 ? 0 : 11 - resto;
+
+        if (digito2 !== parseInt(SETIMAPAG_Login_numeros.charAt(10), 10)) {
+            return false;
+        }
+
+        return true;
     }
 
-    if (SETIMAPAG_Login_tipo === 'cnpj' && SETIMAPAG_Login_numeros.length !== 14) {
-        return false;
+    // CNPJ - deixado pronto para ativar no futuro
+    if (SETIMAPAG_Login_tipo === 'cnpj') {
+        if (SETIMAPAG_Login_numeros.length !== 14) {
+            return false;
+        }
+
+        if (/^(\d)\1{13}$/.test(SETIMAPAG_Login_numeros)) {
+            return false;
+        }
+
+        const calcularDigitoCnpj = (base, pesos) => {
+            let soma = 0;
+
+            for (let i = 0; i < pesos.length; i++) {
+                soma += parseInt(base.charAt(i), 10) * pesos[i];
+            }
+
+            const resto = soma % 11;
+            return resto < 2 ? 0 : 11 - resto;
+        };
+
+        const base12 = SETIMAPAG_Login_numeros.substring(0, 12);
+        const digito1Informado = parseInt(SETIMAPAG_Login_numeros.charAt(12), 10);
+        const digito2Informado = parseInt(SETIMAPAG_Login_numeros.charAt(13), 10);
+
+        const digito1 = calcularDigitoCnpj(
+            base12,
+            [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+        );
+
+        if (digito1 !== digito1Informado) {
+            return false;
+        }
+
+        const base13 = SETIMAPAG_Login_numeros.substring(0, 12) + digito1;
+
+        const digito2 = calcularDigitoCnpj(
+            base13,
+            [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+        );
+
+        if (digito2 !== digito2Informado) {
+            return false;
+        }
+
+        return true;
     }
 
-    if (/^(\d)\1+$/.test(SETIMAPAG_Login_numeros)) {
-        return false;
-    }
-
-    return true;
+    return false;
 }
 
 function SETIMAPAG_Login_func_converterDataBrParaIso(SETIMAPAG_Login_dataBr) {
