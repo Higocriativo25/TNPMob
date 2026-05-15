@@ -555,6 +555,20 @@
     display: block;
     margin: 0 auto;
 }		
+.MOTORISTAPAG_Login_preview_doc {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid var(--Fame_gold);
+    margin: 10px 0 12px;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_btn_confirmar_doc {
+    display: none;
+    margin-top: 8px;
+}
 		
 
 /* ==================================================
@@ -2110,14 +2124,30 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
             </span>
         </div>
 
-        <button
-            id="MOTORISTAPAG_Login_btn_foto_cnh"
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            type="button"
-            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumento('fotoCnh')"
-        >
-            TIRAR FOTO DA CNH
-        </button>
+<img
+    id="MOTORISTAPAG_Login_preview_foto_cnh"
+    class="MOTORISTAPAG_Login_preview_doc"
+    alt="Prévia da foto da CNH"
+>
+
+<button
+    id="MOTORISTAPAG_Login_btn_foto_cnh"
+    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+    type="button"
+    onclick="MOTORISTAPAG_Login_func_abrirCameraDocumento('fotoCnh')"
+>
+    TIRAR FOTO DA CNH
+</button>
+
+<button
+    id="MOTORISTAPAG_Login_btn_confirmar_foto_cnh"
+    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary MOTORISTAPAG_Login_btn_confirmar_doc"
+    type="button"
+    onclick="MOTORISTAPAG_Login_func_confirmarEnvioDocumentoMotorista('fotoCnh')"
+>
+    CONFIRMAR ENVIO DA FOTO
+</button>
+
     </div>
 
     <!-- CARD SELFIE COM CNH -->
@@ -2129,14 +2159,29 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
             </span>
         </div>
 
-        <button
-            id="MOTORISTAPAG_Login_btn_selfie_cnh"
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            type="button"
-            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumento('selfieComCnh')"
-        >
-            TIRAR SELFIE COM A CNH
-        </button>
+<img
+    id="MOTORISTAPAG_Login_preview_selfie_cnh"
+    class="MOTORISTAPAG_Login_preview_doc"
+    alt="Prévia da selfie com CNH"
+>
+
+<button
+    id="MOTORISTAPAG_Login_btn_selfie_cnh"
+    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+    type="button"
+    onclick="MOTORISTAPAG_Login_func_abrirCameraDocumento('selfieComCnh')"
+>
+    TIRAR SELFIE COM A CNH
+</button>
+
+<button
+    id="MOTORISTAPAG_Login_btn_confirmar_selfie_cnh"
+    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary MOTORISTAPAG_Login_btn_confirmar_doc"
+    type="button"
+    onclick="MOTORISTAPAG_Login_func_confirmarEnvioDocumentoMotorista('selfieComCnh')"
+>
+    CONFIRMAR ENVIO DA SELFIE
+</button>
     </div>
 
     <div id="MOTORISTAPAG_Login_error_fotos_cnh" class="PRIMEIRAPAG_Login_error"></div>
@@ -2152,24 +2197,24 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     </button>
 
     <!-- INPUT OCULTO PARA FOTO DA CNH -->
-    <input
-        type="file"
-        id="MOTORISTAPAG_Login_input_foto_cnh"
-        accept="image/*"
-        capture="environment"
-        style="display:none;"
-        onchange="MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, 'fotoCnh')"
-    >
+<input
+    type="file"
+    id="MOTORISTAPAG_Login_input_foto_cnh"
+    accept="image/*"
+    capture="environment"
+    style="display:none;"
+    onchange="MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, 'fotoCnh')"
+>
 
     <!-- INPUT OCULTO PARA SELFIE COM CNH -->
-    <input
-        type="file"
-        id="MOTORISTAPAG_Login_input_selfie_cnh"
-        accept="image/*"
-        capture="user"
-        style="display:none;"
-        onchange="MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, 'selfieComCnh')"
-    >
+<input
+    type="file"
+    id="MOTORISTAPAG_Login_input_selfie_cnh"
+    accept="image/*"
+    capture="user"
+    style="display:none;"
+    onchange="MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, 'selfieComCnh')"
+>
 
 </div>
 
@@ -5610,9 +5655,15 @@ function MOTORISTAPAG_Login_func_calcularStatusValidadeCnh(cnhValidadeIso) {
         mensagem: 'Sua CNH ultrapassou o período de tolerância. Você está bloqueado para aceitar corridas até atualizar a CNH.'
     };
 }
+
+
 <!-- TELA MOTORISTA 3: FOTOS DA CNH -->
 let MOTORISTAPAG_Login_fotoCnhEnviada = false;
 let MOTORISTAPAG_Login_selfieComCnhEnviada = false;
+
+let MOTORISTAPAG_Login_arquivoFotoCnhPendente = null;
+let MOTORISTAPAG_Login_arquivoSelfieComCnhPendente = null;
+
 
 async function MOTORISTAPAG_Login_func_carregarTelaFotosCnh() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
@@ -5626,7 +5677,13 @@ async function MOTORISTAPAG_Login_func_carregarTelaFotosCnh() {
 
     PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_fotos_cnh');
 
-    try {
+const erroBox = document.getElementById('MOTORISTAPAG_Login_error_fotos_cnh');
+if (erroBox) {
+    erroBox.innerText = '';
+    erroBox.style.display = 'none';
+}
+
+try {
         const docRef = PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid);
         const docSnap = await docRef.get();
 
@@ -5678,31 +5735,63 @@ function MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(tipoDocumento, 
         'MOTORISTAPAG_Login_doc_card_reprovado'
     );
 
-    const enviado = dadosDocumento.enviado === true;
-    const statusDocumento = dadosDocumento.status || 'pendente_envio';
-    const motivo = dadosDocumento.motivoReprovacao || '';
-	
-	if (tipoDocumento === 'fotoCnh') {
+const enviado = dadosDocumento && dadosDocumento.enviado === true;
+const statusDocumento = dadosDocumento && dadosDocumento.status
+    ? dadosDocumento.status
+    : 'pendente_envio';
+
+const motivo = dadosDocumento && dadosDocumento.motivoReprovacao
+    ? dadosDocumento.motivoReprovacao
+    : '';
+
+let preview;
+let botaoConfirmar;
+
+if (tipoDocumento === 'fotoCnh') {
+    preview = document.getElementById('MOTORISTAPAG_Login_preview_foto_cnh');
+    botaoConfirmar = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_foto_cnh');
+}
+
+if (tipoDocumento === 'selfieComCnh') {
+    preview = document.getElementById('MOTORISTAPAG_Login_preview_selfie_cnh');
+    botaoConfirmar = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_selfie_cnh');
+}
+
+if (preview && dadosDocumento && dadosDocumento.url) {
+    preview.src = dadosDocumento.url;
+    preview.style.display = 'block';
+}
+
+if (botaoConfirmar) {
+    botaoConfirmar.style.display = 'none';
+}
+
+if (tipoDocumento === 'fotoCnh') {
     MOTORISTAPAG_Login_fotoCnhEnviada = enviado;
-	}
+}
 
-	if (tipoDocumento === 'selfieComCnh') {
+if (tipoDocumento === 'selfieComCnh') {
     MOTORISTAPAG_Login_selfieComCnhEnviada = enviado;
-	}
+}
 
-    if (!enviado) {
-        status.innerText = 'Pendente de envio';
+if (!enviado) {
+    status.innerText = 'Pendente de envio';
 
-        if (tipoDocumento === 'fotoCnh') {
-            botao.innerText = 'TIRAR FOTO DA CNH';
-        }
-
-        if (tipoDocumento === 'selfieComCnh') {
-            botao.innerText = 'TIRAR SELFIE COM A CNH';
-        }
-
-        return;
+    if (preview) {
+        preview.removeAttribute('src');
+        preview.style.display = 'none';
     }
+
+    if (tipoDocumento === 'fotoCnh') {
+        botao.innerText = 'TIRAR FOTO DA CNH';
+    }
+
+    if (tipoDocumento === 'selfieComCnh') {
+        botao.innerText = 'TIRAR SELFIE COM A CNH';
+    }
+
+    return;
+}
 
     if (statusDocumento === 'reprovado') {
         card.classList.add('MOTORISTAPAG_Login_doc_card_reprovado');
@@ -5744,16 +5833,9 @@ function MOTORISTAPAG_Login_func_abrirCameraDocumento(tipoDocumento) {
         document.getElementById('MOTORISTAPAG_Login_input_selfie_cnh').click();
     }
 }
-async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocumento) {
-    const user = PRIMEIRAPAG_Login_auth.currentUser;
-    const arquivo = event.target.files[0];
 
-    if (!user) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_fotos_cnh',
-            'Você precisa estar logado para enviar a foto.'
-        );
-    }
+function MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, tipoDocumento) {
+    const arquivo = event.target.files[0];
 
     if (!arquivo) return;
 
@@ -5766,14 +5848,87 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
         );
     }
 
-    let botao;
+    const urlPreview = URL.createObjectURL(arquivo);
+
+    let preview;
+    let botaoConfirmar;
+    let botaoEscolher;
+    let status;
 
     if (tipoDocumento === 'fotoCnh') {
-        botao = document.getElementById('MOTORISTAPAG_Login_btn_foto_cnh');
+        MOTORISTAPAG_Login_arquivoFotoCnhPendente = arquivo;
+
+        preview = document.getElementById('MOTORISTAPAG_Login_preview_foto_cnh');
+        botaoConfirmar = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_foto_cnh');
+        botaoEscolher = document.getElementById('MOTORISTAPAG_Login_btn_foto_cnh');
+        status = document.getElementById('MOTORISTAPAG_Login_status_foto_cnh');
     }
 
     if (tipoDocumento === 'selfieComCnh') {
-        botao = document.getElementById('MOTORISTAPAG_Login_btn_selfie_cnh');
+        MOTORISTAPAG_Login_arquivoSelfieComCnhPendente = arquivo;
+
+        preview = document.getElementById('MOTORISTAPAG_Login_preview_selfie_cnh');
+        botaoConfirmar = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_selfie_cnh');
+        botaoEscolher = document.getElementById('MOTORISTAPAG_Login_btn_selfie_cnh');
+        status = document.getElementById('MOTORISTAPAG_Login_status_selfie_cnh');
+    }
+
+    if (preview) {
+        preview.src = urlPreview;
+        preview.style.display = 'block';
+    }
+
+    if (botaoConfirmar) {
+        botaoConfirmar.style.display = 'block';
+    }
+
+    if (botaoEscolher) {
+        botaoEscolher.innerText = tipoDocumento === 'fotoCnh'
+            ? 'TROCAR FOTO ANTES DE ENVIAR'
+            : 'TROCAR SELFIE ANTES DE ENVIAR';
+    }
+
+    if (status) {
+        status.innerText = 'Confira a imagem e confirme o envio.';
+    }
+
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_fotos_cnh');
+    if (erroBox) {
+        erroBox.innerText = '';
+        erroBox.style.display = 'none';
+    }
+
+    event.target.value = '';
+}
+
+async function MOTORISTAPAG_Login_func_confirmarEnvioDocumentoMotorista(tipoDocumento) {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    let arquivo;
+    let botao;
+
+    if (tipoDocumento === 'fotoCnh') {
+        arquivo = MOTORISTAPAG_Login_arquivoFotoCnhPendente;
+        botao = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_foto_cnh');
+    }
+
+    if (tipoDocumento === 'selfieComCnh') {
+        arquivo = MOTORISTAPAG_Login_arquivoSelfieComCnhPendente;
+        botao = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_selfie_cnh');
+    }
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_fotos_cnh',
+            'Você precisa estar logado para enviar a foto.'
+        );
+    }
+
+    if (!arquivo) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_fotos_cnh',
+            'Escolha uma imagem antes de confirmar o envio.'
+        );
     }
 
     const textoOriginal = botao ? botao.innerText : '';
@@ -5784,10 +5939,11 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
             botao.innerText = 'ENVIANDO...';
         }
 
-        PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_fotos_cnh',
-            ''
-        );
+        const erroBox = document.getElementById('MOTORISTAPAG_Login_error_fotos_cnh');
+        if (erroBox) {
+            erroBox.innerText = '';
+            erroBox.style.display = 'none';
+        }
 
         const nomeArquivo = tipoDocumento + '_' + Date.now() + '_' + arquivo.name;
         const caminho = 'motoristas/' + user.uid + '/documentos/' + nomeArquivo;
@@ -5823,16 +5979,22 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
 
         if (tipoDocumento === 'fotoCnh') {
             MOTORISTAPAG_Login_fotoCnhEnviada = true;
+            MOTORISTAPAG_Login_arquivoFotoCnhPendente = null;
         }
 
         if (tipoDocumento === 'selfieComCnh') {
             MOTORISTAPAG_Login_selfieComCnhEnviada = true;
+            MOTORISTAPAG_Login_arquivoSelfieComCnhPendente = null;
         }
 
         MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(
             tipoDocumento,
             dadosAtualizadosDocumento
         );
+
+        if (botao) {
+            botao.style.display = 'none';
+        }
 
         MOTORISTAPAG_Login_func_verificarLiberarContinuarFotosCnh();
 
@@ -5852,8 +6014,6 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
         if (botao) {
             botao.disabled = false;
         }
-
-        event.target.value = '';
     }
 }
 function MOTORISTAPAG_Login_func_verificarLiberarContinuarFotosCnh() {
@@ -5893,15 +6053,24 @@ try {
         btn.innerText = 'SALVANDO...';
     }
 
-        await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                fotosCnhConcluidas: true,
-                fotosCnhStatus: 'pendente_analise',
-                etapaCadastroMotorista: 'dados_veiculo',
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
+    await PRIMEIRAPAG_Login_db
+        .collection('motoristas')
+		.doc(user.uid)
+		.set({
+        fotosCnhConcluidas: true,
+        fotosCnhStatus: 'pendente_analise',
+        etapaCadastroMotorista: 'dados_veiculo',
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+await PRIMEIRAPAG_Login_db
+    .collection('usuarios')
+    .doc(user.uid)
+    .set({
+        etapaCadastro: 'motorista_dados_veiculo',
+        etapaCadastroMotorista: 'dados_veiculo',
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
 
                 // Quando criarmos a tela real de dados do veículo, trocar por:
         // MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo();
