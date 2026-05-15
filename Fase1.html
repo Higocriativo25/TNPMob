@@ -4946,42 +4946,42 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
         // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
 
     } catch (erro) {
-        console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
+    console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
 
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = 'CONTINUAR';
-        }
+    const msgErro = erro.message || "";
+    const codeErro = erro.code || "";
 
-        if (erro.code === 'functions/not-found') {
-            return PRIMEIRAPAG_Login_func_mostrarErro(
-                'MOTORISTAPAG_Login_error_cnh',
-                'A função verificarDocumento não foi encontrada. Verifique se a Cloud Function foi publicada no Firebase.'
-            );
-        }
+    if (btn) {
+        btn.disabled = false;
+        btn.innerText = 'CONTINUAR';
+    }
 
-        const msgErro = erro.message || "";
-const codeErro = erro.code || "";
-
-if (
-    codeErro === "functions/permission-denied" ||
-    codeErro === "permission-denied" ||
-    codeErro === "already-exists" ||
-    msgErro.includes("permission") ||
-    msgErro.includes("PERMISSION_DENIED") ||
-    msgErro.includes("Missing or insufficient permissions") ||
-    msgErro.includes("already exists") ||
-    msgErro.includes("ALREADY_EXISTS")
-) {
-    MOTORISTAPAG_Login_func_mostrarCardCpfConflito();
-    return;
-}
-
-        PRIMEIRAPAG_Login_func_mostrarErro(
+    if (codeErro === 'functions/not-found') {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
-            'Não foi possível salvar os dados da CNH agora. Verifique sua conexão e tente novamente.'
+            'A função verificarDocumento não foi encontrada. Verifique se a Cloud Function foi publicada no Firebase.'
         );
     }
+
+    if (
+        codeErro === "functions/permission-denied" ||
+        codeErro === "permission-denied" ||
+        codeErro === "already-exists" ||
+        msgErro.includes("permission") ||
+        msgErro.includes("PERMISSION_DENIED") ||
+        msgErro.includes("Missing or insufficient permissions") ||
+        msgErro.includes("already exists") ||
+        msgErro.includes("ALREADY_EXISTS")
+    ) {
+        MOTORISTAPAG_Login_func_mostrarCardCpfConflito();
+        return;
+    }
+
+    PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_cnh',
+        'Não foi possível salvar os dados da CNH agora. Verifique sua conexão e tente novamente.'
+    );
+}
 }
 // 1. Função para limpar o CPF (remover pontos e traços)
 function MOTORISTAPAG_Login_func_limparCpf(valor) {
@@ -5014,10 +5014,15 @@ function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
 function MOTORISTAPAG_Login_func_mostrarCardCpfConflito() {
     const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
     const erroBox = document.getElementById('MOTORISTAPAG_Login_error_cnh');
+    const btnContinuar = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
     if (erroBox) {
         erroBox.innerText = 'Este CPF já está sendo usado em outra conta. Escolha uma das opções abaixo.';
         erroBox.style.display = 'block';
+    }
+
+    if (btnContinuar) {
+        btnContinuar.style.display = 'none';
     }
 
     if (card) {
@@ -5034,9 +5039,14 @@ function MOTORISTAPAG_Login_func_mostrarCardCpfConflito() {
 
 function MOTORISTAPAG_Login_func_voltarInicioCpfConflito() {
     const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
+    const btnContinuar = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
     if (card) {
         card.style.display = 'none';
+    }
+
+    if (btnContinuar) {
+        btnContinuar.style.display = 'block';
     }
 
     PRIMEIRAPAG_Login_func_mostrarErro(
