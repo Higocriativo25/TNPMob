@@ -5862,54 +5862,59 @@ function MOTORISTAPAG_Login_func_formatarTamanhoArquivo(bytes) {
     return (bytes / (1024 * 1024)).toFixed(1).replace('.', ',') + ' MB';
 }
 
-function MOTORISTAPAG_Login_func_comprimirImagemMotorista(arquivo, larguraMaxima = 1280, qualidade = 0.72) {
-    return new Promise((resolve, reject) => {
+function MOTORISTAPAG_Login_func_comprimirImagemMotorista(file, quality = 0.7, maxWidth = 900, maxHeight = 900) {
+    return new Promise((resolve) => {
         const reader = new FileReader();
-        const img = new Image();
 
-        reader.onload = function (e) {
-            img.src = e.target.result;
-        };
+        reader.onload = function(event) {
+            const img = new Image();
 
-        img.onload = function () {
-            let largura = img.width;
-            let altura = img.height;
+            img.onload = function() {
+                let width = img.width;
+                let height = img.height;
 
-            if (largura > larguraMaxima) {
-                altura = Math.round((altura * larguraMaxima) / largura);
-                largura = larguraMaxima;
-            }
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height = height * (maxWidth / width);
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width = width * (maxHeight / height);
+                        height = maxHeight;
+                    }
+                }
 
-            const canvas = document.createElement('canvas');
-            canvas.width = largura;
-            canvas.height = altura;
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, largura, altura);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
 
-            canvas.toBlob(
-                function (blob) {
+                canvas.toBlob((blob) => {
                     if (!blob) {
-                        reject(new Error('Erro ao comprimir imagem.'));
+                        resolve(file);
                         return;
                     }
 
-                    resolve(blob);
-                },
-                'image/jpeg',
-                qualidade
-            );
+                    const arquivoFinal = new File(
+                        [blob],
+                        'documento-motorista-tnp-mob.jpg',
+                        {
+                            type: 'image/jpeg',
+                            lastModified: Date.now()
+                        }
+                    );
+
+                    resolve(arquivoFinal);
+                }, 'image/jpeg', quality);
+            };
+
+            img.src = event.target.result;
         };
 
-        img.onerror = function () {
-            reject(new Error('Não foi possível carregar a imagem.'));
-        };
-
-        reader.onerror = function () {
-            reject(new Error('Não foi possível ler o arquivo.'));
-        };
-
-        reader.readAsDataURL(arquivo);
+        reader.readAsDataURL(file);
     });
 }
 
@@ -5951,7 +5956,12 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, tipoDoc
             status.innerText = 'Preparando imagem...';
         }
 
-        const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemMotorista(arquivoOriginal);
+        const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemMotorista(
+    arquivoOriginal,
+    0.7,
+    900,
+    900
+	);
 
         const tamanhoOriginal = arquivoOriginal.size;
         const tamanhoFinal = arquivoCompactado.size;
