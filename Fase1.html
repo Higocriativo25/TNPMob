@@ -4891,17 +4891,13 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
         const documentoSnap = await documentoRef.get();
 
         if (documentoSnap.exists) {
-            const dadosDocumento = documentoSnap.data() || {};
+    const dadosDocumento = documentoSnap.data() || {};
 
-            if (dadosDocumento.uid && dadosDocumento.uid !== user.uid) {
-                MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dadosDocumento);
-
-                return PRIMEIRAPAG_Login_func_mostrarErro(
-                    'MOTORISTAPAG_Login_error_cnh',
-                    'Este CPF já está vinculado a outra conta. Escolha uma das opções abaixo para continuar com segurança.'
-                );
-            }
-        }
+    if (dadosDocumento.uid && dadosDocumento.uid !== user.uid) {
+        MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dadosDocumento);
+        return;
+    }
+}
 
         if (btn) {
             btn.disabled = true;
@@ -5007,15 +5003,36 @@ function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
 function MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dados) {
     const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
     const spanEmail = document.getElementById('MOTORISTAPAG_Login_email_mascarado_cpf');
-    
-    if (card) card.style.display = 'block';
-    
-    if (spanEmail && dados.emailVinculado) {
-        // Mascara o e-mail (ex: jo**@gmail.com)
-        const email = dados.emailVinculado;
-        const partes = email.split('@');
-        const inicio = partes[0].substring(0, 2);
-        spanEmail.innerText = `E-mail vinculado: ${inicio}***@${partes[1]}`;
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_cnh');
+
+    if (erroBox) {
+        erroBox.innerText = 'Este CPF já está vinculado a outra conta. Escolha uma das opções abaixo para continuar com segurança.';
+        erroBox.style.display = 'block';
+    }
+
+    if (spanEmail) {
+        if (dados && dados.emailVinculado) {
+            const email = dados.emailVinculado;
+            const partes = email.split('@');
+
+            if (partes.length === 2) {
+                const inicio = partes[0].substring(0, 2);
+                spanEmail.innerText = `E-mail vinculado: ${inicio}***@${partes[1]}`;
+            } else {
+                spanEmail.innerText = 'E-mail vinculado encontrado, mas não foi possível mascarar.';
+            }
+        } else {
+            spanEmail.innerText = 'Existe uma conta vinculada a este CPF, mas o e-mail não está disponível.';
+        }
+    }
+
+    if (card) {
+        card.style.display = 'block';
+
+        card.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
     }
 }
 
