@@ -2031,51 +2031,36 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         >
     </div>
 
-    <div
-        id="MOTORISTAPAG_Login_card_cpf_conflito"
-        class="PRIMEIRAPAG_Login_status_box"
-        style="display:none;"
+<div
+    id="MOTORISTAPAG_Login_card_cpf_conflito"
+    class="PRIMEIRAPAG_Login_status_box"
+    style="display:none;"
+>
+    <strong>CPF já usado em outra conta</strong><br><br>
+
+    Este CPF já está vinculado a outro cadastro no TNP MoB.
+    Por segurança, não exibimos os dados dessa conta.
+
+    <br><br>
+
+    Se você reconhece esse CPF, volte ao início e entre com a conta correta.
+    Se você não reconhece ou precisa continuar, o cadastro poderá seguir,
+    mas ficará marcado com alerta para análise do suporte antes da aprovação.
+
+    <button
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="MOTORISTAPAG_Login_func_voltarInicioCpfConflito()"
     >
-        <strong>CPF já vinculado a outra conta</strong><br><br>
+        VOLTAR AO INÍCIO E FAZER LOGIN
+    </button>
 
-        Encontramos uma conta cadastrada com este CPF.
-        Para sua segurança, precisamos confirmar a titularidade antes de liberar
-        o cadastro de motorista.
-
-        <br><br>
-
-        <span id="MOTORISTAPAG_Login_email_mascarado_cpf">
-            e-mail cadastrado
-        </span>
-
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-            onclick="MOTORISTAPAG_Login_func_orientarEntrarContaExistente()"
-        >
-            ENTRAR NA CONTA
-        </button>
-
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            onclick="MOTORISTAPAG_Login_func_recuperarSenhaCpfConflito()"
-        >
-            RECUPERAR SENHA
-        </button>
-
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            onclick="MOTORISTAPAG_Login_func_solicitarTrocaEmailCpf()"
-        >
-            SOLICITAR TROCA DE E-MAIL
-        </button>
-
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            onclick="MOTORISTAPAG_Login_func_naoReconhecoCpf()"
-        >
-            NÃO RECONHEÇO ESSA CONTA
-        </button>
-    </div>
+    <button
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+        onclick="MOTORISTAPAG_Login_func_continuarComAlertaCpf()"
+    >
+        CONTINUAR COM ALERTA PARA SUPORTE
+    </button>
+</div>
 
     <div style="padding-bottom:120px;">
         <button
@@ -4889,26 +4874,21 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
             documentoNumero: cpfCnh
         });
 
-        const dadosVerificacaoCpf = respostaVerificacaoCpf.data || {};
+const dadosVerificacaoCpf = respostaVerificacaoCpf.data || {};
 
-        if (
-            dadosVerificacaoCpf.liberado !== true &&
-            dadosVerificacaoCpf.uid &&
-            dadosVerificacaoCpf.uid !== user.uid
-        ) {
-            if (btn) {
-                btn.disabled = false;
-                btn.innerText = 'CONTINUAR';
-            }
+if (
+    dadosVerificacaoCpf.liberado !== true &&
+    dadosVerificacaoCpf.existe === true &&
+    dadosVerificacaoCpf.mesmoUsuario !== true
+) {
+    if (btn) {
+        btn.disabled = false;
+        btn.innerText = 'CONTINUAR';
+    }
 
-            MOTORISTAPAG_Login_func_mostrarCardCpfConflito({
-                uid: dadosVerificacaoCpf.uid,
-                emailVinculado: dadosVerificacaoCpf.emailVinculado || dadosVerificacaoCpf.email || '',
-                documentoNumero: cpfCnh
-            });
-
-            return;
-        }
+    MOTORISTAPAG_Login_func_mostrarCardCpfConflito();
+    return;
+}
 
         if (btn) {
             btn.innerText = 'SALVANDO...';
@@ -5030,31 +5010,15 @@ function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
     v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     input.value = v;
 }
+
 // 1. Função para mostrar o card de conflito e mascarar o e-mail
-function MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dados) {
+function MOTORISTAPAG_Login_func_mostrarCardCpfConflito() {
     const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
-    const spanEmail = document.getElementById('MOTORISTAPAG_Login_email_mascarado_cpf');
     const erroBox = document.getElementById('MOTORISTAPAG_Login_error_cnh');
 
     if (erroBox) {
-        erroBox.innerText = 'Este CPF já está vinculado a outra conta. Escolha uma das opções abaixo para continuar com segurança.';
+        erroBox.innerText = 'Este CPF já está sendo usado em outra conta. Escolha uma das opções abaixo.';
         erroBox.style.display = 'block';
-    }
-
-    if (spanEmail) {
-        if (dados && dados.emailVinculado) {
-            const email = dados.emailVinculado;
-            const partes = email.split('@');
-
-            if (partes.length === 2) {
-                const inicio = partes[0].substring(0, 2);
-                spanEmail.innerText = `E-mail vinculado: ${inicio}***@${partes[1]}`;
-            } else {
-                spanEmail.innerText = 'E-mail vinculado encontrado, mas não foi possível mascarar.';
-            }
-        } else {
-            spanEmail.innerText = 'Existe uma conta vinculada a este CPF, mas o e-mail não está disponível.';
-        }
     }
 
     if (card) {
@@ -5068,23 +5032,22 @@ function MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dados) {
 }
 
 // 2. Funções dos botões que aparecem no card de conflito
-function MOTORISTAPAG_Login_func_orientarEntrarContaExistente() {
-    alert("Por favor, saia desta conta e faça login com o e-mail vinculado ao seu CPF.");
+
+function MOTORISTAPAG_Login_func_voltarInicioCpfConflito() {
+    const card = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
+
+    if (card) {
+        card.style.display = 'none';
+    }
+
+    PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_cnh',
+        'Entre com a conta vinculada a este CPF para continuar com segurança.'
+    );
+
     PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
 }
 
-function MOTORISTAPAG_Login_func_recuperarSenhaCpfConflito() {
-    alert("Redirecionando para recuperação de senha...");
-    // Aqui você pode chamar sua função de reset de senha
-}
-
-function MOTORISTAPAG_Login_func_solicitarTrocaEmailCpf() {
-    alert("Sua solicitação de troca de e-mail foi enviada para análise do suporte.");
-}
-
-function MOTORISTAPAG_Login_func_naoReconhecoCpf() {
-    alert("Nossa equipe de segurança entrará em contato para verificar sua identidade.");
-}
 
 
 
