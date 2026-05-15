@@ -5624,7 +5624,7 @@ async function MOTORISTAPAG_Login_func_carregarTelaFotosCnh() {
         );
     }
 
-    PRIMEIRAPAG_Login_func_mostrarTela('MOTORISTAPAG_Login_screen_fotos_cnh');
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_fotos_cnh');
 
     try {
         const docRef = PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid);
@@ -5653,6 +5653,7 @@ async function MOTORISTAPAG_Login_func_carregarTelaFotosCnh() {
         );
     }
 }
+
 function MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(tipoDocumento, dadosDocumento) {
     let card;
     let status;
@@ -5680,6 +5681,14 @@ function MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(tipoDocumento, 
     const enviado = dadosDocumento.enviado === true;
     const statusDocumento = dadosDocumento.status || 'pendente_envio';
     const motivo = dadosDocumento.motivoReprovacao || '';
+	
+	if (tipoDocumento === 'fotoCnh') {
+    MOTORISTAPAG_Login_fotoCnhEnviada = enviado;
+	}
+
+	if (tipoDocumento === 'selfieComCnh') {
+    MOTORISTAPAG_Login_selfieComCnhEnviada = enviado;
+	}
 
     if (!enviado) {
         status.innerText = 'Pendente de envio';
@@ -5775,6 +5784,11 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
             botao.innerText = 'ENVIANDO...';
         }
 
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_fotos_cnh',
+            ''
+        );
+
         const nomeArquivo = tipoDocumento + '_' + Date.now() + '_' + arquivo.name;
         const caminho = 'motoristas/' + user.uid + '/documentos/' + nomeArquivo;
 
@@ -5784,14 +5798,7 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
 
         const url = await storageRef.getDownloadURL();
 
-        const atualizacao = {
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
-            etapaCadastroMotorista: 'fotos_cnh',
-            fotosCnhConcluidas: false,
-            fotosCnhStatus: 'pendente_analise'
-        };
-
-        atualizacao['documentosMotorista.' + tipoDocumento] = {
+        const dadosAtualizadosDocumento = {
             enviado: true,
             url: url,
             caminho: caminho,
@@ -5799,6 +5806,15 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
             motivoReprovacao: '',
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
         };
+
+        const atualizacao = {
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            etapaCadastroMotorista: 'fotos_cnh',
+            fotosCnhConcluidas: false,
+            fotosCnhStatus: 'pendente_analise'
+        };
+
+        atualizacao['documentosMotorista.' + tipoDocumento] = dadosAtualizadosDocumento;
 
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
@@ -5813,13 +5829,10 @@ async function MOTORISTAPAG_Login_func_enviarDocumentoMotorista(event, tipoDocum
             MOTORISTAPAG_Login_selfieComCnhEnviada = true;
         }
 
-        MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(tipoDocumento, {
-            enviado: true,
-            url: url,
-            caminho: caminho,
-            status: 'pendente_analise',
-            motivoReprovacao: ''
-        });
+        MOTORISTAPAG_Login_func_atualizarCardDocumentoMotorista(
+            tipoDocumento,
+            dadosAtualizadosDocumento
+        );
 
         MOTORISTAPAG_Login_func_verificarLiberarContinuarFotosCnh();
 
@@ -5871,12 +5884,14 @@ async function MOTORISTAPAG_Login_func_continuarDepoisFotosCnh() {
         );
     }
 
-    const btn = document.getElementById('MOTORISTAPAG_Login_btn_continuar_fotos_cnh');
-    const textoOriginal = btn.innerText;
+const btn = document.getElementById('MOTORISTAPAG_Login_btn_continuar_fotos_cnh');
+const textoOriginal = btn ? btn.innerText : 'CONTINUAR CADASTRO';
 
-    try {
+try {
+    if (btn) {
         btn.disabled = true;
         btn.innerText = 'SALVANDO...';
+    }
 
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
@@ -5888,16 +5903,12 @@ async function MOTORISTAPAG_Login_func_continuarDepoisFotosCnh() {
                 atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
             }, { merge: true });
 
-        /*
-            Próxima tela:
-            Quando criarmos a tela de dados do veículo,
-            essa função abaixo vai chamar ela.
-        */
-
+                // Quando criarmos a tela real de dados do veículo, trocar por:
         // MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo();
 
-        alert('Fotos enviadas com sucesso. Próxima etapa: dados do veículo.');
+        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
 
+  
     } catch (erro) {
         console.error('Erro ao continuar depois das fotos da CNH:', erro);
 
@@ -5907,9 +5918,11 @@ async function MOTORISTAPAG_Login_func_continuarDepoisFotosCnh() {
         );
 
     } finally {
+    if (btn) {
         btn.disabled = false;
         btn.innerText = textoOriginal;
     }
+  }
 }
 
 
