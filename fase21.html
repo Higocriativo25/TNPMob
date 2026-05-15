@@ -6184,30 +6184,69 @@ async function MOTORISTAPAG_Login_func_continuarDepoisFotosCnh() {
         await PRIMEIRAPAG_Login_db
     .collection('motoristas')
     .doc(user.uid)
+    const docMotoristaAtual = await PRIMEIRAPAG_Login_db
+    .collection('motoristas')
+    .doc(user.uid)
+    .get();
+
+const dadosMotoristaAtual = docMotoristaAtual.exists ? docMotoristaAtual.data() : {};
+
+const motoristaTemAlertaSuporte =
+    dadosMotoristaAtual.cpfConflito === true ||
+    dadosMotoristaAtual.requerAnaliseAdmin === true ||
+    dadosMotoristaAtual.motoristaStatus === 'pendente_analise_suporte';
+
+const statusGeralMotorista = motoristaTemAlertaSuporte
+    ? 'pendente_analise_suporte'
+    : 'cadastro_iniciado';
+
+const motivoStatusMotorista = motoristaTemAlertaSuporte
+    ? 'cpf_ja_usado_em_outra_conta'
+    : '';
+
+await PRIMEIRAPAG_Login_db
+    .collection('motoristas')
+    .doc(user.uid)
     .set({
         fotosCnhConcluidas: true,
         fotosCnhStatus: 'pendente_analise',
         etapaCadastroMotorista: 'dados_veiculo',
+
+        motoristaStatus: statusGeralMotorista,
+        motivoAnaliseAdmin: motivoStatusMotorista,
+
         atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
 
         status: {
-            geral: 'cadastro_iniciado',
-            motivo: '',
+            geral: statusGeralMotorista,
+            motivo: motivoStatusMotorista,
             tipo: 'motorista',
-            cnhValidadeStatus: 'valida',
-            cnhBloqueioPorVencimento: false,
+            uid: user.uid,
+            cnhValidadeStatus: dadosMotoristaAtual.cnhValidadeStatus || 'valida',
+            cnhBloqueioPorVencimento: dadosMotoristaAtual.cnhBloqueioPorVencimento === true,
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
         }
     }, { merge: true });
 
         await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(user.uid)
-            .set({
-                etapaCadastro: 'motorista_dados_veiculo',
-                etapaCadastroMotorista: 'dados_veiculo',
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
+    .collection('usuarios')
+    .doc(user.uid)
+    .set({
+        etapaCadastro: 'motorista_dados_veiculo',
+        etapaCadastroMotorista: 'dados_veiculo',
+
+        motoristaStatus: statusGeralMotorista,
+        motivoAnaliseAdmin: motivoStatusMotorista,
+
+        status: {
+            geral: statusGeralMotorista,
+            motivo: motivoStatusMotorista,
+            tipo: 'motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        },
+
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
 
         // Quando criarmos a tela real de dados do veículo, trocar por:
         // MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo();
