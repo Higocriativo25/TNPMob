@@ -4876,11 +4876,7 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
 const dadosVerificacaoCpf = respostaVerificacaoCpf.data || {};
 
-if (
-    dadosVerificacaoCpf.liberado !== true &&
-    dadosVerificacaoCpf.existe === true &&
-    dadosVerificacaoCpf.mesmoUsuario !== true
-) {
+if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
     if (btn) {
         btn.disabled = false;
         btn.innerText = 'CONTINUAR';
@@ -4964,19 +4960,22 @@ if (
             );
         }
 
-        if (erro.code === 'permission-denied') {
-            return PRIMEIRAPAG_Login_func_mostrarErro(
-                'MOTORISTAPAG_Login_error_cnh',
-                'Sem permissão para validar este CPF. Verifique a função verificarDocumento ou procure o suporte.'
-            );
-        }
+        const msgErro = erro.message || "";
+const codeErro = erro.code || "";
 
-        if (erro.code === 'already-exists') {
-            return PRIMEIRAPAG_Login_func_mostrarErro(
-                'MOTORISTAPAG_Login_error_cnh',
-                'Este CPF já possui vínculo cadastrado. Use uma das opções de recuperação ou suporte.'
-            );
-        }
+if (
+    codeErro === "functions/permission-denied" ||
+    codeErro === "permission-denied" ||
+    codeErro === "already-exists" ||
+    msgErro.includes("permission") ||
+    msgErro.includes("PERMISSION_DENIED") ||
+    msgErro.includes("Missing or insufficient permissions") ||
+    msgErro.includes("already exists") ||
+    msgErro.includes("ALREADY_EXISTS")
+) {
+    MOTORISTAPAG_Login_func_mostrarCardCpfConflito();
+    return;
+}
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
