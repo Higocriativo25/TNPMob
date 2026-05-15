@@ -4808,7 +4808,9 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const categoriaCnh = selectCategoria.value;
     const validadeCnhFormatada = inputValidade.value.trim();
 	const validadeCnh = MOTORISTAPAG_Login_func_converterDataBrParaIso(validadeCnhFormatada);
-
+	
+	const statusCnhValidade = MOTORISTAPAG_Login_func_calcularStatusValidadeCnh(validadeCnh);
+	
     if (!numeroCnh) {
         inputNumero.classList.add('error');
         return PRIMEIRAPAG_Login_func_mostrarErro(
@@ -4915,8 +4917,8 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
                 documentoNumero: cpfCnh,
                 criadoEm: new Date()
             });
-
-        await PRIMEIRAPAG_Login_db
+			
+    await PRIMEIRAPAG_Login_db
     .collection('motoristas')
     .doc(user.uid)
     .set({
@@ -4924,8 +4926,28 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
         cnhCpfTitular: cpfCnh,
         cnhCpfTitularFormatado: cpfCnhFormatado,
         cnhCategoria: categoriaCnh,
+
         cnhValidade: validadeCnh,
-		cnhValidadeFormatada: validadeCnhFormatada,
+        cnhValidadeFormatada: validadeCnhFormatada,
+
+        cnhValidadeStatus: statusCnhValidade.status,
+        cnhDiasParaVencer: statusCnhValidade.diasParaVencer,
+        cnhDiasAposVencimento: statusCnhValidade.diasAposVencimento,
+        cnhDiasRestantesTolerancia: statusCnhValidade.diasRestantesTolerancia,
+        cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
+        cnhMensagemValidade: statusCnhValidade.mensagem,
+
+        cnhAviso30DiasEnviado: false,
+        cnhAviso15DiasEnviado: false,
+        cnhAviso7DiasEnviado: false,
+
+        cnhAvisoTolerancia15DiasEnviado: false,
+        cnhAvisoTolerancia7DiasEnviado: false,
+        cnhAvisoTolerancia5DiasEnviado: false,
+        cnhAvisoTolerancia4DiasEnviado: false,
+        cnhAvisoTolerancia3DiasEnviado: false,
+        cnhAvisoTolerancia2DiasEnviado: false,
+        cnhAvisoTolerancia1DiaEnviado: false,
 
         cadastroCompleto: false,
         podeAceitarCorrida: false,
@@ -4942,6 +4964,8 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
         status: {
             geral: 'pendente_analise_suporte',
             motivo: 'cpf_ja_usado_em_outra_conta',
+            cnhValidadeStatus: statusCnhValidade.status,
+            cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
             atualizadoEm: new Date()
         }
     }, { merge: true });
@@ -4953,22 +4977,32 @@ await PRIMEIRAPAG_Login_db
         cpf: cpfCnh,
         cpfFormatado: cpfCnhFormatado,
 
-        cpfConflito: true,
-        cpfConflitoStatus: 'pendente_analise_suporte',
+        cpfConflito: false,
+cpfConflitoStatus: '',
+cpfConflitoMensagem: '',
 
-        cadastroCompleto: false,
-        cadastroPrincipalConcluido: false,
+etapaCnhConcluida: true,
+etapaCnhConcluidaEm: new Date(),
 
-        podeSolicitarCorrida: false,
-        podeAceitarCorrida: false,
+requerAnaliseAdmin: statusCnhValidade.bloqueado,
+motivoAnaliseAdmin: statusCnhValidade.bloqueado
+    ? 'cnh_vencida_fora_da_tolerancia'
+    : '',
 
-        etapaCadastro: 'motorista_foto_cnh',
-        etapaCadastroMotorista: 'foto_cnh',
-        motoristaStatus: 'pendente_analise_suporte',
+etapaCadastroMotorista: 'foto_cnh',
 
-        status: {
-            geral: 'pendente_analise_suporte',
-            motivo: 'cpf_ja_usado_em_outra_conta',
+motoristaStatus: statusCnhValidade.bloqueado
+    ? 'bloqueado_cnh_vencida'
+    : 'cadastro_iniciado',
+
+status: {
+    geral: statusCnhValidade.bloqueado
+        ? 'bloqueado_cnh_vencida'
+        : 'cadastro_iniciado',
+
+    motivo: statusCnhValidade.bloqueado
+        ? 'cnh_vencida_fora_da_tolerancia'
+        : '',
             atualizadoEm: new Date()
         },
 
@@ -5107,11 +5141,36 @@ function MOTORISTAPAG_Login_func_dataBrValida(dataBr) {
 // 4. Máscara para o campo de CPF na tela de motorista
 function MOTORISTAPAG_Login_func_maskCpfCnh(input) {
     let v = input.value.replace(/\D/g, "");
-    if (v.length > 11) v = v.substring(0, 11);
+
+    if (v.length > 11) {
+        v = v.substring(0, 11);
+    }
+
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d)/, "$1.$2");
     v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+
     input.value = v;
+
+    // Se o usuário começou a corrigir o CPF, escondemos o card de conflito
+    const cardConflito = document.getElementById('MOTORISTAPAG_Login_card_cpf_conflito');
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_cnh');
+    const btnContinuar = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
+
+    if (cardConflito) {
+        cardConflito.style.display = 'none';
+    }
+
+    if (erroBox) {
+        erroBox.style.display = 'none';
+        erroBox.innerText = '';
+    }
+
+    if (btnContinuar) {
+        btnContinuar.style.display = 'block';
+        btnContinuar.disabled = false;
+        btnContinuar.innerText = 'CONTINUAR';
+    }
 }
 
 // 1. Função para mostrar o card de conflito e mascarar o e-mail
@@ -5161,6 +5220,16 @@ function MOTORISTAPAG_Login_func_voltarInicioCpfConflito() {
     PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
 }
 async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
+    const confirmarContinuar = confirm(
+        'Este CPF já está vinculado a outra conta.\n\n' +
+        'Se você continuar, seu cadastro ficará com alerta para análise do suporte antes da aprovação.\n\n' +
+        'Deseja continuar mesmo assim?'
+    );
+
+    if (!confirmarContinuar) {
+        return;
+    }
+
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
@@ -5180,7 +5249,11 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
     const cpfCnhFormatado = inputCpf.value.trim();
     const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
     const categoriaCnh = selectCategoria.value;
-    const validadeCnh = inputValidade.value;
+
+    const validadeCnhFormatada = inputValidade.value.trim();
+    const validadeCnh = MOTORISTAPAG_Login_func_converterDataBrParaIso(validadeCnhFormatada);
+
+    const statusCnhValidade = MOTORISTAPAG_Login_func_calcularStatusValidadeCnh(validadeCnh);
 
     try {
         if (btn) {
@@ -5196,11 +5269,43 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
                 cnhCpfTitular: cpfCnh,
                 cnhCpfTitularFormatado: cpfCnhFormatado,
                 cnhCategoria: categoriaCnh,
+
                 cnhValidade: validadeCnh,
+                cnhValidadeFormatada: validadeCnhFormatada,
+
+                cnhValidadeStatus: statusCnhValidade.status,
+                cnhDiasParaVencer: statusCnhValidade.diasParaVencer,
+                cnhDiasAposVencimento: statusCnhValidade.diasAposVencimento,
+                cnhDiasRestantesTolerancia: statusCnhValidade.diasRestantesTolerancia,
+                cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
+                cnhMensagemValidade: statusCnhValidade.mensagem,
+
+                cnhAviso30DiasEnviado: false,
+                cnhAviso15DiasEnviado: false,
+                cnhAviso7DiasEnviado: false,
+
+                cnhAvisoTolerancia15DiasEnviado: false,
+                cnhAvisoTolerancia7DiasEnviado: false,
+                cnhAvisoTolerancia5DiasEnviado: false,
+                cnhAvisoTolerancia4DiasEnviado: false,
+                cnhAvisoTolerancia3DiasEnviado: false,
+                cnhAvisoTolerancia2DiasEnviado: false,
+                cnhAvisoTolerancia1DiaEnviado: false,
+
+                etapaCnhConcluida: true,
+                etapaCnhConcluidaEm: new Date(),
+
+                cadastroCompleto: false,
+                podeAceitarCorrida: false,
 
                 cpfConflito: true,
                 cpfConflitoStatus: 'pendente_analise_suporte',
                 cpfConflitoMensagem: 'Usuário continuou o cadastro usando CPF já existente em outro cadastro.',
+                cpfConflitoEm: new Date(),
+                cpfConflitoOrigem: 'cadastro_motorista_cnh',
+
+                requerAnaliseAdmin: true,
+                motivoAnaliseAdmin: 'cpf_ja_usado_em_outra_conta',
 
                 etapaCadastroMotorista: 'foto_cnh',
                 motoristaStatus: 'pendente_analise_suporte',
@@ -5210,6 +5315,8 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
                 status: {
                     geral: 'pendente_analise_suporte',
                     motivo: 'cpf_ja_usado_em_outra_conta',
+                    cnhValidadeStatus: statusCnhValidade.status,
+                    cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
                     atualizadoEm: new Date()
                 }
             }, { merge: true });
@@ -5223,10 +5330,30 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
 
                 cpfConflito: true,
                 cpfConflitoStatus: 'pendente_analise_suporte',
+                cpfConflitoEm: new Date(),
+                cpfConflitoOrigem: 'cadastro_motorista_cnh',
+
+                cadastroCompleto: false,
+                cadastroPrincipalConcluido: false,
+
+                podeSolicitarCorrida: false,
+                podeAceitarCorrida: false,
+
+                etapaCnhConcluida: true,
+                etapaCnhConcluidaEm: new Date(),
+
+                requerAnaliseAdmin: true,
+                motivoAnaliseAdmin: 'cpf_ja_usado_em_outra_conta',
 
                 etapaCadastro: 'motorista_foto_cnh',
                 etapaCadastroMotorista: 'foto_cnh',
                 motoristaStatus: 'pendente_analise_suporte',
+
+                status: {
+                    geral: 'pendente_analise_suporte',
+                    motivo: 'cpf_ja_usado_em_outra_conta',
+                    atualizadoEm: new Date()
+                },
 
                 atualizadoEm: new Date()
             }, { merge: true });
@@ -5254,6 +5381,144 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
             'Não foi possível continuar com alerta agora. Tente novamente.'
         );
     }
+}
+function MOTORISTAPAG_Login_func_calcularStatusValidadeCnh(cnhValidadeIso) {
+    if (!cnhValidadeIso) {
+        return {
+            status: 'sem_data',
+            diasParaVencer: null,
+            diasAposVencimento: null,
+            diasRestantesTolerancia: null,
+            bloqueado: false,
+            mensagem: ''
+        };
+    }
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const validade = new Date(cnhValidadeIso + "T00:00:00");
+    validade.setHours(0, 0, 0, 0);
+
+    const umDiaMs = 1000 * 60 * 60 * 24;
+
+    const diasParaVencer = Math.ceil((validade - hoje) / umDiaMs);
+    const diasAposVencimento = Math.ceil((hoje - validade) / umDiaMs);
+
+    // CNH ainda válida
+    if (diasParaVencer > 30) {
+        return {
+            status: 'valida',
+            diasParaVencer,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: ''
+        };
+    }
+
+    if (diasParaVencer === 30) {
+        return {
+            status: 'aviso_30_dias',
+            diasParaVencer,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: 'Sua CNH vence em 30 dias. Inicie a renovação para evitar bloqueio futuro.'
+        };
+    }
+
+    if (diasParaVencer === 15) {
+        return {
+            status: 'aviso_15_dias',
+            diasParaVencer,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: 'Sua CNH vence em 15 dias. Recomendamos renovar o quanto antes.'
+        };
+    }
+
+    if (diasParaVencer === 7) {
+        return {
+            status: 'aviso_7_dias',
+            diasParaVencer,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: 'Aviso urgente: sua CNH vence em 7 dias.'
+        };
+    }
+
+    if (diasParaVencer > 0 && diasParaVencer < 7) {
+        return {
+            status: 'perto_do_vencimento',
+            diasParaVencer,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: `Sua CNH vence em ${diasParaVencer} dia(s).`
+        };
+    }
+
+    // Vence hoje
+    if (diasParaVencer === 0) {
+        return {
+            status: 'vence_hoje',
+            diasParaVencer: 0,
+            diasAposVencimento: 0,
+            diasRestantesTolerancia: 30,
+            bloqueado: false,
+            mensagem: 'Sua CNH vence hoje. Após o vencimento, começa o período de tolerância de 30 dias.'
+        };
+    }
+
+    // CNH vencida, mas dentro da tolerância
+    if (diasAposVencimento > 0 && diasAposVencimento <= 30) {
+        const diasRestantesTolerancia = 30 - diasAposVencimento;
+
+        let status = 'tolerancia';
+        let mensagem = `Sua CNH está vencida, mas ainda está dentro do período de tolerância. Restam ${diasRestantesTolerancia} dia(s) para o bloqueio.`;
+
+        if (diasRestantesTolerancia === 15) {
+            status = 'tolerancia_15_dias';
+            mensagem = 'Sua CNH está vencida. Você está prestes a ser bloqueado: restam 15 dias de tolerância.';
+        }
+
+        if (diasRestantesTolerancia === 7) {
+            status = 'tolerancia_7_dias';
+            mensagem = 'Aviso urgente: sua CNH está vencida e restam 7 dias para o bloqueio.';
+        }
+
+        if ([5, 4, 3, 2].includes(diasRestantesTolerancia)) {
+            status = `tolerancia_${diasRestantesTolerancia}_dias`;
+            mensagem = `Sua CNH está vencida. Faltam ${diasRestantesTolerancia} dias para o bloqueio.`;
+        }
+
+        if (diasRestantesTolerancia === 1) {
+            status = 'tolerancia_1_dia';
+            mensagem = 'Desculpe, mas amanhã teremos que bloquear sua conta de motorista se a CNH não for atualizada. Que Deus abençoe!';
+        }
+
+        return {
+            status,
+            diasParaVencer: 0,
+            diasAposVencimento,
+            diasRestantesTolerancia,
+            bloqueado: false,
+            mensagem
+        };
+    }
+
+    // Passou da tolerância
+    return {
+        status: 'bloqueado_cnh_vencida',
+        diasParaVencer: 0,
+        diasAposVencimento,
+        diasRestantesTolerancia: 0,
+        bloqueado: true,
+        mensagem: 'Sua CNH ultrapassou o período de tolerância. Você está bloqueado para aceitar corridas até atualizar a CNH.'
+    };
 }
 
 
