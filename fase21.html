@@ -5458,18 +5458,20 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
                 requerAnaliseAdmin: true,
                 motivoAnaliseAdmin: 'cpf_ja_usado_em_outra_conta',
 
-                etapaCadastroMotorista: 'foto_cnh',
-                motoristaStatus: 'pendente_analise_suporte',
+                etapaCadastroMotorista: 'fotos_cnh',
+				motoristaStatus: 'pendente_analise_suporte',
 
                 atualizadoEm: new Date(),
 
                 status: {
-                    geral: 'pendente_analise_suporte',
-                    motivo: 'cpf_ja_usado_em_outra_conta',
-                    cnhValidadeStatus: statusCnhValidade.status,
-                    cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
-                    atualizadoEm: new Date()
-                }
+				geral: 'pendente_analise_suporte',
+				motivo: 'cpf_ja_usado_em_outra_conta',
+				tipo: 'motorista',
+				uid: user.uid,
+				cnhValidadeStatus: statusCnhValidade.status,
+				cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
+				atualizadoEm: new Date()
+				}
             }, { merge: true });
 
         await PRIMEIRAPAG_Login_db
@@ -5496,15 +5498,16 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
                 requerAnaliseAdmin: true,
                 motivoAnaliseAdmin: 'cpf_ja_usado_em_outra_conta',
 
-                etapaCadastro: 'motorista_foto_cnh',
-                etapaCadastroMotorista: 'foto_cnh',
-                motoristaStatus: 'pendente_analise_suporte',
+                etapaCadastro: 'motorista_fotos_cnh',
+				etapaCadastroMotorista: 'fotos_cnh',
+				motoristaStatus: 'pendente_analise_suporte',
 
                 status: {
-                    geral: 'pendente_analise_suporte',
-                    motivo: 'cpf_ja_usado_em_outra_conta',
-                    atualizadoEm: new Date()
-                },
+				geral: 'pendente_analise_suporte',
+				motivo: 'cpf_ja_usado_em_outra_conta',
+				tipo: 'motorista',
+				atualizadoEm: new Date()
+				},
 
                 atualizadoEm: new Date()
             }, { merge: true });
@@ -5514,10 +5517,12 @@ async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
             btn.innerText = 'CONTINUAR';
         }
 
-        alert('Cadastro continuado com alerta. O suporte deverá analisar este CPF antes da aprovação.');
+        PRIMEIRAPAG_Login_func_mostrarErro(
+    'MOTORISTAPAG_Login_error_cnh',
+    ''
+);
 
-        // Próxima tela vamos criar depois:
-        // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
+MOTORISTAPAG_Login_func_carregarTelaFotosCnh();
 
     } catch (erro) {
         console.error('ERRO AO CONTINUAR COM ALERTA DE CPF:', erro);
@@ -6177,14 +6182,23 @@ async function MOTORISTAPAG_Login_func_continuarDepoisFotosCnh() {
         }
 
         await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                fotosCnhConcluidas: true,
-                fotosCnhStatus: 'pendente_analise',
-                etapaCadastroMotorista: 'dados_veiculo',
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
+    .collection('motoristas')
+    .doc(user.uid)
+    .set({
+        fotosCnhConcluidas: true,
+        fotosCnhStatus: 'pendente_analise',
+        etapaCadastroMotorista: 'dados_veiculo',
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+
+        status: {
+            geral: 'cadastro_iniciado',
+            motivo: '',
+            tipo: 'motorista',
+            cnhValidadeStatus: 'valida',
+            cnhBloqueioPorVencimento: false,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }
+    }, { merge: true });
 
         await PRIMEIRAPAG_Login_db
             .collection('usuarios')
