@@ -5080,25 +5080,39 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
         cnhAvisoTolerancia2DiasEnviado: false,
         cnhAvisoTolerancia1DiaEnviado: false,
 
-        cadastroCompleto: false,
-        podeAceitarCorrida: false,
+cadastroCompleto: false,
+podeAceitarCorrida: false,
 
-        cpfConflito: true,
-        cpfConflitoStatus: 'pendente_analise_suporte',
-        cpfConflitoMensagem: 'Usuário continuou o cadastro usando CPF já existente em outro cadastro.',
+cpfConflito: false,
+cpfConflitoStatus: '',
+cpfConflitoMensagem: '',
 
-        etapaCadastroMotorista: 'foto_cnh',
-        motoristaStatus: 'pendente_analise_suporte',
+requerAnaliseAdmin: statusCnhValidade.bloqueado,
+motivoAnaliseAdmin: statusCnhValidade.bloqueado
+    ? 'cnh_vencida_fora_da_tolerancia'
+    : '',
 
-        atualizadoEm: new Date(),
+etapaCadastroMotorista: 'fotos_cnh',
 
-        status: {
-            geral: 'pendente_analise_suporte',
-            motivo: 'cpf_ja_usado_em_outra_conta',
-            cnhValidadeStatus: statusCnhValidade.status,
-            cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
-            atualizadoEm: new Date()
-        }
+motoristaStatus: statusCnhValidade.bloqueado
+    ? 'bloqueado_cnh_vencida'
+    : 'cadastro_iniciado',
+
+atualizadoEm: new Date(),
+
+status: {
+    geral: statusCnhValidade.bloqueado
+        ? 'bloqueado_cnh_vencida'
+        : 'cadastro_iniciado',
+
+    motivo: statusCnhValidade.bloqueado
+        ? 'cnh_vencida_fora_da_tolerancia'
+        : '',
+
+    cnhValidadeStatus: statusCnhValidade.status,
+    cnhBloqueioPorVencimento: statusCnhValidade.bloqueado,
+    atualizadoEm: new Date()
+}
     }, { merge: true });
 
 await PRIMEIRAPAG_Login_db
@@ -5120,7 +5134,8 @@ motivoAnaliseAdmin: statusCnhValidade.bloqueado
     ? 'cnh_vencida_fora_da_tolerancia'
     : '',
 
-etapaCadastroMotorista: 'foto_cnh',
+etapaCadastro: 'motorista_fotos_cnh',
+etapaCadastroMotorista: 'fotos_cnh',
 
 motoristaStatus: statusCnhValidade.bloqueado
     ? 'bloqueado_cnh_vencida'
@@ -5152,7 +5167,7 @@ if (btn) {
 
 MOTORISTAPAG_Login_func_carregarTelaFotosCnh();
 
-        // Próxima tela :foto_cnh
+        // Próxima tela: fotos_cnh
        
 
     } catch (erro) {
