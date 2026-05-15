@@ -5047,7 +5047,101 @@ function MOTORISTAPAG_Login_func_voltarInicioCpfConflito() {
 
     PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
 }
+async function MOTORISTAPAG_Login_func_continuarComAlertaCpf() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
+    const inputNumero = document.getElementById('MOTORISTAPAG_Login_input_cnh_numero');
+    const inputCpf = document.getElementById('MOTORISTAPAG_Login_input_cnh_cpf');
+    const selectCategoria = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria');
+    const inputValidade = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Sua sessão expirou. Faça login novamente.'
+        );
+    }
+
+    const numeroCnh = inputNumero.value.replace(/\D/g, '');
+    const cpfCnhFormatado = inputCpf.value.trim();
+    const cpfCnh = MOTORISTAPAG_Login_func_limparCpf(cpfCnhFormatado);
+    const categoriaCnh = selectCategoria.value;
+    const validadeCnh = inputValidade.value;
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'SALVANDO COM ALERTA...';
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                cnhNumero: numeroCnh,
+                cnhCpfTitular: cpfCnh,
+                cnhCpfTitularFormatado: cpfCnhFormatado,
+                cnhCategoria: categoriaCnh,
+                cnhValidade: validadeCnh,
+
+                cpfConflito: true,
+                cpfConflitoStatus: 'pendente_analise_suporte',
+                cpfConflitoMensagem: 'Usuário continuou o cadastro usando CPF já existente em outro cadastro.',
+
+                etapaCadastroMotorista: 'foto_cnh',
+                motoristaStatus: 'pendente_analise_suporte',
+
+                atualizadoEm: new Date(),
+
+                status: {
+                    geral: 'pendente_analise_suporte',
+                    motivo: 'cpf_ja_usado_em_outra_conta',
+                    atualizadoEm: new Date()
+                }
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                cpf: cpfCnh,
+                cpfFormatado: cpfCnhFormatado,
+
+                cpfConflito: true,
+                cpfConflitoStatus: 'pendente_analise_suporte',
+
+                etapaCadastro: 'motorista_foto_cnh',
+                etapaCadastroMotorista: 'foto_cnh',
+                motoristaStatus: 'pendente_analise_suporte',
+
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
+
+        alert('Cadastro continuado com alerta. O suporte deverá analisar este CPF antes da aprovação.');
+
+        // Próxima tela vamos criar depois:
+        // PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
+
+    } catch (erro) {
+        console.error('ERRO AO CONTINUAR COM ALERTA DE CPF:', erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Não foi possível continuar com alerta agora. Tente novamente.'
+        );
+    }
+}
 
 
 
