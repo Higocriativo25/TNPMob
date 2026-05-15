@@ -4793,7 +4793,6 @@ async function MOTORISTAPAG_Login_func_salvarCategoriaPrincipal() {
 // ========== MOTORISTA TELA 2: DADOS DO MOTORISTA ==========
 
 async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
-	
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_cnh');
 
@@ -4802,7 +4801,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const selectCategoria = document.getElementById('MOTORISTAPAG_Login_select_cnh_categoria');
     const inputValidade = document.getElementById('MOTORISTAPAG_Login_input_cnh_validade');
 
-    // limpa marcações antigas
     [inputNumero, inputCpf, selectCategoria, inputValidade].forEach(campo => {
         if (campo) campo.classList.remove('error');
     });
@@ -4820,16 +4818,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     const categoriaCnh = selectCategoria.value;
     const validadeCnh = inputValidade.value;
 
-    if (!user) {
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_cnh',
-            'Sua sessão expirou. Volte e faça login novamente.'
-        );
-    }
-
     if (!numeroCnh) {
         inputNumero.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite o número da CNH.'
@@ -4838,7 +4828,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
     if (!MOTORISTAPAG_Login_func_validarNumeroCnh(numeroCnh)) {
         inputNumero.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite um número de CNH válido com 11 números.'
@@ -4847,7 +4836,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
     if (!cpfCnh) {
         inputCpf.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite o CPF do titular da CNH.'
@@ -4856,7 +4844,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
     if (!SETIMAPAG_Login_func_validarDocumentoBasico('cpf', cpfCnh)) {
         inputCpf.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Digite um CPF válido para o titular da CNH.'
@@ -4865,7 +4852,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
     if (!categoriaCnh) {
         selectCategoria.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Selecione a categoria da CNH.'
@@ -4874,37 +4860,62 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
 
     if (!validadeCnh) {
         inputValidade.classList.add('error');
-
         return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
             'Informe a validade da CNH.'
         );
     }
 
-    try {
-        const documentoId = 'cpf_' + cpfCnh;
-
-        const documentoRef = PRIMEIRAPAG_Login_db
-            .collection('documentosUsuarios')
-            .doc(documentoId);
-
-        const documentoSnap = await documentoRef.get();
-
-        if (documentoSnap.exists) {
-    const dadosDocumento = documentoSnap.data() || {};
-
-    if (dadosDocumento.uid && dadosDocumento.uid !== user.uid) {
-        MOTORISTAPAG_Login_func_mostrarCardCpfConflito(dadosDocumento);
-        return;
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_cnh',
+            'Sua sessão expirou. Volte e faça login novamente.'
+        );
     }
-}
 
+    try {
         if (btn) {
             btn.disabled = true;
+            btn.innerText = 'VERIFICANDO CPF...';
+        }
+
+        const MOTORISTAPAG_Login_verificarDocumento = firebase
+            .app()
+            .functions("us-central1")
+            .httpsCallable("verificarDocumento");
+
+        const respostaVerificacaoCpf = await MOTORISTAPAG_Login_verificarDocumento({
+            tipoDocumento: 'cpf',
+            documentoNumero: cpfCnh
+        });
+
+        const dadosVerificacaoCpf = respostaVerificacaoCpf.data || {};
+
+        if (
+            dadosVerificacaoCpf.liberado !== true &&
+            dadosVerificacaoCpf.uid &&
+            dadosVerificacaoCpf.uid !== user.uid
+        ) {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = 'CONTINUAR';
+            }
+
+            MOTORISTAPAG_Login_func_mostrarCardCpfConflito({
+                uid: dadosVerificacaoCpf.uid,
+                emailVinculado: dadosVerificacaoCpf.emailVinculado || dadosVerificacaoCpf.email || '',
+                documentoNumero: cpfCnh
+            });
+
+            return;
+        }
+
+        if (btn) {
             btn.innerText = 'SALVANDO...';
         }
 
-        // 1. Cria ou atualiza o vínculo do CPF com este usuário
+        const documentoId = 'cpf_' + cpfCnh;
+
         await PRIMEIRAPAG_Login_db
             .collection('documentosUsuarios')
             .doc(documentoId)
@@ -4912,13 +4923,9 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
                 uid: user.uid,
                 tipoDocumento: 'cpf',
                 documentoNumero: cpfCnh,
-                documentoFormatado: cpfCnhFormatado,
-                emailVinculado: user.email || '',
-                usadoEm: 'cadastro_motorista_cnh',
-                atualizadoEm: new Date()
-            }, { merge: true });
+                criadoEm: new Date()
+            });
 
-        // 2. Salva os dados da CNH no cadastro do motorista
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
             .doc(user.uid)
@@ -4938,7 +4945,6 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
                 }
             }, { merge: true });
 
-        // 3. Atualiza a etapa no documento geral do usuário
         await PRIMEIRAPAG_Login_db
             .collection('usuarios')
             .doc(user.uid)
@@ -4953,8 +4959,10 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
                 atualizadoEm: new Date()
             }, { merge: true });
 
-        btn.disabled = false;
-        btn.innerText = 'CONTINUAR';
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
 
         alert('Dados da CNH salvos. Próximo passo: foto da CNH.');
 
@@ -4964,8 +4972,31 @@ async function MOTORISTAPAG_Login_func_salvarDadosCnh() {
     } catch (erro) {
         console.error('ERRO AO SALVAR DADOS DA CNH:', erro);
 
-        btn.disabled = false;
-        btn.innerText = 'CONTINUAR';
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'CONTINUAR';
+        }
+
+        if (erro.code === 'functions/not-found') {
+            return PRIMEIRAPAG_Login_func_mostrarErro(
+                'MOTORISTAPAG_Login_error_cnh',
+                'A função verificarDocumento não foi encontrada. Verifique se a Cloud Function foi publicada no Firebase.'
+            );
+        }
+
+        if (erro.code === 'permission-denied') {
+            return PRIMEIRAPAG_Login_func_mostrarErro(
+                'MOTORISTAPAG_Login_error_cnh',
+                'Sem permissão para validar este CPF. Verifique a função verificarDocumento ou procure o suporte.'
+            );
+        }
+
+        if (erro.code === 'already-exists') {
+            return PRIMEIRAPAG_Login_func_mostrarErro(
+                'MOTORISTAPAG_Login_error_cnh',
+                'Este CPF já possui vínculo cadastrado. Use uma das opções de recuperação ou suporte.'
+            );
+        }
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_cnh',
