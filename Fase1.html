@@ -4903,42 +4903,67 @@ if (!dadosVerificacaoCpf || dadosVerificacaoCpf.liberado !== true) {
             });
 
         await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                cnhNumero: numeroCnh,
-                cnhCpfTitular: cpfCnh,
-                cnhCpfTitularFormatado: cpfCnhFormatado,
-                cnhCategoria: categoriaCnh,
-                cnhValidade: validadeCnh,
+    .collection('motoristas')
+    .doc(user.uid)
+    .set({
+        cnhNumero: numeroCnh,
+        cnhCpfTitular: cpfCnh,
+        cnhCpfTitularFormatado: cpfCnhFormatado,
+        cnhCategoria: categoriaCnh,
+        cnhValidade: validadeCnh,
 
-                etapaCadastroMotorista: 'foto_cnh',
-                atualizadoEm: new Date(),
+        cadastroCompleto: false,
+        podeAceitarCorrida: false,
 
-                status: {
-                    geral: 'cadastro_iniciado',
-                    atualizadoEm: new Date()
-                }
-            }, { merge: true });
+        cpfConflito: true,
+        cpfConflitoStatus: 'pendente_analise_suporte',
+        cpfConflitoMensagem: 'Usuário continuou o cadastro usando CPF já existente em outro cadastro.',
 
-        await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(user.uid)
-            .set({
-                cpf: cpfCnh,
-                cpfFormatado: cpfCnhFormatado,
+        etapaCadastroMotorista: 'foto_cnh',
+        motoristaStatus: 'pendente_analise_suporte',
 
-                etapaCadastro: 'motorista_foto_cnh',
-                etapaCadastroMotorista: 'foto_cnh',
-                motoristaStatus: 'cadastro_iniciado',
+        atualizadoEm: new Date(),
 
-                atualizadoEm: new Date()
-            }, { merge: true });
-
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = 'CONTINUAR';
+        status: {
+            geral: 'pendente_analise_suporte',
+            motivo: 'cpf_ja_usado_em_outra_conta',
+            atualizadoEm: new Date()
         }
+    }, { merge: true });
+
+await PRIMEIRAPAG_Login_db
+    .collection('usuarios')
+    .doc(user.uid)
+    .set({
+        cpf: cpfCnh,
+        cpfFormatado: cpfCnhFormatado,
+
+        cpfConflito: true,
+        cpfConflitoStatus: 'pendente_analise_suporte',
+
+        cadastroCompleto: false,
+        cadastroPrincipalConcluido: false,
+
+        podeSolicitarCorrida: false,
+        podeAceitarCorrida: false,
+
+        etapaCadastro: 'motorista_foto_cnh',
+        etapaCadastroMotorista: 'foto_cnh',
+        motoristaStatus: 'pendente_analise_suporte',
+
+        status: {
+            geral: 'pendente_analise_suporte',
+            motivo: 'cpf_ja_usado_em_outra_conta',
+            atualizadoEm: new Date()
+        },
+
+        atualizadoEm: new Date()
+    }, { merge: true });
+
+if (btn) {
+    btn.disabled = false;
+    btn.innerText = 'CONTINUAR';
+}
 
         alert('Dados da CNH salvos. Próximo passo: foto da CNH.');
 
