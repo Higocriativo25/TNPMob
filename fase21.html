@@ -6691,18 +6691,26 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
 
         const dadosMotoristaAtual = docMotoristaAtual.exists ? docMotoristaAtual.data() : {};
 
-        const motoristaTemAlertaSuporte =
-            dadosMotoristaAtual.cpfConflito === true ||
-            dadosMotoristaAtual.requerAnaliseAdmin === true ||
-            dadosMotoristaAtual.motoristaStatus === 'pendente_analise_suporte';
+        const motoristaTemCpfConflito =
+    dadosMotoristaAtual.cpfConflito === true ||
+    dadosMotoristaAtual.cpfConflitoStatus === 'pendente_analise_suporte';
 
-        const statusGeralMotorista = motoristaTemAlertaSuporte
-            ? 'pendente_analise_suporte'
-            : 'cadastro_iniciado';
+const motoristaTemCnhBloqueada =
+    dadosMotoristaAtual.cnhBloqueioPorVencimento === true ||
+    dadosMotoristaAtual.cnhValidadeStatus === 'bloqueado_cnh_vencida';
 
-        const motivoStatusMotorista = motoristaTemAlertaSuporte
-            ? 'cpf_ja_usado_em_outra_conta'
-            : '';
+let statusGeralMotorista = 'cadastro_iniciado';
+let motivoStatusMotorista = '';
+
+if (motoristaTemCnhBloqueada) {
+    statusGeralMotorista = 'bloqueado_cnh_vencida';
+    motivoStatusMotorista = 'cnh_vencida_fora_da_tolerancia';
+}
+
+if (motoristaTemCpfConflito) {
+    statusGeralMotorista = 'pendente_analise_suporte';
+    motivoStatusMotorista = 'cpf_ja_usado_em_outra_conta';
+}
 
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
