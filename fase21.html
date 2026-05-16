@@ -3638,15 +3638,16 @@ function PRIMEIRAPAG_Login_func_logar() {
             const PRIMEIRAPAG_user = PRIMEIRAPAG_docUsuario.data();
 
             // LOGIN COMO PASSAGEIRO
-				if (PRIMEIRAPAG_tipo === 'passageiro') {
-				if (PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(PRIMEIRAPAG_user)) {
-				PRIMEIRAPAG_Login_func_abrirCardMotoristaPendente(PRIMEIRAPAG_user);
-				return;
-			}
+// LOGIN COMO PASSAGEIRO
+if (PRIMEIRAPAG_tipo === 'passageiro') {
+    if (PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(PRIMEIRAPAG_user)) {
+        PRIMEIRAPAG_Login_func_abrirCardMotoristaPendente(PRIMEIRAPAG_user);
+        return;
+    }
 
-				PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
-				return;
-			}
+    PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_user);
+    return;
+}
 
             // LOGIN COMO MOTORISTA
             if (PRIMEIRAPAG_tipo === 'motorista') {
@@ -3701,20 +3702,43 @@ function PRIMEIRAPAG_Login_func_logar() {
                 }
 
                 // 3. Se está na etapa de CNH
-                if (
-                    PRIMEIRAPAG_etapaUsuario === "motorista_cnh" ||
-                    PRIMEIRAPAG_etapaMotorista === "cnh"
-                ) {
-                    if (document.getElementById('MOTORISTAPAG_Login_screen_cnh')) {
-                        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
-                    } else {
-                        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
-                    }
+if (
+    PRIMEIRAPAG_etapaUsuario === "motorista_cnh" ||
+    PRIMEIRAPAG_etapaMotorista === "cnh"
+) {
+    if (document.getElementById('MOTORISTAPAG_Login_screen_cnh')) {
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
+    } else {
+        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+    }
 
-                    return;
-                }
+    return;
+}
 
-                const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
+// 4. Se está na etapa de fotos da CNH
+if (
+    PRIMEIRAPAG_etapaUsuario === "motorista_fotos_cnh" ||
+    PRIMEIRAPAG_etapaMotorista === "fotos_cnh" ||
+    PRIMEIRAPAG_etapaUsuario === "motorista_foto_cnh" ||
+    PRIMEIRAPAG_etapaMotorista === "foto_cnh"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaFotosCnh();
+    return;
+}
+
+// 5. Se está na etapa de dados do veículo
+if (
+    PRIMEIRAPAG_etapaUsuario === "motorista_dados_veiculo" ||
+    PRIMEIRAPAG_etapaMotorista === "dados_veiculo"
+) {
+    // Quando criarmos a tela real de dados do veículo, trocar por:
+    // MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo();
+
+    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+    return;
+}
+
+const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
                     ? PRIMEIRAPAG_motorista.status.geral
                     : "";
 
@@ -3776,12 +3800,22 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
 
     if (!temPerfilMotorista) return false;
 
+    if (
+        dadosUsuario.motoristaStatus === "cadastro_iniciado" ||
+        dadosUsuario.motoristaStatus === "pendente_analise_suporte" ||
+        dadosUsuario.requerAnaliseAdmin === true ||
+        dadosUsuario.cpfConflito === true
+    ) {
+        return true;
+    }
+
     const etapasMotoristaPendentes = [
         "selfie",
         "motorista_categoria",
         "motorista_cnh",
+        "motorista_fotos_cnh",
         "motorista_foto_cnh",
-        "motorista_selfie_cnh",
+        "motorista_dados_veiculo",
         "motorista_veiculo",
         "motorista_documento_veiculo",
         "motorista_foto_veiculo",
@@ -3792,8 +3826,9 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     const etapasMotoristaInternas = [
         "categoria",
         "cnh",
+        "fotos_cnh",
         "foto_cnh",
-        "selfie_cnh",
+        "dados_veiculo",
         "veiculo",
         "documento_veiculo",
         "foto_veiculo",
@@ -3853,14 +3888,26 @@ function PRIMEIRAPAG_Login_func_continuarCadastroMotoristaPendente() {
         return;
     }
 
-    if (etapa === "motorista_foto_cnh" || etapaMotorista === "foto_cnh") {
-        if (document.getElementById('MOTORISTAPAG_Login_screen_foto_cnh')) {
-            PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_foto_cnh');
-        } else {
-            PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_cnh');
-        }
-        return;
-    }
+    if (
+    etapa === "motorista_fotos_cnh" ||
+    etapaMotorista === "fotos_cnh" ||
+    etapa === "motorista_foto_cnh" ||
+    etapaMotorista === "foto_cnh"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaFotosCnh();
+    return;
+}
+
+if (
+    etapa === "motorista_dados_veiculo" ||
+    etapaMotorista === "dados_veiculo"
+) {
+    // Quando criarmos a tela real de dados do veículo, trocar por:
+    // MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo();
+
+    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+    return;
+}
 
     PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
 }
@@ -3873,13 +3920,33 @@ async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
         return;
     }
 
-    const confirmar = confirm(
-        "Tem certeza que deseja desistir do cadastro de motorista e continuar apenas como passageiro?"
-    );
-
-    if (!confirmar) return;
-
     try {
+        const docUsuarioAtual = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const dadosUsuarioAtual = docUsuarioAtual.exists ? docUsuarioAtual.data() : {};
+
+if (
+    dadosUsuarioAtual.cpfConflito === true ||
+    dadosUsuarioAtual.requerAnaliseAdmin === true ||
+    dadosUsuarioAtual.motoristaStatus === "pendente_analise_suporte"
+) {
+    PRIMEIRAPAG_Login_func_fecharCardMotoristaPendente();
+
+    return PRIMEIRAPAG_Login_func_mostrarErro(
+        'PRIMEIRAPAG_Login_error_main',
+        'Seu cadastro de motorista está em análise pelo suporte. Para sua segurança, não é possível cancelar ou acessar como passageiro até a análise ser resolvida.'
+    );
+}
+
+const confirmar = confirm(
+    "Tem certeza que deseja desistir do cadastro de motorista e continuar apenas como passageiro?"
+);
+
+if (!confirmar) return;
+
         await PRIMEIRAPAG_Login_db
             .collection('usuarios')
             .doc(user.uid)
