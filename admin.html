@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Admin Completo - TNP MoB</title>
+    <title>Painel Admin - TNP MoB</title>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -15,151 +15,495 @@
             --Fame_card: #1e1b19;
             --Fame_gold: #c5a98d;
             --Fame_text: #e0e0e0;
+            --Fame_muted: #8e8e8e;
+            --Fame_input: #2a2623;
             --Fame_brown: #4d2b1a;
             --Success: #28a745;
             --Danger: #dc3545;
             --Warning: #ffc107;
             --Info: #17a2b8;
+            --Purple: #8b5cf6;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            background-color: #000;
-            color: var(--Fame_text);
-            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            display: flex;
-            justify-content: center;
+            background: #000;
+            color: var(--Fame_text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 1000px; padding: 20px; }
-
-        .card_motorista {
-            background: var(--Fame_card);
-            border: 1px solid var(--Fame_brown);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        .ADM_container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 18px;
         }
 
-        .card_header {
+        .ADM_login_area {
+            width: 100%;
+            max-width: 420px;
+            margin: 90px auto 0;
+            padding: 24px;
+            background: var(--Fame_card);
+            border: 1px solid rgba(197, 169, 141, 0.32);
+            border-radius: 18px;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.55);
+            text-align: center;
+        }
+
+        .ADM_login_area h1 {
+            color: var(--Fame_gold);
+            margin: 0 0 18px;
+        }
+
+        .ADM_input,
+        .ADM_select,
+        .ADM_textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            background: var(--Fame_input);
+            border: 1px solid rgba(197, 169, 141, 0.25);
+            color: #fff;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .ADM_textarea {
+            min-height: 92px;
+            resize: vertical;
+        }
+
+        .ADM_header_dashboard {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
-        .status_tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 5px;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: #000;
-        }
-
-        .info_section {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-        }
-
-        .section_title {
-            display: block;
+        .ADM_header_dashboard h2 {
             color: var(--Fame_gold);
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            border-bottom: 1px solid rgba(197, 169, 141, 0.2);
-            padding-bottom: 3px;
+            margin: 0;
+            font-size: 1.35rem;
         }
 
-        .info_grid {
+        .ADM_btn_sair {
+            background: transparent;
+            border: 1px solid rgba(220, 53, 69, 0.55);
+            color: #ff7b89;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 10px 14px;
+        }
+
+        .ADM_resumo_grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .ADM_resumo_card {
+            background: var(--Fame_card);
+            border: 1px solid rgba(197, 169, 141, 0.2);
+            border-radius: 16px;
+            padding: 14px;
+            min-height: 86px;
+        }
+
+        .ADM_resumo_card span {
+            display: block;
+            color: var(--Fame_muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            line-height: 1.25;
+        }
+
+        .ADM_resumo_card strong {
+            display: block;
+            color: #fff;
+            font-size: 1.45rem;
+            margin-top: 8px;
+        }
+
+        .ADM_toolbar {
+            background: var(--Fame_card);
+            border: 1px solid rgba(197, 169, 141, 0.24);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 18px;
+        }
+
+        .ADM_tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .ADM_tab {
+            border: 1px solid rgba(197, 169, 141, 0.22);
+            background: #171412;
+            color: var(--Fame_text);
+            padding: 10px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.78rem;
+        }
+
+        .ADM_tab.active {
+            background: var(--Fame_gold);
+            color: #171412;
+        }
+
+        .ADM_search_grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
             gap: 10px;
         }
 
-        .info_group { font-size: 0.85rem; line-height: 1.4; }
-        .label { color: var(--Fame_gold); font-weight: bold; margin-right: 5px; opacity: 0.8; }
-
-        .btn_group { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .btn {
-            flex: 1; min-width: 120px; padding: 12px; border: none; border-radius: 8px;
-            cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 0.85rem;
-        }
-        .btn_aprovar { background: var(--Success); color: white; }
-        .btn_recusar { background: var(--Danger); color: white; }
-        .btn_doc { background: #2a2623; color: var(--Fame_gold); border: 1px solid var(--Fame_gold); }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        #Login_Area { text-align: center; margin-top: 100px; max-width: 400px; margin-left: auto; margin-right: auto; }
-        input, select { 
-            width: 100%; padding: 12px; margin: 10px 0; 
-            background: #2a2623; border: 1px solid var(--Fame_brown); 
-            color: white; border-radius: 8px; box-sizing: border-box;
+        .ADM_btn_row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
         }
 
-        .search_container {
+        .ADM_btn {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 13px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 0.82rem;
+            transition: 0.2s ease;
+        }
+
+        .ADM_btn:hover {
+            opacity: 0.86;
+            transform: translateY(-1px);
+        }
+
+        .ADM_btn_primary {
+            background: var(--Fame_gold);
+            color: #171412;
+        }
+
+        .ADM_btn_dark {
+            background: #2a2623;
+            color: var(--Fame_gold);
+            border: 1px solid rgba(197, 169, 141, 0.4);
+        }
+
+        .ADM_btn_success { background: var(--Success); color: white; }
+        .ADM_btn_danger { background: var(--Danger); color: white; }
+        .ADM_btn_warning { background: var(--Warning); color: #171412; }
+        .ADM_btn_info { background: var(--Info); color: white; }
+
+        .ADM_resultado_info {
+            color: var(--Fame_gold);
+            font-size: 0.78rem;
+            margin-top: 10px;
+        }
+
+        .ADM_lista {
+            min-height: 160px;
+        }
+
+        .ADM_card {
             background: var(--Fame_card);
-            border: 1px solid var(--Fame_brown);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid rgba(197, 169, 141, 0.22);
+            border-left: 7px solid var(--Fame_brown);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.42);
         }
 
-        .search_title { color: var(--Fame_gold); font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; }
-        .search_inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .search_inputs input { margin: 0; }
-        .search_buttons { display: flex; gap: 10px; }
-        .btn_buscar { flex: 2; background: var(--Fame_gold); color: #000; font-weight: bold; padding: 12px; border: none; border-radius: 8px; cursor: pointer; }
-        .btn_limpar { flex: 1; background: #2a2623; color: var(--Fame_gold); border: 1px solid var(--Fame_gold); padding: 12px; border-radius: 8px; cursor: pointer; }
+        .ADM_card_header {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
 
-        .header_dashboard { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .btn_sair { background: none; border: none; color: #dc3545; cursor: pointer; font-weight: bold; font-size: 1rem; }
-        
-        @media (max-width: 600px) {
-            .search_inputs { grid-template-columns: 1fr; }
-            .info_grid { grid-template-columns: 1fr; }
+        .ADM_tipo_label {
+            color: var(--Fame_gold);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .ADM_nome {
+            color: #fff;
+            font-size: 1.15rem;
+            margin: 4px 0;
+            word-break: break-word;
+        }
+
+        .ADM_muted {
+            color: var(--Fame_muted);
+            font-size: 0.76rem;
+            line-height: 1.35;
+        }
+
+        .ADM_status_box {
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .ADM_status_tag,
+        .ADM_alerta_tag {
+            display: inline-block;
+            font-size: 0.68rem;
+            padding: 5px 9px;
+            border-radius: 999px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #111;
+            margin: 2px;
+            white-space: nowrap;
+        }
+
+        .ADM_status_aprovado { background: var(--Success); color: #fff; }
+        .ADM_status_recusado { background: var(--Danger); color: #fff; }
+        .ADM_status_pendente { background: var(--Warning); color: #111; }
+        .ADM_status_bloqueado { background: var(--Danger); color: #fff; }
+        .ADM_status_info { background: var(--Info); color: #fff; }
+
+        .ADM_alertas {
+            margin: 10px 0 4px;
+        }
+
+        .ADM_alerta_perigo { background: var(--Danger); color: #fff; }
+        .ADM_alerta_aviso { background: var(--Warning); color: #111; }
+        .ADM_alerta_info { background: var(--Info); color: #fff; }
+        .ADM_alerta_roxo { background: var(--Purple); color: #fff; }
+
+        .ADM_section {
+            background: rgba(0,0,0,0.22);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+
+        .ADM_section_title {
+            display: block;
+            color: var(--Fame_gold);
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(197, 169, 141, 0.18);
+        }
+
+        .ADM_info_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 8px 12px;
+        }
+
+        .ADM_info_group {
+            font-size: 0.84rem;
+            line-height: 1.42;
+            word-break: break-word;
+        }
+
+        .ADM_label {
+            color: var(--Fame_gold);
+            font-weight: 800;
+            margin-right: 4px;
+        }
+
+        .ADM_doc_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .ADM_doc_card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(197, 169, 141, 0.18);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .ADM_doc_card img {
+            width: 100%;
+            height: 115px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid rgba(197, 169, 141, 0.28);
+            background: #111;
+            cursor: pointer;
+        }
+
+        .ADM_doc_title {
+            display: block;
+            color: #fff;
+            font-size: 0.78rem;
+            font-weight: 900;
+            margin: 8px 0 5px;
+        }
+
+        .ADM_doc_status {
+            color: var(--Fame_muted);
+            font-size: 0.72rem;
+            display: block;
+            line-height: 1.3;
+        }
+
+        .ADM_card_actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        .ADM_modal_overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.78);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+        }
+
+        .ADM_modal_box {
+            width: 100%;
+            max-width: 760px;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: var(--Fame_card);
+            border: 1px solid rgba(197, 169, 141, 0.38);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 18px 48px rgba(0,0,0,0.65);
+        }
+
+        .ADM_modal_box img {
+            max-width: 100%;
+            border-radius: 12px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .ADM_modal_title {
+            color: var(--Fame_gold);
+            margin: 0 0 12px;
+        }
+
+        @media (max-width: 760px) {
+            .ADM_container { padding: 12px; }
+            .ADM_header_dashboard { align-items: flex-start; flex-direction: column; }
+            .ADM_search_grid { grid-template-columns: 1fr; }
+            .ADM_card_header { flex-direction: column; }
+            .ADM_status_box { text-align: left; }
+            .ADM_card_actions .ADM_btn { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="Login_Area">
-        <h1 style="color: var(--Fame_gold);">🔐 Admin TNP MoB</h1>
-        <input type="email" id="adm_email" placeholder="E-mail">
-        <input type="password" id="adm_senha" placeholder="Senha">
-        <button class="btn btn_aprovar" style="width: 100%;" onclick="logarAdmin()">ACESSAR PAINEL</button>
+<div class="ADM_container">
+    <div id="ADM_Login_Area" class="ADM_login_area">
+        <h1>🔐 Admin TNP MoB</h1>
+        <input class="ADM_input" type="email" id="ADM_email" placeholder="E-mail">
+        <input class="ADM_input" type="password" id="ADM_senha" placeholder="Senha">
+        <button class="ADM_btn ADM_btn_success" style="width: 100%; margin-top: 10px;" onclick="ADM_logarAdmin()">
+            ACESSAR PAINEL
+        </button>
+        <div id="ADM_login_erro" class="ADM_resultado_info"></div>
     </div>
 
-    <div id="Admin_Dashboard" style="display: none;">
-        <div class="header_dashboard">
-            <h2 style="color: var(--Fame_gold); margin: 0;">Gestão de Cadastros</h2>
-            <button class="btn_sair" onclick="auth.signOut()">Sair</button>
+    <div id="ADM_Dashboard" style="display:none;">
+        <div class="ADM_header_dashboard">
+            <div>
+                <h2>Gestão de Cadastros TNP MoB</h2>
+                <div class="ADM_muted">Painel atualizado para a estrutura atual de usuários, motoristas, CNH, veículo e documentos.</div>
+            </div>
+            <button class="ADM_btn_sair" onclick="auth.signOut()">Sair</button>
         </div>
 
-        <div class="search_container">
-            <div class="search_title">🔍 Buscar por Nome, CPF, CNPJ ou CNH</div>
-            <div class="search_inputs">
-                <input type="text" id="search_nome" placeholder="Nome do usuário/motorista">
-                <input type="text" id="search_documento" placeholder="Documento (Apenas números)">
-            </div>
-            <div class="search_buttons">
-                <button class="btn_buscar" onclick="executarBusca()">FILTRAR CADASTROS</button>
-                <button class="btn_limpar" onclick="limparBusca()">LIMPAR</button>
-            </div>
-            <div id="search_results" style="margin-top:10px; font-size:0.8rem; color:var(--Fame_gold);"></div>
+        <div class="ADM_resumo_grid">
+            <div class="ADM_resumo_card"><span>Total motoristas</span><strong id="ADM_count_motoristas">0</strong></div>
+            <div class="ADM_resumo_card"><span>Pendentes</span><strong id="ADM_count_pendentes">0</strong></div>
+            <div class="ADM_resumo_card"><span>CPF conflito</span><strong id="ADM_count_cpf">0</strong></div>
+            <div class="ADM_resumo_card"><span>CNH vencida</span><strong id="ADM_count_cnh">0</strong></div>
+            <div class="ADM_resumo_card"><span>Docs veículo pendentes</span><strong id="ADM_count_docs_veiculo">0</strong></div>
+            <div class="ADM_resumo_card"><span>Passageiros</span><strong id="ADM_count_passageiros">0</strong></div>
         </div>
 
-        <div id="lista_cadastros">Carregando dados...</div>
+        <div class="ADM_toolbar">
+            <div class="ADM_tabs">
+                <button id="ADM_tab_motoristas" class="ADM_tab active" onclick="ADM_setAba('motoristas')">🚕 Motoristas</button>
+                <button id="ADM_tab_pendentes" class="ADM_tab" onclick="ADM_setAba('pendentes')">⚠ Pendentes</button>
+                <button id="ADM_tab_bloqueados" class="ADM_tab" onclick="ADM_setAba('bloqueados')">🚫 Bloqueados</button>
+                <button id="ADM_tab_cpf" class="ADM_tab" onclick="ADM_setAba('cpf')">🧾 CPF conflito</button>
+                <button id="ADM_tab_documentos" class="ADM_tab" onclick="ADM_setAba('documentos')">📄 Documentos</button>
+                <button id="ADM_tab_passageiros" class="ADM_tab" onclick="ADM_setAba('passageiros')">👤 Passageiros</button>
+            </div>
+
+            <div class="ADM_search_grid">
+                <input class="ADM_input" type="text" id="ADM_busca_texto" placeholder="Buscar por nome, e-mail, UID, placa, modelo, CNH..." oninput="ADM_renderizar()">
+                <input class="ADM_input" type="text" id="ADM_busca_documento" placeholder="CPF/CNPJ/CNH/Renavam" oninput="ADM_limparNumerosBusca(this); ADM_renderizar();">
+                <select class="ADM_select" id="ADM_filtro_status" onchange="ADM_renderizar()">
+                    <option value="">Todos os status</option>
+                    <option value="cadastro_iniciado">Cadastro iniciado</option>
+                    <option value="pendente_analise_suporte">Pendente suporte</option>
+                    <option value="bloqueado_cnh_vencida">CNH vencida</option>
+                    <option value="aprovado">Aprovado</option>
+                    <option value="recusado">Recusado</option>
+                </select>
+            </div>
+
+            <div class="ADM_btn_row">
+                <button class="ADM_btn ADM_btn_primary" onclick="ADM_renderizar()">ATUALIZAR FILTRO</button>
+                <button class="ADM_btn ADM_btn_dark" onclick="ADM_limparBusca()">LIMPAR</button>
+            </div>
+
+            <div id="ADM_resultado_info" class="ADM_resultado_info"></div>
+        </div>
+
+        <div id="ADM_lista_cadastros" class="ADM_lista">Carregando dados...</div>
+    </div>
+</div>
+
+<div id="ADM_modal_documento" class="ADM_modal_overlay" onclick="ADM_fecharModalDocumento(event)">
+    <div class="ADM_modal_box" onclick="event.stopPropagation()">
+        <h3 id="ADM_modal_titulo" class="ADM_modal_title">Documento</h3>
+        <img id="ADM_modal_img" src="" alt="Documento">
+        <div class="ADM_btn_row">
+            <button class="ADM_btn ADM_btn_dark" onclick="ADM_fecharModalDocumento()">FECHAR</button>
+            <a id="ADM_modal_link" class="ADM_btn ADM_btn_primary" href="#" target="_blank" style="text-decoration:none; text-align:center;">ABRIR EM NOVA ABA</a>
+        </div>
+    </div>
+</div>
+
+<div id="ADM_modal_reprovacao" class="ADM_modal_overlay" onclick="ADM_fecharModalReprovacao(event)">
+    <div class="ADM_modal_box" onclick="event.stopPropagation()">
+        <h3 id="ADM_reprovar_titulo" class="ADM_modal_title">Reprovar documento</h3>
+        <p class="ADM_muted" id="ADM_reprovar_texto"></p>
+        <textarea id="ADM_reprovar_motivo" class="ADM_textarea" placeholder="Digite o motivo que aparecerá para o motorista refazer a foto..."></textarea>
+        <div class="ADM_btn_row">
+            <button class="ADM_btn ADM_btn_danger" onclick="ADM_confirmarReprovacaoDocumento()">REPROVAR DOCUMENTO</button>
+            <button class="ADM_btn ADM_btn_dark" onclick="ADM_fecharModalReprovacao()">CANCELAR</button>
+        </div>
     </div>
 </div>
 
@@ -174,173 +518,769 @@
     };
 
     firebase.initializeApp(firebaseConfig);
+
     const db = firebase.firestore();
     const auth = firebase.auth();
-    const ADMIN_UID = "9tDgpkZUkPg0iwiw402eOIH1oQn1";
 
-    let todosOsCadastros = [];
+    const ADMIN_UIDS = [
+        "9tDgpkZUkPg0iwiw402eOIH1oQn1",
+        "MfATbUGkIbeq5zLgWjF9TnjW7a22"
+    ];
 
-    function logarAdmin() {
-        const email = document.getElementById('adm_email').value;
-        const senha = document.getElementById('adm_senha').value;
-        auth.signInWithEmailAndPassword(email, senha).catch(e => alert("Erro: " + e.message));
+    let ADM_usuariosMap = new Map();
+    let ADM_motoristasMap = new Map();
+    let ADM_abaAtual = 'motoristas';
+    let ADM_reprovacaoAtual = null;
+
+    function ADM_logarAdmin() {
+        const email = document.getElementById('ADM_email').value.trim();
+        const senha = document.getElementById('ADM_senha').value;
+        const erro = document.getElementById('ADM_login_erro');
+
+        if (erro) erro.innerText = '';
+
+        if (!email || !senha) {
+            if (erro) erro.innerText = 'Preencha e-mail e senha.';
+            return;
+        }
+
+        auth.signInWithEmailAndPassword(email, senha)
+            .catch(e => {
+                if (erro) erro.innerText = 'Erro ao entrar: ' + e.message;
+            });
     }
 
     auth.onAuthStateChanged(user => {
-        if (user && user.uid === ADMIN_UID) {
-            document.getElementById('Login_Area').style.display = 'none';
-            document.getElementById('Admin_Dashboard').style.display = 'block';
-            carregarDados();
+        if (user && ADMIN_UIDS.includes(user.uid)) {
+            document.getElementById('ADM_Login_Area').style.display = 'none';
+            document.getElementById('ADM_Dashboard').style.display = 'block';
+            ADM_carregarDados();
         } else {
-            document.getElementById('Login_Area').style.display = 'block';
-            document.getElementById('Admin_Dashboard').style.display = 'none';
+            document.getElementById('ADM_Login_Area').style.display = 'block';
+            document.getElementById('ADM_Dashboard').style.display = 'none';
+
+            if (user && !ADMIN_UIDS.includes(user.uid)) {
+                auth.signOut();
+                alert('Este usuário não tem permissão de administrador.');
+            }
         }
     });
 
-    function carregarDados() {
-        const colecoes = ["motoristas", "usuarios"];
-        todosOsCadastros = [];
-
-        colecoes.forEach(colecao => {
-            db.collection(colecao).onSnapshot(snapshot => {
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const id = doc.id;
-                    const index = todosOsCadastros.findIndex(c => c.id === id);
-                    const item = { ...data, id, colecao };
-                    if (index >= 0) todosOsCadastros[index] = item;
-                    else todosOsCadastros.push(item);
-                });
-                if (!document.getElementById('search_nome').value && !document.getElementById('search_documento').value) {
-                    exibirCadastros(todosOsCadastros);
+    function ADM_carregarDados() {
+        db.collection('usuarios').onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'removed') {
+                    ADM_usuariosMap.delete(change.doc.id);
+                } else {
+                    ADM_usuariosMap.set(change.doc.id, {
+                        ...change.doc.data(),
+                        id: change.doc.id,
+                        colecao: 'usuarios'
+                    });
                 }
             });
+
+            ADM_atualizarResumo();
+            ADM_renderizar();
+        });
+
+        db.collection('motoristas').onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'removed') {
+                    ADM_motoristasMap.delete(change.doc.id);
+                } else {
+                    ADM_motoristasMap.set(change.doc.id, {
+                        ...change.doc.data(),
+                        id: change.doc.id,
+                        colecao: 'motoristas'
+                    });
+                }
+            });
+
+            ADM_atualizarResumo();
+            ADM_renderizar();
         });
     }
 
-    function executarBusca() {
-        const nome = document.getElementById('search_nome').value.toLowerCase().trim();
-        const docBusca = document.getElementById('search_documento').value.replace(/\D/g, '');
-
-        const filtrados = todosOsCadastros.filter(c => {
-            const nomeMatch = (c.nome || c.cnh?.nome || "").toLowerCase().includes(nome);
-            const docMatch = (c.identidade?.cpf || "").replace(/\D/g, "").includes(docBusca) || 
-                             (c.identidade?.cnpj || "").replace(/\D/g, "").includes(docBusca) ||
-                             (c.cnh?.numero || "").replace(/\D/g, "").includes(docBusca);
-            return nomeMatch && (docBusca === "" || docMatch);
+    function ADM_getMotoristasUnificados() {
+        return Array.from(ADM_motoristasMap.values()).map(motorista => {
+            const usuario = ADM_usuariosMap.get(motorista.id) || {};
+            return {
+                ...usuario,
+                ...motorista,
+                usuario: usuario,
+                motorista: motorista,
+                id: motorista.id,
+                colecao: 'motoristas'
+            };
         });
-
-        exibirCadastros(filtrados);
-        document.getElementById('search_results').innerText = `Exibindo ${filtrados.length} de ${todosOsCadastros.length} cadastros.`;
     }
 
-    function limparBusca() {
-        document.getElementById('search_nome').value = "";
-        document.getElementById('search_documento').value = "";
-        document.getElementById('search_results').innerText = "";
-        exibirCadastros(todosOsCadastros);
+    function ADM_getPassageiros() {
+        return Array.from(ADM_usuariosMap.values()).filter(usuario => {
+            const temMotorista = usuario.perfis && usuario.perfis.motorista === true;
+            return !temMotorista;
+        });
     }
 
-    function formatarData(timestamp) {
-        if (!timestamp) return "N/A";
-        const date = timestamp.seconds ? new Date(timestamp.seconds * 1000) : new Date(timestamp);
-        return date.toLocaleDateString('pt-BR') + " " + date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+    function ADM_atualizarResumo() {
+        const motoristas = ADM_getMotoristasUnificados();
+        const passageiros = ADM_getPassageiros();
+
+        const pendentes = motoristas.filter(m => ADM_isPendente(m)).length;
+        const cpf = motoristas.filter(m => m.cpfConflito === true || m.cpfConflitoStatus === 'pendente_analise_suporte').length;
+        const cnh = motoristas.filter(m => m.cnhBloqueioPorVencimento === true || m.cnhValidadeStatus === 'bloqueado_cnh_vencida').length;
+        const docsVeiculo = motoristas.filter(m => m.documentosVeiculoStatus === 'pendente_analise' || m.etapaCadastroMotorista === 'documentos_veiculo').length;
+
+        ADM_setText('ADM_count_motoristas', motoristas.length);
+        ADM_setText('ADM_count_pendentes', pendentes);
+        ADM_setText('ADM_count_cpf', cpf);
+        ADM_setText('ADM_count_cnh', cnh);
+        ADM_setText('ADM_count_docs_veiculo', docsVeiculo);
+        ADM_setText('ADM_count_passageiros', passageiros.length);
     }
 
-    function exibirCadastros(lista) {
-        const listaDiv = document.getElementById('lista_cadastros');
-        listaDiv.innerHTML = "";
+    function ADM_setText(id, valor) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = valor;
+    }
 
-        lista.sort((a, b) => (b.criadoEm?.seconds || 0) - (a.criadoEm?.seconds || 0));
+    function ADM_setAba(aba) {
+        ADM_abaAtual = aba;
 
-        lista.forEach(data => {
-            const ehMotorista = data.tipo === 'motorista';
-            const statusGeral = data.status?.geral || data.status || "pendente";
-            const corStatus = statusGeral === 'aprovado' ? 'var(--Success)' : (statusGeral === 'recusado' ? 'var(--Danger)' : 'var(--Warning)');
-            
-            listaDiv.innerHTML += `
-                <div class="card_motorista" style="border-left: 6px solid ${ehMotorista ? 'var(--Fame_brown)' : 'var(--Info)'}">
-                    <div class="card_header">
-                        <div>
-                            <small style="color:var(--Fame_gold); font-size:0.7rem; font-weight:bold;">
-                                ${data.colecao.toUpperCase()} | ID TNP: ${data.idTnp || 'N/A'}
-                            </small>
-                            <h3 style="margin:5px 0; color:white;">${data.nome || data.cnh?.nome || "SEM NOME"}</h3>
-                            <small style="color:var(--Fame_muted);">Cadastrado em: ${formatarData(data.criadoEm)}</small>
-                        </div>
-                        <div style="text-align:right;">
-                            <span class="status_tag" style="background: ${corStatus}">${statusGeral}</span>
-                            <div style="font-size:0.6rem; margin-top:5px; color:var(--Fame_muted);">Atu: ${formatarData(data.status?.atualizadoEm)}</div>
+        document.querySelectorAll('.ADM_tab').forEach(tab => tab.classList.remove('active'));
+
+        const tabAtual = document.getElementById('ADM_tab_' + aba);
+        if (tabAtual) tabAtual.classList.add('active');
+
+        ADM_renderizar();
+    }
+
+    function ADM_limparNumerosBusca(input) {
+        input.value = input.value.replace(/\D/g, '');
+    }
+
+    function ADM_limparBusca() {
+        document.getElementById('ADM_busca_texto').value = '';
+        document.getElementById('ADM_busca_documento').value = '';
+        document.getElementById('ADM_filtro_status').value = '';
+        ADM_renderizar();
+    }
+
+    function ADM_renderizar() {
+        let lista = [];
+
+        if (ADM_abaAtual === 'passageiros') {
+            lista = ADM_getPassageiros();
+        } else {
+            lista = ADM_getMotoristasUnificados();
+        }
+
+        if (ADM_abaAtual === 'pendentes') {
+            lista = lista.filter(item => ADM_isPendente(item));
+        }
+
+        if (ADM_abaAtual === 'bloqueados') {
+            lista = lista.filter(item => ADM_isBloqueado(item));
+        }
+
+        if (ADM_abaAtual === 'cpf') {
+            lista = lista.filter(item => item.cpfConflito === true || item.cpfConflitoStatus === 'pendente_analise_suporte');
+        }
+
+        if (ADM_abaAtual === 'documentos') {
+            lista = lista.filter(item => ADM_temDocumentoParaAnalise(item));
+        }
+
+        const texto = document.getElementById('ADM_busca_texto').value.toLowerCase().trim();
+        const documento = document.getElementById('ADM_busca_documento').value.replace(/\D/g, '');
+        const statusFiltro = document.getElementById('ADM_filtro_status').value;
+
+        if (texto) {
+            lista = lista.filter(item => ADM_textoBusca(item).includes(texto));
+        }
+
+        if (documento) {
+            lista = lista.filter(item => ADM_documentosBusca(item).includes(documento));
+        }
+
+        if (statusFiltro) {
+            lista = lista.filter(item => ADM_getStatusGeral(item) === statusFiltro || item.motoristaStatus === statusFiltro);
+        }
+
+        lista.sort((a, b) => ADM_toMillis(b.atualizadoEm || b.criadoEm) - ADM_toMillis(a.atualizadoEm || a.criadoEm));
+
+        const listaDiv = document.getElementById('ADM_lista_cadastros');
+        const info = document.getElementById('ADM_resultado_info');
+
+        if (info) {
+            info.innerText = `Exibindo ${lista.length} cadastro(s).`;
+        }
+
+        if (!lista.length) {
+            listaDiv.innerHTML = '<div class="ADM_card">Nenhum cadastro encontrado.</div>';
+            return;
+        }
+
+        listaDiv.innerHTML = lista.map(item => ADM_cardCadastro(item)).join('');
+    }
+
+    function ADM_textoBusca(item) {
+        return [
+            item.nome,
+            item.email,
+            item.uid,
+            item.id,
+            item.categoriaPrincipal,
+            item.motoristaStatus,
+            item.status && item.status.geral,
+            item.veiculo && item.veiculo.placa,
+            item.veiculo && item.veiculo.marca,
+            item.veiculo && item.veiculo.modelo,
+            item.veiculo && item.veiculo.ano
+        ].filter(Boolean).join(' ').toLowerCase();
+    }
+
+    function ADM_documentosBusca(item) {
+        return [
+            item.cpf,
+            item.cpfFormatado,
+            item.documentoNumero,
+            item.documentoFormatado,
+            item.cnhCpfTitular,
+            item.cnhCpfTitularFormatado,
+            item.cnhNumero,
+            item.veiculo && item.veiculo.renavam,
+            item.veiculo && item.veiculo.placa
+        ].filter(Boolean).join('').replace(/\D/g, '');
+    }
+
+    function ADM_cardCadastro(data) {
+        const ehMotorista = data.colecao === 'motoristas' || (data.perfis && data.perfis.motorista === true);
+        const statusGeral = ADM_getStatusGeral(data);
+        const statusClass = ADM_getStatusClass(statusGeral, data);
+        const nome = ADM_escape(data.nome || 'SEM NOME');
+        const tipoLabel = ehMotorista ? 'MOTORISTA' : 'PASSAGEIRO';
+        const borda = ehMotorista ? 'var(--Fame_brown)' : 'var(--Info)';
+
+        return `
+            <div class="ADM_card" style="border-left-color:${borda};">
+                <div class="ADM_card_header">
+                    <div>
+                        <div class="ADM_tipo_label">${tipoLabel} | UID: ${ADM_escape(data.id || data.uid || 'N/A')}</div>
+                        <div class="ADM_nome">${nome}</div>
+                        <div class="ADM_muted">
+                            E-mail: ${ADM_escape(data.email || 'N/A')}<br>
+                            Criado: ${ADM_formatarData(data.criadoEm)} | Atualizado: ${ADM_formatarData(data.atualizadoEm)}
                         </div>
                     </div>
-
-                    <div class="info_section">
-                        <span class="section_title">👤 Identificação e Contato</span>
-                        <div class="info_grid">
-                            <div class="info_group"><span class="label">E-mail:</span> ${data.email || 'N/A'}</div>
-                            <div class="info_group"><span class="label">WhatsApp:</span> ${data.telefonePrincipal || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Tipo Doc:</span> ${data.identidade?.tipo?.toUpperCase() || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Doc:</span> ${data.identidade?.cpf || data.identidade?.cnpj || 'N/A'}</div>
-                        </div>
-                    </div>
-
-                    <div class="info_section">
-                        <span class="section_title">📍 Endereço</span>
-                        <div class="info_group">
-                            ${data.endereco?.rua || 'N/A'}, ${data.endereco?.numero || 'N/A'} ${data.endereco?.complemento ? '- ' + data.endereco.complemento : ''}<br>
-                            ${data.endereco?.bairro || 'N/A'} - ${data.endereco?.cidade || 'N/A'}/${data.endereco?.estado || 'N/A'}<br>
-                            <span class="label">CEP:</span> ${data.endereco?.cep || 'N/A'} | <span class="label">Ref:</span> ${data.endereco?.referencia || 'N/A'}
-                        </div>
-                    </div>
-
-                    ${ehMotorista ? `
-                    <div class="info_section" style="border-top: 1px dashed var(--Fame_brown); padding-top:15px;">
-                        <span class="section_title">🚗 Dados do Veículo</span>
-                        <div class="info_grid">
-                            <div class="info_group"><span class="label">Modelo:</span> ${data.veiculo?.modelo || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Placa:</span> ${data.veiculo?.placa || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Ano:</span> ${data.veiculo?.ano || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Cor:</span> ${data.veiculo?.cor || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Renavam:</span> ${data.veiculo?.renavam || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Chassi:</span> ${data.veiculo?.chassi || 'N/A'}</div>
-                        </div>
-                    </div>
-
-                    <div class="info_section">
-                        <span class="section_title">🪪 Dados da CNH</span>
-                        <div class="info_grid">
-                            <div class="info_group"><span class="label">Nº Registro:</span> ${data.cnh?.numero || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Categoria:</span> ${data.cnh?.categoria || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Emissão:</span> ${data.cnh?.dataEmissao || 'N/A'}</div>
-                            <div class="info_group"><span class="label">Nome CNH:</span> ${data.cnh?.nome || 'N/A'}</div>
-                        </div>
-                    </div>
-                    ` : ''}
-
-                    <div class="btn_group">
-                        <button class="btn btn_doc" onclick="alert('Funcionalidade de fotos pendente de ativação no plano.')">VER DOCUMENTOS</button>
-                        <button class="btn btn_aprovar" onclick="mudarStatus('${data.id}', 'aprovado', '${data.colecao}')">APROVAR</button>
-                        <button class="btn btn_recusar" onclick="mudarStatus('${data.id}', 'recusado', '${data.colecao}')">RECUSAR</button>
+                    <div class="ADM_status_box">
+                        <span class="ADM_status_tag ${statusClass}">${ADM_escape(statusGeral)}</span>
+                        <div class="ADM_muted" style="margin-top:6px;">Etapa: ${ADM_escape(data.etapaCadastroMotorista || data.etapaCadastro || 'N/A')}</div>
                     </div>
                 </div>
+
+                ${ADM_alertasCadastro(data)}
+                ${ADM_secaoPessoa(data)}
+                ${ehMotorista ? ADM_secaoCnh(data) : ''}
+                ${ehMotorista ? ADM_secaoVeiculo(data) : ''}
+                ${ehMotorista ? ADM_secaoDocumentos(data) : ''}
+                ${ADM_acoesCadastro(data, ehMotorista)}
+            </div>
+        `;
+    }
+
+    function ADM_alertasCadastro(data) {
+        const tags = [];
+
+        if (data.cpfConflito === true || data.cpfConflitoStatus === 'pendente_analise_suporte') {
+            tags.push('<span class="ADM_alerta_tag ADM_alerta_perigo">⚠ CPF em conflito</span>');
+        }
+
+        if (data.requerAnaliseAdmin === true) {
+            tags.push('<span class="ADM_alerta_tag ADM_alerta_aviso">🧑‍💼 Requer análise admin</span>');
+        }
+
+        if (data.cnhBloqueioPorVencimento === true || data.cnhValidadeStatus === 'bloqueado_cnh_vencida') {
+            tags.push('<span class="ADM_alerta_tag ADM_alerta_perigo">🚫 CNH vencida/bloqueada</span>');
+        }
+
+        if (data.fotosCnhStatus === 'pendente_analise') {
+            tags.push('<span class="ADM_alerta_tag ADM_alerta_info">🪪 CNH pendente análise</span>');
+        }
+
+        if (data.documentosVeiculoStatus === 'pendente_analise') {
+            tags.push('<span class="ADM_alerta_tag ADM_alerta_roxo">🚗 Veículo pendente análise</span>');
+        }
+
+        if (!tags.length) return '';
+
+        return `<div class="ADM_alertas">${tags.join('')}</div>`;
+    }
+
+    function ADM_secaoPessoa(data) {
+        return `
+            <div class="ADM_section">
+                <span class="ADM_section_title">👤 Identificação e contato</span>
+                <div class="ADM_info_grid">
+                    <div class="ADM_info_group"><span class="ADM_label">Nome:</span> ${ADM_escape(data.nome || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">E-mail:</span> ${ADM_escape(data.email || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">WhatsApp:</span> ${ADM_escape(data.whatsappFormatado || data.whatsapp || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Telefone:</span> ${ADM_escape(data.telefonePrincipalFormatado || data.telefonePrincipal || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">CPF:</span> ${ADM_escape(data.cpfFormatado || data.documentoFormatado || data.cnhCpfTitularFormatado || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Tipo:</span> ${ADM_escape(data.tipo || 'N/A')}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function ADM_secaoCnh(data) {
+        return `
+            <div class="ADM_section">
+                <span class="ADM_section_title">🪪 CNH</span>
+                <div class="ADM_info_grid">
+                    <div class="ADM_info_group"><span class="ADM_label">Nº CNH:</span> ${ADM_escape(data.cnhNumero || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Categoria:</span> ${ADM_escape(data.cnhCategoria || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">CPF titular:</span> ${ADM_escape(data.cnhCpfTitularFormatado || data.cnhCpfTitular || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Validade:</span> ${ADM_escape(data.cnhValidadeFormatada || data.cnhValidade || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Status:</span> ${ADM_escape(data.cnhValidadeStatus || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Dias para vencer:</span> ${ADM_escape(String(data.cnhDiasParaVencer ?? 'N/A'))}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function ADM_secaoVeiculo(data) {
+        const v = data.veiculo || {};
+        return `
+            <div class="ADM_section">
+                <span class="ADM_section_title">🚗 Veículo</span>
+                <div class="ADM_info_grid">
+                    <div class="ADM_info_group"><span class="ADM_label">Categoria:</span> ${ADM_escape(v.categoriaPrincipal || data.categoriaPrincipal || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Placa:</span> ${ADM_escape(v.placa || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Renavam:</span> ${ADM_escape(v.renavam || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Marca:</span> ${ADM_escape(v.marca || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Modelo:</span> ${ADM_escape(v.modelo || 'N/A')}</div>
+                    <div class="ADM_info_group"><span class="ADM_label">Ano:</span> ${ADM_escape(v.ano || 'N/A')}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function ADM_secaoDocumentos(data) {
+        const docs = [];
+
+        ADM_addDocCard(docs, data, 'documentosMotorista.fotoCnh', 'Foto da CNH', data.documentosMotorista && data.documentosMotorista.fotoCnh);
+        ADM_addDocCard(docs, data, 'documentosMotorista.selfieComCnh', 'Selfie com CNH', data.documentosMotorista && data.documentosMotorista.selfieComCnh);
+        ADM_addDocCard(docs, data, 'documentosVeiculo.crlv', 'CRLV', data.documentosVeiculo && data.documentosVeiculo.crlv);
+        ADM_addDocCard(docs, data, 'documentosVeiculo.fotoVeiculoPlaca', 'Veículo com placa', data.documentosVeiculo && data.documentosVeiculo.fotoVeiculoPlaca);
+
+        return `
+            <div class="ADM_section">
+                <span class="ADM_section_title">📄 Documentos e fotos</span>
+                <div class="ADM_doc_grid">
+                    ${docs.join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    function ADM_addDocCard(lista, data, campo, titulo, doc) {
+        if (!doc || !doc.url) {
+            lista.push(`
+                <div class="ADM_doc_card">
+                    <div style="height:115px;display:flex;align-items:center;justify-content:center;background:#111;border-radius:10px;color:var(--Fame_muted);">Sem foto</div>
+                    <span class="ADM_doc_title">${ADM_escape(titulo)}</span>
+                    <span class="ADM_doc_status">Pendente envio</span>
+                </div>
+            `);
+            return;
+        }
+
+        const tituloEsc = ADM_escape(titulo);
+        const status = ADM_escape(doc.status || 'pendente_analise');
+        const motivo = ADM_escape(doc.motivoReprovacao || '');
+        const tamanho = doc.tamanhoFinal ? ADM_formatarBytes(doc.tamanhoFinal) : 'N/A';
+
+        lista.push(`
+            <div class="ADM_doc_card">
+                <img src="${ADM_escapeAttr(doc.url)}" alt="${tituloEsc}" onclick="ADM_abrirModalDocumento('${ADM_escapeAttr(doc.url)}', '${tituloEsc}')">
+                <span class="ADM_doc_title">${tituloEsc}</span>
+                <span class="ADM_doc_status">Status: ${status}<br>Tamanho: ${tamanho}${motivo ? '<br>Motivo: ' + motivo : ''}</span>
+                <div class="ADM_btn_row" style="justify-content:center;">
+                    <button class="ADM_btn ADM_btn_success" onclick="ADM_aprovarDocumento('${data.id}', '${campo}')">OK</button>
+                    <button class="ADM_btn ADM_btn_danger" onclick="ADM_abrirReprovacaoDocumento('${data.id}', '${campo}', '${tituloEsc}')">Refazer</button>
+                </div>
+            </div>
+        `);
+    }
+
+    function ADM_acoesCadastro(data, ehMotorista) {
+        if (!ehMotorista) {
+            return `
+                <div class="ADM_card_actions">
+                    <button class="ADM_btn ADM_btn_info" onclick="ADM_copiarUid('${ADM_escapeAttr(data.id || data.uid || '')}')">COPIAR UID</button>
+                </div>
             `;
+        }
+
+        return `
+            <div class="ADM_card_actions">
+                <button class="ADM_btn ADM_btn_success" onclick="ADM_aprovarMotorista('${data.id}')">APROVAR MOTORISTA</button>
+                <button class="ADM_btn ADM_btn_warning" onclick="ADM_marcarAnalise('${data.id}')">MANTER EM ANÁLISE</button>
+                <button class="ADM_btn ADM_btn_danger" onclick="ADM_recusarMotorista('${data.id}')">RECUSAR</button>
+                <button class="ADM_btn ADM_btn_info" onclick="ADM_copiarUid('${ADM_escapeAttr(data.id)}')">COPIAR UID</button>
+            </div>
+        `;
+    }
+
+    function ADM_getStatusGeral(data) {
+        if (data.status && typeof data.status === 'object' && data.status.geral) return data.status.geral;
+        if (typeof data.status === 'string') return data.status;
+        return data.motoristaStatus || 'pendente';
+    }
+
+    function ADM_getStatusClass(status, data) {
+        if (status === 'aprovado') return 'ADM_status_aprovado';
+        if (status === 'recusado') return 'ADM_status_recusado';
+        if (status === 'bloqueado_cnh_vencida' || data.cnhBloqueioPorVencimento === true) return 'ADM_status_bloqueado';
+        if (status === 'pendente_analise_suporte') return 'ADM_status_bloqueado';
+        if (status === 'cadastro_iniciado') return 'ADM_status_info';
+        return 'ADM_status_pendente';
+    }
+
+    function ADM_isPendente(data) {
+        const status = ADM_getStatusGeral(data);
+        return (
+            status === 'cadastro_iniciado' ||
+            status === 'pendente' ||
+            status === 'pendente_analise_suporte' ||
+            data.fotosCnhStatus === 'pendente_analise' ||
+            data.documentosVeiculoStatus === 'pendente_analise' ||
+            data.etapaCadastroMotorista !== 'completo'
+        );
+    }
+
+    function ADM_isBloqueado(data) {
+        const status = ADM_getStatusGeral(data);
+        return (
+            status === 'bloqueado_cnh_vencida' ||
+            status === 'pendente_analise_suporte' ||
+            data.cnhBloqueioPorVencimento === true ||
+            data.requerAnaliseAdmin === true
+        );
+    }
+
+    function ADM_temDocumentoParaAnalise(data) {
+        const dm = data.documentosMotorista || {};
+        const dv = data.documentosVeiculo || {};
+
+        return (
+            (dm.fotoCnh && dm.fotoCnh.status === 'pendente_analise') ||
+            (dm.selfieComCnh && dm.selfieComCnh.status === 'pendente_analise') ||
+            (dv.crlv && dv.crlv.status === 'pendente_analise') ||
+            (dv.fotoVeiculoPlaca && dv.fotoVeiculoPlaca.status === 'pendente_analise')
+        );
+    }
+
+    async function ADM_aprovarDocumento(uid, campo) {
+        if (!confirm('Aprovar este documento?')) return;
+
+        const atualizacao = {};
+        atualizacao[campo + '.status'] = 'aprovado';
+        atualizacao[campo + '.motivoReprovacao'] = '';
+        atualizacao[campo + '.aprovadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+        atualizacao[campo + '.aprovadoPor'] = auth.currentUser ? auth.currentUser.uid : '';
+        atualizacao['atualizadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+
+        await db.collection('motoristas').doc(uid).set(atualizacao, { merge: true });
+        alert('Documento aprovado.');
+    }
+
+    function ADM_abrirReprovacaoDocumento(uid, campo, titulo) {
+        ADM_reprovacaoAtual = { uid, campo, titulo };
+
+        document.getElementById('ADM_reprovar_titulo').innerText = 'Reprovar: ' + titulo;
+        document.getElementById('ADM_reprovar_texto').innerText = 'Informe o motivo para o motorista refazer este documento.';
+        document.getElementById('ADM_reprovar_motivo').value = '';
+        document.getElementById('ADM_modal_reprovacao').style.display = 'flex';
+    }
+
+    async function ADM_confirmarReprovacaoDocumento() {
+        if (!ADM_reprovacaoAtual) return;
+
+        const motivo = document.getElementById('ADM_reprovar_motivo').value.trim();
+
+        if (!motivo) {
+            alert('Digite o motivo da reprovação.');
+            return;
+        }
+
+        const { uid, campo } = ADM_reprovacaoAtual;
+        const atualizacao = {};
+        atualizacao[campo + '.status'] = 'reprovado';
+        atualizacao[campo + '.motivoReprovacao'] = motivo;
+        atualizacao[campo + '.reprovadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+        atualizacao[campo + '.reprovadoPor'] = auth.currentUser ? auth.currentUser.uid : '';
+        atualizacao['motoristaStatus'] = 'cadastro_iniciado';
+        atualizacao['podeAceitarCorrida'] = false;
+        atualizacao['atualizadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+
+        if (campo.startsWith('documentosMotorista.')) {
+            atualizacao['fotosCnhStatus'] = 'reprovado';
+            atualizacao['fotosCnhConcluidas'] = false;
+            atualizacao['etapaCadastroMotorista'] = 'fotos_cnh';
+        }
+
+        if (campo.startsWith('documentosVeiculo.')) {
+            atualizacao['documentosVeiculoStatus'] = 'reprovado';
+            atualizacao['documentosVeiculoConcluidos'] = false;
+            atualizacao['etapaCadastroMotorista'] = 'documentos_veiculo';
+        }
+
+        await db.collection('motoristas').doc(uid).set(atualizacao, { merge: true });
+
+        const atualizacaoUsuario = {
+            motoristaStatus: 'cadastro_iniciado',
+            podeAceitarCorrida: false,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (campo.startsWith('documentosMotorista.')) {
+            atualizacaoUsuario.etapaCadastro = 'motorista_fotos_cnh';
+            atualizacaoUsuario.etapaCadastroMotorista = 'fotos_cnh';
+        }
+
+        if (campo.startsWith('documentosVeiculo.')) {
+            atualizacaoUsuario.etapaCadastro = 'motorista_documentos_veiculo';
+            atualizacaoUsuario.etapaCadastroMotorista = 'documentos_veiculo';
+        }
+
+        await db.collection('usuarios').doc(uid).set(atualizacaoUsuario, { merge: true });
+
+        ADM_fecharModalReprovacao();
+        alert('Documento reprovado. O motorista voltará para refazer a etapa.');
+    }
+
+    async function ADM_aprovarMotorista(uid) {
+        const motoristaDoc = await db.collection('motoristas').doc(uid).get();
+        const data = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        if (data.cpfConflito === true || data.cpfConflitoStatus === 'pendente_analise_suporte') {
+            alert('Não é possível aprovar: CPF em conflito. Resolva o caso antes.');
+            return;
+        }
+
+        if (data.cnhBloqueioPorVencimento === true || data.cnhValidadeStatus === 'bloqueado_cnh_vencida') {
+            alert('Não é possível aprovar: CNH bloqueada/vencida.');
+            return;
+        }
+
+        const dm = data.documentosMotorista || {};
+        const dv = data.documentosVeiculo || {};
+
+        const docsOk =
+            dm.fotoCnh && dm.fotoCnh.status === 'aprovado' &&
+            dm.selfieComCnh && dm.selfieComCnh.status === 'aprovado' &&
+            dv.crlv && dv.crlv.status === 'aprovado' &&
+            dv.fotoVeiculoPlaca && dv.fotoVeiculoPlaca.status === 'aprovado';
+
+        if (!docsOk) {
+            alert('Antes de aprovar o motorista, aprove todos os documentos: CNH, selfie CNH, CRLV e veículo com placa.');
+            return;
+        }
+
+        if (!confirm('Aprovar este motorista para aceitar corridas?')) return;
+
+        const statusFinal = {
+            geral: 'aprovado',
+            motivo: '',
+            tipo: 'motorista',
+            uid: uid,
+            cnhValidadeStatus: data.cnhValidadeStatus || 'valida',
+            cnhBloqueioPorVencimento: false,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        await db.collection('motoristas').doc(uid).set({
+            cadastroCompleto: true,
+            podeAceitarCorrida: true,
+            requerAnaliseAdmin: false,
+            motoristaStatus: 'aprovado',
+            motivoAnaliseAdmin: '',
+            etapaCadastroMotorista: 'completo',
+            status: statusFinal,
+            aprovadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            aprovadoPor: auth.currentUser ? auth.currentUser.uid : '',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await db.collection('usuarios').doc(uid).set({
+            motoristaStatus: 'aprovado',
+            podeAceitarCorrida: true,
+            podeSolicitarCorrida: true,
+            requerAnaliseAdmin: false,
+            etapaCadastro: 'entrada_app',
+            etapaCadastroMotorista: 'completo',
+            status: statusFinal,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        alert('Motorista aprovado com sucesso.');
+    }
+
+    async function ADM_marcarAnalise(uid) {
+        const motivo = prompt('Motivo da análise:', 'análise manual do administrador');
+        if (motivo === null) return;
+
+        await db.collection('motoristas').doc(uid).set({
+            requerAnaliseAdmin: true,
+            motoristaStatus: 'pendente_analise_suporte',
+            motivoAnaliseAdmin: motivo,
+            podeAceitarCorrida: false,
+            status: {
+                geral: 'pendente_analise_suporte',
+                motivo: motivo,
+                tipo: 'motorista',
+                uid: uid,
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            },
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await db.collection('usuarios').doc(uid).set({
+            requerAnaliseAdmin: true,
+            motoristaStatus: 'pendente_analise_suporte',
+            motivoAnaliseAdmin: motivo,
+            podeAceitarCorrida: false,
+            podeSolicitarCorrida: false,
+            status: {
+                geral: 'pendente_analise_suporte',
+                motivo: motivo,
+                tipo: 'motorista',
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            },
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        alert('Cadastro mantido em análise.');
+    }
+
+    async function ADM_recusarMotorista(uid) {
+        const motivo = prompt('Motivo da recusa:', 'cadastro recusado pelo administrador');
+        if (motivo === null) return;
+
+        if (!confirm('Confirmar recusa deste motorista?')) return;
+
+        await db.collection('motoristas').doc(uid).set({
+            cadastroCompleto: false,
+            podeAceitarCorrida: false,
+            requerAnaliseAdmin: true,
+            motoristaStatus: 'recusado',
+            motivoAnaliseAdmin: motivo,
+            status: {
+                geral: 'recusado',
+                motivo: motivo,
+                tipo: 'motorista',
+                uid: uid,
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            },
+            recusadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            recusadoPor: auth.currentUser ? auth.currentUser.uid : '',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await db.collection('usuarios').doc(uid).set({
+            motoristaStatus: 'recusado',
+            podeAceitarCorrida: false,
+            podeSolicitarCorrida: false,
+            requerAnaliseAdmin: true,
+            motivoAnaliseAdmin: motivo,
+            status: {
+                geral: 'recusado',
+                motivo: motivo,
+                tipo: 'motorista',
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            },
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        alert('Motorista recusado.');
+    }
+
+    function ADM_abrirModalDocumento(url, titulo) {
+        document.getElementById('ADM_modal_titulo').innerText = titulo;
+        document.getElementById('ADM_modal_img').src = url;
+        document.getElementById('ADM_modal_link').href = url;
+        document.getElementById('ADM_modal_documento').style.display = 'flex';
+    }
+
+    function ADM_fecharModalDocumento(event) {
+        if (event && event.target && event.target.id !== 'ADM_modal_documento') return;
+        document.getElementById('ADM_modal_documento').style.display = 'none';
+        document.getElementById('ADM_modal_img').src = '';
+    }
+
+    function ADM_fecharModalReprovacao(event) {
+        if (event && event.target && event.target.id !== 'ADM_modal_reprovacao') return;
+        document.getElementById('ADM_modal_reprovacao').style.display = 'none';
+        ADM_reprovacaoAtual = null;
+    }
+
+    function ADM_copiarUid(uid) {
+        navigator.clipboard.writeText(uid).then(() => alert('UID copiado.'));
+    }
+
+    function ADM_formatarData(timestamp) {
+        if (!timestamp) return 'N/A';
+        let date;
+
+        if (timestamp.seconds) {
+            date = new Date(timestamp.seconds * 1000);
+        } else {
+            date = new Date(timestamp);
+        }
+
+        if (isNaN(date.getTime())) return 'N/A';
+
+        return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit'
         });
     }
 
-    function mudarStatus(id, novo, colecao) {
-        if(!confirm(`Deseja realmente alterar o status para ${novo.toUpperCase()}?`)) return;
-        
-        db.collection(colecao).doc(id).update({
-            status: novo,
-            "status.geral": novo,
-            "status.atualizadoEm": new Date()
-        }).then(() => {
-            alert("Status atualizado com sucesso!");
-        }).catch(e => alert("Erro ao atualizar: " + e.message));
+    function ADM_toMillis(timestamp) {
+        if (!timestamp) return 0;
+        if (timestamp.seconds) return timestamp.seconds * 1000;
+        const date = new Date(timestamp);
+        return isNaN(date.getTime()) ? 0 : date.getTime();
     }
 
-    document.addEventListener('keypress', (e) => { if(e.key === 'Enter') executarBusca(); });
-</script>
+    function ADM_formatarBytes(bytes) {
+        if (!bytes && bytes !== 0) return 'N/A';
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+    }
 
+    function ADM_escape(valor) {
+        return String(valor ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function ADM_escapeAttr(valor) {
+        return ADM_escape(valor).replace(/`/g, '&#096;');
+    }
+
+    document.addEventListener('keypress', e => {
+        if (e.key === 'Enter' && document.getElementById('ADM_Dashboard').style.display !== 'none') {
+            ADM_renderizar();
+        }
+    });
+</script>
 </body>
 </html>
