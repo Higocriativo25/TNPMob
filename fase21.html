@@ -6961,13 +6961,26 @@ function MOTORISTAPAG_Login_func_atualizarCardDocumentoVeiculo(tipoDocumento, da
 
 
 function MOTORISTAPAG_Login_func_abrirCameraDocumentoVeiculo(tipoDocumento) {
+    let input = null;
+
     if (tipoDocumento === 'crlv') {
-        document.getElementById('MOTORISTAPAG_Login_input_crlv').click();
+        input = document.getElementById('MOTORISTAPAG_Login_input_crlv');
     }
 
-   if (tipoDocumento === 'fotoVeiculoPlaca') {
-    document.getElementById('MOTORISTAPAG_Login_input_foto_veiculo_placa').click();
-}
+    if (tipoDocumento === 'fotoVeiculoPlaca') {
+        input = document.getElementById('MOTORISTAPAG_Login_input_foto_veiculo_placa');
+    }
+
+    if (!input) {
+        console.error('Input da câmera não encontrado:', tipoDocumento);
+
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_documentos_veiculo',
+            'Erro interno: campo de foto não encontrado.'
+        );
+    }
+
+    input.click();
 }
 
 async function MOTORISTAPAG_Login_func_prepararDocumentoVeiculo(event, tipoDocumento) {
