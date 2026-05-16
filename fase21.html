@@ -2417,13 +2417,13 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <!-- INPUT OCULTO VEÍCULO COM PLACA -->
     <input
-        type="file"
-        id="MOTORISTAPAG_Login_input_veiculo_placa"
-        accept="image/*"
-        capture="environment"
-        style="display:none;"
-        onchange="MOTORISTAPAG_Login_func_prepararDocumentoVeiculo(event, 'fotoVeiculoPlaca')"
-    >
+    type="file"
+    id="MOTORISTAPAG_Login_input_foto_veiculo_placa"
+    accept="image/*"
+    capture="environment"
+    style="display:none;"
+    onchange="MOTORISTAPAG_Login_func_prepararDocumentoVeiculo(event, 'fotoVeiculoPlaca')"
+	>
 
 </div>
 
@@ -6965,9 +6965,9 @@ function MOTORISTAPAG_Login_func_abrirCameraDocumentoVeiculo(tipoDocumento) {
         document.getElementById('MOTORISTAPAG_Login_input_crlv').click();
     }
 
-    if (tipoDocumento === 'fotoVeiculoPlaca') {
-        document.getElementById('MOTORISTAPAG_Login_input_veiculo_placa').click();
-    }
+   if (tipoDocumento === 'fotoVeiculoPlaca') {
+    document.getElementById('MOTORISTAPAG_Login_input_foto_veiculo_placa').click();
+}
 }
 
 async function MOTORISTAPAG_Login_func_prepararDocumentoVeiculo(event, tipoDocumento) {
