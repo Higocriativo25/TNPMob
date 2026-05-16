@@ -6746,29 +6746,29 @@ if (motoristaTemCpfConflito) {
                 }
             }, { merge: true });
 
-        await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(user.uid)
-            .set({
-                etapaCadastro: 'motorista_documentos_veiculo',
-                etapaCadastroMotorista: 'documentos_veiculo',
+await PRIMEIRAPAG_Login_db
+    .collection('usuarios')
+    .doc(user.uid)
+    .set({
+        etapaCadastro: 'motorista_documentos_veiculo',
+        etapaCadastroMotorista: 'documentos_veiculo',
 
-                motoristaStatus: statusGeralMotorista,
-                motivoAnaliseAdmin: motivoStatusMotorista,
+        motoristaStatus: statusGeralMotorista,
+        motivoAnaliseAdmin: motivoStatusMotorista,
 
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
 
-                status: {
-                    geral: statusGeralMotorista,
-                    motivo: motivoStatusMotorista,
-                    tipo: 'motorista',
-                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-                }
-            }, { merge: true });
+        status: {
+            geral: statusGeralMotorista,
+            motivo: motivoStatusMotorista,
+            tipo: 'motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }
+    }, { merge: true });
 
-        MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo
+MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo();
 
-    } catch (erro) {
+} catch (erro) {
         console.error('Erro ao salvar dados do veículo:', erro);
 
         PRIMEIRAPAG_Login_func_mostrarErro(
