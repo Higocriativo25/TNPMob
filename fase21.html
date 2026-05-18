@@ -1232,6 +1232,131 @@ body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_lateral button:hover {
     color: #ffffff;
 }        
 
+/* MOTORISTA - CONFIRMAÇÃO PIX PARA RECEBIMENTO */
+.MOTORISTAPAG_Login_screen_pix_confirmacao {
+    padding: 22px 18px 120px;
+}
+
+.MOTORISTAPAG_Login_pix_topo {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.MOTORISTAPAG_Login_pix_icone {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: rgba(197, 169, 141, 0.12);
+    border: 1px solid rgba(197, 169, 141, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.MOTORISTAPAG_Login_pix_titulo {
+    color: var(--Fame_gold);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_pix_texto {
+    color: var(--Fame_text);
+    font-size: 0.86rem;
+    line-height: 1.45;
+}
+
+.MOTORISTAPAG_Login_pix_box {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.86rem;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 14px;
+}
+
+.MOTORISTAPAG_Login_pix_box p {
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_pix_box strong {
+    color: var(--Fame_gold);
+}
+
+.MOTORISTAPAG_Login_pix_aviso {
+    margin-top: 12px;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(123, 84, 56, 0.10);
+    border: 1px solid rgba(123, 84, 56, 0.28);
+    color: var(--Fame_text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.MOTORISTAPAG_Login_pix_aviso_mei {
+    margin-top: 12px;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.76rem;
+    line-height: 1.4;
+}
+
+.MOTORISTAPAG_Login_pix_status_titulo {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_pix_qrcode {
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+    display: block;
+    margin: 14px auto;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+}
+
+.MOTORISTAPAG_Login_pix_codigo {
+    word-break: break-all;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px dashed rgba(197, 169, 141, 0.35);
+    color: var(--Fame_text);
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_pix_sucesso {
+    border-color: rgba(80, 220, 130, 0.35);
+    background: rgba(80, 220, 130, 0.08);
+}
+
+.MOTORISTAPAG_Login_pix_sucesso_icone {
+    font-size: 44px;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_pix_sucesso h3 {
+    color: #50dc82;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
        
 
         
@@ -2427,6 +2552,113 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 </div>
 
+<!-- TELA MOTORISTA 6: CONFIRMAÇÃO PIX PARA RECEBIMENTO -->
+<div id="MOTORISTAPAG_Login_screen_pix_confirmacao" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_screen_pix_confirmacao">
+
+    <div class="PRIMEIRAPAG_Login_error" id="MOTORISTAPAG_Login_error_pix_confirmacao"></div>
+
+    <div class="MOTORISTAPAG_Login_pix_topo">
+        <div class="MOTORISTAPAG_Login_pix_icone">💠</div>
+
+        <h2 class="MOTORISTAPAG_Login_pix_titulo">
+            Confirmação Pix para recebimento
+        </h2>
+
+        <p class="MOTORISTAPAG_Login_pix_texto">
+            Para garantir que seus futuros recebimentos sejam enviados corretamente,
+            precisamos confirmar sua conta Pix.
+        </p>
+    </div>
+
+    <div id="MOTORISTAPAG_Login_pix_box_inicial" class="MOTORISTAPAG_Login_pix_box">
+
+        <p>
+            Gere um Pix simbólico de <strong>R$ 0,01</strong> e realize o pagamento
+            pelo aplicativo do seu banco.
+        </p>
+
+        <p>
+            Após a confirmação automática, você poderá continuar para os termos do motorista.
+        </p>
+
+        <div class="MOTORISTAPAG_Login_pix_aviso">
+            Use uma conta Pix vinculada ao CPF informado no cadastro.
+        </div>
+
+        <div class="MOTORISTAPAG_Login_pix_aviso_mei">
+            Caso você seja MEI e precise vincular os recebimentos a uma conta CNPJ,
+            entre em contato com o suporte após o cadastro. A alteração poderá ser feita
+            depois da comprovação de que a empresa pertence a você.
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_gerar_pix_confirmacao"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            type="button"
+            onclick="MOTORISTAPAG_Login_func_gerarPixConfirmacao()"
+        >
+            GERAR PIX DE R$ 0,01
+        </button>
+
+    </div>
+
+    <div id="MOTORISTAPAG_Login_pix_box_aguardando" class="MOTORISTAPAG_Login_pix_box PRIMEIRAPAG_Login_hidden">
+
+        <h3 class="MOTORISTAPAG_Login_pix_status_titulo">
+            Aguardando pagamento
+        </h3>
+
+        <p>
+            Abra o aplicativo do seu banco, pague o Pix de R$ 0,01 e aguarde a confirmação automática.
+        </p>
+
+        <img
+            id="MOTORISTAPAG_Login_pix_qrcode_img"
+            class="MOTORISTAPAG_Login_pix_qrcode"
+            alt="QR Code Pix"
+        >
+
+        <div
+            id="MOTORISTAPAG_Login_pix_codigo"
+            class="MOTORISTAPAG_Login_pix_codigo"
+        ></div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            type="button"
+            onclick="MOTORISTAPAG_Login_func_copiarPixConfirmacao()"
+        >
+            COPIAR CÓDIGO PIX
+        </button>
+
+        <div class="MOTORISTAPAG_Login_pix_aviso">
+            Após pagar, aguarde alguns instantes. A confirmação será feita automaticamente pelo sistema.
+        </div>
+
+    </div>
+
+    <div id="MOTORISTAPAG_Login_pix_box_confirmado" class="MOTORISTAPAG_Login_pix_box MOTORISTAPAG_Login_pix_sucesso PRIMEIRAPAG_Login_hidden">
+
+        <div class="MOTORISTAPAG_Login_pix_sucesso_icone">✅</div>
+
+        <h3>Pix confirmado com sucesso</h3>
+
+        <p>
+            Sua conta para recebimento foi confirmada.
+            Continue para os termos do motorista.
+        </p>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            type="button"
+            onclick="MOTORISTAPAG_Login_func_continuarParaTermosMotorista()"
+        >
+            CONTINUAR PARA OS TERMOS
+        </button>
+
+    </div>
+
+</div>
 
 
 
@@ -7292,14 +7524,7 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
                 }
             }, { merge: true });
 
-        /*
-            Próxima tela:
-            Quando criarmos a tela de Pix do motorista, trocar por:
-
-            MOTORISTAPAG_Login_func_carregarTelaPixMotorista();
-        */
-
-        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+        MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao();
 
     } catch (erro) {
         console.error('Erro ao enviar documentos do veículo:', erro);
@@ -7316,6 +7541,191 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
         }
     }
 }
+
+// ========== TELA MOTORISTA 6: CONFIRMAÇÃO PIX PARA RECEBIMENTO ==========
+
+let MOTORISTAPAG_Login_pixConfirmacaoCodigo = '';
+
+function MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao() {
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_pix_confirmacao');
+
+    const boxInicial = document.getElementById('MOTORISTAPAG_Login_pix_box_inicial');
+    const boxAguardando = document.getElementById('MOTORISTAPAG_Login_pix_box_aguardando');
+    const boxConfirmado = document.getElementById('MOTORISTAPAG_Login_pix_box_confirmado');
+
+    if (boxInicial) boxInicial.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (boxAguardando) boxAguardando.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (boxConfirmado) boxConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+}
+
+async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_gerar_pix_confirmacao');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_pix_confirmacao',
+            'Você precisa estar logado para gerar o Pix.'
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'GERANDO PIX...';
+        }
+
+        /*
+            API FUTURA:
+            Aqui depois vamos chamar a Cloud Function gerarPagamentoTNP()
+            com tipoPagamento: "confirmacao_conta_recebimento_motorista"
+            e valor fixo R$ 0,01.
+        */
+
+        const codigoPixTeste = '00020101021226880014br.gov.bcb.pix2566pix.tnp-mob.com/confirmacao-motorista52040000530398654040.015802BR5925TNP MOB CONFIRMACAO PIX6009SAO PAULO62070503***6304ABCD';
+
+        MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPixTeste);
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                etapaCadastroMotorista: 'pix_confirmacao_recebimento',
+                pixConfirmacaoRecebimento: {
+                    status: 'aguardando_pagamento',
+                    valor: 0.01,
+                    tipoDocumento: 'cpf',
+                    pago: false,
+                    confirmadoAutomaticamente: false,
+                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                },
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+    } catch (erro) {
+        console.error('Erro ao gerar Pix de confirmação:', erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_pix_confirmacao',
+            'Não foi possível gerar o Pix agora. Tente novamente.'
+        );
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'GERAR PIX DE R$ 0,01';
+        }
+    }
+}
+
+function MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPix) {
+    MOTORISTAPAG_Login_pixConfirmacaoCodigo = codigoPix || '';
+
+    const boxInicial = document.getElementById('MOTORISTAPAG_Login_pix_box_inicial');
+    const boxAguardando = document.getElementById('MOTORISTAPAG_Login_pix_box_aguardando');
+    const boxConfirmado = document.getElementById('MOTORISTAPAG_Login_pix_box_confirmado');
+    const imgQrCode = document.getElementById('MOTORISTAPAG_Login_pix_qrcode_img');
+    const codigoBox = document.getElementById('MOTORISTAPAG_Login_pix_codigo');
+
+    if (boxInicial) boxInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (boxAguardando) boxAguardando.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (boxConfirmado) boxConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (imgQrCode) {
+        imgQrCode.src =
+            'https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=' +
+            encodeURIComponent(MOTORISTAPAG_Login_pixConfirmacaoCodigo);
+    }
+
+    if (codigoBox) {
+        codigoBox.innerText = MOTORISTAPAG_Login_pixConfirmacaoCodigo;
+    }
+}
+
+function MOTORISTAPAG_Login_func_copiarPixConfirmacao() {
+    if (!MOTORISTAPAG_Login_pixConfirmacaoCodigo) {
+        return alert('Código Pix ainda não foi gerado.');
+    }
+
+    navigator.clipboard.writeText(MOTORISTAPAG_Login_pixConfirmacaoCodigo)
+        .then(() => {
+            alert('Código Pix copiado!');
+        })
+        .catch(() => {
+            alert('Não foi possível copiar. Toque e segure no código para copiar manualmente.');
+        });
+}
+
+function MOTORISTAPAG_Login_func_mostrarPixConfirmado() {
+    const boxInicial = document.getElementById('MOTORISTAPAG_Login_pix_box_inicial');
+    const boxAguardando = document.getElementById('MOTORISTAPAG_Login_pix_box_aguardando');
+    const boxConfirmado = document.getElementById('MOTORISTAPAG_Login_pix_box_confirmado');
+
+    if (boxInicial) boxInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (boxAguardando) boxAguardando.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (boxConfirmado) boxConfirmado.classList.remove('PRIMEIRAPAG_Login_hidden');
+}
+
+async function MOTORISTAPAG_Login_func_continuarParaTermosMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    await PRIMEIRAPAG_Login_db
+        .collection('motoristas')
+        .doc(user.uid)
+        .set({
+            etapaCadastroMotorista: 'termos_motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+    /*
+        Próxima etapa:
+        Quando criarmos a tela de termos do motorista,
+        trocar a linha abaixo pela tela correta.
+    */
+
+    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
