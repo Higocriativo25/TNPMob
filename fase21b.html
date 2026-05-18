@@ -1389,7 +1389,47 @@ body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_lateral button:hover {
     margin-bottom: 10px;
 }
        
+/* MOTORISTA - TERMOS DO MOTORISTA */
+.MOTORISTAPAG_Login_screen_termos_motorista {
+    padding: 22px 18px 120px;
+}
 
+.MOTORISTAPAG_Login_termos_box {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+.MOTORISTAPAG_Login_termos_box h4 {
+    color: var(--Fame_gold);
+    font-size: 0.9rem;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.MOTORISTAPAG_Login_termos_box h4:first-child {
+    margin-top: 0;
+}
+
+.MOTORISTAPAG_Login_termos_box p {
+    margin-bottom: 10px;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_termos_box {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_termos_box h4 {
+    color: #7b5438;
+}
         
 
        
@@ -2691,6 +2731,79 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 </div>
 
+<!-- TELA MOTORISTA 7: TERMOS DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_screen_termos_motorista" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_screen_termos_motorista">
+
+    <div class="PRIMEIRAPAG_Login_error" id="MOTORISTAPAG_Login_error_termos_motorista"></div>
+
+    <h3 class="PRIMEIRAPAG_Login_step_title">Termos do motorista</h3>
+
+    <div class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Antes de continuar</h4>
+        <p>
+            Leia e aceite os termos para atuar como motorista no TNP MoB.
+            Seu cadastro ainda passará por análise antes da liberação.
+        </p>
+    </div>
+
+    <div class="MOTORISTAPAG_Login_termos_box">
+
+        <h4>Responsabilidade do motorista</h4>
+        <p>
+            Declaro que os dados informados, documentos enviados, fotos, CNH,
+            informações do veículo e dados de recebimento são verdadeiros.
+        </p>
+
+        <h4>Análise do cadastro</h4>
+        <p>
+            Entendo que o cadastro de motorista não é aprovado automaticamente.
+            A liberação depende da análise da equipe TNP MoB.
+        </p>
+
+        <h4>Segurança da plataforma</h4>
+        <p>
+            O TNP MoB poderá solicitar novos documentos, reprovar, suspender ou bloquear
+            o cadastro em caso de inconsistência, dados falsos, denúncia, risco de segurança
+            ou descumprimento das regras.
+        </p>
+
+        <h4>Pagamentos e recebimentos</h4>
+        <p>
+            Os pagamentos e recebimentos relacionados às corridas poderão ser processados
+            por meio da estrutura de pagamento utilizada pelo TNP MoB.
+        </p>
+
+        <h4>Privacidade</h4>
+        <p>
+            Autorizo o uso dos meus dados cadastrais, documentos, fotos e informações do veículo
+            para análise, segurança, prevenção de fraudes, suporte e funcionamento da plataforma.
+        </p>
+
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_aviso_analise">
+        <label class="PRIMEIRAPAG_Login_inline_checkbox_label">
+            <input
+                type="checkbox"
+                id="MOTORISTAPAG_Login_check_termos_motorista"
+                class="PRIMEIRAPAG_Login_checkbox_auto"
+            >
+            Li e aceito os Termos de Uso, Política de Privacidade e regras para atuar como motorista no TNP MoB.
+        </label>
+    </div>
+
+    <div style="padding-bottom:120px;">
+        <button
+            id="MOTORISTAPAG_Login_btn_aceitar_termos_motorista"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            type="button"
+            onclick="MOTORISTAPAG_Login_func_aceitarTermosMotorista()"
+        >
+            ACEITAR E CONTINUAR
+        </button>
+    </div>
+
+</div>
 
 
 
@@ -4220,6 +4333,14 @@ if (
     return;
 }
 
+if (
+    PRIMEIRAPAG_etapaUsuario === "motorista_termos" ||
+    PRIMEIRAPAG_etapaMotorista === "termos_motorista"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
+    return;
+}
+
 const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
                     ? PRIMEIRAPAG_motorista.status.geral
                     : "";
@@ -4301,14 +4422,15 @@ const etapasMotoristaPendentes = [
     "pix_confirmacao_recebimento",
     "motorista_pix",
     "motorista_pix_confirmacao",
+    "motorista_termos",
+    "motorista_id_tnp",
     "motorista_veiculo",
     "motorista_documento_veiculo",
     "motorista_foto_veiculo",
-    "motorista_pagamento",
-    "motorista_termos"
+    "motorista_pagamento"
 ];
 
-    const etapasMotoristaInternas = [
+const etapasMotoristaInternas = [
     "categoria",
     "cnh",
     "fotos_cnh",
@@ -4318,6 +4440,8 @@ const etapasMotoristaPendentes = [
     "pix_confirmacao_recebimento",
     "motorista_pix",
     "pix_motorista",
+    "termos_motorista",
+    "id_tnp_motorista",
     "veiculo",
     "documento_veiculo",
     "foto_veiculo",
@@ -4404,6 +4528,7 @@ if (
 
 if (
     etapa === "motorista_pix" ||
+    etapa === "motorista_pix_confirmacao" ||
     etapa === "pix_confirmacao_recebimento" ||
     etapaMotorista === "pix_motorista" ||
     etapaMotorista === "pix_confirmacao_recebimento"
@@ -4412,9 +4537,26 @@ if (
     return;
 }
 
-    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+if (
+    etapa === "motorista_termos" ||
+    etapaMotorista === "termos_motorista"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
+    return;
+}
 
-}	
+if (
+    etapa === "motorista_id_tnp" ||
+    etapaMotorista === "id_tnp_motorista"
+) {
+    PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
+    return;
+}
+
+PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+}
+
+async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
 
 async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
@@ -7770,15 +7912,88 @@ async function MOTORISTAPAG_Login_func_continuarParaTermosMotorista() {
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-    /*
-        Próxima etapa:
-        Quando criarmos a tela de termos do motorista,
-        trocar a linha abaixo pela tela correta.
-    */
-
-    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+    MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
 }
 
+// ========== TELA MOTORISTA 7: TERMOS DO MOTORISTA ==========
+
+function MOTORISTAPAG_Login_func_carregarTelaTermosMotorista() {
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_termos_motorista');
+
+    const check = document.getElementById('MOTORISTAPAG_Login_check_termos_motorista');
+
+    if (check) {
+        check.checked = false;
+    }
+}
+
+async function MOTORISTAPAG_Login_func_aceitarTermosMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const check = document.getElementById('MOTORISTAPAG_Login_check_termos_motorista');
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_aceitar_termos_motorista');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_termos_motorista',
+            'Você precisa estar logado para continuar.'
+        );
+    }
+
+    if (!check || !check.checked) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_termos_motorista',
+            'Você precisa aceitar os termos para continuar.'
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'SALVANDO...';
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                termosMotoristaAceitos: true,
+                termosMotoristaAceitosEm: firebase.firestore.FieldValue.serverTimestamp(),
+                versaoTermosMotorista: '1.0',
+                etapaCadastroMotorista: 'id_tnp_motorista',
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                etapaCadastro: 'motorista_id_tnp',
+                etapaCadastroMotorista: 'id_tnp_motorista',
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+        /*
+            Próxima etapa:
+            Depois vamos ligar aqui na tela de ID TNP do motorista.
+        */
+
+        PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
+
+    } catch (erro) {
+        console.error('Erro ao aceitar termos do motorista:', erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_termos_motorista',
+            'Não foi possível salvar o aceite dos termos. Tente novamente.'
+        );
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'ACEITAR E CONTINUAR';
+        }
+    }
+}
 
 
 
