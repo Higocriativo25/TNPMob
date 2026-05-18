@@ -4229,13 +4229,19 @@ async function PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_userData
     return PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
 }
 
-// 5. ÁREA DO PASSAGEIRO APÓS SELFIE
-// Depois da selfie, o passageiro deve ir para a revisão/continuação do cadastro.
-if (cadastroCompleto === true) {
-    return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
+// 5. PERFIL / PONTE DO PASSAGEIRO APÓS SELFIE
+// Depois da selfie, o passageiro vai para a tela que permite completar cadastro ou ir para o app.
+if (
+    cadastroRapidoConcluido === true &&
+    cadastroCompleto !== true &&
+    !etapaCadastroCompleto
+) {
+    return SEXTAPAG_Login_func_carregarAreaPassageiro();
 }
 
-return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
+if (!cadastroRapidoConcluido) {
+    return SEXTAPAG_Login_func_carregarAreaPassageiro();
+}
 
 // 6. CADASTRO COMPLETO DO PASSAGEIRO
 // Só entra aqui se ele realmente iniciou o cadastro completo.
