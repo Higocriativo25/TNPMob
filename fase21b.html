@@ -3721,7 +3721,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         const PRIMEIRAPAG_Login_auth = firebase.auth();
         const PRIMEIRAPAG_Login_db = firebase.firestore();
         const PRIMEIRAPAG_Login_storage = firebase.storage();
-
+		const PRIMEIRAPAG_Login_functions = firebase.functions();
         
         // ========== UTILITÁRIOS ==========
 function PRIMEIRAPAG_Login_func_irPara(telaId) {
@@ -7601,39 +7601,32 @@ async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
             btn.innerText = 'GERANDO PIX...';
         }
 
-        /*
-            API FUTURA:
-            Aqui depois vamos chamar a Cloud Function gerarPagamentoTNP()
-            com tipoPagamento: "confirmacao_conta_recebimento_motorista"
-            e valor fixo R$ 0,01.
-        */
+        const gerarPagamentoTNP = PRIMEIRAPAG_Login_functions.httpsCallable('gerarPagamentoTNP');
 
-        const codigoPixTeste = '00020101021226880014br.gov.bcb.pix2566pix.tnp-mob.com/confirmacao-motorista52040000530398654040.015802BR5925TNP MOB CONFIRMACAO PIX6009SAO PAULO62070503***6304ABCD';
+        const resposta = await gerarPagamentoTNP({
+            tipoPagamento: 'confirmacao_conta_recebimento_motorista'
+        });
 
-        MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPixTeste);
+        const dados = resposta.data || {};
 
-        await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                etapaCadastroMotorista: 'pix_confirmacao_recebimento',
-                pixConfirmacaoRecebimento: {
-                    status: 'aguardando_pagamento',
-                    valor: 0.01,
-                    tipoDocumento: 'cpf',
-                    pago: false,
-                    confirmadoAutomaticamente: false,
-                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-                },
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-            }, { merge: true });
+        if (!dados.ok || !dados.pixKey) {
+            throw new Error(dados.mensagem || 'A TNP não retornou o código Pix.');
+        }
+
+        MOTORISTAPAG_Login_func_mostrarPixAguardando(dados.pixKey);
 
     } catch (erro) {
-        console.error('Erro ao gerar Pix de confirmação:', erro);
+        console.error('Erro ao gerar Pix real de confirmação:', erro);
+
+        let mensagem = 'Não foi possível gerar o Pix agora. Tente novamente.';
+
+        if (erro && erro.message) {
+            mensagem = erro.message;
+        }
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_pix_confirmacao',
-            'Não foi possível gerar o Pix agora. Tente novamente.'
+            mensagem
         );
 
     } finally {
