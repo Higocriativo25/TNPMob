@@ -3825,22 +3825,24 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 </div>
 	
 		
-        <strong id="PASSAGEIROPAG_Login_pagina_subtitulo">Bem-vindo</strong>
-        <p id="PASSAGEIROPAG_Login_pagina_texto">
-            Esta área será construída em breve.
-        </p>
-    </div>
+    <strong id="PASSAGEIROPAG_Login_pagina_subtitulo">Perfil do passageiro</strong>
 
-    <div style="padding-bottom:120px;">
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-            onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()"
-        >
-            VOLTAR PARA INÍCIO
-        </button>
-    </div>
+<p id="PASSAGEIROPAG_Login_pagina_texto">
+    Esta área será direcionada para o perfil principal do passageiro.
+</p>
+</div>
+
+<div style="padding-bottom:120px;">
+    <button
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()"
+    >
+        VOLTAR PARA O PERFIL
+    </button>
+</div>
 
 </div>
+
 <!-- TELA: SELFIE COM DOCUMENTO - PREFIXO PASSAGEIROPAG -->
 <div id="PASSAGEIROPAG_Login_screen_selfie_documento" class="PRIMEIRAPAG_Login_screen">
 
@@ -3888,24 +3890,24 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         </label>
     </div>
 
-    <div style="padding-bottom:120px;">
-        <button
-            id="PASSAGEIROPAG_Login_btn_confirmar_selfie_documento"
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-            onclick="PASSAGEIROPAG_Login_func_confirmarSelfieDocumento()"
-            style="display:none;"
-            disabled
-        >
-            ENVIAR SELFIE COM DOCUMENTO
-        </button>
+  <div style="padding-bottom:120px;">
+    <button
+        id="PASSAGEIROPAG_Login_btn_confirmar_selfie_documento"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="PASSAGEIROPAG_Login_func_confirmarSelfieDocumento()"
+        style="display:none;"
+        disabled
+    >
+        ENVIAR SELFIE COM DOCUMENTO
+    </button>
 
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()"
-        >
-            VOLTAR PARA INÍCIO
-        </button>
-    </div>
+    <button
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+        onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()"
+    >
+        VOLTAR PARA O PERFIL
+    </button>
+</div>
 
 </div>
 <!-- MODAL GRANDE: SELFIE COM DOCUMENTO - PREFIXO PASSAGEIROPAG -->
@@ -4229,17 +4231,11 @@ async function PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_userData
 
 // 5. ÁREA DO PASSAGEIRO APÓS SELFIE
 // Depois da selfie, o passageiro deve ir para a revisão/continuação do cadastro.
-if (
-    cadastroRapidoConcluido === true &&
-    cadastroCompleto !== true &&
-    !etapaCadastroCompleto
-) {
-    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
+if (cadastroCompleto === true) {
+    return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 }
 
-if (!cadastroRapidoConcluido) {
-    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
-}
+return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 
 // 6. CADASTRO COMPLETO DO PASSAGEIRO
 // Só entra aqui se ele realmente iniciou o cadastro completo.
@@ -4267,17 +4263,13 @@ if (
 ) {
     return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 }
-	
-	// 7. TNP
-    if (etapaCadastroCompleto === "tnp") {
-        return PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
-    }
 
-    if (cadastroCompleto === true) {
-        return SEXTAPAG_Login_func_carregarAreaPassageiro();
-    }
+// 7. TNP
+if (etapaCadastroCompleto === "tnp") {
+    return PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
+}
 
-    return SEXTAPAG_Login_func_carregarAreaPassageiro();
+return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 }
 
 function PRIMEIRAPAG_Login_func_logar() {
@@ -5634,7 +5626,7 @@ if (QUINTAPAG_Login_dados_usuario_atualizado.tipo === "motorista") {
     return;
 }
 
-SEXTAPAG_Login_func_carregarAreaPassageiro();
+PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 
 } catch (QUINTAPAG_Login_erro) {
     QUINTAPAG_Login_btn.disabled = false;
@@ -8333,7 +8325,7 @@ async function MOTORISTAPAG_Login_func_salvarIdTnpMotorista() {
 
 // ========== TELA 7: ÁREA DO PASSAGEIRO COM PREFIXO SEXTAPAG ==========
 
-async function SEXTAPAG_Login_func_carregarAreaPassageiro() {
+async function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
     const SEXTAPAG_Login_user = PRIMEIRAPAG_Login_auth.currentUser;
 
     if (!SEXTAPAG_Login_user) {
@@ -8476,19 +8468,19 @@ async function SEXTAPAG_Login_func_iniciarCadastroCompleto() {
             return PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
         }
 
-        return SEXTAPAG_Login_func_carregarAreaPassageiro();
+return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 
-    } catch (erro) {
-        console.error("Erro ao iniciar cadastro completo:", erro);
-        return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
-    }
+} catch (erro) {
+    console.error("Erro ao iniciar cadastro completo:", erro);
+    return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
+}
 }
 
 function SEXTAPAG_Login_func_continuarParaApp() {
     PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 }		
 		
-// ========== TELA 8: DADOS PESSOAIS DO PASSAGEIRO COM PREFIXO SETIMAPAG ==========
+// ========== DADOS PESSOAIS DO PASSAGEIRO COM PREFIXO SETIMAPAG ==========
 
 function SETIMAPAG_Login_func_selecionarTipoDocumento(SETIMAPAG_Login_tipo) {
     document.getElementById('SETIMAPAG_Login_tipo_documento').value = SETIMAPAG_Login_tipo;
@@ -10060,14 +10052,14 @@ async function DECIMAPRIMEIRAPAG_Login_func_finalizarCadastroPrincipal() {
                 atualizadoEm: new Date()
             }, { merge: true });
 
-            DECIMAPRIMEIRAPAG_Login_btn.disabled = false;
-            DECIMAPRIMEIRAPAG_Login_btn.innerText = "CONFIRMAR E CONTINUAR";
+           DECIMAPRIMEIRAPAG_Login_btn.disabled = false;
+DECIMAPRIMEIRAPAG_Login_btn.innerText = "CONFIRMAR E CONTINUAR";
 
-            return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
-        }
+return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
+}
 
-        await DECIMAPRIMEIRAPAG_Login_userRef.set({
-            cadastroPrincipalConcluido: true,
+await DECIMAPRIMEIRAPAG_Login_userRef.set({
+    cadastroPrincipalConcluido: true,
 
             cadastroCompleto: false,
             perfil100: false,
@@ -10350,7 +10342,7 @@ async function DECIMASEGUNDAPAG_Login_func_deixarTnpParaDepois() {
                 atualizadoEm: new Date()
             }, { merge: true });
 
-        SEXTAPAG_Login_func_carregarAreaPassageiro();
+        PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 
     } catch (DECIMASEGUNDAPAG_Login_erro) {
         PRIMEIRAPAG_Login_func_mostrarErro(
