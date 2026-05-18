@@ -4179,6 +4179,16 @@ if (
     return;
 }
 
+if (
+    PRIMEIRAPAG_etapaUsuario === "pix_confirmacao_recebimento" ||
+    PRIMEIRAPAG_etapaUsuario === "motorista_pix_confirmacao" ||
+    PRIMEIRAPAG_etapaMotorista === "pix_confirmacao_recebimento" ||
+    PRIMEIRAPAG_etapaMotorista === "pix_motorista"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao();
+    return;
+}
+
 const PRIMEIRAPAG_statusMotorista = PRIMEIRAPAG_motorista.status
                     ? PRIMEIRAPAG_motorista.status.geral
                     : "";
@@ -4258,6 +4268,8 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     "motorista_foto_cnh",
     "motorista_dados_veiculo",
     "motorista_documentos_veiculo",
+    "pix_confirmacao_recebimento",
+    "motorista_pix_confirmacao",
     "motorista_veiculo",
     "motorista_documento_veiculo",
     "motorista_foto_veiculo",
@@ -4272,6 +4284,8 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     "foto_cnh",
     "dados_veiculo",
     "documentos_veiculo",
+    "pix_confirmacao_recebimento",
+    "pix_motorista",
     "veiculo",
     "documento_veiculo",
     "foto_veiculo",
@@ -4356,8 +4370,19 @@ if (
     return;
 }
 
-    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+if (
+    etapa === "motorista_pix" ||
+    etapa === "pix_confirmacao_recebimento" ||
+    etapaMotorista === "pix_motorista" ||
+    etapaMotorista === "pix_confirmacao_recebimento"
+) {
+    MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao();
+    return;
 }
+
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_categoria');
+
+}	
 
 async function PRIMEIRAPAG_Login_func_desistirCadastroMotorista() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
