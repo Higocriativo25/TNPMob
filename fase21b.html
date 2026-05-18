@@ -3969,23 +3969,22 @@ async function PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_userData
     }
 
     // 4. SELFIE
-    if (!selfieEnviada || etapaCadastro === "selfie") {
-        return PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
-    }
+  if (!selfieEnviada || etapaCadastro === "selfie") {
+    return PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
+}
 
-    // 5. ÁREA DO PASSAGEIRO APÓS SELFIE
-// Depois da selfie, o passageiro deve ir para a área do passageiro.
-// Ele decide se quer completar perfil ou continuar para o app.
+// 5. ÁREA DO PASSAGEIRO APÓS SELFIE
+// Depois da selfie, o passageiro deve ir para a revisão/continuação do cadastro.
 if (
     cadastroRapidoConcluido === true &&
     cadastroCompleto !== true &&
     !etapaCadastroCompleto
 ) {
-    DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal()
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
 
 if (!cadastroRapidoConcluido) {
-    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal()
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
 
 // 6. CADASTRO COMPLETO DO PASSAGEIRO
@@ -3994,19 +3993,19 @@ if (etapaCadastroCompleto === "dados_pessoais") {
     return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
 }
 
-    if (etapaCadastroCompleto === "endereco" || !enderecoConcluido) {
-        return PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
-    }
+if (etapaCadastroCompleto === "endereco" || !enderecoConcluido) {
+    return PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
+}
 
-    if (etapaCadastroCompleto === "contato_emergencia" || !contatoEmergenciaConcluido) {
-        return PRIMEIRAPAG_Login_func_irPara('NONAPAG_Login_screen_contato_emergencia');
-    }
+if (etapaCadastroCompleto === "contato_emergencia" || !contatoEmergenciaConcluido) {
+    return PRIMEIRAPAG_Login_func_irPara('NONAPAG_Login_screen_contato_emergencia');
+}
 
-    if (etapaCadastroCompleto === "revisao_final" || !cadastroPrincipalConcluido) {
-        return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
-    }
+if (etapaCadastroCompleto === "revisao_final" || !cadastroPrincipalConcluido) {
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
+}
 
-    if (
+if (
     cadastroCompleto === true ||
     cadastroTnpConcluido === true ||
     idTnpInformado === true ||
@@ -4181,6 +4180,7 @@ if (
 
 if (
     PRIMEIRAPAG_etapaUsuario === "pix_confirmacao_recebimento" ||
+    PRIMEIRAPAG_etapaUsuario === "motorista_pix" ||
     PRIMEIRAPAG_etapaUsuario === "motorista_pix_confirmacao" ||
     PRIMEIRAPAG_etapaMotorista === "pix_confirmacao_recebimento" ||
     PRIMEIRAPAG_etapaMotorista === "pix_motorista"
@@ -4252,7 +4252,6 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     if (!temPerfilMotorista) return false;
 
     if (
-        dadosUsuario.motoristaStatus === "cadastro_iniciado" ||
         dadosUsuario.motoristaStatus === "pendente_analise_suporte" ||
         dadosUsuario.requerAnaliseAdmin === true ||
         dadosUsuario.cpfConflito === true
@@ -4260,7 +4259,7 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
         return true;
     }
 
-    const etapasMotoristaPendentes = [
+const etapasMotoristaPendentes = [
     "selfie",
     "motorista_categoria",
     "motorista_cnh",
@@ -4269,6 +4268,7 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     "motorista_dados_veiculo",
     "motorista_documentos_veiculo",
     "pix_confirmacao_recebimento",
+    "motorista_pix",
     "motorista_pix_confirmacao",
     "motorista_veiculo",
     "motorista_documento_veiculo",
@@ -4285,6 +4285,7 @@ function PRIMEIRAPAG_Login_func_temCadastroMotoristaPendente(dadosUsuario) {
     "dados_veiculo",
     "documentos_veiculo",
     "pix_confirmacao_recebimento",
+    "motorista_pix",
     "pix_motorista",
     "veiculo",
     "documento_veiculo",
