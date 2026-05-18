@@ -7571,6 +7571,7 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
 // ========== TELA MOTORISTA 6: CONFIRMAÇÃO PIX PARA RECEBIMENTO ==========
 
 let MOTORISTAPAG_Login_pixConfirmacaoCodigo = '';
+let MOTORISTAPAG_Login_unsubscribePixConfirmacao = null;
 
 function MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao() {
     PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_pix_confirmacao');
@@ -7582,6 +7583,44 @@ function MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao() {
     if (boxInicial) boxInicial.classList.remove('PRIMEIRAPAG_Login_hidden');
     if (boxAguardando) boxAguardando.classList.add('PRIMEIRAPAG_Login_hidden');
     if (boxConfirmado) boxConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    MOTORISTAPAG_Login_func_escutarPixConfirmacao();
+}
+function MOTORISTAPAG_Login_func_escutarPixConfirmacao() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    if (MOTORISTAPAG_Login_unsubscribePixConfirmacao) {
+        MOTORISTAPAG_Login_unsubscribePixConfirmacao();
+        MOTORISTAPAG_Login_unsubscribePixConfirmacao = null;
+    }
+
+    MOTORISTAPAG_Login_unsubscribePixConfirmacao = PRIMEIRAPAG_Login_db
+        .collection('motoristas')
+        .doc(user.uid)
+        .onSnapshot((doc) => {
+            if (!doc.exists) return;
+
+            const dados = doc.data() || {};
+            const pix = dados.pixConfirmacaoRecebimento || {};
+
+            if (pix.status === 'pago' || pix.pago === true) {
+                MOTORISTAPAG_Login_func_mostrarPixConfirmado();
+            }
+
+            if (
+                pix.status === 'aguardando_pagamento' &&
+                pix.tnpPaymentId &&
+                !MOTORISTAPAG_Login_pixConfirmacaoCodigo
+            ) {
+                const codigoBox = document.getElementById('MOTORISTAPAG_Login_pix_codigo');
+
+                if (codigoBox && codigoBox.innerText.trim()) {
+                    MOTORISTAPAG_Login_pixConfirmacaoCodigo = codigoBox.innerText.trim();
+                }
+            }
+        });
 }
 
 async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
