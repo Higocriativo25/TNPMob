@@ -4219,28 +4219,29 @@ async function PRIMEIRAPAG_Login_func_retornarEtapaCadastro(PRIMEIRAPAG_userData
         return PRIMEIRAPAG_Login_func_irPara('TERCEIRAPAG_Login_screen_whatsapp');
     }
 
-    // 3. TIPO DE CONTA
-    if (!tipoContaEscolhido || etapaCadastro === "tipo_conta") {
-        return PRIMEIRAPAG_Login_func_irPara('QUARTAPAG_Login_screen_tipo_conta');
-    }
+ // 3. TIPO DE CONTA
+if (!tipoContaEscolhido || etapaCadastro === "tipo_conta") {
+    return PRIMEIRAPAG_Login_func_irPara('QUARTAPAG_Login_screen_tipo_conta');
+}
 
-    // 4. SELFIE
-  if (!selfieEnviada || etapaCadastro === "selfie") {
+// 4. SELFIE / FOTO DE PERFIL
+if (!selfieEnviada || etapaCadastro === "selfie") {
     return PRIMEIRAPAG_Login_func_irPara('QUINTAPAG_Login_screen_selfie');
 }
 
-// 5. PERFIL / PONTE DO PASSAGEIRO APÓS SELFIE
-// Depois da selfie, o passageiro vai para a tela que permite completar cadastro ou ir para o app.
+// 5. REVISÃO FINAL / PONTE DO PASSAGEIRO APÓS SELFIE
+// Depois da selfie, o passageiro vai para a revisão final, onde pode conferir os dados,
+// editar informações e continuar o cadastro.
 if (
     cadastroRapidoConcluido === true &&
     cadastroCompleto !== true &&
     !etapaCadastroCompleto
 ) {
-    return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
 
 if (!cadastroRapidoConcluido) {
-    return PASSAGEIROPAG_Login_func_carregarHomePassageiro()();
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
 
 // 6. CADASTRO COMPLETO DO PASSAGEIRO
