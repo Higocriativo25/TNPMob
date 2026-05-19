@@ -3338,13 +3338,13 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <h3 class="PRIMEIRAPAG_Login_step_title">Revisão final</h3>
 
-    <div class="PRIMEIRAPAG_Login_cadastro_info_box">
-        <h4>Confira seus dados</h4>
-        <p>
-            Antes de finalizar o cadastro principal, confira se as informações estão corretas.
-            Depois disso, você poderá seguir para a etapa TNP e cashback.
-        </p>
-    </div>
+    <div class="PRIMEIRAPAG_Login_cadastro_info_box" id="DECIMAPRIMEIRAPAG_Login_box_mensagem_revisao">
+    <h4 id="DECIMAPRIMEIRAPAG_Login_titulo_mensagem_revisao">Confira seus dados</h4>
+    <p id="DECIMAPRIMEIRAPAG_Login_texto_mensagem_revisao">
+        Antes de finalizar o cadastro principal, confira se as informações estão corretas.
+        Depois disso, você poderá seguir para a etapa TNP e cashback.
+    </p>
+</div>
 
     <div class="PRIMEIRAPAG_Login_status_box PRIMEIRAPAG_Login_text_left">
     <strong>Conta</strong><br><br>
@@ -9824,6 +9824,41 @@ function DECIMAPRIMEIRAPAG_Login_func_generoTexto(valor) {
     return mapa[valor] || "Prefiro não informar";
 }
 
+// ========== MENSAGEM DINÂMICA DA REVISÃO FINAL ==========
+
+function DECIMAPRIMEIRAPAG_Login_func_atualizarMensagemRevisao(dadosUsuario) {
+    const titulo = document.getElementById('DECIMAPRIMEIRAPAG_Login_titulo_mensagem_revisao');
+    const texto = document.getElementById('DECIMAPRIMEIRAPAG_Login_texto_mensagem_revisao');
+
+    if (!titulo || !texto) return;
+
+    const dadosPessoaisConcluidos = dadosUsuario.dadosPessoaisConcluidos === true;
+    const enderecoConcluido = dadosUsuario.enderecoConcluido === true;
+    const contatoEmergenciaConcluido = dadosUsuario.contatoEmergenciaConcluido === true;
+
+    if (!dadosPessoaisConcluidos) {
+        titulo.innerText = "Bem-vindo ao TNP MoB";
+        texto.innerText =
+            "Seu cadastro rápido foi concluído com sucesso. Você já pode solicitar sua primeira corrida ou completar seu cadastro agora para deixar seu perfil mais seguro.";
+        return;
+    }
+
+    if (
+        dadosPessoaisConcluidos === true &&
+        enderecoConcluido === true &&
+        contatoEmergenciaConcluido === true
+    ) {
+        titulo.innerText = "Confira seus dados";
+        texto.innerText =
+            "Antes de finalizar o cadastro principal, confira se as informações estão corretas. Depois disso, você poderá seguir para a etapa TNP e cashback.";
+        return;
+    }
+
+    titulo.innerText = "Continue seu cadastro";
+    texto.innerText =
+        "Complete as etapas pendentes para deixar seu perfil mais seguro e liberar mais recursos no TNP MoB.";
+}
+
 async function DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal() {
     const DECIMAPRIMEIRAPAG_Login_user = PRIMEIRAPAG_Login_auth.currentUser;
 
@@ -9846,6 +9881,8 @@ async function DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal() {
 
 
         const d = DECIMAPRIMEIRAPAG_Login_doc.data();
+		DECIMAPRIMEIRAPAG_Login_func_atualizarMensagemRevisao(d);
+
         const endereco = d.endereco || {};
         const contato = d.contatoEmergencia || {};
 		const DECIMAPRIMEIRAPAG_Login_btnEditarFoto =
