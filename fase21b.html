@@ -9775,29 +9775,38 @@ function DECIMAPRIMEIRAPAG_Login_func_editarFotoPerfil() {
 
 function DECIMAPRIMEIRAPAG_Login_func_editarDadosPessoais() {
     sessionStorage.setItem("TNP_MOB_EDITANDO_DADOS_PESSOAIS", "true");
+
     PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
 
-    if (typeof SETIMAPAG_Login_func_carregarDadosParaEdicao === "function") {
-        SETIMAPAG_Login_func_carregarDadosParaEdicao();
-    }
+    setTimeout(() => {
+        if (typeof SETIMAPAG_Login_func_carregarDadosParaEdicao === "function") {
+            SETIMAPAG_Login_func_carregarDadosParaEdicao();
+        }
+    }, 150);
 }
 
 function DECIMAPRIMEIRAPAG_Login_func_editarEndereco() {
     sessionStorage.setItem("TNP_MOB_EDITANDO_ENDERECO", "true");
+
     PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
 
-    if (typeof OITAVAPAG_Login_func_carregarEnderecoParaEdicao === "function") {
-        OITAVAPAG_Login_func_carregarEnderecoParaEdicao();
-    }
+    setTimeout(() => {
+        if (typeof OITAVAPAG_Login_func_carregarEnderecoParaEdicao === "function") {
+            OITAVAPAG_Login_func_carregarEnderecoParaEdicao();
+        }
+    }, 150);
 }
 
 function DECIMAPRIMEIRAPAG_Login_func_editarContatoEmergencia() {
     sessionStorage.setItem("TNP_MOB_EDITANDO_CONTATO_EMERGENCIA", "true");
+
     PRIMEIRAPAG_Login_func_irPara('NONAPAG_Login_screen_contato_emergencia');
 
-    if (typeof NONAPAG_Login_func_carregarContatoParaEdicao === "function") {
-        NONAPAG_Login_func_carregarContatoParaEdicao();
-    }
+    setTimeout(() => {
+        if (typeof NONAPAG_Login_func_carregarContatoParaEdicao === "function") {
+            NONAPAG_Login_func_carregarContatoParaEdicao();
+        }
+    }, 150);
 }
 
 function DECIMAPRIMEIRAPAG_Login_func_relacaoTexto(valor) {
@@ -10216,6 +10225,8 @@ async function DECIMAPRIMEIRAPAG_Login_func_confirmarEContinuar() {
 function DECIMAPRIMEIRAPAG_Login_func_irParaPaginaInicialPassageiro() {
     PASSAGEIROPAG_Login_func_carregarHomePassageiro();
 }
+
+
 // ========== TELA 12: ID TNP E CADASTRO NA TNP COM PREFIXO DECIMASEGUNDAPAG ==========
 
 function DECIMASEGUNDAPAG_Login_func_abrirCadastroTnp() {
