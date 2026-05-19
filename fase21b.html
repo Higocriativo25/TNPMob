@@ -9182,12 +9182,16 @@ documentoFormatado: SETIMAPAG_Login_documentoJaSalvo
     SETIMAPAG_Login_btn.disabled = false;
     SETIMAPAG_Login_btn.innerText = "SALVAR E CONTINUAR";
 
-    if (SETIMAPAG_Login_editandoDadosPessoais) {
+    if (
+    SETIMAPAG_Login_editandoDadosPessoais &&
+    SETIMAPAG_Login_dadosAtuaisAntes.dadosPessoaisConcluidos === true
+) {
     sessionStorage.removeItem("TNP_MOB_EDITANDO_DADOS_PESSOAIS");
-    DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
-} else {
-    PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
+    return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
+
+sessionStorage.removeItem("TNP_MOB_EDITANDO_DADOS_PESSOAIS");
+return PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
 
 } catch (SETIMAPAG_Login_erro) {
     SETIMAPAG_Login_btn.disabled = false;
