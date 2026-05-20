@@ -1476,7 +1476,373 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_id_tnp_aviso {
     content: none;
 }
         
+/* HOME DO MOTORISTA */
+#MOTORISTAPAG_Login_screen_home {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    padding: 0;
+}
 
+/* FUNDO MAPA MOTORISTA */
+#MOTORISTAPAG_Login_mapa_fundo {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 28% 18%, rgba(197,169,141,0.18), transparent 28%),
+        radial-gradient(circle at 70% 72%, rgba(77,43,26,0.28), transparent 32%),
+        #151515;
+    overflow: hidden;
+}
+
+.MOTORISTAPAG_Login_mapa_fake {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+}
+
+.MOTORISTAPAG_Login_rua {
+    position: absolute;
+    background: rgba(255,255,255,0.08);
+    border-radius: 30px;
+}
+
+.MOTORISTAPAG_Login_rua_1 {
+    width: 130%;
+    height: 18px;
+    left: -20%;
+    top: 38%;
+    transform: rotate(-22deg);
+}
+
+.MOTORISTAPAG_Login_rua_2 {
+    width: 120%;
+    height: 16px;
+    left: -15%;
+    top: 60%;
+    transform: rotate(18deg);
+}
+
+.MOTORISTAPAG_Login_pin_motorista {
+    position: absolute;
+    top: 54%;
+    left: 58%;
+    font-size: 26px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+.MOTORISTAPAG_Login_pin_chamada {
+    position: absolute;
+    top: 38%;
+    left: 44%;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+/* TOPO MOTORISTA */
+.MOTORISTAPAG_Login_topo_home {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 52px 16px 16px 16px;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(197,169,141,0.75);
+    background: rgba(30,27,25,0.9);
+    padding: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    background: #2a2623;
+}
+
+.MOTORISTAPAG_Login_topo_texto {
+    flex: 1;
+    color: var(--Fame_text);
+    line-height: 1.2;
+}
+
+.MOTORISTAPAG_Login_topo_texto strong {
+    display: block;
+    font-size: 0.98rem;
+    color: #ffffff;
+}
+
+.MOTORISTAPAG_Login_topo_texto span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--Fame_muted);
+    margin-top: 3px;
+}
+
+.MOTORISTAPAG_Login_btn_sininho {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.92);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* MENU LATERAL MOTORISTA */
+.MOTORISTAPAG_Login_menu_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9997;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_menu_overlay.active {
+    display: block;
+}
+
+.MOTORISTAPAG_Login_menu_lateral {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 280px;
+    max-width: 82%;
+    height: 100vh;
+    background: #1e1b19;
+    border-right: 1px solid rgba(197,169,141,0.25);
+    z-index: 9998;
+    padding: 18px 14px;
+    transition: left 0.28s ease;
+    overflow-y: auto;
+    box-shadow: 8px 0 28px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_menu_lateral.active {
+    left: 0;
+}
+
+.MOTORISTAPAG_Login_menu_header {
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(197,169,141,0.18);
+}
+
+.MOTORISTAPAG_Login_menu_header img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(197,169,141,0.65);
+    background: #2a2623;
+    display: block;
+    margin: 0 auto 8px auto;
+}
+
+.MOTORISTAPAG_Login_menu_header strong {
+    display: block;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.MOTORISTAPAG_Login_menu_header span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.74rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--Fame_text);
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button:hover {
+    background: rgba(197,169,141,0.10);
+    color: var(--Fame_gold);
+}
+
+/* BOTÕES DO MAPA */
+.MOTORISTAPAG_Login_btn_mapa {
+    position: absolute;
+    right: 18px;
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.90);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_btn_mapa_camadas {
+    top: 48%;
+}
+
+.MOTORISTAPAG_Login_btn_mapa_reportar {
+    top: 56%;
+}
+
+/* PAINEL INFERIOR MOTORISTA */
+.MOTORISTAPAG_Login_painel_home {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -28px;
+    z-index: 6;
+    max-height: 78%;
+    overflow-y: auto;
+    padding: 10px 16px 95px 16px;
+    background: rgba(18,18,18,0.96);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    border-top: 1px solid rgba(197,169,141,0.25);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_puxador {
+    width: 52px;
+    height: 5px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.65);
+    margin: 0 auto 14px auto;
+}
+
+.MOTORISTAPAG_Login_card_status,
+.MOTORISTAPAG_Login_card_extra {
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    border-radius: 18px;
+    padding: 14px;
+    margin-top: 12px;
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_card_status h3 {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_card_status p,
+.MOTORISTAPAG_Login_card_extra p {
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_card_extra strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_check_linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(197,169,141,0.14);
+    font-size: 0.8rem;
+}
+
+.MOTORISTAPAG_Login_check_linha:last-child {
+    border-bottom: none;
+}
+
+.MOTORISTAPAG_Login_check_linha small {
+    color: var(--Fame_gold);
+    font-weight: 700;
+    text-align: right;
+}
+
+/* TEMA CLARO MOTORISTA */
+body.TNP_TEMA_CLARO #MOTORISTAPAG_Login_mapa_fundo {
+    background:
+        radial-gradient(circle at 30% 20%, rgba(123, 84, 56, 0.12), transparent 28%),
+        radial-gradient(circle at 70% 70%, rgba(197, 169, 141, 0.20), transparent 30%),
+        #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_rua {
+    background: rgba(123, 84, 56, 0.12);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_painel_home,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status h3,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_check_linha small {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status p,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra p {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_topo_texto strong {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_topo_texto span {
+    color: #7c7065;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_foto_menu,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_sininho,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_mapa {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_lateral {
+    background: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_lateral button,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header strong {
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
+    color: rgba(255,255,255,0.72);
+}
         
        
 
@@ -2919,7 +3285,190 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 </div>
 
+<!-- TELA MOTORISTA 9: HOME DO MOTORISTA - PREFIXO MOTORISTAPAG -->
+<div id="MOTORISTAPAG_Login_screen_home" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_screen_home">
 
+    <!-- FUNDO DO MAPA -->
+    <div id="MOTORISTAPAG_Login_mapa_fundo">
+        <div class="MOTORISTAPAG_Login_mapa_fake">
+            <div class="MOTORISTAPAG_Login_rua MOTORISTAPAG_Login_rua_1"></div>
+            <div class="MOTORISTAPAG_Login_rua MOTORISTAPAG_Login_rua_2"></div>
+            <div class="MOTORISTAPAG_Login_pin_motorista">🚗</div>
+            <div class="MOTORISTAPAG_Login_pin_chamada">📍</div>
+        </div>
+    </div>
+
+    <!-- TOPO -->
+    <div class="MOTORISTAPAG_Login_topo_home">
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_btn_foto_menu"
+            onclick="MOTORISTAPAG_Login_func_abrirMenuLateral()"
+        >
+            <img
+                id="MOTORISTAPAG_Login_foto_perfil_topo"
+                src=""
+                alt="Motorista"
+            >
+        </button>
+
+        <div class="MOTORISTAPAG_Login_topo_texto">
+            <strong id="MOTORISTAPAG_Login_nome_topo">Olá, motorista</strong>
+            <span id="MOTORISTAPAG_Login_status_topo">Cadastro em análise</span>
+        </div>
+
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_btn_sininho"
+            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mensagens', 'Aqui ficarão avisos, chamadas, suporte e notificações importantes para o motorista.')"
+        >
+            🔔
+        </button>
+    </div>
+
+    <!-- MENU LATERAL -->
+    <div id="MOTORISTAPAG_Login_menu_overlay" class="MOTORISTAPAG_Login_menu_overlay" onclick="MOTORISTAPAG_Login_func_fecharMenuLateral()"></div>
+
+    <div id="MOTORISTAPAG_Login_menu_lateral" class="MOTORISTAPAG_Login_menu_lateral">
+        <div class="MOTORISTAPAG_Login_menu_header">
+            <img id="MOTORISTAPAG_Login_foto_menu" src="" alt="Motorista">
+            <strong id="MOTORISTAPAG_Login_nome_menu">Motorista</strong>
+            <span id="MOTORISTAPAG_Login_email_menu">-</span>
+        </div>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Meu perfil', 'Aqui o motorista poderá revisar dados, documentos, veículo, Pix e ID TNP.')">
+            👤 Meu perfil
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status da análise', 'Aqui aparecerá o andamento da análise do cadastro de motorista.')">
+            📋 Status da análise
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Meu veículo', 'Aqui ficarão os dados do veículo cadastrado.')">
+            🚗 Meu veículo
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Meus documentos', 'Aqui ficarão CNH, fotos, documentos do veículo e pendências.')">
+            📄 Meus documentos
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Meus ganhos', 'Aqui o motorista poderá acompanhar ganhos, repasses e histórico financeiro.')">
+            💰 Meus ganhos
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Histórico de corridas', 'Aqui ficarão as corridas aceitas, concluídas e canceladas.')">
+            🕘 Histórico de corridas
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão orientações, suporte e recursos de segurança.')">
+            🛡️ Central de segurança
+        </button>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Configurações', 'Aqui ficarão preferências, notificações e ajustes da conta.')">
+            ⚙️ Configurações
+        </button>
+
+        <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">
+            🙋 Usar como passageiro
+        </button>
+
+        <button onclick="PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main')">
+            🚪 Sair
+        </button>
+    </div>
+
+    <!-- BOTÕES FLUTUANTES DO MAPA -->
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_mapa MOTORISTAPAG_Login_btn_mapa_camadas"
+        onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Camadas do mapa', 'Aqui depois o motorista poderá ativar mapa de chamadas, mapa de tarifas e trânsito.')"
+    >
+        🗺️
+    </button>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_mapa MOTORISTAPAG_Login_btn_mapa_reportar"
+        onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Reportar problema', 'Aqui depois o motorista poderá reportar trânsito, acidente, perigo, polícia, mau tempo e outros avisos.')"
+    >
+        ⚠️
+    </button>
+
+    <!-- PAINEL INFERIOR -->
+    <div id="MOTORISTAPAG_Login_painel_home" class="MOTORISTAPAG_Login_painel_home">
+
+        <div class="MOTORISTAPAG_Login_puxador"></div>
+
+        <div class="MOTORISTAPAG_Login_card_status">
+            <h3 id="MOTORISTAPAG_Login_titulo_status">Cadastro em análise</h3>
+
+            <p id="MOTORISTAPAG_Login_texto_status">
+                Estamos conferindo seus dados, documentos, Pix, ID TNP e informações do veículo.
+                Você será avisado quando estiver liberado para aceitar corridas.
+            </p>
+
+            <button
+                id="MOTORISTAPAG_Login_btn_conectar"
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+                type="button"
+                onclick="MOTORISTAPAG_Login_func_botaoConectar()"
+            >
+                AGUARDANDO ANÁLISE
+            </button>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_card_extra">
+            <strong>Checklist do cadastro</strong>
+
+            <div class="MOTORISTAPAG_Login_check_linha">
+                <span>✅ Pix de recebimento</span>
+                <small id="MOTORISTAPAG_Login_check_pix">Confirmado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_check_linha">
+                <span>✅ Termos do motorista</span>
+                <small id="MOTORISTAPAG_Login_check_termos">Aceitos</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_check_linha">
+                <span>✅ ID TNP</span>
+                <small id="MOTORISTAPAG_Login_check_id_tnp">Informado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_check_linha">
+                <span>📄 Documentos</span>
+                <small id="MOTORISTAPAG_Login_check_docs">Em análise</small>
+            </div>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_card_extra">
+            <strong>Ferramentas rápidas</strong>
+
+            <button
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Ferramentas de aceitação', 'Aqui depois ficarão destino preferido, preferências de serviço, teste de status e eventos futuros.')"
+            >
+                ⚙️ FERRAMENTAS
+            </button>
+
+            <button
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Chamadas próximas', 'Aqui depois aparecerão chamadas disponíveis para o motorista aceitar.')"
+            >
+                📋 CHAMADAS
+            </button>
+
+            <button
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Ganhos e recompensas', 'Aqui depois ficarão ganhos, metas, recompensas e promoções.')"
+            >
+                💰 GANHOS
+            </button>
+        </div>
+
+    </div>
+
+</div>
 
 
 
@@ -4465,7 +5014,7 @@ if (
     PRIMEIRAPAG_etapaUsuario === "motorista_analise_final" ||
     PRIMEIRAPAG_etapaMotorista === "analise_final_motorista"
 ) {
-    PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+    MOTORISTAPAG_Login_func_carregarHomeMotorista();
     return;
 }
 
@@ -8258,12 +8807,7 @@ async function MOTORISTAPAG_Login_func_salvarIdTnpMotorista() {
             btn.innerText = 'ID TNP CADASTRADO';
         }
 
-        /*
-            Próxima etapa:
-            Aqui vamos carregar a Home/Perfil do Motorista em análise.
-        */
-
-        PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_welcome_motorista');
+       MOTORISTAPAG_Login_func_carregarHomeMotorista();
 
     } catch (erro) {
         console.error('Erro ao salvar ID TNP do motorista:', erro);
@@ -8280,9 +8824,142 @@ async function MOTORISTAPAG_Login_func_salvarIdTnpMotorista() {
     }
 }
 
+// TELA MOTORISTA 9: HOME DO MOTORISTA - PREFIXO MOTORISTAPAG -->
 
+// ========== HOME DO MOTORISTA ==========
 
+function MOTORISTAPAG_Login_func_abrirMenuLateral() {
+    const overlay = document.getElementById('MOTORISTAPAG_Login_menu_overlay');
+    const menu = document.getElementById('MOTORISTAPAG_Login_menu_lateral');
 
+    if (overlay) overlay.classList.add('active');
+    if (menu) menu.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_fecharMenuLateral() {
+    const overlay = document.getElementById('MOTORISTAPAG_Login_menu_overlay');
+    const menu = document.getElementById('MOTORISTAPAG_Login_menu_lateral');
+
+    if (overlay) overlay.classList.remove('active');
+    if (menu) menu.classList.remove('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirPaginaProvisoria(titulo, texto) {
+    alert(titulo + "\n\n" + texto);
+}
+
+function MOTORISTAPAG_Login_func_botaoConectar() {
+    alert("Seu cadastro ainda está em análise. Quando for aprovado, este botão servirá para ficar online ou offline.");
+}
+
+async function MOTORISTAPAG_Login_func_carregarHomeMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_home');
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nome = u.nomeDocumento || u.nome || m.nome || "Motorista";
+        const email = u.email || user.email || "-";
+        const foto = u.fotoPerfilUrl || u.selfieUrl || m.fotoPerfilUrl || "";
+
+        const nomeTopo = document.getElementById('MOTORISTAPAG_Login_nome_topo');
+        const statusTopo = document.getElementById('MOTORISTAPAG_Login_status_topo');
+        const nomeMenu = document.getElementById('MOTORISTAPAG_Login_nome_menu');
+        const emailMenu = document.getElementById('MOTORISTAPAG_Login_email_menu');
+
+        const fotoTopo = document.getElementById('MOTORISTAPAG_Login_foto_perfil_topo');
+        const fotoMenu = document.getElementById('MOTORISTAPAG_Login_foto_menu');
+
+        if (nomeTopo) nomeTopo.innerText = "Olá, " + nome.split(" ")[0] + " 👋";
+        if (nomeMenu) nomeMenu.innerText = nome;
+        if (emailMenu) emailMenu.innerText = email;
+
+        if (foto) {
+            const fotoCache = foto + (foto.includes("?") ? "&v=" : "?v=") + Date.now();
+
+            if (fotoTopo) fotoTopo.src = fotoCache;
+            if (fotoMenu) fotoMenu.src = fotoCache;
+        }
+
+        const statusAnalise = m.statusAnalise || m.motoristaStatus || u.motoristaStatus || "pendente_analise_admin";
+        const podeAceitar = m.podeAceitarCorrida === true;
+
+        const tituloStatus = document.getElementById('MOTORISTAPAG_Login_titulo_status');
+        const textoStatus = document.getElementById('MOTORISTAPAG_Login_texto_status');
+        const btnConectar = document.getElementById('MOTORISTAPAG_Login_btn_conectar');
+
+        if (podeAceitar === true || statusAnalise === "aprovado") {
+            if (statusTopo) statusTopo.innerText = "Aprovado para corridas";
+            if (tituloStatus) tituloStatus.innerText = "Você está offline";
+            if (textoStatus) {
+                textoStatus.innerText =
+                    "Seu cadastro foi aprovado. Quando estiver pronto para receber chamadas, toque em conectar.";
+            }
+            if (btnConectar) btnConectar.innerText = "CONECTAR";
+        } else {
+            if (statusTopo) statusTopo.innerText = "Cadastro em análise";
+            if (tituloStatus) tituloStatus.innerText = "Cadastro em análise";
+            if (textoStatus) {
+                textoStatus.innerText =
+                    "Estamos conferindo seus dados, documentos, Pix, ID TNP e informações do veículo. Você será avisado quando estiver liberado para aceitar corridas.";
+            }
+            if (btnConectar) btnConectar.innerText = "AGUARDANDO ANÁLISE";
+        }
+
+        const checkPix = document.getElementById('MOTORISTAPAG_Login_check_pix');
+        const checkTermos = document.getElementById('MOTORISTAPAG_Login_check_termos');
+        const checkIdTnp = document.getElementById('MOTORISTAPAG_Login_check_id_tnp');
+        const checkDocs = document.getElementById('MOTORISTAPAG_Login_check_docs');
+
+        if (checkPix) {
+            checkPix.innerText =
+                m.pixConfirmacaoRecebimento && m.pixConfirmacaoRecebimento.pago === true
+                    ? "Confirmado"
+                    : "Pendente";
+        }
+
+        if (checkTermos) {
+            checkTermos.innerText =
+                m.termosMotoristaAceitos === true
+                    ? "Aceitos"
+                    : "Pendente";
+        }
+
+        if (checkIdTnp) {
+            checkIdTnp.innerText =
+                m.idTnpInformado === true || u.idTnpInformado === true
+                    ? "Informado"
+                    : "Pendente";
+        }
+
+        if (checkDocs) {
+            checkDocs.innerText =
+                statusAnalise === "aprovado"
+                    ? "Aprovado"
+                    : "Em análise";
+        }
+
+    } catch (erro) {
+        console.error("Erro ao carregar home do motorista:", erro);
+    }
+}
 
 
 
