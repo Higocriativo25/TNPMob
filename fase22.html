@@ -1979,16 +1979,36 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     font-size: 20px;
 }
 
-.MOTORISTAPAG_Login_home_ganhos {
+.MOTORISTAPAG_Login_home_ganhos_box {
     justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.MOTORISTAPAG_Login_home_ganhos {
     min-width: 118px;
     height: 38px;
     border-radius: 22px;
-    background: rgba(68, 50, 150, 0.92);
+    background: #7b5438;
     color: #ffffff;
     font-weight: 800;
     font-size: 0.92rem;
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    border: none;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_btn_ocultar_ganhos {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(123, 84, 56, 0.25);
+    background: rgba(255,255,255,0.92);
+    color: #7b5438;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 5px 14px rgba(0,0,0,0.16);
 }
 
 /* BOTÕES MAPA */
@@ -2445,13 +2465,26 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
     </div>
 </button>
 
-        <button
-            type="button"
-            class="MOTORISTAPAG_Login_home_ganhos"
-            onclick="MOTORISTAPAG_Login_func_abrirGanhos()"
-        >
-            <span id="MOTORISTAPAG_Login_home_ganhos_valor">R$0,00</span>
-        </button>
+        <div class="MOTORISTAPAG_Login_home_ganhos_box">
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_home_ganhos"
+        onclick="MOTORISTAPAG_Login_func_abrirGanhos()"
+    >
+        <span id="MOTORISTAPAG_Login_home_ganhos_valor">R$0,00</span>
+    </button>
+
+    <button
+        type="button"
+        id="MOTORISTAPAG_Login_btn_ocultar_ganhos"
+        class="MOTORISTAPAG_Login_btn_ocultar_ganhos"
+        onclick="MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event)"
+    >
+        👁️
+    </button>
+
+</div>
 
         <button
             type="button"
@@ -3063,6 +3096,22 @@ function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
                 btnConectar.disabled = false;
             }
         }
+		const ganhosOculto = localStorage.getItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO");
+
+if (ganhosOculto === "sim") {
+    const valor = document.getElementById('MOTORISTAPAG_Login_home_ganhos_valor');
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_ocultar_ganhos');
+
+    if (valor) {
+        valor.dataset.valorReal = valor.innerText || "R$0,00";
+        valor.innerText = "••••";
+        valor.dataset.oculto = "true";
+    }
+
+    if (btn) {
+        btn.innerText = "🙈";
+    }
+}
 
     } catch (erro) {
         console.error("Erro ao carregar home do motorista:", erro);
@@ -3191,6 +3240,45 @@ function MOTORISTAPAG_Login_func_carregarTemaMotoristaSalvo() {
         document.body.classList.remove('TNP_TEMA_CLARO');
     }
 }
+function MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+
+    const valor = document.getElementById('MOTORISTAPAG_Login_home_ganhos_valor');
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_ocultar_ganhos');
+
+    if (!valor || !btn) return;
+
+    const oculto = valor.dataset.oculto === "true";
+
+    if (oculto) {
+        valor.innerText = valor.dataset.valorReal || "R$0,00";
+        valor.dataset.oculto = "false";
+        btn.innerText = "👁️";
+        localStorage.setItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO", "nao");
+    } else {
+        valor.dataset.valorReal = valor.innerText;
+        valor.innerText = "••••";
+        valor.dataset.oculto = "true";
+        btn.innerText = "🙈";
+        localStorage.setItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO", "sim");
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	</script>
 <button
