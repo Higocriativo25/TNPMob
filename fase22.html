@@ -2664,6 +2664,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
     font-size: 0.84rem;
     line-height: 1.35;
     word-break: break-word;
+    white-space: pre-line;
 }
 
 .MOTORISTAPAG_Login_dados_linha small {
@@ -3147,14 +3148,23 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 </div>
 
             <div class="MOTORISTAPAG_Login_dados_linha">
-                <span>E-mail</span>
-                <strong id="MOTORISTAPAG_Login_dados_email">-</strong>
-            </div>
+    <span>E-mail</span>
+    <strong id="MOTORISTAPAG_Login_dados_email">-</strong>
+     <small>Para alterar entre em contato com o suporte.</small>
+</div>
 
-            <div class="MOTORISTAPAG_Login_dados_linha">
-                <span>Endereço</span>
-                <strong id="MOTORISTAPAG_Login_dados_endereco">-</strong>
-            </div>
+<div class="MOTORISTAPAG_Login_dados_linha">
+    <span>Endereço</span>
+    <strong id="MOTORISTAPAG_Login_dados_endereco">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarEnderecoMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
 
             <div class="MOTORISTAPAG_Login_dados_linha">
                 <span>Contato de emergência</span>
@@ -3163,12 +3173,12 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 
         </div>
 
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-            onclick="MOTORISTAPAG_Login_func_abrirEditarDadosPessoaisMotorista()"
-        >
-            EDITAR DADOS
-        </button>
+       <button
+    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+    onclick="MOTORISTAPAG_Login_func_fecharModais()"
+>
+    VOLTAR PARA HOME DO MOTORISTA
+</button>
 
     </div>
 </div>
@@ -3453,6 +3463,123 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 
     </div>
 </div>
+
+<!-- MODAL PERFIL 02.4: EDITAR ENDEREÇO DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_endereco" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            ×
+        </button>
+
+        <h3>Editar endereço</h3>
+
+        <div id="MOTORISTAPAG_Login_error_endereco" class="PRIMEIRAPAG_Login_error"></div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_cep">CEP</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_cep"
+                placeholder="00000-000"
+                maxlength="9"
+                oninput="MOTORISTAPAG_Login_func_mascaraCep(this)"
+                onblur="MOTORISTAPAG_Login_func_buscarCepMotorista()"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_rua">Rua</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_rua"
+                placeholder="Rua / Avenida"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_numero">Número</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_numero"
+                placeholder="Número"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_bairro">Bairro</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_bairro"
+                placeholder="Bairro"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_cidade">Cidade</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_cidade"
+                placeholder="Cidade"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_estado">Estado / UF</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_estado"
+                placeholder="UF"
+                maxlength="2"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_complemento">Complemento</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_complemento"
+                placeholder="Apartamento, bloco, casa..."
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_referencia">Referência</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_referencia"
+                placeholder="Ponto de referência"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_endereco"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary MOTORISTAPAG_Login_btn_modal_destaque"
+            onclick="MOTORISTAPAG_Login_func_salvarEnderecoMotorista()"
+        >
+            SALVAR ENDEREÇO
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
 
 
 
@@ -4246,13 +4373,24 @@ async function MOTORISTAPAG_Login_func_carregarDadosPessoaisMotorista() {
 
         const email = u.email || user.email || "-";
 
-        const enderecoTexto = endereco.rua
-            ? `${endereco.rua}, ${endereco.numero || "s/n"} - ${endereco.bairro || ""} - ${endereco.cidade || ""}/${endereco.estado || ""}`
-            : "-";
+let enderecoTexto = "-";
 
-        const emergenciaTexto = contato.nome
-            ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
-            : "-";
+if (endereco.rua) {
+    enderecoTexto =
+        `${endereco.rua}, ${endereco.numero || "s/n"} - ${endereco.bairro || ""} - ${endereco.cidade || ""}/${endereco.estado || ""}`;
+
+    if (endereco.complemento) {
+        enderecoTexto += `\nComplemento: ${endereco.complemento}`;
+    }
+
+    if (endereco.referencia) {
+        enderecoTexto += `\nReferência: ${endereco.referencia}`;
+    }
+}
+
+const emergenciaTexto = contato.nome
+    ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
+    : "-";
 
         const campoNome = document.getElementById('MOTORISTAPAG_Login_dados_nome');
         const campoCpf = document.getElementById('MOTORISTAPAG_Login_dados_cpf');
@@ -4275,58 +4413,6 @@ async function MOTORISTAPAG_Login_func_carregarDadosPessoaisMotorista() {
     } catch (erro) {
         console.error("Erro ao carregar dados pessoais do motorista:", erro);
     }
-}
-
-async function MOTORISTAPAG_Login_func_abrirEditarDadosPessoaisMotorista() {
-    MOTORISTAPAG_Login_func_fecharModais();
-
-    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_dados');
-
-    if (modal) {
-        modal.classList.add('active');
-    }
-
-    const user = PRIMEIRAPAG_Login_auth.currentUser;
-
-    if (!user) return;
-
-    const userDoc = await PRIMEIRAPAG_Login_db
-        .collection('usuarios')
-        .doc(user.uid)
-        .get();
-
-    const u = userDoc.exists ? userDoc.data() : {};
-    const endereco = u.endereco || {};
-    const contato = u.contatoEmergencia || {};
-
-    const enderecoTexto = endereco.rua
-        ? `${endereco.rua}, ${endereco.numero || "s/n"} - ${endereco.bairro || ""} - ${endereco.cidade || ""}/${endereco.estado || ""}`
-        : "";
-
-    const emergenciaTexto = contato.nome
-        ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
-        : "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_nome_motorista').value =
-        u.nomeDocumento || u.nome || "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_cpf_motorista').value =
-        u.cpfFormatado || u.documentoFormatado || "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_nascimento_motorista').value =
-        u.dataNascimentoFormatada || u.dataNascimento || "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_whatsapp_motorista').value =
-        u.whatsappFormatado || u.whatsapp || "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_email_motorista').value =
-        u.email || user.email || "";
-
-    document.getElementById('MOTORISTAPAG_Login_input_endereco_motorista').value =
-        enderecoTexto;
-
-    document.getElementById('MOTORISTAPAG_Login_input_emergencia_motorista').value =
-        emergenciaTexto;
 }
 
 async function MOTORISTAPAG_Login_func_salvarDadosPessoaisMotorista() {
@@ -5281,6 +5367,203 @@ async function MOTORISTAPAG_Login_func_abrirEditarTelefoneMotorista() {
     }
 }
 
+function MOTORISTAPAG_Login_func_mascaraCep(input) {
+    let valor = input.value.replace(/\D/g, "");
+
+    if (valor.length > 8) {
+        valor = valor.slice(0, 8);
+    }
+
+    if (valor.length > 5) {
+        valor = valor.replace(/(\d{5})(\d+)/, "$1-$2");
+    }
+
+    input.value = valor;
+}
+
+async function MOTORISTAPAG_Login_func_buscarCepMotorista() {
+    const cepInput = document.getElementById('MOTORISTAPAG_Login_input_endereco_cep');
+
+    if (!cepInput) return;
+
+    const cep = cepInput.value.replace(/\D/g, "");
+
+    if (cep.length !== 8) return;
+
+    try {
+        const resposta = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const dados = await resposta.json();
+
+        if (dados.erro) {
+            return PRIMEIRAPAG_Login_func_mostrarErro(
+                'MOTORISTAPAG_Login_error_endereco',
+                'CEP não encontrado. Confira o número digitado.'
+            );
+        }
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_rua').value = dados.logradouro || "";
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_bairro').value = dados.bairro || "";
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_cidade').value = dados.localidade || "";
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_estado').value = dados.uf || "";
+
+        const numero = document.getElementById('MOTORISTAPAG_Login_input_endereco_numero');
+        if (numero) numero.focus();
+
+    } catch (erro) {
+        console.error("Erro ao buscar CEP:", erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_endereco',
+            'Não foi possível buscar o CEP agora.'
+        );
+    }
+}
+
+async function MOTORISTAPAG_Login_func_abrirEditarEnderecoMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_endereco');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+        const endereco = u.endereco || m.endereco || {};
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_cep').value =
+            endereco.cepFormatado || endereco.cep || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_rua').value =
+            endereco.rua || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_numero').value =
+            endereco.numero || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_bairro').value =
+            endereco.bairro || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_cidade').value =
+            endereco.cidade || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_estado').value =
+            endereco.estado || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_complemento').value =
+            endereco.complemento || "";
+
+        document.getElementById('MOTORISTAPAG_Login_input_endereco_referencia').value =
+            endereco.referencia || "";
+
+    } catch (erro) {
+        console.error("Erro ao carregar endereço:", erro);
+    }
+}
+
+async function MOTORISTAPAG_Login_func_salvarEnderecoMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_endereco');
+
+    if (!user) return;
+
+    const cepFormatado = document.getElementById('MOTORISTAPAG_Login_input_endereco_cep').value.trim();
+    const cep = cepFormatado.replace(/\D/g, "");
+    const rua = document.getElementById('MOTORISTAPAG_Login_input_endereco_rua').value.trim();
+    const numero = document.getElementById('MOTORISTAPAG_Login_input_endereco_numero').value.trim();
+    const bairro = document.getElementById('MOTORISTAPAG_Login_input_endereco_bairro').value.trim();
+    const cidade = document.getElementById('MOTORISTAPAG_Login_input_endereco_cidade').value.trim();
+    const estado = document.getElementById('MOTORISTAPAG_Login_input_endereco_estado').value.trim().toUpperCase();
+    const complemento = document.getElementById('MOTORISTAPAG_Login_input_endereco_complemento').value.trim();
+    const referencia = document.getElementById('MOTORISTAPAG_Login_input_endereco_referencia').value.trim();
+
+    if (cep.length !== 8) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_endereco',
+            'Digite um CEP válido.'
+        );
+    }
+
+    if (!rua || !numero || !bairro || !cidade || !estado) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_endereco',
+            'Preencha CEP, rua, número, bairro, cidade e UF.'
+        );
+    }
+
+    const endereco = {
+        cep,
+        cepFormatado,
+        rua,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        complemento,
+        referencia
+    };
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                endereco,
+                enderecoConcluido: true,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                endereco,
+                enderecoConcluido: true,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR ENDEREÇO";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar endereço:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR ENDEREÇO";
+        }
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_endereco',
+            'Erro ao salvar endereço: ' + erro.message
+        );
+    }
+}
 
 
 
