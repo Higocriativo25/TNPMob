@@ -2019,7 +2019,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 18px;
+    bottom: 24px;
     z-index: 6;
 
     padding: 10px 16px 22px;
@@ -2235,16 +2235,24 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
 
 .MOTORISTAPAG_Login_modal_fechar {
     position: absolute;
-    top: 12px;
-    right: 14px;
-    width: 30px;
-    height: 30px;
+    top: 14px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     border: none;
-    background: rgba(255,255,255,0.12);
-    color: #ffffff;
-    font-size: 20px;
+    background: rgba(123, 84, 56, 0.12);
+    color: #7b5438;
+    font-size: 22px;
+    font-weight: 800;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body:not(.TNP_TEMA_CLARO) .MOTORISTAPAG_Login_modal_fechar {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
 }
 
 .MOTORISTAPAG_Login_modal_check {
@@ -2350,6 +2358,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
     background: #27c76f !important;
     color: #ffffff !important;
 }
+
         
  </style>
 </head>
