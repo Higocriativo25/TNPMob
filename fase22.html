@@ -5816,7 +5816,111 @@ async function MOTORISTAPAG_Login_func_carregarContatosReferenciaMotorista() {
     }
 }
 
+function MOTORISTAPAG_Login_func_lerContatoReferencia(prefixo, selectId) {
+    const nomeInput = document.getElementById(`${prefixo}_nome`);
+    const whatsappInput = document.getElementById(`${prefixo}_whatsapp`);
+    const relacaoSelect = document.getElementById(selectId);
 
+    const nome = nomeInput ? nomeInput.value.trim() : "";
+    const whatsappFormatado = whatsappInput ? whatsappInput.value.trim() : "";
+    const whatsapp = whatsappFormatado.replace(/\D/g, "");
+    const relacao = relacaoSelect ? relacaoSelect.value : "";
+
+    return {
+        nome,
+        whatsapp,
+        whatsappFormatado,
+        relacao
+    };
+}
+
+async function MOTORISTAPAG_Login_func_salvarContatosReferenciaMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_contatos');
+
+    if (!user) return;
+
+    const contatoPrincipal = MOTORISTAPAG_Login_func_lerContatoReferencia(
+        'MOTORISTAPAG_Login_input_contato_principal',
+        'MOTORISTAPAG_Login_select_contato_principal_relacao'
+    );
+
+    const contatoExtra1 = MOTORISTAPAG_Login_func_lerContatoReferencia(
+        'MOTORISTAPAG_Login_input_contato_extra1',
+        'MOTORISTAPAG_Login_select_contato_extra1_relacao'
+    );
+
+    const contatoExtra2 = MOTORISTAPAG_Login_func_lerContatoReferencia(
+        'MOTORISTAPAG_Login_input_contato_extra2',
+        'MOTORISTAPAG_Login_select_contato_extra2_relacao'
+    );
+
+    if (!contatoPrincipal.nome || contatoPrincipal.whatsapp.length < 10 || !contatoPrincipal.relacao) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_contatos',
+            'Preencha nome, WhatsApp e relação do contato principal.'
+        );
+    }
+
+    const contatosExtras = [];
+
+    [contatoExtra1, contatoExtra2].forEach((contato) => {
+        const temAlgumDado = contato.nome || contato.whatsapp || contato.relacao;
+
+        if (!temAlgumDado) return;
+
+        if (!contato.nome || contato.whatsapp.length < 10 || !contato.relacao) {
+            throw new Error("Preencha nome, WhatsApp e relação dos contatos extras ou deixe o contato extra vazio.");
+        }
+
+        contatosExtras.push(contato);
+    });
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                contatoEmergencia: contatoPrincipal,
+                contatoEmergenciaConcluido: true,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                contatosReferenciaMotorista: contatosExtras,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR CONTATOS";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar contatos:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR CONTATOS";
+        }
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_contatos',
+            erro.message || 'Erro ao salvar contatos.'
+        );
+    }
+}
 
 
 
