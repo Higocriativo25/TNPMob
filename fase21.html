@@ -1843,6 +1843,40 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header strong {
 body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     color: rgba(255,255,255,0.72);
 }
+
+/* trocando a foto no menu do ícone pra evitar quebra */
+
+.menu_icon_hamburguer {
+    width: 24px;
+    height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.menu_icon_hamburguer span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--Fame_gold); /* Cor dourada que você já usa */
+    border-radius: 2px;
+}
+
+/* Ajuste no botão circular para centralizar o ícone */
+.PASSAGEIROPAG_Login_btn_foto_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
         
        
 
@@ -3300,17 +3334,14 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <!-- TOPO -->
     <div class="MOTORISTAPAG_Login_topo_home">
-        <button
-            type="button"
-            class="MOTORISTAPAG_Login_btn_foto_menu"
-            onclick="MOTORISTAPAG_Login_func_abrirMenuLateral()"
-        >
-            <img
-                id="MOTORISTAPAG_Login_foto_perfil_topo"
-                src=""
-                alt="Motorista"
-            >
-        </button>
+        <button class="MOTORISTAPAG_Login_btn_foto_menu" onclick="MOTORISTAPAG_Login_func_abrirMenu()">
+    <div class="menu_icon_hamburguer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+		</button>
+
 
         <div class="MOTORISTAPAG_Login_topo_texto">
             <strong id="MOTORISTAPAG_Login_nome_topo">Olá, motorista</strong>
@@ -4163,17 +4194,14 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <!-- TOPO -->
     <div class="PASSAGEIROPAG_Login_topo_home">
-        <button
-            type="button"
-            class="PASSAGEIROPAG_Login_btn_foto_menu"
-            onclick="PASSAGEIROPAG_Login_func_abrirMenuLateral()"
-        >
-            <img
-                id="PASSAGEIROPAG_Login_foto_perfil_topo"
-                src=""
-                alt="Perfil"
-            >
-        </button>
+        <button class="PASSAGEIROPAG_Login_btn_foto_menu" onclick="PASSAGEIROPAG_Login_func_abrirMenu()">
+    <div class="menu_icon_hamburguer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+		</button>
+
 
         <div class="PASSAGEIROPAG_Login_topo_texto">
             <strong id="PASSAGEIROPAG_Login_nome_topo">Olá!</strong>
@@ -8894,7 +8922,7 @@ async function MOTORISTAPAG_Login_func_carregarHomeMotorista() {
         if (foto) {
             const fotoCache = foto + (foto.includes("?") ? "&v=" : "?v=") + Date.now();
 
-            if (fotoTopo) fotoTopo.src = fotoCache;
+           // if (fotoTopo) fotoTopo.src = fotoCache;
             if (fotoMenu) fotoMenu.src = fotoCache;
         }
 
@@ -11528,10 +11556,10 @@ async function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
         const fotoMenu = document.getElementById('PASSAGEIROPAG_Login_foto_menu');
 
         if (foto) {
-            if (fotoTopo) fotoTopo.src = foto;
+       //     if (fotoTopo) fotoTopo.src = foto;
             if (fotoMenu) fotoMenu.src = foto;
         } else {
-            if (fotoTopo) fotoTopo.removeAttribute('src');
+       //     if (fotoTopo) fotoTopo.removeAttribute('src');
             if (fotoMenu) fotoMenu.removeAttribute('src');
         }
 
