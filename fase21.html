@@ -4575,7 +4575,8 @@ function PRIMEIRAPAG_Login_func_irPara(telaId) {
 
     if (PRIMEIRAPAG_Login_headerTopo) {
         const PRIMEIRAPAG_Login_telasSemTopo = [
-            'PASSAGEIROPAG_Login_screen_home'
+            'PASSAGEIROPAG_Login_screen_home',
+            'MOTORISTAPAG_Login_screen_home'
         ];
 
         PRIMEIRAPAG_Login_headerTopo.style.display =
@@ -4584,20 +4585,27 @@ function PRIMEIRAPAG_Login_func_irPara(telaId) {
                 : 'block';
     }
 
-    document.querySelectorAll('.PRIMEIRAPAG_Login_screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.PRIMEIRAPAG_Login_screen').forEach(s => {
+        s.classList.remove('active');
+    });
+
     PRIMEIRAPAG_tela.classList.add('active');
 
-const PRIMEIRAPAG_contentArea = document.getElementById('PRIMEIRAPAG_Login_content_area');
+    const PRIMEIRAPAG_contentArea =
+        document.getElementById('PRIMEIRAPAG_Login_content_area');
 
-if (PRIMEIRAPAG_contentArea) {
-    PRIMEIRAPAG_contentArea.scrollTop = 0;
+    if (PRIMEIRAPAG_contentArea) {
+        PRIMEIRAPAG_contentArea.scrollTop = 0;
 
-    if (telaId === 'PASSAGEIROPAG_Login_screen_home') {
-        PRIMEIRAPAG_contentArea.classList.add('PASSAGEIROPAG_Login_home_ativa');
-    } else {
-        PRIMEIRAPAG_contentArea.classList.remove('PASSAGEIROPAG_Login_home_ativa');
+        if (
+            telaId === 'PASSAGEIROPAG_Login_screen_home' ||
+            telaId === 'MOTORISTAPAG_Login_screen_home'
+        ) {
+            PRIMEIRAPAG_contentArea.classList.add('PASSAGEIROPAG_Login_home_ativa');
+        } else {
+            PRIMEIRAPAG_contentArea.classList.remove('PASSAGEIROPAG_Login_home_ativa');
+        }
     }
-}
 
     PRIMEIRAPAG_Login_func_limparErros();
 }
