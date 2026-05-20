@@ -2370,6 +2370,271 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
     color: #ffffff !important;
 }
 
+/* PERFIL DO MOTORISTA DENTRO DA HOME */
+
+.MOTORISTAPAG_Login_modal_perfil_grande {
+    align-items: center;
+}
+
+.MOTORISTAPAG_Login_perfil_box {
+    max-height: 88vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.MOTORISTAPAG_Login_perfil_topo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(197,169,141,0.65);
+    background: #2a2623;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar span {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.MOTORISTAPAG_Login_perfil_info {
+    flex: 1;
+    min-width: 0;
+}
+
+.MOTORISTAPAG_Login_perfil_info strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.98rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.MOTORISTAPAG_Login_perfil_info span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.76rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_perfil_info small {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo div {
+    padding: 10px 6px;
+    border-radius: 14px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.18);
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.9rem;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.66rem;
+    margin-top: 3px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao {
+    margin-top: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao > strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.82rem;
+    margin-bottom: 7px;
+    padding-left: 2px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao button {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao button span {
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: rgba(39, 199, 111, 0.16);
+    color: #27c76f;
+    font-size: 0.66rem;
+    font-weight: 800;
+}
+
+/* TEMA CLARO - PERFIL MOTORISTA */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_topo,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo div {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_secao > strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info small {
+    background: rgba(123, 84, 56, 0.12);
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info span,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo span {
+    color: #7c7065;
+}
+
+/* VEÍCULO EM USO - PERFIL DO MOTORISTA */
+
+.MOTORISTAPAG_Login_modal_texto_aux {
+    color: var(--Fame_muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_lista_veiculos_uso {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card {
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.ativo {
+    border-color: rgba(39, 199, 111, 0.65);
+    background: rgba(39, 199, 111, 0.10);
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo strong {
+    color: var(--Fame_gold);
+    font-size: 0.88rem;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo span {
+    font-size: 0.68rem;
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+    white-space: nowrap;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.ativo .MOTORISTAPAG_Login_veiculo_uso_topo span {
+    background: rgba(39, 199, 111, 0.16);
+    color: #27c76f;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card p {
+    margin-top: 6px;
+    color: var(--Fame_muted);
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card button {
+    margin-top: 10px !important;
+    text-align: center !important;
+    font-weight: 800;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.em_analise {
+    opacity: 0.72;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_vazio {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(197,169,141,0.08);
+    border: 1px dashed rgba(197,169,141,0.28);
+    color: var(--Fame_muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* TEMA CLARO - VEÍCULO EM USO */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_card,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_vazio {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_topo strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_card p,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
+    color: #7c7065;
+}
+
         
  </style>
 </head>
@@ -2521,7 +2786,9 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
             <span id="MOTORISTAPAG_Login_email_menu">-</span>
         </div>
 
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Meu perfil', 'Aqui o motorista poderá revisar dados, documentos, veículo, Pix e ID TNP.')">👤 Meu perfil</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPerfilMotorista()">
+		👤 Meu perfil
+		</button>
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Histórico', 'Aqui ficarão as corridas aceitas, concluídas e canceladas.')">🕘 Histórico</button>
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Solicitar ajuda', 'Aqui o motorista poderá pedir suporte.')">❓ Solicitar ajuda</button>
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mensagens', 'Aqui ficarão mensagens e avisos.')">💬 Mensagens</button>
@@ -2533,6 +2800,105 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
         <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">🙋 Usar como passageiro</button>
         <button onclick="TESTEMOTORISTA_func_sair()">🚪 Sair</button>
     </div>
+	<!-- MODAL PERFIL DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_motorista" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Perfil do Motorista</h3>
+
+        <div class="MOTORISTAPAG_Login_perfil_topo">
+            <div class="MOTORISTAPAG_Login_perfil_avatar">
+                <img id="MOTORISTAPAG_Login_perfil_foto" src="" alt="Foto do motorista">
+                <span id="MOTORISTAPAG_Login_perfil_avatar_fallback">🚗</span>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_perfil_info">
+                <strong id="MOTORISTAPAG_Login_perfil_nome">Motorista</strong>
+                <span id="MOTORISTAPAG_Login_perfil_email">-</span>
+                <small id="MOTORISTAPAG_Login_perfil_status">Status: carregando...</small>
+            </div>
+        </div>
+
+<div class="MOTORISTAPAG_Login_perfil_resumo">
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_aceitacao">100%</strong>
+        <span>Aceitação</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_avaliacao">5.0</strong>
+        <span>Nota</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_finalizacoes">0</strong>
+        <span>Finalizações</span>
+    </div>
+</div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Status e cadastro</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status do cadastro', 'Aqui o motorista verá se está aprovado, em análise ou com pendência.')">
+                🧾 Status do cadastro
+                <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Dados pessoais', 'Aqui o motorista poderá revisar nome, CPF, telefone e dados pessoais.')">
+                👤 Dados pessoais
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
+                📄 Documentos do motorista
+            </button>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Trabalho e recebimentos</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
+				🚘 Veículo em uso
+			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
+			</button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Pix para recebimento', 'Aqui o motorista poderá revisar a chave Pix para receber corridas.')">
+                💸 Pix para recebimento
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('ID TNP e cashback', 'Aqui ficarão ID TNP, benefícios e cashback do motorista.')">
+                🟤 ID TNP / Cashback
+            </button>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Segurança</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Termos do motorista', 'Aqui ficarão termos específicos para motoristas.')">
+                📜 Termos do motorista
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão recursos de segurança e suporte em viagem.')">
+                🛡️ Central de segurança
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Suporte', 'Aqui o motorista poderá falar com o suporte.')">
+                ❓ Suporte
+            </button>
+        </div>
+
+    </div>
+</div>
+	
+	
+	
+	
 <!-- MODAL CONFIGURAÇÕES -->
 <div id="MOTORISTAPAG_Login_modal_configuracoes" class="MOTORISTAPAG_Login_modal_home">
     <div class="MOTORISTAPAG_Login_modal_home_box">
@@ -2552,6 +2918,10 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
             ⚙️ Preferências do motorista
         </button>
+		
+		<button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Aqui depois o motorista poderá adicionar, trocar, enviar fotos, documentos e aguardar análise do veículo.')">
+			🚘 Gerenciar veículos
+		</button>
     </div>
 </div>
 
@@ -2734,7 +3104,34 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
 
 </div>
 
+<!-- MODAL VEÍCULO EM USO -->
+<div id="MOTORISTAPAG_Login_modal_veiculo_em_uso" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
 
+        <h3>Veículo em uso</h3>
+
+        <p class="MOTORISTAPAG_Login_modal_texto_aux">
+            Escolha qual veículo aprovado você quer usar para trabalhar agora.
+        </p>
+
+        <div id="MOTORISTAPAG_Login_lista_veiculos_uso" class="MOTORISTAPAG_Login_lista_veiculos_uso">
+            <!-- veículos aparecem aqui pelo JS -->
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Para adicionar ou trocar veículo, acesse Configurações > Gerenciar veículos.')"
+        >
+            GERENCIAR VEÍCULOS
+        </button>
+    </div>
+</div>
 
 
 <script>	
@@ -3255,13 +3652,233 @@ function MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event) {
         localStorage.setItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO", "sim");
     }
 }
+function MOTORISTAPAG_Login_func_abrirPerfilMotorista() {
+    MOTORISTAPAG_Login_func_fecharMenuLateral();
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_motorista');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+}
+async function MOTORISTAPAG_Login_func_preencherPerfilMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nome = u.nomeDocumento || u.nome || m.nome || "Motorista";
+        const email = u.email || user.email || "-";
+        const foto = u.fotoPerfilUrl || u.selfieUrl || m.fotoPerfilUrl || "";
+
+        const statusAnalise = m.statusAnalise || m.motoristaStatus || u.motoristaStatus || "em_analise";
+        const podeAceitar = m.podeAceitarCorrida === true;
+
+        const nomeEl = document.getElementById('MOTORISTAPAG_Login_perfil_nome');
+        const emailEl = document.getElementById('MOTORISTAPAG_Login_perfil_email');
+        const fotoEl = document.getElementById('MOTORISTAPAG_Login_perfil_foto');
+        const fallbackEl = document.getElementById('MOTORISTAPAG_Login_perfil_avatar_fallback');
+        const statusEl = document.getElementById('MOTORISTAPAG_Login_perfil_status');
+        const badgeEl = document.getElementById('MOTORISTAPAG_Login_perfil_badge_status');
+
+        if (nomeEl) nomeEl.innerText = nome;
+        if (emailEl) emailEl.innerText = email;
+
+        if (foto && fotoEl) {
+            fotoEl.src = foto + (foto.includes("?") ? "&v=" : "?v=") + Date.now();
+            fotoEl.style.display = "block";
+            if (fallbackEl) fallbackEl.style.display = "none";
+        } else {
+            if (fotoEl) {
+                fotoEl.removeAttribute('src');
+                fotoEl.style.display = "none";
+            }
+            if (fallbackEl) fallbackEl.style.display = "flex";
+        }
+
+        let textoStatus = "Em análise";
+
+        if (podeAceitar === true || statusAnalise === "aprovado") {
+            textoStatus = "Aprovado";
+        }
+
+        if (
+            statusAnalise === "reprovado" ||
+            statusAnalise === "bloqueado" ||
+            statusAnalise === "pendente_correcao"
+        ) {
+            textoStatus = "Pendência";
+        }
+
+        if (statusEl) statusEl.innerText = "Status: " + textoStatus;
+        if (badgeEl) badgeEl.innerText = textoStatus;
+
+    } catch (erro) {
+        console.error("Erro ao preencher perfil do motorista:", erro);
+    }
+}
 
 
 
 
+async function MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso() {
+    MOTORISTAPAG_Login_func_fecharModais();
 
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_veiculo_em_uso');
 
+    if (modal) {
+        modal.classList.add('active');
+    }
 
+    await MOTORISTAPAG_Login_func_carregarVeiculosEmUso();
+}
+async function MOTORISTAPAG_Login_func_carregarVeiculosEmUso() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const lista = document.getElementById('MOTORISTAPAG_Login_lista_veiculos_uso');
+
+    if (!user || !lista) return;
+
+    lista.innerHTML = `
+        <div class="MOTORISTAPAG_Login_veiculo_uso_vazio">
+            Carregando veículos...
+        </div>
+    `;
+
+    try {
+        const motoristaRef = PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid);
+
+        const doc = await motoristaRef.get();
+        const dados = doc.exists ? doc.data() : {};
+
+        const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
+        const veiculoAtualId = dados.veiculoAtualId || "";
+
+        if (veiculos.length === 0) {
+            lista.innerHTML = `
+                <div class="MOTORISTAPAG_Login_veiculo_uso_vazio">
+                    Nenhum veículo cadastrado ainda.<br><br>
+                    Para adicionar um veículo, acesse Configurações &gt; Gerenciar veículos.
+                </div>
+            `;
+            return;
+        }
+
+        lista.innerHTML = "";
+
+        veiculos.forEach((veiculo, index) => {
+            const id = veiculo.id || `veiculo_${index + 1}`;
+            const aprovado = veiculo.status === "aprovado";
+            const ativo = id === veiculoAtualId;
+
+            const modelo = veiculo.modelo || "Veículo";
+            const placa = veiculo.placa || "Placa não informada";
+            const cor = veiculo.cor || "Cor não informada";
+            const categoria = veiculo.categoria || "Categoria não informada";
+            const statusTexto = ativo
+                ? "Em uso"
+                : aprovado
+                    ? "Aprovado"
+                    : "Em análise";
+
+            const card = document.createElement("div");
+            card.className =
+                "MOTORISTAPAG_Login_veiculo_uso_card" +
+                (ativo ? " ativo" : "") +
+                (!aprovado ? " em_analise" : "");
+
+            card.innerHTML = `
+                <div class="MOTORISTAPAG_Login_veiculo_uso_topo">
+                    <strong>${modelo}</strong>
+                    <span>${statusTexto}</span>
+                </div>
+
+                <p>
+                    ${placa} • ${cor}<br>
+                    ${categoria}
+                </p>
+
+                ${
+                    aprovado
+                        ? `<button
+                            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+                            onclick="MOTORISTAPAG_Login_func_definirVeiculoEmUso('${id}')"
+                            ${ativo ? "disabled" : ""}
+                        >
+                            ${ativo ? "VEÍCULO EM USO" : "USAR ESTE VEÍCULO"}
+                        </button>`
+                        : `<button
+                            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                            disabled
+                        >
+                            AGUARDANDO APROVAÇÃO
+                        </button>`
+                }
+            `;
+
+            lista.appendChild(card);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar veículos:", erro);
+
+        lista.innerHTML = `
+            <div class="MOTORISTAPAG_Login_veiculo_uso_vazio">
+                Não foi possível carregar os veículos agora.
+            </div>
+        `;
+    }
+}
+
+async function MOTORISTAPAG_Login_func_definirVeiculoEmUso(veiculoId) {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user || !veiculoId) return;
+
+    try {
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                veiculoAtualId: veiculoId,
+                veiculoAtualizadoEm: new Date(),
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        const badge = document.getElementById('MOTORISTAPAG_Login_perfil_badge_veiculo');
+
+        if (badge) {
+            badge.innerText = "Selecionado";
+        }
+
+        await MOTORISTAPAG_Login_func_carregarVeiculosEmUso();
+
+    } catch (erro) {
+        console.error("Erro ao definir veículo em uso:", erro);
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Erro ao selecionar veículo",
+            "Não foi possível escolher este veículo agora. Verifique sua conexão e tente novamente."
+        );
+    }
+}
 
 
 
