@@ -3167,9 +3167,17 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 </div>
 
             <div class="MOTORISTAPAG_Login_dados_linha">
-                <span>Contato de emergência</span>
-                <strong id="MOTORISTAPAG_Login_dados_emergencia">-</strong>
-            </div>
+    <span>Contatos de referência</span>
+    <strong id="MOTORISTAPAG_Login_dados_emergencia">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarContatosReferenciaMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
 
         </div>
 
@@ -3572,6 +3580,165 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 
     </div>
 </div>
+
+<!-- MODAL PERFIL 02.5: EDITAR CONTATOS DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_contatos" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            ×
+        </button>
+
+        <h3>Contatos de segurança</h3>
+
+        <div id="MOTORISTAPAG_Login_error_contatos" class="PRIMEIRAPAG_Login_error"></div>
+
+        <p class="MOTORISTAPAG_Login_modal_texto_aux">
+            O contato de emergência principal vale para passageiro e motorista. Os contatos extras são exclusivos do motorista.
+        </p>
+
+        <!-- CONTATO PRINCIPAL -->
+        <div class="MOTORISTAPAG_Login_dados_linha">
+            <span>Contato de emergência principal</span>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_principal_nome">Nome</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_principal_nome"
+                    placeholder="Nome do contato principal"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_principal_whatsapp">WhatsApp</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_principal_whatsapp"
+                    placeholder="(00) 0.0000-0000"
+                    maxlength="16"
+                    oninput="MOTORISTAPAG_Login_func_maskZapMotorista(this)"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_select_contato_principal_relacao">Relação</label>
+                <select id="MOTORISTAPAG_Login_select_contato_principal_relacao">
+                    <option value="">Selecione</option>
+                    <option value="mae">Mãe</option>
+                    <option value="pai">Pai</option>
+                    <option value="conjuge">Cônjuge</option>
+                    <option value="filho">Filho(a)</option>
+                    <option value="irmao">Irmão/Irmã</option>
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CONTATO EXTRA 1 -->
+        <div class="MOTORISTAPAG_Login_dados_linha">
+            <span>Contato de referência extra 1</span>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_extra1_nome">Nome</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_extra1_nome"
+                    placeholder="Nome do contato extra"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_extra1_whatsapp">WhatsApp</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_extra1_whatsapp"
+                    placeholder="(00) 0.0000-0000"
+                    maxlength="16"
+                    oninput="MOTORISTAPAG_Login_func_maskZapMotorista(this)"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_select_contato_extra1_relacao">Relação</label>
+                <select id="MOTORISTAPAG_Login_select_contato_extra1_relacao">
+                    <option value="">Selecione</option>
+                    <option value="mae">Mãe</option>
+                    <option value="pai">Pai</option>
+                    <option value="conjuge">Cônjuge</option>
+                    <option value="filho">Filho(a)</option>
+                    <option value="irmao">Irmão/Irmã</option>
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- CONTATO EXTRA 2 -->
+        <div class="MOTORISTAPAG_Login_dados_linha">
+            <span>Contato de referência extra 2</span>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_extra2_nome">Nome</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_extra2_nome"
+                    placeholder="Nome do contato extra"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_input_contato_extra2_whatsapp">WhatsApp</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_contato_extra2_whatsapp"
+                    placeholder="(00) 0.0000-0000"
+                    maxlength="16"
+                    oninput="MOTORISTAPAG_Login_func_maskZapMotorista(this)"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="MOTORISTAPAG_Login_select_contato_extra2_relacao">Relação</label>
+                <select id="MOTORISTAPAG_Login_select_contato_extra2_relacao">
+                    <option value="">Selecione</option>
+                    <option value="mae">Mãe</option>
+                    <option value="pai">Pai</option>
+                    <option value="conjuge">Cônjuge</option>
+                    <option value="filho">Filho(a)</option>
+                    <option value="irmao">Irmão/Irmã</option>
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="outro">Outro</option>
+                </select>
+            </div>
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_contatos"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary MOTORISTAPAG_Login_btn_modal_destaque"
+            onclick="MOTORISTAPAG_Login_func_salvarContatosReferenciaMotorista()"
+        >
+            SALVAR CONTATOS
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+
+
+
+
 
 
 
@@ -5565,6 +5732,89 @@ async function MOTORISTAPAG_Login_func_salvarEnderecoMotorista() {
     }
 }
 
+async function MOTORISTAPAG_Login_func_abrirEditarContatosReferenciaMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_contatos');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    await MOTORISTAPAG_Login_func_carregarContatosReferenciaMotorista();
+}
+
+function MOTORISTAPAG_Login_func_preencherCampoContato(prefixo, contato) {
+    const nome = document.getElementById(`${prefixo}_nome`);
+    const whatsapp = document.getElementById(`${prefixo}_whatsapp`);
+    const relacao = document.getElementById(`${prefixo}_relacao`);
+
+    if (nome) nome.value = contato?.nome || "";
+
+    if (whatsapp) {
+        whatsapp.value = contato?.whatsappFormatado || contato?.whatsapp || "";
+        MOTORISTAPAG_Login_func_maskZapMotorista(whatsapp);
+    }
+
+    if (relacao) relacao.value = contato?.relacao || "";
+}
+async function MOTORISTAPAG_Login_func_carregarContatosReferenciaMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const contatoPrincipal = u.contatoEmergencia || {};
+        const extras = Array.isArray(m.contatosReferenciaMotorista)
+            ? m.contatosReferenciaMotorista
+            : [];
+
+        MOTORISTAPAG_Login_func_preencherCampoContato(
+            'MOTORISTAPAG_Login_input_contato_principal',
+            contatoPrincipal
+        );
+
+        const relacaoPrincipal = document.getElementById('MOTORISTAPAG_Login_select_contato_principal_relacao');
+        if (relacaoPrincipal) relacaoPrincipal.value = contatoPrincipal.relacao || "";
+
+        MOTORISTAPAG_Login_func_preencherCampoContato(
+            'MOTORISTAPAG_Login_input_contato_extra1',
+            extras[0] || {}
+        );
+
+        const relacaoExtra1 = document.getElementById('MOTORISTAPAG_Login_select_contato_extra1_relacao');
+        if (relacaoExtra1) relacaoExtra1.value = extras[0]?.relacao || "";
+
+        MOTORISTAPAG_Login_func_preencherCampoContato(
+            'MOTORISTAPAG_Login_input_contato_extra2',
+            extras[1] || {}
+        );
+
+        const relacaoExtra2 = document.getElementById('MOTORISTAPAG_Login_select_contato_extra2_relacao');
+        if (relacaoExtra2) relacaoExtra2.value = extras[1]?.relacao || "";
+
+    } catch (erro) {
+        console.error("Erro ao carregar contatos de referência:", erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_contatos',
+            'Não foi possível carregar os contatos agora.'
+        );
+    }
+}
 
 
 
