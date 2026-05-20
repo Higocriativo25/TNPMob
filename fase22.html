@@ -2635,6 +2635,178 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
     color: #7c7065;
 }
 
+/* DADOS PESSOAIS DO MOTORISTA */
+
+.MOTORISTAPAG_Login_dados_lista {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.MOTORISTAPAG_Login_dados_linha {
+    position: relative;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.18);
+}
+
+.MOTORISTAPAG_Login_dados_linha span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.68rem;
+    margin-bottom: 4px;
+}
+
+.MOTORISTAPAG_Login_dados_linha strong {
+    display: block;
+    color: var(--Fame_text);
+    font-size: 0.84rem;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_dados_linha small {
+    display: inline-block;
+    margin-top: 6px;
+    color: #efaa44;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.MOTORISTAPAG_Login_dados_linha.bloqueado {
+    opacity: 0.88;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha strong {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha span {
+    color: #7c7065;
+}
+.MOTORISTAPAG_Login_btn_editar_campo {
+    margin-top: 8px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(123, 84, 56, 0.14);
+    color: #7b5438;
+    font-size: 0.7rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+body:not(.TNP_TEMA_CLARO) .MOTORISTAPAG_Login_btn_editar_campo {
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+}
+/* ==================================================
+   AJUSTES VISUAIS - MODAIS DE EDIÇÃO DO MOTORISTA
+================================================== */
+
+/* Campos de edição mais visíveis */
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(197, 169, 141, 0.55);
+    border-radius: 12px;
+    color: var(--Fame_text);
+    min-height: 46px;
+    box-shadow: inset 0 0 0 1px rgba(197, 169, 141, 0.08);
+}
+
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input:focus {
+    outline: none;
+    border-color: var(--Fame_gold);
+    background: rgba(197, 169, 141, 0.10);
+    box-shadow: 0 0 0 3px rgba(197, 169, 141, 0.16);
+}
+
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group label {
+    color: var(--Fame_gold);
+    font-weight: 800;
+}
+
+/* Botão EDITAR dos cards de dados pessoais */
+.MOTORISTAPAG_Login_btn_editar_campo {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(197, 169, 141, 0.65);
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+}
+
+.MOTORISTAPAG_Login_btn_editar_campo:hover {
+    background: rgba(197, 169, 141, 0.25);
+}
+
+/* Botão de enviar código via WhatsApp mais destacado */
+#MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp {
+    background: #25D366;
+    color: #ffffff;
+    border: 1px solid rgba(37, 211, 102, 0.85);
+    font-weight: 900;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.24);
+}
+
+#MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp:disabled {
+    background: rgba(37, 211, 102, 0.35);
+    color: rgba(255, 255, 255, 0.82);
+    border-color: rgba(37, 211, 102, 0.35);
+    opacity: 1;
+}
+
+/* Botão confirmar e salvar mais forte */
+#MOTORISTAPAG_Login_btn_confirmar_whatsapp,
+#MOTORISTAPAG_Login_btn_salvar_nome,
+#MOTORISTAPAG_Login_btn_salvar_nascimento {
+    border-radius: 14px;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    box-shadow: 0 8px 20px rgba(197, 169, 141, 0.22);
+}
+/* TEMA CLARO - CAMPOS E BOTÕES DOS MODAIS DO MOTORISTA */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input {
+    background: #ffffff;
+    border: 1.5px solid rgba(123, 84, 56, 0.45);
+    color: #1f1f1f;
+    box-shadow: inset 0 0 0 1px rgba(123, 84, 56, 0.06);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input:focus {
+    border-color: #7b5438;
+    background: #fffaf5;
+    box-shadow: 0 0 0 3px rgba(123, 84, 56, 0.14);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group label {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo {
+    background: #7b5438;
+    border-color: #7b5438;
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
+    background: #5f3f2b;
+}
+
+
         
  </style>
 </head>
@@ -2843,6 +3015,9 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
     </div>
 </div>
 
+<!-- MODAL Nivel 1 -->
+
+
         <div class="MOTORISTAPAG_Login_perfil_secao">
             <strong>Status e cadastro</strong>
 
@@ -2851,9 +3026,9 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
                 <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
             </button>
 
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Dados pessoais', 'Aqui o motorista poderá revisar nome, CPF, telefone e dados pessoais.')">
-                👤 Dados pessoais
-            </button>
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()">
+				👤 Dados pessoais
+			</button>
 
             <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
                 📄 Documentos do motorista
@@ -2896,8 +3071,420 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
     </div>
 </div>
 	
-	
-	
+<!-- MODAL Nivel 2 -->	
+
+<!-- MODAL PERFIL 02: DADOS PESSOAIS DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_dados_pessoais" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Dados pessoais</h3>
+
+        <div class="MOTORISTAPAG_Login_dados_lista">
+
+            <div class="MOTORISTAPAG_Login_dados_linha">
+    <span>Nome completo</span>
+    <strong id="MOTORISTAPAG_Login_dados_nome">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarNomeMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
+
+            <div class="MOTORISTAPAG_Login_dados_linha bloqueado">
+                <span>CPF</span>
+                <strong id="MOTORISTAPAG_Login_dados_cpf">-</strong>
+                <small>Não editável</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_dados_linha">
+    <span>Data de nascimento</span>
+    <strong id="MOTORISTAPAG_Login_dados_nascimento">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarNascimentoMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
+
+<div class="MOTORISTAPAG_Login_dados_linha">
+    <span>WhatsApp</span>
+    <strong id="MOTORISTAPAG_Login_dados_whatsapp">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarTelefoneMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
+
+<div class="MOTORISTAPAG_Login_dados_linha">
+    <span>Telefone principal</span>
+    <strong id="MOTORISTAPAG_Login_dados_telefone_principal">-</strong>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_btn_editar_campo"
+        onclick="MOTORISTAPAG_Login_func_abrirEditarTelefoneMotorista()"
+    >
+        EDITAR
+    </button>
+</div>
+
+            <div class="MOTORISTAPAG_Login_dados_linha">
+                <span>E-mail</span>
+                <strong id="MOTORISTAPAG_Login_dados_email">-</strong>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_dados_linha">
+                <span>Endereço</span>
+                <strong id="MOTORISTAPAG_Login_dados_endereco">-</strong>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_dados_linha">
+                <span>Contato de emergência</span>
+                <strong id="MOTORISTAPAG_Login_dados_emergencia">-</strong>
+            </div>
+
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_abrirEditarDadosPessoaisMotorista()"
+        >
+            EDITAR DADOS
+        </button>
+
+    </div>
+</div>
+
+<!-- MODAL Nivel 3 -->
+<!-- MODAL PERFIL 02.1: EDITAR DADOS PESSOAIS DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_dados" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Editar dados pessoais</h3>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_nome_motorista">Nome completo</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_nome_motorista"
+                placeholder="Nome completo"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_cpf_motorista">CPF</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_cpf_motorista"
+                disabled
+                placeholder="CPF não editável"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_nascimento_motorista">Data de nascimento</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_nascimento_motorista"
+                placeholder="dd/mm/aaaa"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_whatsapp_motorista">Telefone / WhatsApp</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_whatsapp_motorista"
+                placeholder="(00) 00000-0000"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_email_motorista">E-mail</label>
+            <input
+                type="email"
+                id="MOTORISTAPAG_Login_input_email_motorista"
+                disabled
+                placeholder="E-mail da conta"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_endereco_motorista">Endereço</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_endereco_motorista"
+                placeholder="Rua, número, bairro, cidade/UF"
+            >
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_emergencia_motorista">Contato de emergência</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_emergencia_motorista"
+                placeholder="Nome e telefone"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_dados_pessoais"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_salvarDadosPessoaisMotorista()"
+        >
+            SALVAR ALTERAÇÕES
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+<!-- MODAL Nivel 4 -->
+
+
+<!-- MODAL PERFIL 02.1: EDITAR NOME DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_nome" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            ×
+        </button>
+
+        <h3>Editar nome</h3>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_editar_nome">Nome completo</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_editar_nome"
+                placeholder="Digite seu nome completo"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_nome"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_salvarNomeMotorista()"
+        >
+            SALVAR NOME
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+<!-- MODAL PERFIL 02.2: EDITAR DATA DE NASCIMENTO DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_nascimento" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            ×
+        </button>
+
+        <h3>Editar data de nascimento</h3>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_editar_nascimento">Data de nascimento</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_editar_nascimento"
+                placeholder="dd/mm/aaaa"
+                maxlength="10"
+                oninput="MOTORISTAPAG_Login_func_mascaraDataNascimento(this)"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_salvar_nascimento"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_salvarNascimentoMotorista()"
+        >
+            SALVAR DATA
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+<!-- MODAL PERFIL 02.3: EDITAR WHATSAPP / TELEFONE PRINCIPAL DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_02_editar_telefone" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            ×
+        </button>
+
+        <h3>Editar contatos</h3>
+
+        <div id="MOTORISTAPAG_Login_error_telefone" class="PRIMEIRAPAG_Login_error"></div>
+
+        <div class="PRIMEIRAPAG_Login_form_group">
+            <label for="MOTORISTAPAG_Login_input_editar_whatsapp">WhatsApp</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_editar_whatsapp"
+                placeholder="(00) 0.0000-0000"
+                maxlength="16"
+                oninput="MOTORISTAPAG_Login_func_maskZapMotorista(this)"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_enviarCodigoWhatsappMotorista()"
+        >
+            ENVIAR CÓDIGO VIA WHATSAPP
+        </button>
+
+        <div
+            id="MOTORISTAPAG_Login_area_codigo_whatsapp"
+            class="PRIMEIRAPAG_Login_hidden"
+        >
+            <div class="PRIMEIRAPAG_Login_form_group PRIMEIRAPAG_Login_mt_15">
+                <label for="MOTORISTAPAG_Login_input_codigo_whatsapp">Código recebido</label>
+                <input
+                    type="text"
+                    id="MOTORISTAPAG_Login_input_codigo_whatsapp"
+                    placeholder="Digite o código de 4 números"
+                    maxlength="4"
+                >
+            </div>
+
+            <button
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="MOTORISTAPAG_Login_func_corrigirWhatsappMotorista()"
+            >
+                CORRIGIR WHATSAPP
+            </button>
+        </div>
+
+        <label class="PRIMEIRAPAG_Login_inline_checkbox_label PRIMEIRAPAG_Login_mt_15">
+            <input
+                type="checkbox"
+                id="MOTORISTAPAG_Login_check_mesmo_telefone"
+                class="PRIMEIRAPAG_Login_checkbox_auto"
+                checked
+                onchange="MOTORISTAPAG_Login_func_toggleTelefonePrincipalMotorista()"
+            >
+            Usar este WhatsApp como telefone principal
+        </label>
+
+        <div
+            id="MOTORISTAPAG_Login_box_telefone_principal"
+            class="PRIMEIRAPAG_Login_form_group PRIMEIRAPAG_Login_hidden PRIMEIRAPAG_Login_mt_15"
+        >
+            <label for="MOTORISTAPAG_Login_input_telefone_principal">Telefone principal</label>
+            <input
+                type="text"
+                id="MOTORISTAPAG_Login_input_telefone_principal"
+                placeholder="(00) 0000-0000"
+                maxlength="15"
+                oninput="MOTORISTAPAG_Login_func_maskZapMotorista(this)"
+            >
+        </div>
+
+        <button
+            id="MOTORISTAPAG_Login_btn_confirmar_whatsapp"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_validarCodigoWhatsappMotorista()"
+        >
+            CONFIRMAR E SALVAR
+        </button>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()"
+        >
+            VOLTAR
+        </button>
+
+    </div>
+</div>
+
+
+
+
+<!-- MODAL VEÍCULO EM USO -->
+<div id="MOTORISTAPAG_Login_modal_veiculo_em_uso" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Veículo em uso</h3>
+
+        <p class="MOTORISTAPAG_Login_modal_texto_aux">
+            Escolha qual veículo aprovado você quer usar para trabalhar agora.
+        </p>
+
+        <div id="MOTORISTAPAG_Login_lista_veiculos_uso" class="MOTORISTAPAG_Login_lista_veiculos_uso">
+            <!-- veículos aparecem aqui pelo JS -->
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Para adicionar ou trocar veículo, acesse Configurações > Gerenciar veículos.')"
+        >
+            GERENCIAR VEÍCULOS
+        </button>
+    </div>
+</div>	
 	
 <!-- MODAL CONFIGURAÇÕES -->
 <div id="MOTORISTAPAG_Login_modal_configuracoes" class="MOTORISTAPAG_Login_modal_home">
@@ -2915,15 +3502,29 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
             🌓 Trocar tema claro/escuro
         </button>
 
+		<button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Aqui depois o motorista poderá adicionar, trocar, enviar fotos, documentos e aguardar análise do veículo.')">
+			🚘 Gerenciar veículos
+		</button>
+
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
             ⚙️ Preferências do motorista
         </button>
 		
-		<button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Aqui depois o motorista poderá adicionar, trocar, enviar fotos, documentos e aguardar análise do veículo.')">
-			🚘 Gerenciar veículos
-		</button>
+		
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3104,34 +3705,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
 
 </div>
 
-<!-- MODAL VEÍCULO EM USO -->
-<div id="MOTORISTAPAG_Login_modal_veiculo_em_uso" class="MOTORISTAPAG_Login_modal_home">
-    <div class="MOTORISTAPAG_Login_modal_home_box">
-        <button
-            class="MOTORISTAPAG_Login_modal_fechar"
-            onclick="MOTORISTAPAG_Login_func_fecharModais()"
-        >
-            ×
-        </button>
 
-        <h3>Veículo em uso</h3>
-
-        <p class="MOTORISTAPAG_Login_modal_texto_aux">
-            Escolha qual veículo aprovado você quer usar para trabalhar agora.
-        </p>
-
-        <div id="MOTORISTAPAG_Login_lista_veiculos_uso" class="MOTORISTAPAG_Login_lista_veiculos_uso">
-            <!-- veículos aparecem aqui pelo JS -->
-        </div>
-
-        <button
-            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Para adicionar ou trocar veículo, acesse Configurações > Gerenciar veículos.')"
-        >
-            GERENCIAR VEÍCULOS
-        </button>
-    </div>
-</div>
 
 
 <script>	
@@ -3595,6 +4169,244 @@ function MOTORISTAPAG_Login_func_botaoConectar() {
     btn.innerText = "CONECTAR";
     btn.classList.remove('MOTORISTAPAG_Login_home_btn_online');
 }
+
+//-- MODAL Dados pessoais nivel 1 -->
+async function MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_dados_pessoais');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    await MOTORISTAPAG_Login_func_carregarDadosPessoaisMotorista();
+}
+
+//-- MODAL Dados pessoais nivel 2 -->
+
+async function MOTORISTAPAG_Login_func_carregarDadosPessoaisMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const endereco = u.endereco || m.endereco || {};
+        const contato = u.contatoEmergencia || m.contatoEmergencia || {};
+
+        const nome =
+            u.nomeDocumento ||
+            u.nomeCompleto ||
+            u.nome ||
+            m.nomeDocumento ||
+            m.nomeCompleto ||
+            m.nome ||
+            "-";
+
+        const cpf =
+            u.cpfFormatado ||
+            u.documentoFormatado ||
+            m.cpfFormatado ||
+            "-";
+
+        const nascimento =
+            u.dataNascimentoFormatada ||
+            u.dataNascimento ||
+            m.dataNascimentoFormatada ||
+            m.dataNascimento ||
+            "-";
+
+        const whatsapp =
+            u.whatsappFormatado ||
+            u.whatsapp ||
+            m.whatsappFormatado ||
+            m.whatsapp ||
+            "-";
+
+        const telefonePrincipal =
+            u.telefonePrincipalFormatado ||
+            u.telefonePrincipal ||
+            m.telefonePrincipalFormatado ||
+            m.telefonePrincipal ||
+            whatsapp ||
+            "-";
+
+        const email = u.email || user.email || "-";
+
+        const enderecoTexto = endereco.rua
+            ? `${endereco.rua}, ${endereco.numero || "s/n"} - ${endereco.bairro || ""} - ${endereco.cidade || ""}/${endereco.estado || ""}`
+            : "-";
+
+        const emergenciaTexto = contato.nome
+            ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
+            : "-";
+
+        const campoNome = document.getElementById('MOTORISTAPAG_Login_dados_nome');
+        const campoCpf = document.getElementById('MOTORISTAPAG_Login_dados_cpf');
+        const campoNascimento = document.getElementById('MOTORISTAPAG_Login_dados_nascimento');
+        const campoWhatsapp = document.getElementById('MOTORISTAPAG_Login_dados_whatsapp');
+        const campoTelefonePrincipal = document.getElementById('MOTORISTAPAG_Login_dados_telefone_principal');
+        const campoEmail = document.getElementById('MOTORISTAPAG_Login_dados_email');
+        const campoEndereco = document.getElementById('MOTORISTAPAG_Login_dados_endereco');
+        const campoEmergencia = document.getElementById('MOTORISTAPAG_Login_dados_emergencia');
+
+        if (campoNome) campoNome.innerText = nome;
+        if (campoCpf) campoCpf.innerText = cpf;
+        if (campoNascimento) campoNascimento.innerText = nascimento;
+        if (campoWhatsapp) campoWhatsapp.innerText = whatsapp;
+        if (campoTelefonePrincipal) campoTelefonePrincipal.innerText = telefonePrincipal;
+        if (campoEmail) campoEmail.innerText = email;
+        if (campoEndereco) campoEndereco.innerText = enderecoTexto;
+        if (campoEmergencia) campoEmergencia.innerText = emergenciaTexto;
+
+    } catch (erro) {
+        console.error("Erro ao carregar dados pessoais do motorista:", erro);
+    }
+}
+
+async function MOTORISTAPAG_Login_func_abrirEditarDadosPessoaisMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_dados');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    const userDoc = await PRIMEIRAPAG_Login_db
+        .collection('usuarios')
+        .doc(user.uid)
+        .get();
+
+    const u = userDoc.exists ? userDoc.data() : {};
+    const endereco = u.endereco || {};
+    const contato = u.contatoEmergencia || {};
+
+    const enderecoTexto = endereco.rua
+        ? `${endereco.rua}, ${endereco.numero || "s/n"} - ${endereco.bairro || ""} - ${endereco.cidade || ""}/${endereco.estado || ""}`
+        : "";
+
+    const emergenciaTexto = contato.nome
+        ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
+        : "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_nome_motorista').value =
+        u.nomeDocumento || u.nome || "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_cpf_motorista').value =
+        u.cpfFormatado || u.documentoFormatado || "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_nascimento_motorista').value =
+        u.dataNascimentoFormatada || u.dataNascimento || "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_whatsapp_motorista').value =
+        u.whatsappFormatado || u.whatsapp || "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_email_motorista').value =
+        u.email || user.email || "";
+
+    document.getElementById('MOTORISTAPAG_Login_input_endereco_motorista').value =
+        enderecoTexto;
+
+    document.getElementById('MOTORISTAPAG_Login_input_emergencia_motorista').value =
+        emergenciaTexto;
+}
+
+async function MOTORISTAPAG_Login_func_salvarDadosPessoaisMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_dados_pessoais');
+
+    if (!user) return;
+
+    const nome = document.getElementById('MOTORISTAPAG_Login_input_nome_motorista').value.trim();
+    const nascimento = document.getElementById('MOTORISTAPAG_Login_input_nascimento_motorista').value.trim();
+    const whatsapp = document.getElementById('MOTORISTAPAG_Login_input_whatsapp_motorista').value.trim();
+    const enderecoTexto = document.getElementById('MOTORISTAPAG_Login_input_endereco_motorista').value.trim();
+    const emergenciaTexto = document.getElementById('MOTORISTAPAG_Login_input_emergencia_motorista').value.trim();
+
+    if (!nome) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Nome obrigatório",
+            "Informe o nome completo do motorista."
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                nomeDocumento: nome,
+                nome: nome,
+                dataNascimentoFormatada: nascimento,
+                whatsappFormatado: whatsapp,
+                enderecoResumoMotorista: enderecoTexto,
+                contatoEmergenciaResumoMotorista: emergenciaTexto,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                nome: nome,
+                dataNascimentoFormatada: nascimento,
+                whatsappFormatado: whatsapp,
+                enderecoResumoMotorista: enderecoTexto,
+                contatoEmergenciaResumoMotorista: emergenciaTexto,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR ALTERAÇÕES";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar dados pessoais:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR ALTERAÇÕES";
+        }
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Erro ao salvar",
+            "Não foi possível salvar os dados agora. Tente novamente."
+        );
+    }
+}
+
+
+
+
+
+
 //-- MODAL CONFIGURAÇÕES -->
 function MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista() {
     MOTORISTAPAG_Login_func_fecharMenuLateral();
@@ -3879,6 +4691,603 @@ async function MOTORISTAPAG_Login_func_definirVeiculoEmUso(veiculoId) {
         );
     }
 }
+
+async function MOTORISTAPAG_Login_func_abrirEditarNomeMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_nome');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nome =
+            u.nomeDocumento ||
+            u.nomeCompleto ||
+            u.nome ||
+            m.nomeDocumento ||
+            m.nomeCompleto ||
+            m.nome ||
+            "";
+
+        const input = document.getElementById('MOTORISTAPAG_Login_input_editar_nome');
+
+        if (input) {
+            input.value = nome;
+            input.focus();
+        }
+
+    } catch (erro) {
+        console.error("Erro ao carregar nome para edição:", erro);
+    }
+}
+async function MOTORISTAPAG_Login_func_salvarNomeMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_nome');
+    const input = document.getElementById('MOTORISTAPAG_Login_input_editar_nome');
+
+    if (!user || !input) return;
+
+    const nome = input.value.trim();
+
+    if (!nome) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Nome obrigatório",
+            "Informe seu nome completo."
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                nome: nome,
+                nomeDocumento: nome,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                nome: nome,
+                nomeDocumento: nome,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR NOME";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar nome:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR NOME";
+        }
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Erro ao salvar",
+            "Não foi possível salvar o nome agora. Tente novamente."
+        );
+    }
+}
+
+function MOTORISTAPAG_Login_func_mascaraDataNascimento(input) {
+    let valor = input.value.replace(/\D/g, '');
+
+    if (valor.length > 8) {
+        valor = valor.slice(0, 8);
+    }
+
+    if (valor.length > 4) {
+        valor = valor.replace(/(\d{2})(\d{2})(\d+)/, '$1/$2/$3');
+    } else if (valor.length > 2) {
+        valor = valor.replace(/(\d{2})(\d+)/, '$1/$2');
+    }
+
+    input.value = valor;
+}
+async function MOTORISTAPAG_Login_func_abrirEditarNascimentoMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_nascimento');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nascimento =
+            u.dataNascimentoFormatada ||
+            u.dataNascimento ||
+            m.dataNascimentoFormatada ||
+            m.dataNascimento ||
+            "";
+
+        const input = document.getElementById('MOTORISTAPAG_Login_input_editar_nascimento');
+
+        if (input) {
+            input.value = nascimento;
+            input.focus();
+        }
+
+    } catch (erro) {
+        console.error("Erro ao carregar data de nascimento:", erro);
+    }
+}
+
+async function MOTORISTAPAG_Login_func_salvarNascimentoMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_nascimento');
+    const input = document.getElementById('MOTORISTAPAG_Login_input_editar_nascimento');
+
+    if (!user || !input) return;
+
+    const nascimento = input.value.trim();
+
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(nascimento)) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Data inválida",
+            "Digite a data no formato DD/MM/AAAA."
+        );
+    }
+
+    const partes = nascimento.split('/');
+    const dia = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const ano = Number(partes[2]);
+
+    const dataTeste = new Date(ano, mes - 1, dia);
+    const dataValida =
+        dataTeste.getFullYear() === ano &&
+        dataTeste.getMonth() === mes - 1 &&
+        dataTeste.getDate() === dia;
+
+    if (!dataValida) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Data inválida",
+            "Confira o dia, mês e ano informados."
+        );
+    }
+
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - ano;
+    const mesAtual = hoje.getMonth() + 1;
+    const diaAtual = hoje.getDate();
+
+    if (mesAtual < mes || (mesAtual === mes && diaAtual < dia)) {
+        idade--;
+    }
+
+    if (idade < 18) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Idade mínima",
+            "Para atuar como motorista, é necessário ter pelo menos 18 anos."
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                dataNascimentoFormatada: nascimento,
+                dataNascimento: `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                dataNascimentoFormatada: nascimento,
+                dataNascimento: `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`,
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR DATA";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar data de nascimento:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "SALVAR DATA";
+        }
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Erro ao salvar",
+            "Não foi possível salvar a data agora. Tente novamente."
+        );
+    }
+}
+
+let MOTORISTAPAG_Login_var_codigoWhatsappMotorista = null;
+let MOTORISTAPAG_Login_var_whatsappMotoristaValidado = false;
+function MOTORISTAPAG_Login_func_maskZapMotorista(input) {
+    let valor = input.value.replace(/\D/g, "");
+
+    if (valor.length > 11) {
+        valor = valor.substring(0, 11);
+    }
+
+    if (valor.length > 10) {
+        input.value =
+            "(" + valor.substring(0, 2) + ") " +
+            valor.substring(2, 3) + "." +
+            valor.substring(3, 7) + "-" +
+            valor.substring(7, 11);
+    } else if (valor.length > 6) {
+        input.value =
+            "(" + valor.substring(0, 2) + ") " +
+            valor.substring(2, 6) + "-" +
+            valor.substring(6, 10);
+    } else if (valor.length > 2) {
+        input.value =
+            "(" + valor.substring(0, 2) + ") " +
+            valor.substring(2);
+    } else if (valor.length > 0) {
+        input.value = "(" + valor;
+    }
+}
+
+function MOTORISTAPAG_Login_func_toggleTelefonePrincipalMotorista() {
+    const check = document.getElementById('MOTORISTAPAG_Login_check_mesmo_telefone');
+    const boxTelefone = document.getElementById('MOTORISTAPAG_Login_box_telefone_principal');
+    const inputTelefone = document.getElementById('MOTORISTAPAG_Login_input_telefone_principal');
+
+    if (!check || !boxTelefone || !inputTelefone) return;
+
+    if (check.checked) {
+        boxTelefone.classList.add('PRIMEIRAPAG_Login_hidden');
+        inputTelefone.value = "";
+    } else {
+        boxTelefone.classList.remove('PRIMEIRAPAG_Login_hidden');
+        inputTelefone.focus();
+    }
+}
+
+function MOTORISTAPAG_Login_func_enviarCodigoWhatsappMotorista() {
+    const inputWhatsapp = document.getElementById('MOTORISTAPAG_Login_input_editar_whatsapp');
+    const areaCodigo = document.getElementById('MOTORISTAPAG_Login_area_codigo_whatsapp');
+    const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp');
+
+    if (!inputWhatsapp) {
+        console.warn("Input do WhatsApp não encontrado.");
+        return;
+    }
+
+    const whatsapp = inputWhatsapp.value.replace(/\D/g, "");
+
+    if (whatsapp.length < 11) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Digite um WhatsApp válido com DDD + 9 + número.'
+        );
+    }
+
+    MOTORISTAPAG_Login_var_codigoWhatsappMotorista =
+        Math.floor(1000 + Math.random() * 9000);
+
+    MOTORISTAPAG_Login_var_whatsappMotoristaValidado = false;
+
+    const msg = encodeURIComponent(
+        `Seu código TNP MoB é: ${MOTORISTAPAG_Login_var_codigoWhatsappMotorista}`
+    );
+
+    const linkWhatsapp = `https://wa.me/55${whatsapp}?text=${msg}`;
+
+    const janela = window.open(linkWhatsapp, "_blank");
+
+    if (!janela) {
+        alert(
+            "O navegador bloqueou a abertura do WhatsApp.\n\n" +
+            "Vamos tentar abrir na mesma aba."
+        );
+
+        window.location.href = linkWhatsapp;
+        return;
+    }
+
+    if (areaCodigo) {
+        areaCodigo.classList.remove('PRIMEIRAPAG_Login_hidden');
+    }
+
+    inputWhatsapp.disabled = true;
+
+    if (btnEnviar) {
+        btnEnviar.disabled = true;
+        btnEnviar.innerText = "CÓDIGO GERADO";
+    }
+}
+
+function MOTORISTAPAG_Login_func_corrigirWhatsappMotorista() {
+    MOTORISTAPAG_Login_var_codigoWhatsappMotorista = null;
+    MOTORISTAPAG_Login_var_whatsappMotoristaValidado = false;
+
+    const inputWhatsapp = document.getElementById('MOTORISTAPAG_Login_input_editar_whatsapp');
+    const inputCodigo = document.getElementById('MOTORISTAPAG_Login_input_codigo_whatsapp');
+    const areaCodigo = document.getElementById('MOTORISTAPAG_Login_area_codigo_whatsapp');
+    const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp');
+
+    if (inputWhatsapp) inputWhatsapp.disabled = false;
+    if (inputCodigo) inputCodigo.value = "";
+    if (areaCodigo) areaCodigo.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (btnEnviar) {
+        btnEnviar.disabled = false;
+        btnEnviar.innerText = "ENVIAR CÓDIGO VIA WHATSAPP";
+    }
+}
+
+async function MOTORISTAPAG_Login_func_validarCodigoWhatsappMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_confirmar_whatsapp');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Sua sessão expirou. Faça login novamente.'
+        );
+    }
+
+    const codigoDigitado = document
+        .getElementById('MOTORISTAPAG_Login_input_codigo_whatsapp')
+        .value
+        .trim();
+
+    const whatsappFormatado = document
+        .getElementById('MOTORISTAPAG_Login_input_editar_whatsapp')
+        .value
+        .trim();
+
+    const whatsapp = whatsappFormatado.replace(/\D/g, "");
+
+    const mesmoTelefone = document
+        .getElementById('MOTORISTAPAG_Login_check_mesmo_telefone')
+        .checked;
+
+    const telefonePrincipalFormatado = mesmoTelefone
+        ? whatsappFormatado
+        : document.getElementById('MOTORISTAPAG_Login_input_telefone_principal').value.trim();
+
+    const telefonePrincipal = telefonePrincipalFormatado.replace(/\D/g, "");
+
+    if (!MOTORISTAPAG_Login_var_codigoWhatsappMotorista) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Envie o código pelo WhatsApp primeiro.'
+        );
+    }
+
+    if (codigoDigitado.length !== 4) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Digite o código de 4 números recebido no WhatsApp.'
+        );
+    }
+
+    if (codigoDigitado != MOTORISTAPAG_Login_var_codigoWhatsappMotorista) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Código incorreto. Confira o número enviado no WhatsApp.'
+        );
+    }
+
+    if (!mesmoTelefone && telefonePrincipal.length < 10) {
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Digite um telefone principal válido ou marque que é o mesmo do WhatsApp.'
+        );
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = "SALVANDO...";
+        }
+
+        const payloadContatos = {
+            whatsapp: whatsapp,
+            whatsappFormatado: whatsappFormatado,
+            whatsappValidado: true,
+
+            telefonePrincipal: telefonePrincipal,
+            telefonePrincipalFormatado: telefonePrincipalFormatado,
+            telefonePrincipalMesmoWhatsapp: mesmoTelefone,
+
+            atualizadoEm: new Date()
+        };
+
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set(payloadContatos, { merge: true });
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set(payloadContatos, { merge: true });
+
+        MOTORISTAPAG_Login_var_whatsappMotoristaValidado = true;
+        MOTORISTAPAG_Login_var_codigoWhatsappMotorista = null;
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "CONFIRMAR E SALVAR";
+        }
+
+        await MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista();
+        await MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao salvar WhatsApp do motorista:", erro);
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = "CONFIRMAR E SALVAR";
+        }
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_telefone',
+            'Erro ao salvar WhatsApp: ' + erro.message
+        );
+    }
+}
+
+async function MOTORISTAPAG_Login_func_abrirEditarTelefoneMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_02_editar_telefone');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    MOTORISTAPAG_Login_var_codigoWhatsappMotorista = null;
+    MOTORISTAPAG_Login_var_whatsappMotoristaValidado = false;
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const whatsapp =
+            u.whatsappFormatado ||
+            u.whatsapp ||
+            m.whatsappFormatado ||
+            m.whatsapp ||
+            "";
+
+        const telefonePrincipal =
+            u.telefonePrincipalFormatado ||
+            u.telefonePrincipal ||
+            m.telefonePrincipalFormatado ||
+            m.telefonePrincipal ||
+            "";
+
+        const mesmoTelefone =
+            u.telefonePrincipalMesmoWhatsapp !== undefined
+                ? u.telefonePrincipalMesmoWhatsapp
+                : true;
+
+        const inputWhatsapp = document.getElementById('MOTORISTAPAG_Login_input_editar_whatsapp');
+        const inputTelefone = document.getElementById('MOTORISTAPAG_Login_input_telefone_principal');
+        const inputCodigo = document.getElementById('MOTORISTAPAG_Login_input_codigo_whatsapp');
+        const checkMesmo = document.getElementById('MOTORISTAPAG_Login_check_mesmo_telefone');
+        const areaCodigo = document.getElementById('MOTORISTAPAG_Login_area_codigo_whatsapp');
+        const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp');
+
+        if (inputWhatsapp) {
+            inputWhatsapp.disabled = false;
+            inputWhatsapp.value = whatsapp;
+            MOTORISTAPAG_Login_func_maskZapMotorista(inputWhatsapp);
+        }
+
+        if (inputTelefone) {
+            inputTelefone.value = telefonePrincipal;
+            MOTORISTAPAG_Login_func_maskZapMotorista(inputTelefone);
+        }
+
+        if (inputCodigo) inputCodigo.value = "";
+        if (areaCodigo) areaCodigo.classList.add('PRIMEIRAPAG_Login_hidden');
+
+        if (checkMesmo) {
+            checkMesmo.checked = mesmoTelefone;
+        }
+
+        if (btnEnviar) {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = "ENVIAR CÓDIGO VIA WHATSAPP";
+        }
+
+        MOTORISTAPAG_Login_func_toggleTelefonePrincipalMotorista();
+
+        if (inputWhatsapp) inputWhatsapp.focus();
+
+    } catch (erro) {
+        console.error("Erro ao carregar contatos para edição:", erro);
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
