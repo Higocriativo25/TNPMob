@@ -1979,15 +1979,9 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     font-size: 20px;
 }
 
-.MOTORISTAPAG_Login_home_ganhos_box {
-    justify-self: center;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
 .MOTORISTAPAG_Login_home_ganhos {
-    min-width: 118px;
+    justify-self: center;
+    min-width: 130px;
     height: 38px;
     border-radius: 22px;
     background: #7b5438;
@@ -1997,18 +1991,19 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     border: none;
     cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 12px;
 }
 
-.MOTORISTAPAG_Login_btn_ocultar_ganhos {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    border: 1px solid rgba(123, 84, 56, 0.25);
-    background: rgba(255,255,255,0.92);
-    color: #7b5438;
-    font-size: 15px;
+.MOTORISTAPAG_Login_icone_ocultar_ganhos {
+    font-size: 14px;
+    line-height: 1;
     cursor: pointer;
-    box-shadow: 0 5px 14px rgba(0,0,0,0.16);
+    opacity: 0.9;
 }
 
 /* BOTÕES MAPA */
@@ -2039,7 +2034,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 32px;
+    bottom: 38px;
     z-index: 6;
 
     padding: 10px 16px 22px;
@@ -2465,26 +2460,21 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
     </div>
 </button>
 
-        <div class="MOTORISTAPAG_Login_home_ganhos_box">
+<button
+    type="button"
+    class="MOTORISTAPAG_Login_home_ganhos"
+    onclick="MOTORISTAPAG_Login_func_abrirGanhos()"
+>
+    <span id="MOTORISTAPAG_Login_home_ganhos_valor">R$0,00</span>
 
-    <button
-        type="button"
-        class="MOTORISTAPAG_Login_home_ganhos"
-        onclick="MOTORISTAPAG_Login_func_abrirGanhos()"
-    >
-        <span id="MOTORISTAPAG_Login_home_ganhos_valor">R$0,00</span>
-    </button>
-
-    <button
-        type="button"
+    <span
         id="MOTORISTAPAG_Login_btn_ocultar_ganhos"
-        class="MOTORISTAPAG_Login_btn_ocultar_ganhos"
+        class="MOTORISTAPAG_Login_icone_ocultar_ganhos"
         onclick="MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event)"
     >
         👁️
-    </button>
-
-</div>
+    </span>
+</button>
 
         <button
             type="button"
