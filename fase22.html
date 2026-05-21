@@ -7112,10 +7112,11 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
         }
 
         const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemNovoVeiculo(
-            0.7,
-            900,
-            900
-        );
+    arquivoOriginal,
+    0.7,
+    900,
+    900
+);
 
         const tamanhoOriginal = arquivoOriginal.size;
         const tamanhoFinal = arquivoCompactado.size;
