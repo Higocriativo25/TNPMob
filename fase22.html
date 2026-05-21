@@ -2807,6 +2807,208 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
     background: #5f3f2b;
 }
 
+.MOTORISTAPAG_Login_dados_linha strong {
+    white-space: pre-line;
+    line-height: 1.35;
+}
+/* CONFIGURAÇÕES MOTORISTA - GERENCIAR VEÍCULOS */
+
+.MOTORISTAPAG_Login_config_topo {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.MOTORISTAPAG_Login_config_voltar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_config_topo h3 {
+    color: var(--Fame_gold);
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+.MOTORISTAPAG_Login_config_topo p {
+    color: var(--Fame_muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 14px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_aviso strong {
+    color: var(--Fame_gold);
+}
+
+.MOTORISTAPAG_Login_lista_gerenciar_veiculos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card,
+.MOTORISTAPAG_Login_gerenciar_veiculos_vazio {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.em_uso {
+    border-color: rgba(80, 220, 130, 0.55);
+    background: rgba(80, 220, 130, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.em_revisao {
+    border-color: rgba(245, 158, 11, 0.55);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.recusado {
+    border-color: rgba(239, 68, 68, 0.55);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_topo strong {
+    color: var(--Fame_gold);
+    font-size: 0.95rem;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_status {
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 0.68rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_info {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--Fame_text);
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_docs {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.10);
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha span:last-child {
+    font-weight: 800;
+    color: var(--Fame_gold);
+    text-align: right;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_acoes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_acoes .PRIMEIRAPAG_Login_btn {
+    margin-top: 0;
+    padding: 0.78rem;
+    font-size: 0.82rem;
+}
+
+.MOTORISTAPAG_Login_btn_excluir_veiculo {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.38);
+    color: #fca5a5;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_card,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_vazio,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
+    background: #f7f2ec;
+}
+
+/* AJUSTE DA TELA GERENCIAR VEÍCULOS */
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos {
+    padding: 22px 16px 90px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_voltar {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo h3 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo p {
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_btn_gerenciar_veiculo {
+    margin-top: 10px;
+    padding: 0.72rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
+}
 
         
  </style>
@@ -2941,7 +3143,22 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
         🗺️
     </button>
 
-    <!-- MENU LATERAL -->
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- MENU LATERAL -->
     <div
         id="MOTORISTAPAG_Login_menu_overlay"
         class="MOTORISTAPAG_Login_menu_overlay"
@@ -3020,13 +3237,19 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 
 
         <div class="MOTORISTAPAG_Login_perfil_secao">
-            <strong>Status e cadastro</strong>
+            <strong>Status</strong>
 
             <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status do cadastro', 'Aqui o motorista verá se está aprovado, em análise ou com pendência.')">
                 🧾 Status do cadastro
                 <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
             </button>
-
+			
+			<button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
+				🚘 Veículo em uso
+			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
+			</button>
+			
+			<strong>Cadastro</strong>			
             <button onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()">
 				👤 Dados pessoais
 			</button>
@@ -3034,16 +3257,10 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
             <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
                 📄 Documentos do motorista
             </button>
-        </div>
+		</div>
 
         <div class="MOTORISTAPAG_Login_perfil_secao">
-            <strong>Trabalho e recebimentos</strong>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
-				🚘 Veículo em uso
-			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
-			</button>
-
+            <strong>Recebimentos</strong>
             <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Pix para recebimento', 'Aqui o motorista poderá revisar a chave Pix para receber corridas.')">
                 💸 Pix para recebimento
             </button>
@@ -3289,8 +3506,6 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 </div>
 
 <!-- MODAL Nivel 4 -->
-
-
 <!-- MODAL PERFIL 02.1: EDITAR NOME DO MOTORISTA -->
 <div id="MOTORISTAPAG_Login_modal_perfil_02_editar_nome" class="MOTORISTAPAG_Login_modal_home">
     <div class="MOTORISTAPAG_Login_modal_home_box">
@@ -3796,9 +4011,11 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
             🌓 Trocar tema claro/escuro
         </button>
 
-		<button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Aqui depois o motorista poderá adicionar, trocar, enviar fotos, documentos e aguardar análise do veículo.')">
+		<button onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()">
 			🚘 Gerenciar veículos
 		</button>
+		
+		
 
         <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
             ⚙️ Preferências do motorista
@@ -3807,19 +4024,6 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
 		
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     <!-- PAINEL INFERIOR OPERACIONAL -->
@@ -3992,6 +4196,265 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
             </div>
         </div>
     </div>
+</div>
+<!-- TELA CONFIGURAÇÕES: GERENCIAR VEÍCULOS DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_screen_gerenciar_veiculos" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_screen_gerenciar_veiculos">
+
+    <div class="MOTORISTAPAG_Login_config_topo">
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_config_voltar"
+            onclick="MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista()"
+        >
+            ←
+        </button>
+
+        <div>
+            <h3>Gerenciar veículos</h3>
+            <p>Adicione, acompanhe ou escolha o veículo em uso.</p>
+        </div>
+    </div>
+
+    <div class="MOTORISTAPAG_Login_gerenciar_veiculos_aviso">
+        Você pode ter até <strong>3 veículos</strong> cadastrados.
+        Veículos aprovados não podem ser editados, apenas excluídos ou selecionados para uso.
+    </div>
+
+    <div id="MOTORISTAPAG_Login_lista_gerenciar_veiculos" class="MOTORISTAPAG_Login_lista_gerenciar_veiculos">
+        <div class="MOTORISTAPAG_Login_gerenciar_veiculos_vazio">
+            Carregando veículos...
+        </div>
+    </div>
+
+    <button
+        type="button"
+        id="MOTORISTAPAG_Login_btn_adicionar_veiculo"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary MOTORISTAPAG_Login_btn_gerenciar_veiculo"
+        onclick="MOTORISTAPAG_Login_func_iniciarCadastroNovoVeiculo()"
+    >
+        + ADICIONAR VEÍCULO
+    </button>
+
+    <button
+        type="button"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary MOTORISTAPAG_Login_btn_gerenciar_veiculo"
+        onclick="MOTORISTAPAG_Login_func_carregarHomeMotorista()"
+    >
+        VOLTAR PARA HOME DO MOTORISTA
+    </button>
+
+
+</div>
+<!-- TELA CONFIGURAÇÕES: ADICIONAR VEÍCULO DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_screen_adicionar_veiculo" class="PRIMEIRAPAG_Login_screen" style="padding:20px 14px 90px;">
+
+    <div class="MOTORISTAPAG_Login_config_topo">
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_config_voltar"
+            onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()"
+        >
+            ←
+        </button>
+
+        <div>
+            <h3>Adicionar veículo</h3>
+            <p>Cadastre os dados do novo veículo para análise.</p>
+        </div>
+    </div>
+
+    <div id="MOTORISTAPAG_Login_error_adicionar_veiculo" class="PRIMEIRAPAG_Login_error"></div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_novo_veiculo_placa">Placa</label>
+        <input
+            type="text"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_placa"
+            placeholder="ABC1234"
+            maxlength="7"
+            oninput="MOTORISTAPAG_Login_func_mascararPlacaVeiculo(this)"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_novo_veiculo_renavam">Renavam</label>
+        <input
+            type="text"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_renavam"
+            placeholder="Digite o Renavam"
+            maxlength="11"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_novo_veiculo_marca">Marca</label>
+        <input
+            type="text"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_marca"
+            placeholder="Ex: Fiat, Honda, Toyota"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_novo_veiculo_modelo">Modelo</label>
+        <input
+            type="text"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_modelo"
+            placeholder="Ex: Uno, Corolla, CG 160"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_input_novo_veiculo_ano">Ano</label>
+        <input
+            type="text"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_ano"
+            placeholder="Ex: 2020"
+            maxlength="4"
+        >
+    </div>
+
+    <div class="PRIMEIRAPAG_Login_form_group">
+        <label for="MOTORISTAPAG_Login_select_novo_veiculo_categoria">Categoria</label>
+        <select id="MOTORISTAPAG_Login_select_novo_veiculo_categoria">
+            <option value="">Selecione</option>
+            <option value="carro">Carro</option>
+            <option value="moto">Moto</option>
+            <option value="entrega">Entrega</option>
+        </select>
+    </div>
+
+    <button
+        type="button"
+        id="MOTORISTAPAG_Login_btn_salvar_novo_veiculo"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="MOTORISTAPAG_Login_func_salvarNovoVeiculoDados()"
+    >
+        CONTINUAR PARA DOCUMENTOS
+    </button>
+
+    <button
+        type="button"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+        onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()"
+    >
+        VOLTAR
+    </button>
+
+</div>
+<!-- TELA CONFIGURAÇÕES: DOCUMENTOS DO NOVO VEÍCULO -->
+<div id="MOTORISTAPAG_Login_screen_documentos_novo_veiculo" class="PRIMEIRAPAG_Login_screen" style="padding:20px 14px 90px;">
+
+    <div class="MOTORISTAPAG_Login_config_topo">
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_config_voltar"
+            onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()"
+        >
+            ←
+        </button>
+
+        <div>
+            <h3>Documentos do veículo</h3>
+            <p>Envie o CRLV e uma foto do veículo mostrando a placa.</p>
+        </div>
+    </div>
+
+    <div id="MOTORISTAPAG_Login_error_documentos_novo_veiculo" class="PRIMEIRAPAG_Login_error"></div>
+
+    <div id="MOTORISTAPAG_Login_card_novo_veiculo_crlv" class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Foto do CRLV</h4>
+
+        <p id="MOTORISTAPAG_Login_status_novo_veiculo_crlv">
+            Pendente de envio
+        </p>
+
+        <img
+            id="MOTORISTAPAG_Login_preview_novo_veiculo_crlv"
+            class="MOTORISTAPAG_Login_preview_doc"
+            src=""
+            alt="Prévia do CRLV"
+        >
+
+        <div
+            id="MOTORISTAPAG_Login_info_compressao_novo_veiculo_crlv"
+            class="MOTORISTAPAG_Login_info_compressao"
+        ></div>
+
+        <input
+            type="file"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_crlv"
+            accept="image/*"
+            capture="environment"
+            class="QUINTAPAG_Login_file_input"
+            onchange="MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, 'crlv')"
+        >
+
+        <button
+            type="button"
+            id="MOTORISTAPAG_Login_btn_novo_veiculo_crlv"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo('crlv')"
+        >
+            TIRAR FOTO DO CRLV
+        </button>
+    </div>
+
+    <div id="MOTORISTAPAG_Login_card_novo_veiculo_foto_placa" class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Foto do veículo com a placa</h4>
+
+        <p id="MOTORISTAPAG_Login_status_novo_veiculo_foto_placa">
+            Pendente de envio
+        </p>
+
+        <img
+            id="MOTORISTAPAG_Login_preview_novo_veiculo_foto_placa"
+            class="MOTORISTAPAG_Login_preview_doc"
+            src=""
+            alt="Prévia do veículo"
+        >
+
+        <div
+            id="MOTORISTAPAG_Login_info_compressao_novo_veiculo_foto_placa"
+            class="MOTORISTAPAG_Login_info_compressao"
+        ></div>
+
+        <input
+            type="file"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_foto_placa"
+            accept="image/*"
+            capture="environment"
+            class="QUINTAPAG_Login_file_input"
+            onchange="MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, 'fotoVeiculoPlaca')"
+        >
+
+        <button
+            type="button"
+            id="MOTORISTAPAG_Login_btn_novo_veiculo_foto_placa"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo('fotoVeiculoPlaca')"
+        >
+            TIRAR FOTO DO VEÍCULO
+        </button>
+    </div>
+
+    <button
+        type="button"
+        id="MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo()"
+        disabled
+    >
+        ENVIAR DOCUMENTOS PARA ANÁLISE
+    </button>
+
+    <button
+        type="button"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+        onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()"
+    >
+        VOLTAR PARA GERENCIAR VEÍCULOS
+    </button>
 
 </div>
 
@@ -4019,6 +4482,16 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
     const TESTEMOTORISTA_db = firebase.firestore();
 	
 	        // ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
+			
+let MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
+let MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
+
+let MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
+let MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
+			
+			
+			
+			
 function PRIMEIRAPAG_Login_func_irPara(telaId) {
     const PRIMEIRAPAG_tela = document.getElementById(telaId);
 
@@ -4211,9 +4684,8 @@ function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
             const user = cred.user;
 
             await TESTEMOTORISTA_func_prepararMotoristaAprovado(user.uid);
-
             await MOTORISTAPAG_Login_func_carregarHomeMotorista();
-
+			
         } catch (erro) {
             console.error("Erro no login teste motorista:", erro);
 
@@ -4499,7 +4971,10 @@ async function MOTORISTAPAG_Login_func_carregarDadosPessoaisMotorista() {
         const m = motoristaDoc.exists ? motoristaDoc.data() : {};
 
         const endereco = u.endereco || m.endereco || {};
-        const contato = u.contatoEmergencia || m.contatoEmergencia || {};
+        const contato = u.contatoEmergencia || {};
+		const contatosExtrasMotorista = Array.isArray(m.contatosReferenciaMotorista)
+		? m.contatosReferenciaMotorista
+		: [];
 
         const nome =
             u.nomeDocumento ||
@@ -4555,8 +5030,24 @@ if (endereco.rua) {
     }
 }
 
-const emergenciaTexto = contato.nome
-    ? `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
+const contatosTexto = [];
+
+if (contato.nome) {
+    contatosTexto.push(
+        `${contato.nome} - ${contato.whatsappFormatado || contato.whatsapp || ""}`
+    );
+}
+
+contatosExtrasMotorista.forEach((contatoExtra) => {
+    if (contatoExtra && contatoExtra.nome) {
+        contatosTexto.push(
+            `${contatoExtra.nome} - ${contatoExtra.whatsappFormatado || contatoExtra.whatsapp || ""}`
+        );
+    }
+});
+
+const emergenciaTexto = contatosTexto.length > 0
+    ? contatosTexto.join("\n")
     : "-";
 
         const campoNome = document.getElementById('MOTORISTAPAG_Login_dados_nome');
@@ -4813,6 +5304,7 @@ async function MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso() {
 
     await MOTORISTAPAG_Login_func_carregarVeiculosEmUso();
 }
+
 async function MOTORISTAPAG_Login_func_carregarVeiculosEmUso() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const lista = document.getElementById('MOTORISTAPAG_Login_lista_veiculos_uso');
@@ -4824,92 +5316,105 @@ async function MOTORISTAPAG_Login_func_carregarVeiculosEmUso() {
             Carregando veículos...
         </div>
     `;
+try {
+    const motoristaRef = PRIMEIRAPAG_Login_db
+        .collection('motoristas')
+        .doc(user.uid);
 
-    try {
-        const motoristaRef = PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid);
+    const doc = await motoristaRef.get();
+    const dados = doc.exists ? doc.data() : {};
 
-        const doc = await motoristaRef.get();
-        const dados = doc.exists ? doc.data() : {};
+    const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
+    const veiculoAtualId = dados.veiculoAtualId || "";
 
-        const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
-        const veiculoAtualId = dados.veiculoAtualId || "";
-
-        if (veiculos.length === 0) {
-            lista.innerHTML = `
-                <div class="MOTORISTAPAG_Login_veiculo_uso_vazio">
-                    Nenhum veículo cadastrado ainda.<br><br>
-                    Para adicionar um veículo, acesse Configurações &gt; Gerenciar veículos.
-                </div>
-            `;
-            return;
-        }
-
+    if (veiculos.length === 0) {
         lista.innerHTML = "";
 
-        veiculos.forEach((veiculo, index) => {
-            const id = veiculo.id || `veiculo_${index + 1}`;
-            const aprovado = veiculo.status === "aprovado";
-            const ativo = id === veiculoAtualId;
+        const vazio = document.createElement("div");
+        vazio.className = "MOTORISTAPAG_Login_veiculo_uso_vazio";
+        vazio.innerHTML =
+            "Nenhum veículo cadastrado ainda.<br><br>" +
+            "Para adicionar um veículo, acesse Configurações &gt; Gerenciar veículos.";
 
-            const modelo = veiculo.modelo || "Veículo";
-            const placa = veiculo.placa || "Placa não informada";
-            const cor = veiculo.cor || "Cor não informada";
-            const categoria = veiculo.categoria || "Categoria não informada";
-            const statusTexto = ativo
-                ? "Em uso"
-                : aprovado
-                    ? "Aprovado"
-                    : "Em análise";
-
-            const card = document.createElement("div");
-            card.className =
-                "MOTORISTAPAG_Login_veiculo_uso_card" +
-                (ativo ? " ativo" : "") +
-                (!aprovado ? " em_analise" : "");
-
-            card.innerHTML = `
-                <div class="MOTORISTAPAG_Login_veiculo_uso_topo">
-                    <strong>${modelo}</strong>
-                    <span>${statusTexto}</span>
-                </div>
-
-                <p>
-                    ${placa} • ${cor}<br>
-                    ${categoria}
-                </p>
-
-                ${
-                    aprovado
-                        ? `<button
-                            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-                            onclick="MOTORISTAPAG_Login_func_definirVeiculoEmUso('${id}')"
-                            ${ativo ? "disabled" : ""}
-                        >
-                            ${ativo ? "VEÍCULO EM USO" : "USAR ESTE VEÍCULO"}
-                        </button>`
-                        : `<button
-                            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-                            disabled
-                        >
-                            AGUARDANDO APROVAÇÃO
-                        </button>`
-                }
-            `;
-
-            lista.appendChild(card);
-        });
-
-    } catch (erro) {
-        console.error("Erro ao carregar veículos:", erro);
-
-        lista.innerHTML = `
-            <div class="MOTORISTAPAG_Login_veiculo_uso_vazio">
-                Não foi possível carregar os veículos agora.
-            </div>
-        `;
+        lista.appendChild(vazio);
+        return;
     }
+
+    lista.innerHTML = "";
+
+    veiculos.forEach(function(veiculo, index) {
+        const id = veiculo.id || ("veiculo_" + (index + 1));
+        const aprovado = veiculo.status === "aprovado";
+        const ativo = id === veiculoAtualId;
+
+        const modelo = veiculo.modelo || "Veículo";
+        const placa = veiculo.placa || "Placa não informada";
+        const cor = veiculo.cor || "Cor não informada";
+        const categoria = veiculo.categoria || "Categoria não informada";
+
+        const statusTexto = ativo
+            ? "Em uso"
+            : aprovado
+                ? "Aprovado"
+                : "Em análise";
+
+        const card = document.createElement("div");
+        card.className =
+            "MOTORISTAPAG_Login_veiculo_uso_card" +
+            (ativo ? " ativo" : "") +
+            (!aprovado ? " em_analise" : "");
+
+        const topo = document.createElement("div");
+        topo.className = "MOTORISTAPAG_Login_veiculo_uso_topo";
+
+        const titulo = document.createElement("strong");
+        titulo.textContent = modelo;
+
+        const status = document.createElement("span");
+        status.textContent = statusTexto;
+
+        topo.appendChild(titulo);
+        topo.appendChild(status);
+
+        const info = document.createElement("p");
+        info.innerHTML =
+            placa + " • " + cor + "<br>" +
+            categoria;
+
+        const botao = document.createElement("button");
+
+        if (aprovado) {
+            botao.className = "PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary";
+            botao.textContent = ativo ? "VEÍCULO EM USO" : "USAR ESTE VEÍCULO";
+            botao.disabled = ativo;
+
+            botao.addEventListener("click", function() {
+                MOTORISTAPAG_Login_func_definirVeiculoEmUso(id);
+            });
+        } else {
+            botao.className = "PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary";
+            botao.textContent = "AGUARDANDO APROVAÇÃO";
+            botao.disabled = true;
+        }
+
+        card.appendChild(topo);
+        card.appendChild(info);
+        card.appendChild(botao);
+
+        lista.appendChild(card);
+    });
+
+} catch (erro) {
+    console.error("Erro ao carregar veículos:", erro);
+
+    lista.innerHTML = "";
+
+    const vazioErro = document.createElement("div");
+    vazioErro.className = "MOTORISTAPAG_Login_veiculo_uso_vazio";
+    vazioErro.textContent = "Não foi possível carregar os veículos agora.";
+
+    lista.appendChild(vazioErro);
+}
 }
 
 async function MOTORISTAPAG_Login_func_definirVeiculoEmUso(veiculoId) {
@@ -5922,6 +6427,698 @@ async function MOTORISTAPAG_Login_func_salvarContatosReferenciaMotorista() {
     }
 }
 
+/* CONFIGURAÇÕES MOTORISTA - GERENCIAR VEÍCULOS */
+
+function MOTORISTAPAG_Login_func_abrirGerenciarVeiculos() {
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_gerenciar_veiculos');
+    MOTORISTAPAG_Login_func_carregarGerenciarVeiculos();
+}
+
+async function MOTORISTAPAG_Login_func_carregarGerenciarVeiculos() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const lista = document.getElementById('MOTORISTAPAG_Login_lista_gerenciar_veiculos');
+    const btnAdicionar = document.getElementById('MOTORISTAPAG_Login_btn_adicionar_veiculo');
+
+    if (!user || !lista) return;
+
+    lista.innerHTML = "";
+
+    const carregando = document.createElement("div");
+    carregando.className = "MOTORISTAPAG_Login_gerenciar_veiculos_vazio";
+    carregando.textContent = "Carregando veículos...";
+    lista.appendChild(carregando);
+
+    try {
+        const docMotorista = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const dados = docMotorista.exists ? docMotorista.data() : {};
+
+        let veiculos = [];
+
+        if (Array.isArray(dados.veiculos) && dados.veiculos.length > 0) {
+            veiculos = dados.veiculos;
+        } else if (dados.veiculo && dados.veiculo.placa) {
+            veiculos = [
+                {
+                    id: "veiculo_1",
+                    placa: dados.veiculo.placa || "",
+                    renavam: dados.veiculo.renavam || "",
+                    marca: dados.veiculo.marca || "",
+                    modelo: dados.veiculo.modelo || "",
+                    ano: dados.veiculo.ano || "",
+                    categoriaPrincipal: dados.veiculo.categoriaPrincipal || "",
+                    status: dados.documentosVeiculoStatus || "pendente_analise",
+                    documentos: dados.documentosVeiculo || {},
+                    criadoEm: dados.veiculo.criadoEm || null,
+                    atualizadoEm: dados.veiculo.atualizadoEm || null
+                }
+            ];
+
+            await PRIMEIRAPAG_Login_db
+                .collection('motoristas')
+                .doc(user.uid)
+                .set({
+                    veiculos: veiculos,
+                    veiculoAtualId: dados.veiculoAtualId || "veiculo_1",
+                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+        }
+
+        lista.innerHTML = "";
+
+        if (veiculos.length === 0) {
+            const vazio = document.createElement("div");
+            vazio.className = "MOTORISTAPAG_Login_gerenciar_veiculos_vazio";
+            vazio.textContent = "Nenhum veículo cadastrado ainda.";
+            lista.appendChild(vazio);
+        }
+
+        veiculos.forEach(function(veiculo, index) {
+            MOTORISTAPAG_Login_func_criarCardGerenciarVeiculo(
+                lista,
+                veiculo,
+                index,
+                dados.veiculoAtualId || "veiculo_1"
+            );
+        });
+
+        if (btnAdicionar) {
+            btnAdicionar.style.display = veiculos.length >= 3 ? "none" : "block";
+            btnAdicionar.disabled = veiculos.length >= 3;
+        }
+
+    } catch (erro) {
+        console.error("Erro ao carregar gerenciamento de veículos:", erro);
+
+        lista.innerHTML = "";
+
+        const erroBox = document.createElement("div");
+        erroBox.className = "MOTORISTAPAG_Login_gerenciar_veiculos_vazio";
+        erroBox.textContent = "Não foi possível carregar os veículos agora.";
+        lista.appendChild(erroBox);
+    }
+}
+function MOTORISTAPAG_Login_func_criarCardGerenciarVeiculo(lista, veiculo, index, veiculoAtualId) {
+    const id = veiculo.id || ("veiculo_" + (index + 1));
+    const status = veiculo.status || "pendente_analise";
+	const aprovado = status === "aprovado";
+	const emUso = aprovado && id === veiculoAtualId;
+
+    const modelo = veiculo.modelo || "Veículo";
+    const marca = veiculo.marca || "";
+    const placa = veiculo.placa || "Placa não informada";
+    const ano = veiculo.ano || "Ano não informado";
+    const categoria = veiculo.categoriaPrincipal || veiculo.categoria || "Categoria não informada";
+
+    const documentos = veiculo.documentos || {};
+    const crlv = documentos.crlv || {};
+    const fotoVeiculoPlaca = documentos.fotoVeiculoPlaca || {};
+
+    const card = document.createElement("div");
+    card.className = "MOTORISTAPAG_Login_gerenciar_veiculos_card";
+
+    if (emUso) {
+        card.className += " em_uso";
+    }
+
+    if (status === "em_revisao") {
+        card.className += " em_revisao";
+    }
+
+    if (status === "recusado") {
+        card.className += " recusado";
+    }
+
+    const topo = document.createElement("div");
+    topo.className = "MOTORISTAPAG_Login_gerenciar_veiculos_topo";
+
+    const titulo = document.createElement("strong");
+    titulo.textContent = marca
+        ? marca + " " + modelo
+        : modelo;
+
+    const statusBadge = document.createElement("span");
+    statusBadge.className = "MOTORISTAPAG_Login_gerenciar_veiculos_status";
+    statusBadge.textContent = emUso
+        ? "EM USO"
+        : MOTORISTAPAG_Login_func_textoStatusVeiculo(status);
+
+    topo.appendChild(titulo);
+    topo.appendChild(statusBadge);
+
+    const info = document.createElement("div");
+    info.className = "MOTORISTAPAG_Login_gerenciar_veiculos_info";
+    info.innerHTML =
+        "Placa: " + placa + "<br>" +
+        "Ano: " + ano + "<br>" +
+        "Categoria: " + categoria;
+
+    const docs = document.createElement("div");
+    docs.className = "MOTORISTAPAG_Login_gerenciar_veiculos_docs";
+
+    docs.appendChild(
+        MOTORISTAPAG_Login_func_criarLinhaDocVeiculo(
+            "CRLV",
+            crlv.status || "pendente_envio"
+        )
+    );
+
+    docs.appendChild(
+        MOTORISTAPAG_Login_func_criarLinhaDocVeiculo(
+            "Foto do veículo",
+            fotoVeiculoPlaca.status || "pendente_envio"
+        )
+    );
+
+    const acoes = document.createElement("div");
+    acoes.className = "MOTORISTAPAG_Login_gerenciar_veiculos_acoes";
+
+    const btnUsar = document.createElement("button");
+    btnUsar.className = "PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary";
+
+    if (status === "aprovado") {
+        btnUsar.textContent = emUso ? "VEÍCULO EM USO" : "USAR ESTE VEÍCULO";
+        btnUsar.disabled = emUso;
+
+        btnUsar.addEventListener("click", function() {
+            MOTORISTAPAG_Login_func_definirVeiculoEmUso(id);
+        });
+
+        acoes.appendChild(btnUsar);
+    } else {
+        btnUsar.textContent = MOTORISTAPAG_Login_func_textoBotaoStatusVeiculo(status);
+        btnUsar.disabled = true;
+        acoes.appendChild(btnUsar);
+    }
+
+    if (status === "em_revisao" || status === "recusado") {
+        const btnCorrigir = document.createElement("button");
+        btnCorrigir.className = "PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary";
+        btnCorrigir.textContent = "CORRIGIR VEÍCULO";
+        btnCorrigir.addEventListener("click", function() {
+            alert("Próximo passo: abrir tela de correção deste veículo.");
+        });
+
+        acoes.appendChild(btnCorrigir);
+    }
+
+    const btnExcluir = document.createElement("button");
+    btnExcluir.className = "PRIMEIRAPAG_Login_btn MOTORISTAPAG_Login_btn_excluir_veiculo";
+    btnExcluir.textContent = "EXCLUIR VEÍCULO";
+    btnExcluir.addEventListener("click", function() {
+        MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(id);
+    });
+
+    acoes.appendChild(btnExcluir);
+
+    card.appendChild(topo);
+    card.appendChild(info);
+    card.appendChild(docs);
+    card.appendChild(acoes);
+
+    lista.appendChild(card);
+}
+function MOTORISTAPAG_Login_func_textoStatusVeiculo(status) {
+    if (status === "aprovado") return "APROVADO";
+    if (status === "pendente_analise") return "EM ANÁLISE";
+    if (status === "em_revisao") return "EM REVISÃO";
+    if (status === "recusado") return "RECUSADO";
+    if (status === "pendente_envio") return "PENDENTE";
+    return "EM ANÁLISE";
+}
+
+function MOTORISTAPAG_Login_func_textoBotaoStatusVeiculo(status) {
+    if (status === "pendente_analise") return "AGUARDANDO APROVAÇÃO";
+    if (status === "em_revisao") return "PRECISA DE CORREÇÃO";
+    if (status === "recusado") return "VEÍCULO RECUSADO";
+    if (status === "pendente_envio") return "PENDENTE DE ENVIO";
+    return "INDISPONÍVEL";
+}
+
+function MOTORISTAPAG_Login_func_textoStatusDocumentoVeiculo(status) {
+    if (status === "aprovado") return "Aprovado";
+    if (status === "pendente_analise") return "Em análise";
+    if (status === "reprovado") return "Reprovado";
+    if (status === "pendente_envio") return "Pendente";
+    return "Pendente";
+}
+
+function MOTORISTAPAG_Login_func_criarLinhaDocVeiculo(nome, status) {
+    const linha = document.createElement("div");
+    linha.className = "MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha";
+
+    const label = document.createElement("span");
+    label.textContent = nome;
+
+    const valor = document.createElement("span");
+    valor.textContent = MOTORISTAPAG_Login_func_textoStatusDocumentoVeiculo(status);
+
+    linha.appendChild(label);
+    linha.appendChild(valor);
+
+    return linha;
+}
+function MOTORISTAPAG_Login_func_iniciarCadastroNovoVeiculo() {
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_adicionar_veiculo');
+
+    const erro = document.getElementById('MOTORISTAPAG_Login_error_adicionar_veiculo');
+
+    if (erro) {
+        erro.innerText = "";
+        erro.style.display = "none";
+    }
+
+    const campos = [
+        'MOTORISTAPAG_Login_input_novo_veiculo_placa',
+        'MOTORISTAPAG_Login_input_novo_veiculo_renavam',
+        'MOTORISTAPAG_Login_input_novo_veiculo_marca',
+        'MOTORISTAPAG_Login_input_novo_veiculo_modelo',
+        'MOTORISTAPAG_Login_input_novo_veiculo_ano',
+        'MOTORISTAPAG_Login_select_novo_veiculo_categoria'
+    ];
+
+    campos.forEach(function(id) {
+        const campo = document.getElementById(id);
+
+        if (campo) {
+            campo.value = "";
+            campo.classList.remove('error');
+        }
+    });
+}
+async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_salvar_novo_veiculo');
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_adicionar_veiculo');
+
+    const inputPlaca = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_placa');
+    const inputRenavam = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_renavam');
+    const inputMarca = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_marca');
+    const inputModelo = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_modelo');
+    const inputAno = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_ano');
+    const selectCategoria = document.getElementById('MOTORISTAPAG_Login_select_novo_veiculo_categoria');
+
+    const campos = [inputPlaca, inputRenavam, inputMarca, inputModelo, inputAno, selectCategoria];
+
+    campos.forEach(function(campo) {
+        if (campo) campo.classList.remove('error');
+    });
+
+    if (erroBox) {
+        erroBox.innerText = "";
+        erroBox.style.display = "none";
+    }
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    const placa = inputPlaca ? inputPlaca.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
+    const renavam = inputRenavam ? inputRenavam.value.trim().replace(/\D/g, '') : '';
+    const marca = inputMarca ? inputMarca.value.trim() : '';
+    const modelo = inputModelo ? inputModelo.value.trim() : '';
+    const ano = inputAno ? inputAno.value.trim().replace(/\D/g, '') : '';
+    const categoria = selectCategoria ? selectCategoria.value : '';
+
+    function mostrarErroVeiculo(mensagem, campo) {
+        if (campo) campo.classList.add('error');
+
+        if (erroBox) {
+            erroBox.innerText = mensagem;
+            erroBox.style.display = "block";
+            erroBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+            alert(mensagem);
+        }
+    }
+
+    
+	
+	// trocar por: if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
+	if (!placa || placa.length !== 7) {
+        return mostrarErroVeiculo('Digite uma placa válida com 7 caracteres.', inputPlaca);
+    }
+	//logo abaixo
+	//if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
+   // return mostrarErroVeiculo(
+   //     'Digite uma placa válida. Exemplo: ABC1234 ou ABC1D23.',
+    //    inputPlaca
+  //  );
+//}
+	
+
+    if (!renavam || renavam.length < 9 || renavam.length > 11) {
+        return mostrarErroVeiculo('Digite um Renavam válido.', inputRenavam);
+    }
+
+    if (!marca) {
+        return mostrarErroVeiculo('Digite a marca do veículo.', inputMarca);
+    }
+
+    if (!modelo) {
+        return mostrarErroVeiculo('Digite o modelo do veículo.', inputModelo);
+    }
+
+    const anoAtual = new Date().getFullYear();
+
+    if (!ano || ano.length !== 4 || Number(ano) < 1990 || Number(ano) > anoAtual + 1) {
+        return mostrarErroVeiculo('Digite um ano válido para o veículo.', inputAno);
+    }
+
+    if (!categoria) {
+        return mostrarErroVeiculo('Selecione a categoria do veículo.', selectCategoria);
+    }
+
+    const textoOriginal = btn ? btn.innerText : 'CONTINUAR PARA DOCUMENTOS';
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'SALVANDO...';
+        }
+
+        const motoristaRef = PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid);
+
+        const docMotorista = await motoristaRef.get();
+        const dados = docMotorista.exists ? docMotorista.data() : {};
+
+        let veiculos = [];
+
+        if (Array.isArray(dados.veiculos) && dados.veiculos.length > 0) {
+            veiculos = dados.veiculos;
+        } else if (dados.veiculo && dados.veiculo.placa) {
+            veiculos = [
+                {
+                    id: "veiculo_1",
+                    placa: dados.veiculo.placa || "",
+                    renavam: dados.veiculo.renavam || "",
+                    marca: dados.veiculo.marca || "",
+                    modelo: dados.veiculo.modelo || "",
+                    ano: dados.veiculo.ano || "",
+                    categoriaPrincipal: dados.veiculo.categoriaPrincipal || "",
+                    status: dados.documentosVeiculoStatus || "pendente_analise",
+                    documentos: dados.documentosVeiculo || {},
+                    criadoEm: new Date(),
+                    atualizadoEm: new Date()
+                }
+            ];
+        }
+
+        if (veiculos.length >= 3) {
+            return mostrarErroVeiculo('Você já possui 3 veículos cadastrados. Exclua um veículo antes de adicionar outro.', null);
+        }
+
+        const placaJaExiste = veiculos.some(function(veiculo) {
+            return String(veiculo.placa || '').toUpperCase() === placa;
+        });
+
+        if (placaJaExiste) {
+            return mostrarErroVeiculo('Esta placa já está cadastrada na sua conta.', inputPlaca);
+        }
+
+        let proximoNumero = 1;
+
+        veiculos.forEach(function(veiculo) {
+            const id = String(veiculo.id || "");
+            const numero = Number(id.replace("veiculo_", ""));
+
+            if (!isNaN(numero) && numero >= proximoNumero) {
+                proximoNumero = numero + 1;
+            }
+        });
+
+        const novoVeiculoId = "veiculo_" + proximoNumero;
+
+        const novoVeiculo = {
+            id: novoVeiculoId,
+            placa: placa,
+            renavam: renavam,
+            marca: marca,
+            modelo: modelo,
+            ano: ano,
+            categoriaPrincipal: categoria,
+
+            status: "pendente_envio",
+            dadosConcluidos: true,
+
+            documentos: {
+                crlv: {
+                    enviado: false,
+                    status: "pendente_envio",
+                    url: "",
+                    caminho: "",
+                    motivoReprovacao: ""
+                },
+                fotoVeiculoPlaca: {
+                    enviado: false,
+                    status: "pendente_envio",
+                    url: "",
+                    caminho: "",
+                    motivoReprovacao: ""
+                }
+            },
+
+            criadoEm: new Date(),
+            atualizadoEm: new Date()
+        };
+
+        veiculos.push(novoVeiculo);
+
+        await motoristaRef.set({
+            veiculos: veiculos,
+            veiculoCadastroAtualId: novoVeiculoId,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        window.MOTORISTAPAG_Login_veiculoCadastroAtualId = novoVeiculoId;
+
+        MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
+		MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
+		MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
+		MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
+
+		PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_documentos_novo_veiculo');
+		MOTORISTAPAG_Login_func_limparTelaDocumentosNovoVeiculo();
+
+    } catch (erro) {
+        console.error('Erro ao salvar novo veículo:', erro);
+        mostrarErroVeiculo('Não foi possível salvar o veículo agora. Tente novamente.', null);
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+        }
+    }
+}
+
+function MOTORISTAPAG_Login_func_limparTelaDocumentosNovoVeiculo() {
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
+
+    if (erroBox) {
+        erroBox.innerText = "";
+        erroBox.style.display = "none";
+    }
+
+    const idsPreview = [
+        'MOTORISTAPAG_Login_preview_novo_veiculo_crlv',
+        'MOTORISTAPAG_Login_preview_novo_veiculo_foto_placa'
+    ];
+
+    idsPreview.forEach(function(id) {
+        const img = document.getElementById(id);
+
+        if (img) {
+            img.removeAttribute('src');
+            img.style.display = 'none';
+        }
+    });
+
+    const statusCrlv = document.getElementById('MOTORISTAPAG_Login_status_novo_veiculo_crlv');
+    const statusFoto = document.getElementById('MOTORISTAPAG_Login_status_novo_veiculo_foto_placa');
+
+    if (statusCrlv) statusCrlv.innerText = 'Pendente de envio';
+    if (statusFoto) statusFoto.innerText = 'Pendente de envio';
+
+    const infoCrlv = document.getElementById('MOTORISTAPAG_Login_info_compressao_novo_veiculo_crlv');
+    const infoFoto = document.getElementById('MOTORISTAPAG_Login_info_compressao_novo_veiculo_foto_placa');
+
+    if (infoCrlv) {
+        infoCrlv.innerText = '';
+        infoCrlv.style.display = 'none';
+    }
+
+    if (infoFoto) {
+        infoFoto.innerText = '';
+        infoFoto.style.display = 'none';
+    }
+
+    const btnCrlv = document.getElementById('MOTORISTAPAG_Login_btn_novo_veiculo_crlv');
+    const btnFoto = document.getElementById('MOTORISTAPAG_Login_btn_novo_veiculo_foto_placa');
+    const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo');
+
+    if (btnCrlv) btnCrlv.innerText = 'TIRAR FOTO DO CRLV';
+    if (btnFoto) btnFoto.innerText = 'TIRAR FOTO DO VEÍCULO';
+    if (btnEnviar) btnEnviar.disabled = true;
+}
+function MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo(tipoDocumento) {
+    let input = null;
+
+    if (tipoDocumento === 'crlv') {
+        input = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_crlv');
+    }
+
+    if (tipoDocumento === 'fotoVeiculoPlaca') {
+        input = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_foto_placa');
+    }
+
+    if (!input) {
+        console.error('Input do documento do novo veículo não encontrado:', tipoDocumento);
+
+        const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
+
+        if (erroBox) {
+            erroBox.innerText = 'Erro interno: campo de foto não encontrado.';
+            erroBox.style.display = 'block';
+        }
+
+        return;
+    }
+
+    input.click();
+}
+async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoDocumento) {
+    const arquivoOriginal = event.target.files[0];
+
+    if (!arquivoOriginal) return;
+
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
+
+    if (!arquivoOriginal.type.startsWith('image/')) {
+        event.target.value = '';
+
+        if (erroBox) {
+            erroBox.innerText = 'Envie apenas arquivos de imagem.';
+            erroBox.style.display = 'block';
+        }
+
+        return;
+    }
+
+    let preview = null;
+    let botaoEscolher = null;
+    let status = null;
+    let infoCompressao = null;
+
+    if (tipoDocumento === 'crlv') {
+        preview = document.getElementById('MOTORISTAPAG_Login_preview_novo_veiculo_crlv');
+        botaoEscolher = document.getElementById('MOTORISTAPAG_Login_btn_novo_veiculo_crlv');
+        status = document.getElementById('MOTORISTAPAG_Login_status_novo_veiculo_crlv');
+        infoCompressao = document.getElementById('MOTORISTAPAG_Login_info_compressao_novo_veiculo_crlv');
+    }
+
+    if (tipoDocumento === 'fotoVeiculoPlaca') {
+        preview = document.getElementById('MOTORISTAPAG_Login_preview_novo_veiculo_foto_placa');
+        botaoEscolher = document.getElementById('MOTORISTAPAG_Login_btn_novo_veiculo_foto_placa');
+        status = document.getElementById('MOTORISTAPAG_Login_status_novo_veiculo_foto_placa');
+        infoCompressao = document.getElementById('MOTORISTAPAG_Login_info_compressao_novo_veiculo_foto_placa');
+    }
+
+    try {
+        if (status) {
+            status.innerText = 'Preparando imagem...';
+        }
+
+        const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemMotorista(
+            arquivoOriginal,
+            0.7,
+            900,
+            900
+        );
+
+        const tamanhoOriginal = arquivoOriginal.size;
+        const tamanhoFinal = arquivoCompactado.size;
+        const economia = tamanhoOriginal - tamanhoFinal;
+
+        const dadosPendente = {
+            arquivoOriginal: arquivoOriginal,
+            arquivoCompactado: arquivoCompactado,
+            tamanhoOriginal: tamanhoOriginal,
+            tamanhoFinal: tamanhoFinal,
+            economia: economia
+        };
+
+        if (tipoDocumento === 'crlv') {
+            MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = dadosPendente;
+            MOTORISTAPAG_Login_novoVeiculoCrlvPronto = true;
+        }
+
+        if (tipoDocumento === 'fotoVeiculoPlaca') {
+            MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = dadosPendente;
+            MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = true;
+        }
+
+        const urlPreview = URL.createObjectURL(arquivoCompactado);
+
+        if (preview) {
+            preview.src = urlPreview;
+            preview.style.display = 'block';
+        }
+
+        if (botaoEscolher) {
+            botaoEscolher.innerText = tipoDocumento === 'crlv'
+                ? 'TROCAR FOTO DO CRLV'
+                : 'TROCAR FOTO DO VEÍCULO';
+        }
+
+        if (status) {
+            status.innerText = 'Imagem pronta para envio.';
+        }
+
+        if (infoCompressao) {
+            infoCompressao.style.display = 'block';
+            infoCompressao.innerText =
+                'Compressão: ' +
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(tamanhoOriginal) +
+                ' → ' +
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(tamanhoFinal) +
+                ' | economizou ' +
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(economia);
+        }
+
+        if (erroBox) {
+            erroBox.innerText = '';
+            erroBox.style.display = 'none';
+        }
+
+        MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo();
+
+    } catch (erro) {
+        console.error('Erro ao preparar documento do novo veículo:', erro);
+
+        if (erroBox) {
+            erroBox.innerText = 'Não foi possível preparar a imagem. Tente tirar a foto novamente.';
+            erroBox.style.display = 'block';
+        }
+    }
+
+    event.target.value = '';
+}
+function MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
+    const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo');
+
+    if (!btnEnviar) return;
+
+    btnEnviar.disabled = !(
+        MOTORISTAPAG_Login_novoVeiculoCrlvPronto &&
+        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta
+    );
+}
 
 
 
@@ -5933,7 +7130,42 @@ async function MOTORISTAPAG_Login_func_salvarContatosReferenciaMotorista() {
 
 
 
-	</script>
+
+
+
+
+
+
+function MOTORISTAPAG_Login_func_recarregarTelaAtualTeste() {
+    const telaAtiva = document.querySelector('.PRIMEIRAPAG_Login_screen.active');
+
+    if (!telaAtiva || !telaAtiva.id) {
+        return;
+    }
+
+    if (telaAtiva.id === 'MOTORISTAPAG_Login_screen_gerenciar_veiculos') {
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_gerenciar_veiculos');
+
+        if (typeof MOTORISTAPAG_Login_func_carregarGerenciarVeiculos === 'function') {
+            MOTORISTAPAG_Login_func_carregarGerenciarVeiculos();
+        }
+
+        return;
+    }
+
+    if (telaAtiva.id === 'MOTORISTAPAG_Login_screen_home') {
+        if (typeof MOTORISTAPAG_Login_func_carregarHomeMotorista === 'function') {
+            MOTORISTAPAG_Login_func_carregarHomeMotorista();
+        }
+
+        return;
+    }
+
+    alert('Essa tela ainda não tem recarregamento de teste configurado.');
+}
+
+</script>
+
 <button
     style="
         position: fixed;
@@ -5954,6 +7186,28 @@ async function MOTORISTAPAG_Login_func_salvarContatosReferenciaMotorista() {
     onclick="location.reload()"
 >
     ATUALIZAR
+</button>
+
+<button
+    style="
+        position: fixed;
+        right: 14px;
+        bottom: 180px;
+        z-index: 9999;
+        width: auto;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(197, 169, 141, 0.45);
+        background: rgba(30, 27, 25, 0.85);
+        color: #c5a98d;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        opacity: 0.75;
+    "
+    onclick="MOTORISTAPAG_Login_func_recarregarTelaAtualTeste()"
+>
+    RECARREGAR TELA
 </button>
 </body>
 </html>
