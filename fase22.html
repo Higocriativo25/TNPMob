@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
    <style>
 	
 /* ==================================================
@@ -4479,9 +4479,15 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     firebase.initializeApp(TESTEMOTORISTA_config_firebase);
 
     const TESTEMOTORISTA_auth = firebase.auth();
-    const TESTEMOTORISTA_db = firebase.firestore();
+const TESTEMOTORISTA_db = firebase.firestore();
+const TESTEMOTORISTA_storage = firebase.storage();
+
+const PRIMEIRAPAG_Login_auth = TESTEMOTORISTA_auth;
+const PRIMEIRAPAG_Login_db = TESTEMOTORISTA_db;
+const PRIMEIRAPAG_Login_storage = TESTEMOTORISTA_storage;
 	
-	        // ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
+	
+// ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
 			
 let MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
 let MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
@@ -7198,8 +7204,163 @@ function MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
     btnEnviar.disabled = !podeEnviar;
 }
 
-function MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo() {
-    alert("Próximo passo: enviar as fotos para o Storage e atualizar o veículo no Firebase.");
+async function MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo');
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    if (!MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente) {
+        return MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(
+            'Envie a foto do CRLV.'
+        );
+    }
+
+    if (!MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente) {
+        return MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(
+            'Envie a foto do veículo mostrando a placa.'
+        );
+    }
+
+    const textoOriginal = btn ? btn.innerText : 'ENVIAR DOCUMENTOS PARA ANÁLISE';
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'ENVIANDO...';
+        }
+
+        if (erroBox) {
+            erroBox.innerText = '';
+            erroBox.style.display = 'none';
+        }
+
+        const motoristaRef = PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid);
+
+        const docMotorista = await motoristaRef.get();
+        const dados = docMotorista.exists ? docMotorista.data() : {};
+
+        const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
+        const veiculoId = dados.veiculoCadastroAtualId || window.MOTORISTAPAG_Login_veiculoCadastroAtualId;
+
+        if (!veiculoId) {
+            return MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(
+                'Não foi possível identificar o veículo cadastrado.'
+            );
+        }
+
+        const indexVeiculo = veiculos.findIndex(function(veiculo) {
+            return veiculo && veiculo.id === veiculoId;
+        });
+
+        if (indexVeiculo === -1) {
+            return MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(
+                'Veículo não encontrado para salvar os documentos.'
+            );
+        }
+
+        const dadosCrlv = await MOTORISTAPAG_Login_func_uploadDocumentoNovoVeiculoComprimido(
+            user.uid,
+            veiculoId,
+            'crlv',
+            MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente
+        );
+
+        const dadosFotoPlaca = await MOTORISTAPAG_Login_func_uploadDocumentoNovoVeiculoComprimido(
+            user.uid,
+            veiculoId,
+            'fotoVeiculoPlaca',
+            MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente
+        );
+
+        veiculos[indexVeiculo].status = 'pendente_analise';
+        veiculos[indexVeiculo].documentosEnviados = true;
+        veiculos[indexVeiculo].atualizadoEm = new Date();
+
+        veiculos[indexVeiculo].documentos = {
+            crlv: dadosCrlv,
+            fotoVeiculoPlaca: dadosFotoPlaca
+        };
+
+        await motoristaRef.set({
+            veiculos: veiculos,
+            veiculoCadastroAtualId: '',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
+        MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
+        MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
+        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
+        window.MOTORISTAPAG_Login_veiculoCadastroAtualId = '';
+
+        alert('Documentos enviados com sucesso. O veículo ficará em análise.');
+
+        MOTORISTAPAG_Login_func_abrirGerenciarVeiculos();
+
+    } catch (erro) {
+        console.error('Erro ao enviar documentos do novo veículo:', erro);
+
+        MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(
+            'Não foi possível enviar os documentos. Verifique sua conexão e tente novamente.'
+        );
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+        }
+    }
+}
+
+function MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(mensagem) {
+    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
+
+    if (erroBox) {
+        erroBox.innerText = mensagem;
+        erroBox.style.display = 'block';
+        erroBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+
+    alert(mensagem);
+}
+
+async function MOTORISTAPAG_Login_func_uploadDocumentoNovoVeiculoComprimido(uid, veiculoId, tipoDocumento, dadosPendente) {
+    const nomeArquivo = tipoDocumento + '_' + Date.now() + '.jpg';
+
+    const caminho =
+        'motoristas/' +
+        uid +
+        '/veiculos/' +
+        veiculoId +
+        '/' +
+        nomeArquivo;
+
+    const storageRef = PRIMEIRAPAG_Login_storage.ref().child(caminho);
+
+    await storageRef.put(dadosPendente.arquivoCompactado, {
+        contentType: 'image/jpeg'
+    });
+
+    const url = await storageRef.getDownloadURL();
+
+    return {
+        enviado: true,
+        url: url,
+        caminho: caminho,
+        status: 'pendente_analise',
+        motivoReprovacao: '',
+        tamanhoOriginal: dadosPendente.tamanhoOriginal,
+        tamanhoFinal: dadosPendente.tamanhoFinal,
+        economiaBytes: dadosPendente.economia,
+        atualizadoEm: new Date()
+    };
 }
 
 
