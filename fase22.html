@@ -7108,7 +7108,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
 
     try {
         if (status) {
-            status.innerText = 'Preparando imagem...';
+            status.innerText = 'Imagem pronta para envio...';
         }
 
         const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemNovoVeiculo(
@@ -7154,7 +7154,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
         }
 
         if (status) {
-            status.innerText = 'Imagem pronta para envio.';
+            status.innerText = 'Imagem pronta para envio...';
         }
 
         if (infoCompressao) {
@@ -7186,15 +7186,30 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
 
     event.target.value = '';
 }
-function MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
+ffunction MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
     const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo');
 
-    if (!btnEnviar) return;
+    console.log("🔍 Verificando documentos novo veículo:");
+    console.log("CRLV pronto:", MOTORISTAPAG_Login_novoVeiculoCrlvPronto);
+    console.log("Foto placa pronta:", MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta);
+    console.log("Botão encontrado:", !!btnEnviar);
 
-    btnEnviar.disabled = !(
-        MOTORISTAPAG_Login_novoVeiculoCrlvPronto &&
-        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta
-    );
+    if (!btnEnviar) {
+        console.warn("Botão enviar documentos novo veículo não encontrado.");
+        return;
+    }
+
+    if (
+        MOTORISTAPAG_Login_novoVeiculoCrlvPronto === true &&
+        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta === true
+    ) {
+        btnEnviar.disabled = false;
+        btnEnviar.removeAttribute("disabled");
+        console.log("✅ Botão ENVIAR DOCUMENTOS liberado.");
+    } else {
+        btnEnviar.disabled = true;
+        console.log("⏳ Ainda falta documento para liberar.");
+    }
 }
 
 
