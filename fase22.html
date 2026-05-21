@@ -7108,7 +7108,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
 
     try {
         if (status) {
-            status.innerText = 'Imagem pronta para envio...';
+            status.innerText = 'Preparando imagem...';
         }
 
         const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemNovoVeiculo(
@@ -7198,7 +7198,9 @@ function MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
     btnEnviar.disabled = !podeEnviar;
 }
 
-
+function MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo() {
+    alert("Próximo passo: enviar as fotos para o Storage e atualizar o veículo no Firebase.");
+}
 
 
 
