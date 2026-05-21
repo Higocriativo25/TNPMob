@@ -6966,6 +6966,7 @@ function MOTORISTAPAG_Login_func_limparTelaDocumentosNovoVeiculo() {
     if (btnFoto) btnFoto.innerText = 'TIRAR FOTO DO VEÍCULO';
     if (btnEnviar) btnEnviar.disabled = true;
 }
+
 function MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo(tipoDocumento) {
     let input = null;
 
@@ -6992,6 +6993,82 @@ function MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo(tipoDocumento) 
 
     input.click();
 }
+
+function MOTORISTAPAG_Login_func_formatarTamanhoArquivoNovoVeiculo(bytes) {
+    if (!bytes || bytes <= 0) {
+        return "0 KB";
+    }
+
+    if (bytes < 1024 * 1024) {
+        return Math.round(bytes / 1024) + " KB";
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+function MOTORISTAPAG_Login_func_comprimirImagemNovoVeiculo(arquivo, qualidade, larguraMaxima, alturaMaxima) {
+    return new Promise(function(resolve, reject) {
+        const leitor = new FileReader();
+
+        leitor.onload = function(evento) {
+            const imagem = new Image();
+
+            imagem.onload = function() {
+                let largura = imagem.width;
+                let altura = imagem.height;
+
+                if (largura > larguraMaxima || altura > alturaMaxima) {
+                    const proporcao = Math.min(
+                        larguraMaxima / largura,
+                        alturaMaxima / altura
+                    );
+
+                    largura = Math.round(largura * proporcao);
+                    altura = Math.round(altura * proporcao);
+                }
+
+                const canvas = document.createElement("canvas");
+                canvas.width = largura;
+                canvas.height = altura;
+
+                const contexto = canvas.getContext("2d");
+                contexto.drawImage(imagem, 0, 0, largura, altura);
+
+                canvas.toBlob(
+                    function(blob) {
+                        if (!blob) {
+                            reject(new Error("Não foi possível comprimir a imagem."));
+                            return;
+                        }
+
+                        const arquivoCompactado = new File(
+                            [blob],
+                            "novo_veiculo_" + Date.now() + ".jpg",
+                            { type: "image/jpeg" }
+                        );
+
+                        resolve(arquivoCompactado);
+                    },
+                    "image/jpeg",
+                    qualidade || 0.7
+                );
+            };
+
+            imagem.onerror = function() {
+                reject(new Error("Não foi possível carregar a imagem."));
+            };
+
+            imagem.src = evento.target.result;
+        };
+
+        leitor.onerror = function() {
+            reject(new Error("Não foi possível ler o arquivo."));
+        };
+
+        leitor.readAsDataURL(arquivo);
+    });
+}
+
 async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoDocumento) {
     const arquivoOriginal = event.target.files[0];
 
@@ -7034,8 +7111,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
             status.innerText = 'Preparando imagem...';
         }
 
-        const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemMotorista(
-            arquivoOriginal,
+        const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemNovoVeiculo(
             0.7,
             900,
             900
@@ -7084,11 +7160,11 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
             infoCompressao.style.display = 'block';
             infoCompressao.innerText =
                 'Compressão: ' +
-                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(tamanhoOriginal) +
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivoNovoVeiculo(tamanhoOriginal) +
                 ' → ' +
-                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(tamanhoFinal) +
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivoNovoVeiculo(tamanhoFinal) +
                 ' | economizou ' +
-                MOTORISTAPAG_Login_func_formatarTamanhoArquivo(economia);
+                MOTORISTAPAG_Login_func_formatarTamanhoArquivoNovoVeiculo(economia);
         }
 
         if (erroBox) {
