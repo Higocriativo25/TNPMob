@@ -4481,13 +4481,10 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     const TESTEMOTORISTA_auth = firebase.auth();
 const TESTEMOTORISTA_db = firebase.firestore();
 const TESTEMOTORISTA_storage = firebase.storage();
-
-const PRIMEIRAPAG_Login_auth = TESTEMOTORISTA_auth;
-const PRIMEIRAPAG_Login_db = TESTEMOTORISTA_db;
 const PRIMEIRAPAG_Login_storage = TESTEMOTORISTA_storage;
 	
 	
-// ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
+	        // ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
 			
 let MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
 let MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
@@ -7318,50 +7315,7 @@ async function MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo() {
     }
 }
 
-function MOTORISTAPAG_Login_func_mostrarErroDocumentoNovoVeiculo(mensagem) {
-    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_novo_veiculo');
 
-    if (erroBox) {
-        erroBox.innerText = mensagem;
-        erroBox.style.display = 'block';
-        erroBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-    }
-
-    alert(mensagem);
-}
-
-async function MOTORISTAPAG_Login_func_uploadDocumentoNovoVeiculoComprimido(uid, veiculoId, tipoDocumento, dadosPendente) {
-    const nomeArquivo = tipoDocumento + '_' + Date.now() + '.jpg';
-
-    const caminho =
-        'motoristas/' +
-        uid +
-        '/veiculos/' +
-        veiculoId +
-        '/' +
-        nomeArquivo;
-
-    const storageRef = PRIMEIRAPAG_Login_storage.ref().child(caminho);
-
-    await storageRef.put(dadosPendente.arquivoCompactado, {
-        contentType: 'image/jpeg'
-    });
-
-    const url = await storageRef.getDownloadURL();
-
-    return {
-        enviado: true,
-        url: url,
-        caminho: caminho,
-        status: 'pendente_analise',
-        motivoReprovacao: '',
-        tamanhoOriginal: dadosPendente.tamanhoOriginal,
-        tamanhoFinal: dadosPendente.tamanhoFinal,
-        economiaBytes: dadosPendente.economia,
-        atualizadoEm: new Date()
-    };
-}
 
 
 
