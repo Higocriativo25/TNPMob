@@ -7186,30 +7186,15 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, tipoD
 
     event.target.value = '';
 }
-ffunction MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
+function MOTORISTAPAG_Login_func_verificarLiberarEnviarDocumentosNovoVeiculo() {
     const btnEnviar = document.getElementById('MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo');
 
-    console.log("🔍 Verificando documentos novo veículo:");
-    console.log("CRLV pronto:", MOTORISTAPAG_Login_novoVeiculoCrlvPronto);
-    console.log("Foto placa pronta:", MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta);
-    console.log("Botão encontrado:", !!btnEnviar);
+    if (!btnEnviar) return;
 
-    if (!btnEnviar) {
-        console.warn("Botão enviar documentos novo veículo não encontrado.");
-        return;
-    }
-
-    if (
-        MOTORISTAPAG_Login_novoVeiculoCrlvPronto === true &&
-        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta === true
-    ) {
-        btnEnviar.disabled = false;
-        btnEnviar.removeAttribute("disabled");
-        console.log("✅ Botão ENVIAR DOCUMENTOS liberado.");
-    } else {
-        btnEnviar.disabled = true;
-        console.log("⏳ Ainda falta documento para liberar.");
-    }
+    btnEnviar.disabled = !(
+        MOTORISTAPAG_Login_novoVeiculoCrlvPronto &&
+        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta
+    );
 }
 
 
