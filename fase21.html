@@ -8632,6 +8632,7 @@ if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVei
             : '';
 
 // MANTENDO SUA SEQUÊNCIA EXATA:
+// MANTENDO SUA SEQUÊNCIA EXATA:
 const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
 const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
 const documentoCrlvAtual = dadosCrlvEnviado || documentosVeiculoAtual.crlv || {};
@@ -8673,6 +8674,7 @@ const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
         atualizadoEm: new Date()
     };
 });
+
 
 
 await PRIMEIRAPAG_Login_db
