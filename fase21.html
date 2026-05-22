@@ -7914,7 +7914,7 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
     const inputMarca = document.getElementById('MOTORISTAPAG_Login_input_veiculo_marca');
     const inputModelo = document.getElementById('MOTORISTAPAG_Login_input_veiculo_modelo');
     const inputCor = document.getElementById('MOTORISTAPAG_Login_input_veiculo_cor');
-	const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
+    const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
 
     [inputPlaca, inputRenavam, inputMarca, inputModelo, inputCor, inputAno].forEach(campo => {
         if (campo) campo.classList.remove('error');
@@ -7932,15 +7932,15 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
     const marca = inputMarca.value.trim();
     const modelo = inputModelo.value.trim();
     const cor = inputCor.value.trim();
-	const ano = inputAno.value.trim().replace(/\D/g, '');
+    const ano = inputAno.value.trim().replace(/\D/g, '');
 
     if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
-    inputPlaca.classList.add('error');
-    return PRIMEIRAPAG_Login_func_mostrarErro(
-        'MOTORISTAPAG_Login_error_dados_veiculo',
-        'Digite uma placa válida. Exemplo: ABC1234 ou ABC1D23.'
-    );
-}
+        inputPlaca.classList.add('error');
+        return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_dados_veiculo',
+            'Digite uma placa válida. Exemplo: ABC1234 ou ABC1D23.'
+        );
+    }
 
     if (!renavam || renavam.length < 9 || renavam.length > 11) {
         inputRenavam.classList.add('error');
@@ -7965,13 +7965,14 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
             'Digite o modelo do veículo.'
         );
     }
-	if (!cor) {
-	   inputCor.classList.add('error');
-       return PRIMEIRAPAG_Login_func_mostrarErro(
+
+    if (!cor) {
+        inputCor.classList.add('error');
+        return PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_dados_veiculo',
             'Digite a cor do veículo.'
-		);
-	}
+        );
+    }
 
     const anoAtual = new Date().getFullYear();
 
@@ -7999,128 +8000,164 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
         const dadosMotoristaAtual = docMotoristaAtual.exists ? docMotoristaAtual.data() : {};
 
         const motoristaTemCpfConflito =
-    dadosMotoristaAtual.cpfConflito === true ||
-    dadosMotoristaAtual.cpfConflitoStatus === 'pendente_analise_suporte';
+            dadosMotoristaAtual.cpfConflito === true ||
+            dadosMotoristaAtual.cpfConflitoStatus === 'pendente_analise_suporte';
 
-const motoristaTemCnhBloqueada =
-    dadosMotoristaAtual.cnhBloqueioPorVencimento === true ||
-    dadosMotoristaAtual.cnhValidadeStatus === 'bloqueado_cnh_vencida';
+        const motoristaTemCnhBloqueada =
+            dadosMotoristaAtual.cnhBloqueioPorVencimento === true ||
+            dadosMotoristaAtual.cnhValidadeStatus === 'bloqueado_cnh_vencida';
 
-let statusGeralMotorista = 'cadastro_iniciado';
-let motivoStatusMotorista = '';
+        let statusGeralMotorista = 'cadastro_iniciado';
+        let motivoStatusMotorista = '';
 
-if (motoristaTemCnhBloqueada) {
-    statusGeralMotorista = 'bloqueado_cnh_vencida';
-    motivoStatusMotorista = 'cnh_vencida_fora_da_tolerancia';
-}
+        if (motoristaTemCnhBloqueada) {
+            statusGeralMotorista = 'bloqueado_cnh_vencida';
+            motivoStatusMotorista = 'cnh_vencida_fora_da_tolerancia';
+        }
 
-if (motoristaTemCpfConflito) {
-    statusGeralMotorista = 'pendente_analise_suporte';
-    motivoStatusMotorista = 'cpf_ja_usado_em_outra_conta';
-}
+        if (motoristaTemCpfConflito) {
+            statusGeralMotorista = 'pendente_analise_suporte';
+            motivoStatusMotorista = 'cpf_ja_usado_em_outra_conta';
+        }
 
         const veiculoInicialId = 'veiculo_1';
 
-await PRIMEIRAPAG_Login_db
-    .collection('motoristas')
-    .doc(user.uid)
-    .set({
-        veiculo: {
+        const veiculoInicialNovo = {
+            id: veiculoInicialId,
             placa: placa,
             renavam: renavam,
             marca: marca,
             modelo: modelo,
-			cor: cor,
+            cor: cor,
             ano: ano,
             categoria: dadosMotoristaAtual.categoriaPrincipal || '',
             categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
+            status: 'pendente_envio',
             dadosConcluidos: true,
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        },
+            documentosEnviados: false,
+            emUso: false,
 
-        veiculos: [
-            {
-                id: veiculoInicialId,
-                placa: placa,
-                renavam: renavam,
-                marca: marca,
-                modelo: modelo,
-				cor: cor,
-                ano: ano,
-                categoria: dadosMotoristaAtual.categoriaPrincipal || '',
-                categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
-                status: 'pendente_envio',
-                dadosConcluidos: true,
-                documentosEnviados: false,
-                emUso: false,
+            documentos: {
+                crlv: {
+                    enviado: false,
+                    status: 'pendente_envio',
+                    url: '',
+                    caminho: '',
+                    motivoReprovacao: ''
+                },
+                fotoVeiculoPlaca: {
+                    enviado: false,
+                    status: 'pendente_envio',
+                    url: '',
+                    caminho: '',
+                    motivoReprovacao: ''
+                }
+            },
 
-                documentos: {
-                    crlv: {
-                        enviado: false,
-                        status: 'pendente_envio',
-                        url: '',
-                        caminho: '',
-                        motivoReprovacao: ''
-                    },
-                    fotoVeiculoPlaca: {
-                        enviado: false,
-                        status: 'pendente_envio',
-                        url: '',
-                        caminho: '',
-                        motivoReprovacao: ''
-                    }
+            criadoEm: new Date(),
+            atualizadoEm: new Date()
+        };
+
+        const veiculosExistentes = Array.isArray(dadosMotoristaAtual.veiculos)
+            ? dadosMotoristaAtual.veiculos
+            : [];
+
+        let veiculoInicialEncontrado = false;
+
+        const veiculosAtualizados = veiculosExistentes.map(function(veiculo) {
+            if (!veiculo || !veiculo.id) {
+                return veiculo;
+            }
+
+            if (veiculo.id === veiculoInicialId) {
+                veiculoInicialEncontrado = true;
+
+                return {
+                    ...veiculo,
+                    placa: placa,
+                    renavam: renavam,
+                    marca: marca,
+                    modelo: modelo,
+                    cor: cor,
+                    ano: ano,
+                    categoria: veiculo.categoria || dadosMotoristaAtual.categoriaPrincipal || '',
+                    categoriaPrincipal: veiculo.categoriaPrincipal || dadosMotoristaAtual.categoriaPrincipal || '',
+                    dadosConcluidos: true,
+                    atualizadoEm: new Date()
+                };
+            }
+
+            return veiculo;
+        });
+
+        if (!veiculoInicialEncontrado) {
+            veiculosAtualizados.unshift(veiculoInicialNovo);
+        }
+
+        await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .set({
+                veiculo: {
+                    placa: placa,
+                    renavam: renavam,
+                    marca: marca,
+                    modelo: modelo,
+                    cor: cor,
+                    ano: ano,
+                    categoria: dadosMotoristaAtual.categoriaPrincipal || '',
+                    categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
+                    dadosConcluidos: true,
+                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
                 },
 
-                criadoEm: new Date(),
-                atualizadoEm: new Date()
-            }
-        ],
+                veiculos: veiculosAtualizados,
 
-        veiculoCadastroAtualId: veiculoInicialId,
-        veiculoAtualId: '',
+                veiculoCadastroAtualId: veiculoInicialId,
+                veiculoAtualId: dadosMotoristaAtual.veiculoAtualId || '',
 
-        dadosVeiculoConcluidos: true,
-        etapaCadastroMotorista: 'documentos_veiculo',
+                dadosVeiculoConcluidos: true,
+                etapaCadastroMotorista: 'documentos_veiculo',
 
-        motoristaStatus: statusGeralMotorista,
-        motivoAnaliseAdmin: motivoStatusMotorista,
+                motoristaStatus: statusGeralMotorista,
+                motivoAnaliseAdmin: motivoStatusMotorista,
 
-        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
 
-        status: {
-            geral: statusGeralMotorista,
-            motivo: motivoStatusMotorista,
-            tipo: 'motorista',
-            uid: user.uid,
-            cnhValidadeStatus: dadosMotoristaAtual.cnhValidadeStatus || 'valida',
-            cnhBloqueioPorVencimento: dadosMotoristaAtual.cnhBloqueioPorVencimento === true,
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        }
-    }, { merge: true });
+                status: {
+                    geral: statusGeralMotorista,
+                    motivo: motivoStatusMotorista,
+                    tipo: 'motorista',
+                    uid: user.uid,
+                    cnhValidadeStatus: dadosMotoristaAtual.cnhValidadeStatus || 'valida',
+                    cnhBloqueioPorVencimento: dadosMotoristaAtual.cnhBloqueioPorVencimento === true,
+                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                }
+            }, { merge: true });
 
-await PRIMEIRAPAG_Login_db
-    .collection('usuarios')
-    .doc(user.uid)
-    .set({
-        etapaCadastro: 'motorista_documentos_veiculo',
-        etapaCadastroMotorista: 'documentos_veiculo',
+        await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .set({
+                etapaCadastro: 'motorista_documentos_veiculo',
+                etapaCadastroMotorista: 'documentos_veiculo',
 
-        motoristaStatus: statusGeralMotorista,
-        motivoAnaliseAdmin: motivoStatusMotorista,
+                motoristaStatus: statusGeralMotorista,
+                motivoAnaliseAdmin: motivoStatusMotorista,
 
-        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
 
-        status: {
-            geral: statusGeralMotorista,
-            motivo: motivoStatusMotorista,
-            tipo: 'motorista',
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        }
-    }, { merge: true });
+                status: {
+                    geral: statusGeralMotorista,
+                    motivo: motivoStatusMotorista,
+                    tipo: 'motorista',
+                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+                }
+            }, { merge: true });
 
-MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo();
+        MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo();
 
-} catch (erro) {
+    } catch (erro) {
         console.error('Erro ao salvar dados do veículo:', erro);
 
         PRIMEIRAPAG_Login_func_mostrarErro(
@@ -8135,7 +8172,6 @@ MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo();
         }
     }
 }
-
 // TELA MOTORISTA 5: DOCUMENTOS DO VEÍCULO 
 
 async function MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo() {
