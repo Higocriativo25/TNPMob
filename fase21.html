@@ -8176,80 +8176,43 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
 
 async function MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
-
-    if (!user) {
-        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
-    }
+    if (!user) return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
 
     PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_documentos_veiculo');
 
-    const erroBox = document.getElementById('MOTORISTAPAG_Login_error_documentos_veiculo');
-
-    if (erroBox) {
-        erroBox.innerText = '';
-        erroBox.style.display = 'none';
-    }
-
     try {
-        const docMotorista = await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .get();
-
+        const docMotorista = await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).get();
         const dadosMotorista = docMotorista.exists ? docMotorista.data() : {};
-        const documentosVeiculo = dadosMotorista.documentosVeiculo || {};
 
-        const crlv = documentosVeiculo.crlv || {};
-        const fotoVeiculoPlaca = documentosVeiculo.fotoVeiculoPlaca || {};
+        // 1. Pegamos o ID do veículo que está sendo editado agora
+        const veiculoIdAtual = dadosMotorista.veiculoCadastroAtualId || 'veiculo_1';
+        
+        // 2. Procuramos esse veículo dentro do array de veículos
+        const veiculos = dadosMotorista.veiculos || [];
+        const veiculoSendoEditado = veiculos.find(v => v.id === veiculoIdAtual) || {};
 
-        MOTORISTAPAG_Login_crlvEnviado = crlv.enviado === true;
-        MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada = fotoVeiculoPlaca.enviado === true;
+        // 3. Pegamos os documentos desse veículo específico
+        const documentosDoVeiculo = veiculoSendoEditado.documentos || {};
 
+        // 4. Se não achou no veículo, tenta no campo raiz (fallback)
+        const crlv = documentosDoVeiculo.crlv || dadosMotorista.documentosVeiculo?.crlv || {};
+        const fotoVeiculoPlaca = documentosDoVeiculo.fotoVeiculoPlaca || dadosMotorista.documentosVeiculo?.fotoVeiculoPlaca || {};
+
+        // Atualiza o estado das variáveis globais
+        MOTORISTAPAG_Login_crlvEnviado = !!crlv.url;
+        MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada = !!fotoVeiculoPlaca.url;
+
+        // Manda para a tela (isso vai fazer a imagem aparecer!)
         MOTORISTAPAG_Login_func_atualizarCardDocumentoVeiculo('crlv', crlv);
         MOTORISTAPAG_Login_func_atualizarCardDocumentoVeiculo('fotoVeiculoPlaca', fotoVeiculoPlaca);
 
         MOTORISTAPAG_Login_func_verificarLiberarContinuarDocumentosVeiculo();
 
-   // } catch (erro) {
- //       console.error('Erro ao carregar documentos do veículo:', erro);
-//
- //       PRIMEIRAPAG_Login_func_mostrarErro(
- //           'MOTORISTAPAG_Login_error_documentos_veiculo',
- //           'Não foi possível carregar os documentos do veículo.'
- //       );
-//    }
-// }
-
-// ... (mantenha o código anterior)
     } catch (erro) {
-        console.error('Erro detalhado:', erro);
-        
-        // Identifica o erro real para mostrar na tela do celular
-        let mensagemReal = "Erro: " + (erro.message || "Falha desconhecida");
-        
-        if (erro.code === 'storage/unauthorized') {
-            mensagemReal = "Erro: Sem permissão no Storage. Verifique as 'Rules' no Firebase.";
-        } else if (erro.code === 'permission-denied') {
-            mensagemReal = "Erro: Sem permissão no Banco de Dados (Firestore).";
-        } else if (erro.code === 'storage/quota-exceeded') {
-            mensagemReal = "Erro: Limite de armazenamento do Firebase atingido.";
-        }
-
-        PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_documentos_veiculo',
-            mensagemReal
-        );
-
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = textoOriginal;
-        }
+        console.error('Erro ao carregar:', erro);
+        PRIMEIRAPAG_Login_func_mostrarErro('MOTORISTAPAG_Login_error_documentos_veiculo', 'Erro ao carregar fotos.');
     }
 }
-
-////////////////////////////////////////////////////////////
-
 
 
 
