@@ -4529,7 +4529,123 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 </div>
 
+<!-- TELA CONFIGURAÇÕES: DOCUMENTOS DO NOVO VEÍCULO -->
+<div id="MOTORISTAPAG_Login_screen_documentos_novo_veiculo" class="PRIMEIRAPAG_Login_screen" style="padding:20px 14px 90px;">
 
+    <div class="MOTORISTAPAG_Login_config_topo">
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_config_voltar"
+            onclick="MOTORISTAPAG_Login_func_iniciarCadastroNovoVeiculo()"
+        >
+            ←
+        </button>
+
+        <div>
+            <h3>Documentos do veículo</h3>
+            <p>Envie o CRLV e uma foto do veículo mostrando a placa.</p>
+        </div>
+    </div>
+
+    <div id="MOTORISTAPAG_Login_error_documentos_novo_veiculo" class="PRIMEIRAPAG_Login_error"></div>
+
+    <!-- CARD CRLV -->
+    <div id="MOTORISTAPAG_Login_card_novo_veiculo_crlv" class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Foto do CRLV</h4>
+
+        <p id="MOTORISTAPAG_Login_status_novo_veiculo_crlv">
+            Pendente de envio
+        </p>
+
+        <img
+            id="MOTORISTAPAG_Login_preview_novo_veiculo_crlv"
+            class="MOTORISTAPAG_Login_preview_doc"
+            src=""
+            alt="Prévia do CRLV"
+        >
+
+        <div
+            id="MOTORISTAPAG_Login_info_compressao_novo_veiculo_crlv"
+            class="MOTORISTAPAG_Login_info_compressao"
+        ></div>
+
+        <input
+            type="file"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_crlv"
+            accept="image/*"
+            capture="environment"
+            class="QUINTAPAG_Login_file_input"
+            onchange="MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, 'crlv')"
+        >
+
+        <button
+            type="button"
+            id="MOTORISTAPAG_Login_btn_novo_veiculo_crlv"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo('crlv')"
+        >
+            TIRAR FOTO DO CRLV
+        </button>
+    </div>
+
+    <!-- CARD FOTO DO VEÍCULO -->
+    <div id="MOTORISTAPAG_Login_card_novo_veiculo_foto_placa" class="PRIMEIRAPAG_Login_cadastro_info_box">
+        <h4>Foto do veículo com a placa</h4>
+
+        <p id="MOTORISTAPAG_Login_status_novo_veiculo_foto_placa">
+            Pendente de envio
+        </p>
+
+        <img
+            id="MOTORISTAPAG_Login_preview_novo_veiculo_foto_placa"
+            class="MOTORISTAPAG_Login_preview_doc"
+            src=""
+            alt="Prévia do veículo"
+        >
+
+        <div
+            id="MOTORISTAPAG_Login_info_compressao_novo_veiculo_foto_placa"
+            class="MOTORISTAPAG_Login_info_compressao"
+        ></div>
+
+        <input
+            type="file"
+            id="MOTORISTAPAG_Login_input_novo_veiculo_foto_placa"
+            accept="image/*"
+            capture="environment"
+            class="QUINTAPAG_Login_file_input"
+            onchange="MOTORISTAPAG_Login_func_prepararDocumentoNovoVeiculo(event, 'fotoVeiculoPlaca')"
+        >
+
+        <button
+            type="button"
+            id="MOTORISTAPAG_Login_btn_novo_veiculo_foto_placa"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirCameraDocumentoNovoVeiculo('fotoVeiculoPlaca')"
+        >
+            TIRAR FOTO DO VEÍCULO
+        </button>
+    </div>
+
+    <button
+        type="button"
+        id="MOTORISTAPAG_Login_btn_enviar_documentos_novo_veiculo"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+        onclick="MOTORISTAPAG_Login_func_enviarDocumentosNovoVeiculo()"
+        disabled
+    >
+        ENVIAR DOCUMENTOS PARA ANÁLISE
+    </button>
+
+    <button
+        type="button"
+        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+        onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()"
+    >
+        VOLTAR PARA GERENCIAR VEÍCULOS
+    </button>
+
+</div>
 
 
 
@@ -4561,6 +4677,13 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 		const PRIMEIRAPAG_Login_functions = firebase.functions();
         
         // ========== UTILITÁRIOS ==========
+		
+		
+		
+		
+		
+		
+		
 function PRIMEIRAPAG_Login_func_irPara(telaId) {
     const PRIMEIRAPAG_tela = document.getElementById(telaId);
 
@@ -7416,7 +7539,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, tipoDoc
 
     try {
         if (status) {
-            status.innerText = 'Preparando imagem...';
+            status.innerText = 'Imagem pronta para envio...';
         }
 
         const arquivoCompactado = await MOTORISTAPAG_Login_func_comprimirImagemMotorista(
@@ -7462,7 +7585,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoMotorista(event, tipoDoc
         }
 
         if (status) {
-            status.innerText = 'Imagem pronta para envio.';
+            status.innerText = 'Imagem pronta para envio...';
         }
 
         if (infoCompressao) {
@@ -7719,6 +7842,17 @@ function MOTORISTAPAG_Login_func_mascararPlacaVeiculo(input) {
         .replace(/[^A-Z0-9]/g, '')
         .slice(0, 7);
 }
+function MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa) {
+    const placaLimpa = String(placa || '')
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, '');
+
+    const padraoAntigo = /^[A-Z]{3}[0-9]{4}$/;
+    const padraoMercosul = /^[A-Z]{3}[0-9][A-Z][0-9]{2}$/;
+
+    return padraoAntigo.test(placaLimpa) || padraoMercosul.test(placaLimpa);
+}
+
 
 async function MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
@@ -7787,13 +7921,13 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
     const modelo = inputModelo.value.trim();
     const ano = inputAno.value.trim().replace(/\D/g, '');
 
-    if (!placa || placa.length !== 7) {
-        inputPlaca.classList.add('error');
-        return PRIMEIRAPAG_Login_func_mostrarErro(
-            'MOTORISTAPAG_Login_error_dados_veiculo',
-            'Digite uma placa válida com 7 caracteres.'
-        );
-    }
+    if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
+    inputPlaca.classList.add('error');
+    return PRIMEIRAPAG_Login_func_mostrarErro(
+        'MOTORISTAPAG_Login_error_dados_veiculo',
+        'Digite uma placa válida. Exemplo: ABC1234 ou ABC1D23.'
+    );
+}
 
     if (!renavam || renavam.length < 9 || renavam.length > 11) {
         inputRenavam.classList.add('error');
@@ -7865,39 +7999,82 @@ if (motoristaTemCpfConflito) {
     motivoStatusMotorista = 'cpf_ja_usado_em_outra_conta';
 }
 
-        await PRIMEIRAPAG_Login_db
-            .collection('motoristas')
-            .doc(user.uid)
-            .set({
-                veiculo: {
-                    placa: placa,
-                    renavam: renavam,
-                    marca: marca,
-                    modelo: modelo,
-                    ano: ano,
-                    categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
-                    dadosConcluidos: true,
-                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        const veiculoInicialId = 'veiculo_1';
+
+await PRIMEIRAPAG_Login_db
+    .collection('motoristas')
+    .doc(user.uid)
+    .set({
+        veiculo: {
+            placa: placa,
+            renavam: renavam,
+            marca: marca,
+            modelo: modelo,
+            ano: ano,
+            categoria: dadosMotoristaAtual.categoriaPrincipal || '',
+            categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
+            dadosConcluidos: true,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        },
+
+        veiculos: [
+            {
+                id: veiculoInicialId,
+                placa: placa,
+                renavam: renavam,
+                marca: marca,
+                modelo: modelo,
+                ano: ano,
+                categoria: dadosMotoristaAtual.categoriaPrincipal || '',
+                categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
+                status: 'pendente_envio',
+                dadosConcluidos: true,
+                documentosEnviados: false,
+                emUso: false,
+
+                documentos: {
+                    crlv: {
+                        enviado: false,
+                        status: 'pendente_envio',
+                        url: '',
+                        caminho: '',
+                        motivoReprovacao: ''
+                    },
+                    fotoVeiculoPlaca: {
+                        enviado: false,
+                        status: 'pendente_envio',
+                        url: '',
+                        caminho: '',
+                        motivoReprovacao: ''
+                    }
                 },
 
-                dadosVeiculoConcluidos: true,
-                etapaCadastroMotorista: 'documentos_veiculo',
+                criadoEm: new Date(),
+                atualizadoEm: new Date()
+            }
+        ],
 
-                motoristaStatus: statusGeralMotorista,
-                motivoAnaliseAdmin: motivoStatusMotorista,
+        veiculoCadastroAtualId: veiculoInicialId,
+        veiculoAtualId: '',
 
-                atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+        dadosVeiculoConcluidos: true,
+        etapaCadastroMotorista: 'documentos_veiculo',
 
-                status: {
-                    geral: statusGeralMotorista,
-                    motivo: motivoStatusMotorista,
-                    tipo: 'motorista',
-                    uid: user.uid,
-                    cnhValidadeStatus: dadosMotoristaAtual.cnhValidadeStatus || 'valida',
-                    cnhBloqueioPorVencimento: dadosMotoristaAtual.cnhBloqueioPorVencimento === true,
-                    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-                }
-            }, { merge: true });
+        motoristaStatus: statusGeralMotorista,
+        motivoAnaliseAdmin: motivoStatusMotorista,
+
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+
+        status: {
+            geral: statusGeralMotorista,
+            motivo: motivoStatusMotorista,
+            tipo: 'motorista',
+            uid: user.uid,
+            cnhValidadeStatus: dadosMotoristaAtual.cnhValidadeStatus || 'valida',
+            cnhBloqueioPorVencimento: dadosMotoristaAtual.cnhBloqueioPorVencimento === true,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }
+    }, { merge: true });
 
 await PRIMEIRAPAG_Login_db
     .collection('usuarios')
@@ -8217,7 +8394,7 @@ async function MOTORISTAPAG_Login_func_prepararDocumentoVeiculo(event, tipoDocum
         }
 
         if (status) {
-            status.innerText = 'Imagem pronta para envio.';
+            status.innerText = 'Imagem pronta para envio...';
         }
 
         if (infoCompressao) {
