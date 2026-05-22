@@ -2924,6 +2924,15 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
             placeholder="Ex: Uno, Biz, Onix"
         >
     </div>
+	
+	<div class="PRIMEIRAPAG_Login_form_group">
+    <label for="MOTORISTAPAG_Login_input_veiculo_cor">Cor</label>
+    <input
+        type="text"
+        id="MOTORISTAPAG_Login_input_veiculo_cor"
+        placeholder="Ex: Branco, Preto, Prata"
+    >
+</div>
 
     <div class="PRIMEIRAPAG_Login_form_group">
         <label for="MOTORISTAPAG_Login_input_veiculo_ano">
@@ -7876,13 +7885,15 @@ async function MOTORISTAPAG_Login_func_carregarTelaDadosVeiculo() {
         const inputRenavam = document.getElementById('MOTORISTAPAG_Login_input_veiculo_renavam');
         const inputMarca = document.getElementById('MOTORISTAPAG_Login_input_veiculo_marca');
         const inputModelo = document.getElementById('MOTORISTAPAG_Login_input_veiculo_modelo');
-        const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
+        const inputCor = document.getElementById('MOTORISTAPAG_Login_input_veiculo_cor');
+		const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
 
         if (inputPlaca) inputPlaca.value = veiculo.placa || '';
         if (inputRenavam) inputRenavam.value = veiculo.renavam || '';
         if (inputMarca) inputMarca.value = veiculo.marca || '';
         if (inputModelo) inputModelo.value = veiculo.modelo || '';
-        if (inputAno) inputAno.value = veiculo.ano || '';
+        if (inputCor) inputCor.value = veiculo.cor || '';
+		if (inputAno) inputAno.value = veiculo.ano || '';
 
     } catch (erro) {
         console.error('Erro ao carregar dados do veículo:', erro);
@@ -7902,9 +7913,10 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
     const inputRenavam = document.getElementById('MOTORISTAPAG_Login_input_veiculo_renavam');
     const inputMarca = document.getElementById('MOTORISTAPAG_Login_input_veiculo_marca');
     const inputModelo = document.getElementById('MOTORISTAPAG_Login_input_veiculo_modelo');
-    const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
+    const inputCor = document.getElementById('MOTORISTAPAG_Login_input_veiculo_cor');
+	const inputAno = document.getElementById('MOTORISTAPAG_Login_input_veiculo_ano');
 
-    [inputPlaca, inputRenavam, inputMarca, inputModelo, inputAno].forEach(campo => {
+    [inputPlaca, inputRenavam, inputMarca, inputModelo, inputCor, inputAno].forEach(campo => {
         if (campo) campo.classList.remove('error');
     });
 
@@ -7919,7 +7931,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
     const renavam = inputRenavam.value.trim().replace(/\D/g, '');
     const marca = inputMarca.value.trim();
     const modelo = inputModelo.value.trim();
-    const ano = inputAno.value.trim().replace(/\D/g, '');
+    const cor = inputCor.value.trim();
+	const ano = inputAno.value.trim().replace(/\D/g, '');
 
     if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
     inputPlaca.classList.add('error');
@@ -7952,6 +7965,13 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
             'Digite o modelo do veículo.'
         );
     }
+	if (!cor) {
+	   inputCor.classList.add('error');
+       return PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_dados_veiculo',
+            'Digite a cor do veículo.'
+		);
+	}
 
     const anoAtual = new Date().getFullYear();
 
@@ -8010,6 +8030,7 @@ await PRIMEIRAPAG_Login_db
             renavam: renavam,
             marca: marca,
             modelo: modelo,
+			cor: cor,
             ano: ano,
             categoria: dadosMotoristaAtual.categoriaPrincipal || '',
             categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
@@ -8024,6 +8045,7 @@ await PRIMEIRAPAG_Login_db
                 renavam: renavam,
                 marca: marca,
                 modelo: modelo,
+				cor: cor,
                 ano: ano,
                 categoria: dadosMotoristaAtual.categoriaPrincipal || '',
                 categoriaPrincipal: dadosMotoristaAtual.categoriaPrincipal || '',
