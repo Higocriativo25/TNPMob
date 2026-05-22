@@ -8083,6 +8083,8 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
                     categoria: veiculo.categoria || dadosMotoristaAtual.categoriaPrincipal || '',
                     categoriaPrincipal: veiculo.categoriaPrincipal || dadosMotoristaAtual.categoriaPrincipal || '',
                     dadosConcluidos: true,
+                    // IMPORTANTE: Mantém os documentos (e URLs) que já existiam!
+                    documentos: veiculo.documentos || veiculoInicialNovo.documentos,
                     atualizadoEm: new Date()
                 };
             }
@@ -8172,6 +8174,7 @@ async function MOTORISTAPAG_Login_func_salvarDadosVeiculo() {
         }
     }
 }
+
 // TELA MOTORISTA 5: DOCUMENTOS DO VEÍCULO 
 
 async function MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo() {
