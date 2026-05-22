@@ -8578,12 +8578,58 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
             ? 'cpf_ja_usado_em_outra_conta'
             : '';
 
+        const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
+        const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
+
+        const veiculosAtuais = Array.isArray(dadosMotoristaAtual.veiculos)
+            ? dadosMotoristaAtual.veiculos
+            : [];
+
+        const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
+            if (!veiculo || veiculo.id !== veiculoCadastroAtualId) {
+                return veiculo;
+            }
+
+            return {
+                ...veiculo,
+
+                status: 'pendente_analise',
+                documentosEnviados: true,
+                emUso: false,
+
+                documentos: {
+                    crlv: {
+                        ...(veiculo.documentos && veiculo.documentos.crlv ? veiculo.documentos.crlv : {}),
+                        ...(documentosVeiculoAtual.crlv || {}),
+                        enviado: true,
+                        status: 'pendente_analise',
+                        motivoReprovacao: ''
+                    },
+
+                    fotoVeiculoPlaca: {
+                        ...(veiculo.documentos && veiculo.documentos.fotoVeiculoPlaca ? veiculo.documentos.fotoVeiculoPlaca : {}),
+                        ...(documentosVeiculoAtual.fotoVeiculoPlaca || {}),
+                        enviado: true,
+                        status: 'pendente_analise',
+                        motivoReprovacao: ''
+                    }
+                },
+
+                atualizadoEm: new Date()
+            };
+        });
+
         await PRIMEIRAPAG_Login_db
             .collection('motoristas')
             .doc(user.uid)
             .set({
                 documentosVeiculoConcluidos: true,
                 documentosVeiculoStatus: 'pendente_analise',
+
+                veiculos: veiculosAtualizados,
+                veiculoCadastroAtualId: veiculoCadastroAtualId,
+                veiculoAtualId: '',
+
                 etapaCadastroMotorista: 'pix_motorista',
 
                 motoristaStatus: statusGeralMotorista,
