@@ -8592,25 +8592,28 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
             erroBox.style.display = 'none';
         }
 
-        if (!MOTORISTAPAG_Login_crlvEnviado && MOTORISTAPAG_Login_arquivoCrlvPendente) {
-            await MOTORISTAPAG_Login_func_uploadDocumentoVeiculoComprimido(
-                'crlv',
-                MOTORISTAPAG_Login_arquivoCrlvPendente
-            );
+        let dadosCrlvEnviado = null;
+let dadosFotoPlacaEnviada = null;
 
-            MOTORISTAPAG_Login_crlvEnviado = true;
-            MOTORISTAPAG_Login_arquivoCrlvPendente = null;
-        }
+if (!MOTORISTAPAG_Login_crlvEnviado && MOTORISTAPAG_Login_arquivoCrlvPendente) {
+    dadosCrlvEnviado = await MOTORISTAPAG_Login_func_uploadDocumentoVeiculoComprimido(
+        'crlv',
+        MOTORISTAPAG_Login_arquivoCrlvPendente
+    );
 
-        if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente) {
-            await MOTORISTAPAG_Login_func_uploadDocumentoVeiculoComprimido(
-                'fotoVeiculoPlaca',
-                MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente
-            );
+    MOTORISTAPAG_Login_crlvEnviado = true;
+    MOTORISTAPAG_Login_arquivoCrlvPendente = null;
+}
 
-            MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada = true;
-            MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente = null;
-        }
+if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente) {
+    dadosFotoPlacaEnviada = await MOTORISTAPAG_Login_func_uploadDocumentoVeiculoComprimido(
+        'fotoVeiculoPlaca',
+        MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente
+    );
+
+    MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada = true;
+    MOTORISTAPAG_Login_arquivoVeiculoPlacaPendente = null;
+}
 
         if (btn) {
             btn.innerText = 'SALVANDO...';
@@ -8638,8 +8641,8 @@ async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
 
         const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
         const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
-		const documentoCrlvAtual = documentosVeiculoAtual.crlv || {};
-		const documentoFotoPlacaAtual = documentosVeiculoAtual.fotoVeiculoPlaca || {};
+		const documentoCrlvAtual = dadosCrlvEnviado || documentosVeiculoAtual.crlv || {};
+		const documentoFotoPlacaAtual = dadosFotoPlacaEnviada || documentosVeiculoAtual.fotoVeiculoPlaca || {};
         const veiculosAtuais = Array.isArray(dadosMotoristaAtual.veiculos)
             ? dadosMotoristaAtual.veiculos
             : [];
