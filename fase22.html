@@ -7387,7 +7387,12 @@ async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
         const dados = doc.exists ? doc.data() : {};
 
         const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
-        const veiculoAtualId = dados.veiculoAtualId || '';
+		const veiculoAtualId = dados.veiculoAtualId || '';
+
+		if (veiculos.length <= 1) {
+		alert('Você precisa manter pelo menos um veículo cadastrado. Para trocar, adicione outro veículo primeiro.');
+		return;
+		}
 
         const veiculoExiste = veiculos.some(function(veiculo) {
             return veiculo && veiculo.id === veiculoId;
