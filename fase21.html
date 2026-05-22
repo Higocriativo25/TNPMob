@@ -8631,33 +8631,32 @@ if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVei
             ? 'cpf_ja_usado_em_outra_conta'
             : '';
 
-        const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
-        const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
-		const documentoCrlvAtual = dadosCrlvEnviado || documentosVeiculoAtual.crlv || {};
-		const documentoFotoPlacaAtual = dadosFotoPlacaEnviada || documentosVeiculoAtual.fotoVeiculoPlaca || {};
-        const veiculosAtuais = Array.isArray(dadosMotoristaAtual.veiculos)
-            ? dadosMotoristaAtual.veiculos
-            : [];
+// MANTENDO SUA SEQUÊNCIA EXATA:
+const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
+const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
+const documentoCrlvAtual = dadosCrlvEnviado || documentosVeiculoAtual.crlv || {};
+const documentoFotoPlacaAtual = dadosFotoPlacaEnviada || documentosVeiculoAtual.fotoVeiculoPlaca || {};
+const veiculosAtuais = Array.isArray(dadosMotoristaAtual.veiculos) ? dadosMotoristaAtual.veiculos : [];
 
-        const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
+const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
     if (!veiculo || veiculo.id !== veiculoCadastroAtualId) {
         return veiculo;
     }
 
     return {
         ...veiculo,
-
         status: 'pendente_analise',
         documentosEnviados: true,
         emUso: false,
 
         documentos: {
             crlv: {
+                // 1. Mantém tudo que já estava no veículo (inclusive a URL antiga se houver)
                 ...(veiculo.documentos && veiculo.documentos.crlv ? veiculo.documentos.crlv : {}),
+                // 2. Sobrepõe com os novos dados do upload (trazendo a nova URL e metadados)
                 ...documentoCrlvAtual,
+                // 3. Define os status fixos sem apagar os campos acima
                 enviado: true,
-                url: documentoCrlvAtual.url || '',
-                caminho: documentoCrlvAtual.caminho || '',
                 status: 'pendente_analise',
                 motivoReprovacao: ''
             },
@@ -8666,8 +8665,6 @@ if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVei
                 ...(veiculo.documentos && veiculo.documentos.fotoVeiculoPlaca ? veiculo.documentos.fotoVeiculoPlaca : {}),
                 ...documentoFotoPlacaAtual,
                 enviado: true,
-                url: documentoFotoPlacaAtual.url || '',
-                caminho: documentoFotoPlacaAtual.caminho || '',
                 status: 'pendente_analise',
                 motivoReprovacao: ''
             }
@@ -8676,6 +8673,7 @@ if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVei
         atualizadoEm: new Date()
     };
 });
+
 
 await PRIMEIRAPAG_Login_db
     .collection('motoristas')
