@@ -8503,53 +8503,45 @@ function MOTORISTAPAG_Login_func_verificarLiberarContinuarDocumentosVeiculo() {
     btnContinuar.disabled = !(crlvPronto && fotoVeiculoPronta);
 }
 
+// Exemplo de como melhorar a captura da URL
 async function MOTORISTAPAG_Login_func_uploadDocumentoVeiculoComprimido(tipoDocumento, dadosPendente) {
-    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    try {
+        const user = PRIMEIRAPAG_Login_auth.currentUser;
+        const nomeArquivo = tipoDocumento + '_' + Date.now() + '.jpg';
+        const caminho = 'motoristas/' + user.uid + '/documentos-veiculo/' + nomeArquivo;
 
-    const nomeArquivo = tipoDocumento + '_' + Date.now() + '.jpg';
-    const caminho = 'motoristas/' + user.uid + '/documentos-veiculo/' + nomeArquivo;
+        const storageRef = PRIMEIRAPAG_Login_storage.ref().child(caminho);
 
-    const storageRef = PRIMEIRAPAG_Login_storage.ref().child(caminho);
+        // Realiza o upload
+        const snapshot = await storageRef.put(dadosPendente.arquivoCompactado, {
+            contentType: 'image/jpeg'
+        });
 
-    await storageRef.put(dadosPendente.arquivoCompactado, {
-        contentType: 'image/jpeg'
-    });
+        // Tenta obter a URL de download
+        const url = await snapshot.ref.getDownloadURL(); 
+        // Nota: Usar snapshot.ref.getDownloadURL() é mais seguro que storageRef.getDownloadURL()
 
-    const url = await storageRef.getDownloadURL();
+        const dadosAtualizadosDocumento = {
+            enviado: true,
+            url: url, // <--- Aqui deve estar a URL retornada
+            caminho: caminho,
+            status: 'pendente_analise',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        };
 
-    const dadosAtualizadosDocumento = {
-        enviado: true,
-        url: url,
-        caminho: caminho,
-        status: 'pendente_analise',
-        motivoReprovacao: '',
-        tamanhoOriginal: dadosPendente.tamanhoOriginal,
-        tamanhoFinal: dadosPendente.tamanhoFinal,
-        economiaBytes: dadosPendente.economia,
-        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-    };
+        // Salva no Firestore
+        const atualizacao = {};
+        atualizacao['documentosVeiculo.' + tipoDocumento] = dadosAtualizadosDocumento;
+        
+        await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).update(atualizacao);
 
-    const atualizacao = {
-        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp(),
-        etapaCadastroMotorista: 'documentos_veiculo',
-        documentosVeiculoConcluidos: false,
-        documentosVeiculoStatus: 'pendente_analise'
-    };
-
-    atualizacao['documentosVeiculo.' + tipoDocumento] = dadosAtualizadosDocumento;
-
-    await PRIMEIRAPAG_Login_db
-        .collection('motoristas')
-        .doc(user.uid)
-        .set(atualizacao, { merge: true });
-
-    MOTORISTAPAG_Login_func_atualizarCardDocumentoVeiculo(
-        tipoDocumento,
-        dadosAtualizadosDocumento
-    );
-
-    return dadosAtualizadosDocumento;
+        return dadosAtualizadosDocumento;
+    } catch (error) {
+        console.error("Erro no upload do veículo:", error);
+        throw error;
+    }
 }
+
 
 async function MOTORISTAPAG_Login_func_continuarDepoisDocumentosVeiculo() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
