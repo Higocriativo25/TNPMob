@@ -4317,24 +4317,26 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
         >
     </div>
 
-    <div class="PRIMEIRAPAG_Login_form_group">
-        <label for="MOTORISTAPAG_Login_input_novo_veiculo_modelo">Modelo</label>
-        <input
-            type="text"
-            id="MOTORISTAPAG_Login_input_novo_veiculo_modelo"
-            placeholder="Ex: Uno, Corolla, CG 160"
-        >
-    </div>
+<div class="PRIMEIRAPAG_Login_form_group">
+    <label for="MOTORISTAPAG_Login_input_novo_veiculo_modelo">Modelo</label>
+    <input
+        type="text"
+        id="MOTORISTAPAG_Login_input_novo_veiculo_modelo"
+        placeholder="Ex: Uno, Corolla, CG 160"
+    >
+</div>
 
-    <div class="PRIMEIRAPAG_Login_form_group">
-        <label for="MOTORISTAPAG_Login_input_novo_veiculo_ano">Ano</label>
-        <input
-            type="text"
-            id="MOTORISTAPAG_Login_input_novo_veiculo_ano"
-            placeholder="Ex: 2020"
-            maxlength="4"
-        >
-    </div>
+<div class="PRIMEIRAPAG_Login_form_group">
+    <label for="MOTORISTAPAG_Login_input_novo_veiculo_cor">Cor</label>
+    <input
+        type="text"
+        id="MOTORISTAPAG_Login_input_novo_veiculo_cor"
+        placeholder="Ex: Branco, Preto, Prata"
+    >
+</div>
+
+<div class="PRIMEIRAPAG_Login_form_group">
+    <label for="MOTORISTAPAG_Login_input_novo_veiculo_ano">Ano</label>
 
     <div class="PRIMEIRAPAG_Login_form_group">
         <label for="MOTORISTAPAG_Login_select_novo_veiculo_categoria">Categoria</label>
@@ -6720,10 +6722,19 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
     const inputRenavam = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_renavam');
     const inputMarca = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_marca');
     const inputModelo = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_modelo');
+    const inputCor = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_cor');
     const inputAno = document.getElementById('MOTORISTAPAG_Login_input_novo_veiculo_ano');
     const selectCategoria = document.getElementById('MOTORISTAPAG_Login_select_novo_veiculo_categoria');
 
-    const campos = [inputPlaca, inputRenavam, inputMarca, inputModelo, inputAno, selectCategoria];
+    const campos = [
+        inputPlaca,
+        inputRenavam,
+        inputMarca,
+        inputModelo,
+        inputCor,
+        inputAno,
+        selectCategoria
+    ];
 
     campos.forEach(function(campo) {
         if (campo) campo.classList.remove('error');
@@ -6742,6 +6753,7 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
     const renavam = inputRenavam ? inputRenavam.value.trim().replace(/\D/g, '') : '';
     const marca = inputMarca ? inputMarca.value.trim() : '';
     const modelo = inputModelo ? inputModelo.value.trim() : '';
+    const cor = inputCor ? inputCor.value.trim() : '';
     const ano = inputAno ? inputAno.value.trim().replace(/\D/g, '') : '';
     const categoria = selectCategoria ? selectCategoria.value : '';
 
@@ -6757,20 +6769,9 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
         }
     }
 
-    
-	
-	// trocar por: if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
-	if (!placa || placa.length !== 7) {
+    if (!placa || placa.length !== 7) {
         return mostrarErroVeiculo('Digite uma placa válida com 7 caracteres.', inputPlaca);
     }
-	//logo abaixo
-	//if (!MOTORISTAPAG_Login_func_validarPlacaVeiculo(placa)) {
-   // return mostrarErroVeiculo(
-   //     'Digite uma placa válida. Exemplo: ABC1234 ou ABC1D23.',
-    //    inputPlaca
-  //  );
-//}
-	
 
     if (!renavam || renavam.length < 9 || renavam.length > 11) {
         return mostrarErroVeiculo('Digite um Renavam válido.', inputRenavam);
@@ -6782,6 +6783,10 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
 
     if (!modelo) {
         return mostrarErroVeiculo('Digite o modelo do veículo.', inputModelo);
+    }
+
+    if (!cor) {
+        return mostrarErroVeiculo('Digite a cor do veículo.', inputCor);
     }
 
     const anoAtual = new Date().getFullYear();
@@ -6821,10 +6826,14 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
                     renavam: dados.veiculo.renavam || "",
                     marca: dados.veiculo.marca || "",
                     modelo: dados.veiculo.modelo || "",
+                    cor: dados.veiculo.cor || "",
                     ano: dados.veiculo.ano || "",
-                    categoriaPrincipal: dados.veiculo.categoriaPrincipal || "",
+                    categoria: dados.veiculo.categoria || dados.veiculo.categoriaPrincipal || "",
+                    categoriaPrincipal: dados.veiculo.categoriaPrincipal || dados.veiculo.categoria || "",
                     status: dados.documentosVeiculoStatus || "pendente_analise",
                     documentos: dados.documentosVeiculo || {},
+                    documentosEnviados: dados.documentosVeiculoConcluidos === true,
+                    emUso: false,
                     criadoEm: new Date(),
                     atualizadoEm: new Date()
                 }
@@ -6862,11 +6871,15 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
             renavam: renavam,
             marca: marca,
             modelo: modelo,
+            cor: cor,
             ano: ano,
+            categoria: categoria,
             categoriaPrincipal: categoria,
 
             status: "pendente_envio",
             dadosConcluidos: true,
+            documentosEnviados: false,
+            emUso: false,
 
             documentos: {
                 crlv: {
@@ -6900,12 +6913,12 @@ async function MOTORISTAPAG_Login_func_salvarNovoVeiculoDados() {
         window.MOTORISTAPAG_Login_veiculoCadastroAtualId = novoVeiculoId;
 
         MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
-		MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
-		MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
-		MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
+        MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
+        MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
+        MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
 
-		PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_documentos_novo_veiculo');
-		MOTORISTAPAG_Login_func_limparTelaDocumentosNovoVeiculo();
+        PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_documentos_novo_veiculo');
+        MOTORISTAPAG_Login_func_limparTelaDocumentosNovoVeiculo();
 
     } catch (erro) {
         console.error('Erro ao salvar novo veículo:', erro);
@@ -7371,13 +7384,6 @@ async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
         return;
     }
 
-    const confirmar = confirm(
-        'Deseja excluir este veículo?\n\n' +
-        'Essa ação remove o veículo da sua lista. Se ele estava em uso, será necessário escolher outro veículo aprovado.'
-    );
-
-    if (!confirmar) return;
-
     try {
         const motoristaRef = PRIMEIRAPAG_Login_db
             .collection('motoristas')
@@ -7387,39 +7393,57 @@ async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
         const dados = doc.exists ? doc.data() : {};
 
         const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
-		const veiculoAtualId = dados.veiculoAtualId || '';
+        const veiculoAtualId = dados.veiculoAtualId || '';
 
-		if (veiculos.length <= 1) {
-		alert('Você precisa manter pelo menos um veículo cadastrado. Para trocar, adicione outro veículo primeiro.');
-		return;
-		}
-
-        const veiculoExiste = veiculos.some(function(veiculo) {
-            return veiculo && veiculo.id === veiculoId;
+        const veiculosValidos = veiculos.filter(function(veiculo) {
+            return veiculo && veiculo.id;
         });
 
-        if (!veiculoExiste) {
+        const veiculoParaExcluir = veiculosValidos.find(function(veiculo) {
+            return veiculo.id === veiculoId;
+        });
+
+        if (!veiculoParaExcluir) {
             alert('Veículo não encontrado.');
             return;
         }
 
-        const veiculosAtualizados = veiculos.filter(function(veiculo) {
-            return veiculo && veiculo.id !== veiculoId;
-        });
-
-        let novoVeiculoAtualId = veiculoAtualId;
-
-        if (veiculoAtualId === veiculoId) {
-            const primeiroAprovado = veiculosAtualizados.find(function(veiculo) {
-                return veiculo && veiculo.status === 'aprovado';
-            });
-
-            novoVeiculoAtualId = primeiroAprovado ? primeiroAprovado.id : '';
+        // 1. Se for o único veículo cadastrado: bloquear exclusão
+        if (veiculosValidos.length <= 1) {
+            alert(
+                'Você precisa manter pelo menos um veículo cadastrado.\n\n' +
+                'Para trocar de veículo, adicione outro veículo primeiro.'
+            );
+            return;
         }
+
+        const veiculoEstaEmUso =
+            veiculoAtualId === veiculoId ||
+            veiculoParaExcluir.emUso === true;
+
+        // 2. Se estiver em uso: pedir para escolher outro veículo aprovado antes
+        if (veiculoEstaEmUso) {
+            alert(
+                'Este veículo está em uso.\n\n' +
+                'Escolha outro veículo aprovado como veículo em uso antes de excluir este.'
+            );
+            return;
+        }
+
+        // 3. Se não estiver em uso: pode excluir
+        const confirmar = confirm(
+            'Deseja excluir este veículo?\n\n' +
+            'Essa ação remove o veículo da sua lista.'
+        );
+
+        if (!confirmar) return;
+
+        const veiculosAtualizados = veiculosValidos.filter(function(veiculo) {
+            return veiculo.id !== veiculoId;
+        });
 
         await motoristaRef.set({
             veiculos: veiculosAtualizados,
-            veiculoAtualId: novoVeiculoAtualId,
             atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
@@ -7438,7 +7462,6 @@ async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
         alert('Não foi possível excluir o veículo agora. Tente novamente.');
     }
 }
-
 
 
 
