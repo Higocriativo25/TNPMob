@@ -8210,15 +8210,48 @@ async function MOTORISTAPAG_Login_func_carregarTelaDocumentosVeiculo() {
 
         MOTORISTAPAG_Login_func_verificarLiberarContinuarDocumentosVeiculo();
 
+   // } catch (erro) {
+ //       console.error('Erro ao carregar documentos do veículo:', erro);
+//
+ //       PRIMEIRAPAG_Login_func_mostrarErro(
+ //           'MOTORISTAPAG_Login_error_documentos_veiculo',
+ //           'Não foi possível carregar os documentos do veículo.'
+ //       );
+//    }
+// }
+
+// ... (mantenha o código anterior)
     } catch (erro) {
-        console.error('Erro ao carregar documentos do veículo:', erro);
+        console.error('Erro detalhado:', erro);
+        
+        // Identifica o erro real para mostrar na tela do celular
+        let mensagemReal = "Erro: " + (erro.message || "Falha desconhecida");
+        
+        if (erro.code === 'storage/unauthorized') {
+            mensagemReal = "Erro: Sem permissão no Storage. Verifique as 'Rules' no Firebase.";
+        } else if (erro.code === 'permission-denied') {
+            mensagemReal = "Erro: Sem permissão no Banco de Dados (Firestore).";
+        } else if (erro.code === 'storage/quota-exceeded') {
+            mensagemReal = "Erro: Limite de armazenamento do Firebase atingido.";
+        }
 
         PRIMEIRAPAG_Login_func_mostrarErro(
             'MOTORISTAPAG_Login_error_documentos_veiculo',
-            'Não foi possível carregar os documentos do veículo.'
+            mensagemReal
         );
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+        }
     }
 }
+
+////////////////////////////////////////////////////////////
+
+
+
 
 function MOTORISTAPAG_Login_func_atualizarCardDocumentoVeiculo(tipoDocumento, dadosDocumento) {
     let card;
@@ -8632,7 +8665,6 @@ if (!MOTORISTAPAG_Login_fotoVeiculoPlacaEnviada && MOTORISTAPAG_Login_arquivoVei
             : '';
 
 // MANTENDO SUA SEQUÊNCIA EXATA:
-// MANTENDO SUA SEQUÊNCIA EXATA:
 const veiculoCadastroAtualId = dadosMotoristaAtual.veiculoCadastroAtualId || 'veiculo_1';
 const documentosVeiculoAtual = dadosMotoristaAtual.documentosVeiculo || {};
 const documentoCrlvAtual = dadosCrlvEnviado || documentosVeiculoAtual.crlv || {};
@@ -8660,7 +8692,9 @@ const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
                 enviado: true,
                 status: 'pendente_analise',
                 motivoReprovacao: ''
+				
             },
+			
 
             fotoVeiculoPlaca: {
                 ...(veiculo.documentos && veiculo.documentos.fotoVeiculoPlaca ? veiculo.documentos.fotoVeiculoPlaca : {}),
@@ -8668,13 +8702,13 @@ const veiculosAtualizados = veiculosAtuais.map(function(veiculo) {
                 enviado: true,
                 status: 'pendente_analise',
                 motivoReprovacao: ''
+				
             }
         },
 
         atualizadoEm: new Date()
     };
 });
-
 
 
 await PRIMEIRAPAG_Login_db
