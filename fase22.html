@@ -4278,9 +4278,6 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 
         <div>
             <h3>Adicionar veículo</h3>
-			
-<div id="MOTORISTAPAG_Login_error_adicionar_veiculo" class="PRIMEIRAPAG_Login_error"></div>			
-			
             <p>Cadastre os dados do novo veículo para análise.</p>
         </div>
     </div>
@@ -4336,10 +4333,10 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 </div>
 
 <div class="PRIMEIRAPAG_Login_form_group">
-    <label for="MOTORISTAPAG_Login_input_veiculo_ano">Ano</label>
+    <label for="MOTORISTAPAG_Login_input_novo_veiculo_ano">Ano</label>
     <input
         type="text"
-        id="MOTORISTAPAG_Login_input_veiculo_ano"
+        id="MOTORISTAPAG_Login_input_novo_veiculo_ano"
         placeholder="Ex: 2020"
         maxlength="4"
     >
@@ -4387,10 +4384,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 
         <div>
             <h3>Documentos do veículo</h3>
-			
-<div id="MOTORISTAPAG_Login_error_documentos_novo_veiculo" class="PRIMEIRAPAG_Login_error"></div>			
-			
-            <p>Envie o CRLV e uma foto do veículo mostrando a placa.</p>
+	        <p>Envie o CRLV e uma foto do veículo mostrando a placa.</p>
         </div>
     </div>
 
@@ -6707,6 +6701,7 @@ function MOTORISTAPAG_Login_func_iniciarCadastroNovoVeiculo() {
         'MOTORISTAPAG_Login_input_novo_veiculo_renavam',
         'MOTORISTAPAG_Login_input_novo_veiculo_marca',
         'MOTORISTAPAG_Login_input_novo_veiculo_modelo',
+		'MOTORISTAPAG_Login_input_novo_veiculo_cor',
         'MOTORISTAPAG_Login_input_novo_veiculo_ano',
         'MOTORISTAPAG_Login_select_novo_veiculo_categoria'
     ];
