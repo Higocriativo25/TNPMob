@@ -4482,7 +4482,8 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 const TESTEMOTORISTA_db = firebase.firestore();
 const TESTEMOTORISTA_storage = firebase.storage();
 const PRIMEIRAPAG_Login_storage = TESTEMOTORISTA_storage;
-	
+
+
 	
 	        // ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
 			
@@ -4493,7 +4494,34 @@ let MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
 let MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
 			
 			
-			
+
+function PRIMEIRAPAG_Login_func_mostrarErro(idErro, mensagem) {
+    const erro = document.getElementById(idErro);
+
+    if (!erro) {
+        alert(mensagem);
+        return;
+    }
+
+    erro.innerText = mensagem;
+    erro.style.display = 'block';
+
+    try {
+        erro.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    } catch (e) {
+        console.warn('Não foi possível rolar até o erro:', e);
+    }
+}
+
+function PRIMEIRAPAG_Login_func_limparErros() {
+    document.querySelectorAll('.PRIMEIRAPAG_Login_error').forEach(function(erro) {
+        erro.innerText = '';
+        erro.style.display = 'none';
+    });
+}				
 			
 function PRIMEIRAPAG_Login_func_irPara(telaId) {
     const PRIMEIRAPAG_tela = document.getElementById(telaId);
@@ -4593,10 +4621,6 @@ function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
 }
 	
 	
-	
-	
-	
-
     // ========== UTILITÁRIOS TESTE ==========
     function TESTEMOTORISTA_func_irPara(telaId) {
         const tela = document.getElementById(telaId);
@@ -7360,6 +7384,80 @@ async function MOTORISTAPAG_Login_func_uploadDocumentoNovoVeiculoComprimido(uid,
     };
 }
 
+async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    if (!veiculoId) {
+        alert('Não foi possível identificar o veículo para excluir.');
+        return;
+    }
+
+    const confirmar = confirm(
+        'Deseja excluir este veículo?\n\n' +
+        'Essa ação remove o veículo da sua lista. Se ele estava em uso, será necessário escolher outro veículo aprovado.'
+    );
+
+    if (!confirmar) return;
+
+    try {
+        const motoristaRef = PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid);
+
+        const doc = await motoristaRef.get();
+        const dados = doc.exists ? doc.data() : {};
+
+        const veiculos = Array.isArray(dados.veiculos) ? dados.veiculos : [];
+        const veiculoAtualId = dados.veiculoAtualId || '';
+
+        const veiculoExiste = veiculos.some(function(veiculo) {
+            return veiculo && veiculo.id === veiculoId;
+        });
+
+        if (!veiculoExiste) {
+            alert('Veículo não encontrado.');
+            return;
+        }
+
+        const veiculosAtualizados = veiculos.filter(function(veiculo) {
+            return veiculo && veiculo.id !== veiculoId;
+        });
+
+        let novoVeiculoAtualId = veiculoAtualId;
+
+        if (veiculoAtualId === veiculoId) {
+            const primeiroAprovado = veiculosAtualizados.find(function(veiculo) {
+                return veiculo && veiculo.status === 'aprovado';
+            });
+
+            novoVeiculoAtualId = primeiroAprovado ? primeiroAprovado.id : '';
+        }
+
+        await motoristaRef.set({
+            veiculos: veiculosAtualizados,
+            veiculoAtualId: novoVeiculoAtualId,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        alert('Veículo excluído com sucesso.');
+
+        if (typeof MOTORISTAPAG_Login_func_carregarGerenciarVeiculos === 'function') {
+            await MOTORISTAPAG_Login_func_carregarGerenciarVeiculos();
+        }
+
+        if (typeof MOTORISTAPAG_Login_func_carregarVeiculosEmUso === 'function') {
+            await MOTORISTAPAG_Login_func_carregarVeiculosEmUso();
+        }
+
+    } catch (erro) {
+        console.error('Erro ao excluir veículo:', erro);
+        alert('Não foi possível excluir o veículo agora. Tente novamente.');
+    }
+}
 
 
 
