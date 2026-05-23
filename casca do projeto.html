@@ -1,0 +1,4151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Home Motorista - TNP MoB</title>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+   <style>
+	
+/* ==================================================
+   1. VARIÁVEIS E BASE
+================================================== */
+
+:root {
+            --Fame_dark: #121212;
+            --Fame_card: #1e1b19;
+            --Fame_gold: #c5a98d;
+            --Fame_text: #e0e0e0;
+            --Fame_muted: #8e8e8e;
+            --Fame_input: #2a2623;
+            --Fame_brown: #4d2b1a;
+            --Fame_error: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+/* ==================================================
+   2. ESTRUTURA PRINCIPAL
+================================================== */
+.Fame_moldura {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: #1a1a1a;
+            border: 4px solid var(--Fame_brown);
+            border-radius: 0;
+            box-shadow: inset 0 0 20px var(--Fame_brown);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+/* ==================================================
+   2. ESTRUTURA PRINCIPAL
+================================================== */
+
+.Fame_content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(197, 169, 141, 0.12) transparent;
+}
+
+.Fame_content::-webkit-scrollbar {
+    width: 3px;
+}
+
+.Fame_content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.Fame_content::-webkit-scrollbar-thumb {
+    background: rgba(197, 169, 141, 0.12);
+    border-radius: 20px;
+}
+
+.Fame_content::-webkit-scrollbar-thumb:hover {
+    background: rgba(197, 169, 141, 0.30);
+}
+/* ==================================================
+   3. RESPONSIVO
+================================================== */
+ @media (min-width: 768px) {
+            .Fame_moldura {
+                width: 95%;
+                max-width: 450px;
+                height: 90vh;
+                border-radius: 30px;
+            }
+        }
+
+        
+/* ==================================================
+   4. HEADER / TOPO GERAL
+================================================== */
+.PRIMEIRAPAG_Login_header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .PRIMEIRAPAG_Login_header h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .PRIMEIRAPAG_Login_subtitle {
+            color: var(--Fame_muted);
+            font-size: 0.9rem;
+            text-align: center;
+            line-height: 1.4;
+        }
+/* ==================================================
+   5. TELAS
+================================================== */
+.PRIMEIRAPAG_Login_screen {
+            display: none !important;
+        }
+
+        .PRIMEIRAPAG_Login_screen.active {
+            display: flex !important;
+            flex-direction: column;
+            min-height: 100%;
+        }
+
+        .PRIMEIRAPAG_Login_step_title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--Fame_gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+/* ==================================================
+   6. FORMULÁRIOS
+================================================== */
+.PRIMEIRAPAG_Login_form_group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .PRIMEIRAPAG_Login_form_group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--Fame_muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .PRIMEIRAPAG_Login_form_group input,
+        .PRIMEIRAPAG_Login_form_group select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--Fame_input);
+            border: 1px solid #3a3531;
+            border-radius: 0.5rem;
+            color: var(--Fame_text);
+            font-size: 0.95rem;
+        }
+
+        .PRIMEIRAPAG_Login_form_group input.error {
+            border-color: var(--Fame_error);
+            background-color: rgba(239, 68, 68, 0.05);
+        }
+		
+		.PRIMEIRAPAG_Login_eye_btn {
+            position: absolute;
+            right: 10px;
+            top: 32px;
+            background: none;
+            border: none;
+            color: var(--Fame_muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+		
+		
+/* ==================================================
+   7. BOTÕES
+================================================== */
+
+ .PRIMEIRAPAG_Login_btn {
+            width: 100%;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
+
+        .PRIMEIRAPAG_Login_btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .PRIMEIRAPAG_Login_btn_primary {
+            background-color: var(--Fame_gold);
+            color: var(--Fame_card);
+        }
+
+        .PRIMEIRAPAG_Login_btn_secondary {
+            background-color: transparent;
+            border: 1px solid #3a3531;
+            color: var(--Fame_gold);
+        }
+		   .PRIMEIRAPAG_Login_btn_small_width {
+            max-width: 220px;
+        }
+
+        .PRIMEIRAPAG_Login_btn_atualizar_teste_style {
+            position: fixed;
+            right: 14px;
+            bottom: 14px;
+            z-index: 9999;
+            width: auto;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(197, 169, 141, 0.45);
+            background: rgba(30, 27, 25, 0.85);
+            color: #c5a98d;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            opacity: 0.75;
+        }
+		 
+
+/* ==================================================
+   8. MENSAGENS / AVISOS / CARDS
+================================================== */
+ .PRIMEIRAPAG_Login_error {
+            background-color: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: #fca5a5;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+		.PRIMEIRAPAG_Login_aviso_analise {
+            margin-top: 14px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(197, 169, 141, 0.08);
+            border: 1px solid rgba(197, 169, 141, 0.22);
+            color: var(--Fame_text);
+            font-size: 0.78rem;
+            line-height: 1.4;
+            text-align: center;
+        }
+		.PRIMEIRAPAG_Login_cadastro_info_box {
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(197, 169, 141, 0.08);
+            border: 1px solid rgba(197, 169, 141, 0.22);
+            margin-bottom: 18px;
+        }
+
+        .PRIMEIRAPAG_Login_cadastro_info_box h4 {
+            color: var(--Fame_gold);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .PRIMEIRAPAG_Login_cadastro_info_box p {
+            color: var(--Fame_text);
+            font-size: 0.82rem;
+            line-height: 1.45;
+        }
+
+        .PRIMEIRAPAG_Login_status_box {
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(197, 169, 141, 0.08);
+            border: 1px solid rgba(197, 169, 141, 0.22);
+            margin-top: 20px;
+            color: var(--Fame_text);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .PRIMEIRAPAG_Login_status_box strong {
+            color: var(--Fame_gold);
+        }
+/* CARD IMPORTANTE - TNP */
+/* CARD IMPORTANTE - TNP */
+.PASSAGEIROPAG_Login_card_importante {
+    margin-top: -20px;
+    margin-bottom: 35px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    text-align: center;
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.PASSAGEIROPAG_Login_card_importante strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.PASSAGEIROPAG_Login_card_importante p {
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+/* ==================================================
+   9. CARDS DE TIPO
+================================================== */
+.PRIMEIRAPAG_Login_tipo_cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .PRIMEIRAPAG_Login_tipo_card {
+            background: var(--Fame_input);
+            border: 1px solid #3a3531;
+            border-radius: 12px;
+            padding: 12px 8px;
+            color: var(--Fame_text);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s ease;
+            font-size: 0.85rem;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .PRIMEIRAPAG_Login_tipo_card span {
+            display: block;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+
+        .PRIMEIRAPAG_Login_tipo_card.active {
+            border-color: var(--Fame_gold);
+            background: rgba(197, 169, 141, 0.12);
+            color: var(--Fame_gold);
+            box-shadow: 0 0 0 1px rgba(197, 169, 141, 0.2);
+        }
+		.QUARTAPAG_Login_tipo_card_desc {
+            display: block;
+            font-size: 0.68rem;
+            margin-top: 4px;
+            color: var(--Fame_muted);
+        }
+
+        
+/* ==================================================
+   10. LINKS / TEXTOS PEQUENOS
+================================================== */
+.PRIMEIRAPAG_Login_link_row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -8px;
+            margin-bottom: 5px;
+        }
+
+        .PRIMEIRAPAG_Login_small_link {
+            color: var(--Fame_gold);
+            font-size: 0.78rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .PRIMEIRAPAG_Login_novo_texto {
+            color: var(--Fame_muted);
+            text-align: center;
+            font-size: 0.82rem;
+            margin-top: 18px;
+            margin-bottom: -4px;
+        }
+		.PRIMEIRAPAG_Login_footer_suporte {
+            margin-top: auto;
+            padding-top: 18px;
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--Fame_muted);
+        }
+
+        .PRIMEIRAPAG_Login_footer_suporte span {
+            color: var(--Fame_gold);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+		
+/* ==================================================
+   11. PROGRESSO
+================================================== */
+ .PRIMEIRAPAG_Login_progress_wrap {
+            margin-top: 12px;
+        }
+
+        .PRIMEIRAPAG_Login_progress_text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--Fame_muted);
+            margin-bottom: 6px;
+        }
+
+        .PRIMEIRAPAG_Login_progress_bar_fake {
+            width: 100%;
+            height: 7px;
+            background: #333;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .PRIMEIRAPAG_Login_progress_bar_fake div {
+            width: 0%;
+            height: 100%;
+            background: var(--Fame_gold);
+            border-radius: 20px;
+        }
+		.SEXTAPAG_Login_progress_45 {
+            width: 45%;
+        }
+
+        .SEXTAPAG_Login_progress_0 {
+            width: 0%;
+        }
+
+/* ==================================================
+   12. WELCOME
+================================================== */
+.Welcome_bg {
+            background-image: url('https://t2.tudocdn.net/174865?w=217&h=386');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+
+        .Welcome_bg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 1;
+        }
+
+        .Welcome_bg > div {
+            position: relative;
+            z-index: 2;
+        }
+		
+		.PRIMEIRAPAG_Login_welcome_content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .PRIMEIRAPAG_Login_welcome_title {
+            color: var(--Fame_gold);
+            font-size: 1.7rem;
+            margin-bottom: 12px;
+        }
+
+        .PRIMEIRAPAG_Login_welcome_text {
+            color: #ffffff;
+            font-size: 1rem;
+            margin-bottom: 18px;
+        }
+
+/* ==================================================
+   13. SELFIE / FOTO
+================================================== */
+/* ===== TELA SELFIE - PREFIXO QUINTAPAG ===== */
+.QUINTAPAG_Login_preview_area {
+    margin-top: 18px;
+    text-align: center;
+    display: none;
+}
+
+.QUINTAPAG_Login_preview_img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--Fame_gold);
+}
+
+.QUINTAPAG_Login_info {
+    color: var(--Fame_muted);
+    font-size: 0.78rem;
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+.QUINTAPAG_Login_file_label {
+    display: block;
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 0.5rem;
+    background: var(--Fame_gold);
+    color: var(--Fame_card);
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    text-transform: uppercase;
+}
+
+.QUINTAPAG_Login_file_input {
+    display: none;
+}
+/* ===== SELFIE COM DOCUMENTO - PREFIXO PASSAGEIROPAG ===== */
+
+.PASSAGEIROPAG_Login_selfie_documento_preview {
+    width: 100%;
+    max-width: 260px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 3px solid var(--Fame_gold);
+    display: block;
+    margin: 0 auto;
+}		
+.MOTORISTAPAG_Login_preview_doc {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid var(--Fame_gold);
+    margin: 10px 0 12px;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_btn_confirmar_doc {
+    display: none;
+    margin-top: 8px;
+}
+.MOTORISTAPAG_Login_info_compressao {
+    display: none;
+    margin: -4px 0 10px;
+    color: #50dc82;
+    font-size: 0.78rem;
+    text-align: center;
+    line-height: 1.35;
+}
+
+/* MOTORISTA - DOCUMENTOS DO VEÍCULO */
+.MOTORISTAPAG_Login_screen_documentos_veiculo {
+    padding: 22px 18px 120px;
+}		
+
+/* ==================================================
+   14. MODAL TNP
+================================================== */
+ .DECIMASEGUNDAPAG_Login_modal_overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .DECIMASEGUNDAPAG_Login_modal_box {
+            width: 100%;
+            max-width: 390px;
+            background: #1e1b19;
+            border: 1px solid rgba(197, 169, 141, 0.35);
+            border-radius: 18px;
+            padding: 18px;
+            color: #e0e0e0;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45);
+        }
+
+        .DECIMASEGUNDAPAG_Login_modal_title {
+            color: #c5a98d;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .DECIMASEGUNDAPAG_Login_modal_text {
+            font-size: 0.86rem;
+            line-height: 1.5;
+            color: #e0e0e0;
+        }
+
+/* ==================================================
+   15. CLASSES AUXILIARES
+================================================== */
+ /* ===== CLASSES AUXILIARES PARA REMOVER CSS INLINE DO HTML ===== */
+        .PRIMEIRAPAG_Login_mb_16 {
+            margin-bottom: 16px;
+        }
+
+        .PRIMEIRAPAG_Login_mt_0 {
+            margin-top: 0;
+        }
+
+        .PRIMEIRAPAG_Login_mt_14 {
+            margin-top: 14px;
+        }
+
+        .PRIMEIRAPAG_Login_mt_15 {
+            margin-top: 15px;
+        }
+
+        .PRIMEIRAPAG_Login_mt_18 {
+            margin-top: 18px;
+        }
+
+        .PRIMEIRAPAG_Login_text_left {
+            text-align: left;
+        }
+
+        .PRIMEIRAPAG_Login_text_center {
+            text-align: center;
+        }
+
+        .PRIMEIRAPAG_Login_hidden {
+            display: none;
+        }
+
+        .PRIMEIRAPAG_Login_inline_checkbox_label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .PRIMEIRAPAG_Login_checkbox_auto {
+            width: auto;
+        }
+		.SEGUNDAPAG_Login_email_destaque {
+            color: var(--Fame_gold);
+        }
+
+/* ==================================================
+   16. HOME DO PASSAGEIRO
+================================================== */
+
+#PASSAGEIROPAG_Login_screen_home {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* FUNDO DO MAPA */
+#PASSAGEIROPAG_Login_mapa_fundo {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(197,169,141,0.18), transparent 28%),
+        radial-gradient(circle at 70% 70%, rgba(77,43,26,0.35), transparent 30%),
+        #151515;
+    overflow: hidden;
+}
+
+.PASSAGEIROPAG_Login_mapa_fake {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+}
+
+.PASSAGEIROPAG_Login_rua {
+    position: absolute;
+    background: rgba(255,255,255,0.08);
+    border-radius: 30px;
+}
+
+.PASSAGEIROPAG_Login_rua_1 {
+    width: 130%;
+    height: 18px;
+    left: -20%;
+    top: 38%;
+    transform: rotate(-22deg);
+}
+
+.PASSAGEIROPAG_Login_rua_2 {
+    width: 120%;
+    height: 16px;
+    left: -15%;
+    top: 58%;
+    transform: rotate(18deg);
+}
+
+.PASSAGEIROPAG_Login_pin_origem {
+    position: absolute;
+    top: 37%;
+    left: 43%;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+.PASSAGEIROPAG_Login_pin_motorista {
+    position: absolute;
+    top: 54%;
+    left: 58%;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+/* TOPO */
+.PASSAGEIROPAG_Login_topo_home {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px 16px 16px;
+}
+
+.PASSAGEIROPAG_Login_btn_foto_menu {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(197,169,141,0.75);
+    background: rgba(30,27,25,0.9);
+    padding: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.PASSAGEIROPAG_Login_btn_foto_menu img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    background: #2a2623;
+}
+
+.PASSAGEIROPAG_Login_topo_texto {
+    flex: 1;
+    color: var(--Fame_text);
+    line-height: 1.2;
+}
+
+.PASSAGEIROPAG_Login_topo_texto strong {
+    display: block;
+    font-size: 0.98rem;
+    color: #ffffff;
+}
+
+.PASSAGEIROPAG_Login_topo_texto span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--Fame_muted);
+    margin-top: 3px;
+}
+
+.PASSAGEIROPAG_Login_btn_sininho {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.92);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+/* MENU LATERAL */
+.PASSAGEIROPAG_Login_menu_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9997;
+    display: none;
+}
+
+.PASSAGEIROPAG_Login_menu_overlay.active {
+    display: block;
+}
+
+.PASSAGEIROPAG_Login_menu_lateral {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 280px;
+    max-width: 82%;
+    height: 100vh;
+    background: #1e1b19;
+    border-right: 1px solid rgba(197,169,141,0.25);
+    z-index: 9998;
+    padding: 18px 14px;
+    transition: left 0.28s ease;
+    overflow-y: auto;
+    box-shadow: 8px 0 28px rgba(0,0,0,0.45);
+}
+
+.PASSAGEIROPAG_Login_menu_lateral.active {
+    left: 0;
+}
+
+.PASSAGEIROPAG_Login_menu_header {
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(197,169,141,0.18);
+}
+
+.PASSAGEIROPAG_Login_menu_header img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(197,169,141,0.65);
+    background: #2a2623;
+    display: block;
+    margin: 0 auto 8px auto;
+}
+
+.PASSAGEIROPAG_Login_menu_header strong {
+    display: block;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.PASSAGEIROPAG_Login_menu_header span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.74rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.PASSAGEIROPAG_Login_menu_lateral button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--Fame_text);
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.PASSAGEIROPAG_Login_menu_lateral button:hover {
+    background: rgba(197,169,141,0.10);
+    color: var(--Fame_gold);
+}
+
+/* PAINEL INFERIOR */
+.PASSAGEIROPAG_Login_painel_chamada {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 6;
+    max-height: 78%;
+    overflow-y: auto;
+    padding: 10px 16px 90px 16px;
+    background: rgba(18,18,18,0.96);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    border-top: 1px solid rgba(197,169,141,0.25);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
+    transition: transform 0.28s ease;
+}
+
+.PASSAGEIROPAG_Login_painel_chamada.recolhido {
+    transform: translateY(50%);
+}
+
+.PASSAGEIROPAG_Login_puxador {
+    width: 52px;
+    height: 5px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.65);
+    margin: 0 auto 14px auto;
+    cursor: pointer;
+}
+
+.PASSAGEIROPAG_Login_card_corrida,
+.PASSAGEIROPAG_Login_card_extra {
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    border-radius: 18px;
+    padding: 14px;
+    margin-top: 12px;
+    color: var(--Fame_text);
+}
+
+.PASSAGEIROPAG_Login_card_corrida h3 {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.PASSAGEIROPAG_Login_input_fake {
+    background: var(--Fame_input);
+    border: 1px solid #3a3531;
+    border-radius: 12px;
+    padding: 12px;
+    color: var(--Fame_text);
+    font-size: 0.88rem;
+    margin-top: 8px;
+}
+
+.PASSAGEIROPAG_Login_card_extra strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.92rem;
+    margin-bottom: 8px;
+}
+
+.PASSAGEIROPAG_Login_card_extra p {
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.PASSAGEIROPAG_Login_card_extra .PRIMEIRAPAG_Login_btn {
+    margin-top: 10px;
+}
+
+/* TELAS PROVISÓRIAS DO PASSAGEIRO */
+.PASSAGEIROPAG_Login_pagina_simples_box {
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    color: var(--Fame_text);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.PASSAGEIROPAG_Login_pagina_simples_box strong {
+    color: var(--Fame_gold);
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+/* MODAL GRANDE DE SELFIE COM DOCUMENTO */
+
+.PASSAGEIROPAG_Login_modal_documento_overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    background: rgba(0, 0, 0, 0.72);
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.PASSAGEIROPAG_Login_modal_documento_box {
+    width: 100%;
+    max-width: 390px;
+    background: #1e1b19;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+    border-radius: 24px;
+    padding: 22px 18px;
+    color: var(--Fame_text);
+    text-align: center;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+}
+
+.PASSAGEIROPAG_Login_modal_documento_icone {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 14px auto;
+    border-radius: 50%;
+    background: rgba(197, 169, 141, 0.12);
+    border: 1px solid rgba(197, 169, 141, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.PASSAGEIROPAG_Login_modal_documento_box h3 {
+    color: var(--Fame_gold);
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+}
+
+.PASSAGEIROPAG_Login_modal_documento_box p {
+    color: var(--Fame_text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+.PASSAGEIROPAG_Login_modal_documento_aviso {
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.20);
+    border-radius: 16px;
+    padding: 12px;
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+}
+/* ==================================================
+   17. AJUSTES FINAIS
+================================================== */
+/* MOTORISTA - DADOS DO VEÍCULO */
+.MOTORISTAPAG_Login_screen_dados_veiculo {
+    padding: 22px 18px 120px;
+}
+
+.Fame_content.PASSAGEIROPAG_Login_home_ativa {
+    padding: 0;
+}
+
+.Fame_content.PASSAGEIROPAG_Login_home_ativa #PASSAGEIROPAG_Login_screen_home {
+    width: 100%;
+    min-height: 100%;
+}
+/* ===== TEMA CLARO TNP MOB ===== */
+
+body.TNP_TEMA_CLARO {
+    --Fame_dark: #f7f2ec;
+    --Fame_card: #ffffff;
+    --Fame_gold: #7b5a3e;
+    --Fame_text: #1f1f1f;
+    --Fame_muted: #7c7065;
+    --Fame_input: #f3eee8;
+    --Fame_brown: #7b5438;
+    --Fame_error: #dc2626;
+}
+
+body.TNP_TEMA_CLARO {
+    background-color: #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .Fame_moldura {
+    background: #f7f2ec;
+    border-color: #7b5438;
+    box-shadow: inset 0 0 16px rgba(123, 84, 56, 0.22);
+}
+
+body.TNP_TEMA_CLARO .Fame_content {
+    background: #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_header h1 {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_subtitle {
+    color: #7c7065;
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_form_group input,
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_form_group select {
+    background-color: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.32);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_btn_primary {
+    background-color: #7b5438;
+    color: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.85);
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_btn_secondary {
+    background-color: #ffffff;
+    color: #7b5438;
+    border: 1px solid rgba(123, 84, 56, 0.55);
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_cadastro_info_box,
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_status_box,
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_aviso_analise {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_cadastro_info_box h4,
+body.TNP_TEMA_CLARO .PRIMEIRAPAG_Login_status_box strong {
+    color: #7b5438;
+}
+
+/* ===== TEMA CLARO NA HOME DO PASSAGEIRO ===== */
+
+body.TNP_TEMA_CLARO #PASSAGEIROPAG_Login_mapa_fundo {
+    background:
+        radial-gradient(circle at 30% 20%, rgba(123, 84, 56, 0.12), transparent 28%),
+        radial-gradient(circle at 70% 70%, rgba(197, 169, 141, 0.20), transparent 30%),
+        #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_rua {
+    background: rgba(123, 84, 56, 0.12);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_painel_chamada {
+    background: rgba(255, 255, 255, 0.96);
+    border-top-color: rgba(123, 84, 56, 0.18);
+    box-shadow: 0 -10px 30px rgba(123, 84, 56, 0.12);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_card_corrida,
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_card_extra {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_card_corrida h3,
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_card_extra strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_card_extra p {
+    color: #3d3d3d;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_input_fake {
+    background: #f3eee8;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_topo_texto strong {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_topo_texto span {
+    color: #7c7065;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_btn_foto_menu,
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_btn_sininho {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_puxador {
+    background: rgba(123, 84, 56, 0.55);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_overlay {
+    background: rgba(31, 31, 31, 0.45);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_box {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.35);
+    color: #1f1f1f;
+    box-shadow: 0 18px 45px rgba(123, 84, 56, 0.18);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_box h3 {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_box p {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_icone,
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_modal_documento_aviso {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #1f1f1f;
+}	
+
+/* MENU LATERAL NO TEMA CLARO - MARROM CLARO COM LETRAS BRANCAS */
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_lateral {
+    background: #7b5438;
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 8px 0 28px rgba(123, 84, 56, 0.22);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_header strong {
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_header span {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_lateral button {
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .PASSAGEIROPAG_Login_menu_lateral button:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}        
+
+/* MOTORISTA - CONFIRMAÇÃO PIX PARA RECEBIMENTO */
+.MOTORISTAPAG_Login_screen_pix_confirmacao {
+    padding: 22px 18px 120px;
+}
+
+.MOTORISTAPAG_Login_pix_topo {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.MOTORISTAPAG_Login_pix_icone {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: rgba(197, 169, 141, 0.12);
+    border: 1px solid rgba(197, 169, 141, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.MOTORISTAPAG_Login_pix_titulo {
+    color: var(--Fame_gold);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_pix_texto {
+    color: var(--Fame_text);
+    font-size: 0.86rem;
+    line-height: 1.45;
+}
+
+.MOTORISTAPAG_Login_pix_box {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.86rem;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 14px;
+}
+
+.MOTORISTAPAG_Login_pix_box p {
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_pix_box strong {
+    color: var(--Fame_gold);
+}
+
+.MOTORISTAPAG_Login_pix_aviso {
+    margin-top: 12px;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(123, 84, 56, 0.10);
+    border: 1px solid rgba(123, 84, 56, 0.28);
+    color: var(--Fame_text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.MOTORISTAPAG_Login_pix_aviso_mei {
+    margin-top: 12px;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.76rem;
+    line-height: 1.4;
+}
+
+.MOTORISTAPAG_Login_pix_status_titulo {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_pix_qrcode {
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+    display: block;
+    margin: 14px auto;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+}
+
+.MOTORISTAPAG_Login_pix_codigo {
+    word-break: break-all;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px dashed rgba(197, 169, 141, 0.35);
+    color: var(--Fame_text);
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_pix_sucesso {
+    border-color: rgba(197, 169, 141, 0.45);
+    background: rgba(197, 169, 141, 0.10);
+    animation: MOTORISTAPAG_Login_pix_card_sucesso 0.45s ease-out;
+}
+
+@keyframes MOTORISTAPAG_Login_pix_card_sucesso {
+    0% {
+        transform: translateY(14px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.MOTORISTAPAG_Login_pix_sucesso_icone {
+    font-size: 54px;
+    margin-bottom: 10px;
+    animation: MOTORISTAPAG_Login_pix_pop 0.45s ease-out;
+}
+
+@keyframes MOTORISTAPAG_Login_pix_pop {
+    0% {
+        transform: scale(0.4);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.MOTORISTAPAG_Login_pix_sucesso h3 {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+       
+/* MOTORISTA - TERMOS DO MOTORISTA */
+.MOTORISTAPAG_Login_screen_termos_motorista {
+    padding: 22px 18px 120px;
+}
+
+.MOTORISTAPAG_Login_termos_box {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+.MOTORISTAPAG_Login_termos_box h4 {
+    color: var(--Fame_gold);
+    font-size: 0.9rem;
+    margin-top: 12px;
+    margin-bottom: 6px;
+}
+
+.MOTORISTAPAG_Login_termos_box h4:first-child {
+    margin-top: 0;
+}
+
+.MOTORISTAPAG_Login_termos_box p {
+    margin-bottom: 10px;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_termos_box {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_termos_box h4 {
+    color: #7b5438;
+}
+        
+/* MOTORISTA - ID TNP */
+.MOTORISTAPAG_Login_screen_id_tnp {
+    padding: 22px 18px 120px;
+}
+
+.MOTORISTAPAG_Login_id_tnp_box {
+    padding: 16px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.84rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_id_tnp_aviso {
+    margin-top: 8px;
+    padding: 11px;
+    border-radius: 14px;
+    background: rgba(123, 84, 56, 0.10);
+    border: 1px solid rgba(123, 84, 56, 0.28);
+    color: var(--Fame_text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_id_tnp_box {
+    background: #ffffff;
+    border: 1px solid rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_id_tnp_aviso {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.28);
+    color: #1f1f1f;
+}
+       
+/* BORDA SUPERIOR NA HOME DO PASSAGEIRO */
+.Fame_moldura::before {
+    content: none;
+}
+        
+/* HOME DO MOTORISTA */
+#MOTORISTAPAG_Login_screen_home {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* FUNDO MAPA MOTORISTA */
+#MOTORISTAPAG_Login_mapa_fundo {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 28% 18%, rgba(197,169,141,0.18), transparent 28%),
+        radial-gradient(circle at 70% 72%, rgba(77,43,26,0.28), transparent 32%),
+        #151515;
+    overflow: hidden;
+}
+
+.MOTORISTAPAG_Login_mapa_fake {
+    position: absolute;
+    inset: 0;
+    opacity: 0.9;
+}
+
+.MOTORISTAPAG_Login_rua {
+    position: absolute;
+    background: rgba(255,255,255,0.08);
+    border-radius: 30px;
+}
+
+.MOTORISTAPAG_Login_rua_1 {
+    width: 130%;
+    height: 18px;
+    left: -20%;
+    top: 38%;
+    transform: rotate(-22deg);
+}
+
+.MOTORISTAPAG_Login_rua_2 {
+    width: 120%;
+    height: 16px;
+    left: -15%;
+    top: 60%;
+    transform: rotate(18deg);
+}
+
+.MOTORISTAPAG_Login_pin_motorista {
+    position: absolute;
+    top: 54%;
+    left: 58%;
+    font-size: 26px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+.MOTORISTAPAG_Login_pin_chamada {
+    position: absolute;
+    top: 38%;
+    left: 44%;
+    font-size: 24px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+/* TOPO MOTORISTA */
+.MOTORISTAPAG_Login_topo_home {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 52px 16px 16px 16px;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid rgba(197,169,141,0.75);
+    background: rgba(30,27,25,0.9);
+    padding: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    background: #2a2623;
+}
+
+.MOTORISTAPAG_Login_topo_texto {
+    flex: 1;
+    color: var(--Fame_text);
+    line-height: 1.2;
+}
+
+.MOTORISTAPAG_Login_topo_texto strong {
+    display: block;
+    font-size: 0.98rem;
+    color: #ffffff;
+}
+
+.MOTORISTAPAG_Login_topo_texto span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--Fame_muted);
+    margin-top: 3px;
+}
+
+.MOTORISTAPAG_Login_btn_sininho {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.92);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* MENU LATERAL MOTORISTA */
+.MOTORISTAPAG_Login_menu_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9997;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_menu_overlay.active {
+    display: block;
+}
+
+.MOTORISTAPAG_Login_menu_lateral {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 280px;
+    max-width: 82%;
+    height: 100vh;
+    background: #1e1b19;
+    border-right: 1px solid rgba(197,169,141,0.25);
+    z-index: 9998;
+    padding: 18px 14px;
+    transition: left 0.28s ease;
+    overflow-y: auto;
+    box-shadow: 8px 0 28px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_menu_lateral.active {
+    left: 0;
+}
+
+.MOTORISTAPAG_Login_menu_header {
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(197,169,141,0.18);
+}
+
+.MOTORISTAPAG_Login_menu_header img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(197,169,141,0.65);
+    background: #2a2623;
+    display: block;
+    margin: 0 auto 8px auto;
+}
+
+.MOTORISTAPAG_Login_menu_header strong {
+    display: block;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.MOTORISTAPAG_Login_menu_header span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.74rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--Fame_text);
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button:hover {
+    background: rgba(197,169,141,0.10);
+    color: var(--Fame_gold);
+}
+
+/* BOTÕES DO MAPA */
+.MOTORISTAPAG_Login_btn_mapa {
+    position: absolute;
+    right: 18px;
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.90);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_btn_mapa_camadas {
+    top: 48%;
+}
+
+.MOTORISTAPAG_Login_btn_mapa_reportar {
+    top: 56%;
+}
+
+/* PAINEL INFERIOR MOTORISTA */
+.MOTORISTAPAG_Login_painel_home {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -28px;
+    z-index: 6;
+    max-height: 78%;
+    overflow-y: auto;
+    padding: 10px 16px 95px 16px;
+    background: rgba(18,18,18,0.96);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    border-top: 1px solid rgba(197,169,141,0.25);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_puxador {
+    width: 52px;
+    height: 5px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.65);
+    margin: 0 auto 14px auto;
+}
+
+.MOTORISTAPAG_Login_card_status,
+.MOTORISTAPAG_Login_card_extra {
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    border-radius: 18px;
+    padding: 14px;
+    margin-top: 12px;
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_card_status h3 {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_card_status p,
+.MOTORISTAPAG_Login_card_extra p {
+    color: var(--Fame_text);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_card_extra strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.92rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_check_linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(197,169,141,0.14);
+    font-size: 0.8rem;
+}
+
+.MOTORISTAPAG_Login_check_linha:last-child {
+    border-bottom: none;
+}
+
+.MOTORISTAPAG_Login_check_linha small {
+    color: var(--Fame_gold);
+    font-weight: 700;
+    text-align: right;
+}
+
+/* TEMA CLARO MOTORISTA */
+body.TNP_TEMA_CLARO #MOTORISTAPAG_Login_mapa_fundo {
+    background:
+        radial-gradient(circle at 30% 20%, rgba(123, 84, 56, 0.12), transparent 28%),
+        radial-gradient(circle at 70% 70%, rgba(197, 169, 141, 0.20), transparent 30%),
+        #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_rua {
+    background: rgba(123, 84, 56, 0.12);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_painel_home,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status h3,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_check_linha small {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_status p,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_card_extra p {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_topo_texto strong {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_topo_texto span {
+    color: #7c7065;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_foto_menu,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_sininho,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_mapa {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_lateral {
+    background: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_lateral button,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header strong {
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_menu_header span {
+    color: rgba(255,255,255,0.72);
+}
+
+/* trocando a foto no menu do ícone pra evitar quebra */
+
+.menu_icon_hamburguer {
+    width: 24px;
+    height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.menu_icon_hamburguer span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: var(--Fame_gold); /* Cor dourada que você já usa */
+    border-radius: 2px;
+}
+
+/* Ajuste no botão circular para centralizar o ícone */
+.PASSAGEIROPAG_Login_btn_foto_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
+
+.MOTORISTAPAG_Login_btn_foto_menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+}
+
+/* ==================================================
+   HOME OPERACIONAL DO MOTORISTA - LIMPA
+================================================== */
+
+.Fame_content.MOTORISTAPAG_Login_home_ativa {
+    padding: 0;
+}
+
+.MOTORISTAPAG_Login_home_operacional {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+    padding: 0;
+    background: #151515;
+}
+
+.MOTORISTAPAG_Login_mapa_fundo {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 25% 20%, rgba(70, 120, 180, 0.22), transparent 28%),
+        radial-gradient(circle at 70% 78%, rgba(77, 43, 26, 0.28), transparent 34%),
+        #111923;
+}
+
+.MOTORISTAPAG_Login_rota_fake {
+    position: absolute;
+    height: 4px;
+    border-radius: 20px;
+    background: rgba(72, 148, 255, 0.45);
+    box-shadow: 0 0 12px rgba(72, 148, 255, 0.35);
+}
+
+.MOTORISTAPAG_Login_rota_1 {
+    width: 72%;
+    top: 31%;
+    left: 8%;
+    transform: rotate(-24deg);
+}
+
+.MOTORISTAPAG_Login_rota_2 {
+    width: 76%;
+    top: 54%;
+    left: 18%;
+    transform: rotate(19deg);
+}
+
+.MOTORISTAPAG_Login_pin_play {
+    position: absolute;
+    top: 44%;
+    left: 48%;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.45);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    backdrop-filter: blur(6px);
+}
+
+.MOTORISTAPAG_Login_carro_fake {
+    position: absolute;
+    top: 56%;
+    left: 58%;
+    font-size: 28px;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.55));
+}
+
+/* TOPO */
+.MOTORISTAPAG_Login_home_topo {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 10px;
+}
+
+.MOTORISTAPAG_Login_home_btn_menu,
+.MOTORISTAPAG_Login_home_btn_sino,
+.MOTORISTAPAG_Login_home_ganhos {
+    border: none;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_home_btn_menu,
+.MOTORISTAPAG_Login_home_btn_sino {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(30, 27, 25, 0.92);
+    border: 1px solid rgba(197, 169, 141, 0.28);
+    color: var(--Fame_gold);
+    font-size: 20px;
+}
+
+.MOTORISTAPAG_Login_home_ganhos {
+    justify-self: center;
+    min-width: 130px;
+    height: 38px;
+    border-radius: 22px;
+    background: #7b5438;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 0.92rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    border: none;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 12px;
+}
+
+.MOTORISTAPAG_Login_icone_ocultar_ganhos {
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+/* BOTÕES MAPA */
+.MOTORISTAPAG_Login_home_btn_mapa {
+    position: absolute;
+    right: 18px;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(197,169,141,0.35);
+    background: rgba(30,27,25,0.88);
+    color: var(--Fame_gold);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_home_btn_reportar {
+    top: 39%;
+}
+
+.MOTORISTAPAG_Login_home_btn_camadas {
+    top: 47%;
+}
+
+/* PAINEL INFERIOR */
+.MOTORISTAPAG_Login_home_painel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 38px;
+    z-index: 6;
+
+    padding: 10px 16px 22px;
+    background: rgba(18,18,18,0.94);
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    border: 1px solid rgba(197,169,141,0.25);
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_home_puxador {
+    display: none;
+}
+
+.MOTORISTAPAG_Login_home_card_promo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #f6ca24;
+    color: #2a2206;
+    border-radius: 14px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 7px 20px rgba(0,0,0,0.25);
+}
+
+.MOTORISTAPAG_Login_home_card_promo strong {
+    display: block;
+    font-size: 0.82rem;
+}
+
+.MOTORISTAPAG_Login_home_card_promo span {
+    display: block;
+    font-size: 0.72rem;
+    line-height: 1.2;
+}
+
+.MOTORISTAPAG_Login_home_card_promo button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.18);
+    color: #2a2206;
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_home_barra_acoes {
+    display: grid;
+    grid-template-columns: 48px 1fr 48px;
+    gap: 10px;
+    align-items: center;
+}
+
+.MOTORISTAPAG_Login_home_btn_acao_lateral {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    border: 1px solid rgba(197,169,141,0.30);
+    background: rgba(30,27,25,0.95);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_home_btn_conectar {
+    height: 48px;
+    border: none;
+    border-radius: 16px;
+    background: var(--Fame_gold);
+    color: var(--Fame_card);
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+/* MENU LATERAL MOTORISTA */
+.MOTORISTAPAG_Login_menu_overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 9997;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_menu_overlay.active {
+    display: block;
+}
+
+.MOTORISTAPAG_Login_menu_lateral {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 280px;
+    max-width: 82%;
+    height: 100vh;
+    background: #7b5438;
+    border-right: 1px solid rgba(255,255,255,0.18);
+    z-index: 9998;
+    padding: 18px 14px;
+    transition: left 0.28s ease;
+    overflow-y: auto;
+    box-shadow: 8px 0 28px rgba(0,0,0,0.45);
+}
+
+.MOTORISTAPAG_Login_menu_lateral.active {
+    left: 0;
+}
+
+.MOTORISTAPAG_Login_menu_header {
+    text-align: center;
+    padding-bottom: 14px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+}
+
+.MOTORISTAPAG_Login_menu_header img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.45);
+    background: #2a2623;
+    display: block;
+    margin: 0 auto 8px;
+}
+
+.MOTORISTAPAG_Login_menu_header strong {
+    display: block;
+    color: #ffffff;
+    font-size: 0.95rem;
+}
+
+.MOTORISTAPAG_Login_menu_header span {
+    display: block;
+    color: rgba(255,255,255,0.72);
+    font-size: 0.74rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.88rem;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.MOTORISTAPAG_Login_menu_lateral button:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+/* MODAIS DA HOME */
+.MOTORISTAPAG_Login_modal_home {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10020;
+    background: rgba(0,0,0,0.66);
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+}
+
+.MOTORISTAPAG_Login_modal_home.active {
+    display: flex;
+}
+
+.MOTORISTAPAG_Login_modal_home_box {
+    width: 100%;
+    max-width: 410px;
+    background: #1e1b19;
+    border: 1px solid rgba(197,169,141,0.35);
+    border-radius: 24px;
+    padding: 18px;
+    color: var(--Fame_text);
+    box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+    position: relative;
+}
+
+.MOTORISTAPAG_Login_modal_home_box h3 {
+    color: var(--Fame_gold);
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_modal_home_box button:not(.MOTORISTAPAG_Login_modal_fechar) {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(197,169,141,0.10);
+    color: var(--Fame_text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.MOTORISTAPAG_Login_modal_fechar {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(123, 84, 56, 0.12);
+    color: #7b5438;
+    font-size: 22px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body:not(.TNP_TEMA_CLARO) .MOTORISTAPAG_Login_modal_fechar {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.MOTORISTAPAG_Login_modal_check {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--Fame_text);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(197,169,141,0.16);
+}
+
+.MOTORISTAPAG_Login_reportar_grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.MOTORISTAPAG_Login_reportar_grid button {
+    text-align: center !important;
+    min-height: 76px;
+    font-size: 24px;
+}
+
+.MOTORISTAPAG_Login_reportar_grid span {
+    display: block;
+    font-size: 0.68rem;
+    margin-top: 5px;
+}
+
+.MOTORISTAPAG_Login_chamada_fake,
+.MOTORISTAPAG_Login_ganhos_box,
+.MOTORISTAPAG_Login_ganhos_linha {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    margin-top: 10px;
+}
+
+.MOTORISTAPAG_Login_chamada_fake strong,
+.MOTORISTAPAG_Login_chamada_fake span,
+.MOTORISTAPAG_Login_ganhos_box strong,
+.MOTORISTAPAG_Login_ganhos_box span {
+    display: block;
+}
+
+.MOTORISTAPAG_Login_ganhos_box strong {
+    color: var(--Fame_gold);
+    font-size: 1.6rem;
+}
+
+.MOTORISTAPAG_Login_ganhos_linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* TEMA CLARO - HOME MOTORISTA */
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_mapa_fundo {
+    background:
+        radial-gradient(circle at 25% 20%, rgba(123, 84, 56, 0.10), transparent 28%),
+        radial-gradient(circle at 70% 78%, rgba(197, 169, 141, 0.20), transparent 34%),
+        #f7f2ec;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_painel,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box {
+    background: rgba(255,255,255,0.97);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_btn_acao_lateral,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_btn_menu,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_btn_sino,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_btn_mapa {
+    background: #ffffff;
+    color: #7b5438;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_home_btn_conectar {
+    background: #7b5438;
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box h3,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_box strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box button:not(.MOTORISTAPAG_Login_modal_fechar),
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_chamada_fake,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_box,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_ganhos_linha {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #1f1f1f;
+}
+
+.MOTORISTAPAG_Login_home_btn_online {
+    background: #27c76f !important;
+    color: #ffffff !important;
+}
+
+/* PERFIL DO MOTORISTA DENTRO DA HOME */
+
+.MOTORISTAPAG_Login_modal_perfil_grande {
+    align-items: center;
+}
+
+.MOTORISTAPAG_Login_perfil_box {
+    max-height: 88vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.MOTORISTAPAG_Login_perfil_topo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(197,169,141,0.65);
+    background: #2a2623;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.MOTORISTAPAG_Login_perfil_avatar span {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.MOTORISTAPAG_Login_perfil_info {
+    flex: 1;
+    min-width: 0;
+}
+
+.MOTORISTAPAG_Login_perfil_info strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.98rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.MOTORISTAPAG_Login_perfil_info span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.76rem;
+    margin-top: 3px;
+    word-break: break-word;
+}
+
+.MOTORISTAPAG_Login_perfil_info small {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo div {
+    padding: 10px 6px;
+    border-radius: 14px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.18);
+    text-align: center;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.9rem;
+}
+
+.MOTORISTAPAG_Login_perfil_resumo span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.66rem;
+    margin-top: 3px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao {
+    margin-top: 12px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao > strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.82rem;
+    margin-bottom: 7px;
+    padding-left: 2px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao button {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.MOTORISTAPAG_Login_perfil_secao button span {
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: rgba(39, 199, 111, 0.16);
+    color: #27c76f;
+    font-size: 0.66rem;
+    font-weight: 800;
+}
+
+/* TEMA CLARO - PERFIL MOTORISTA */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_topo,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo div {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo strong,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_secao > strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info small {
+    background: rgba(123, 84, 56, 0.12);
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_info span,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_perfil_resumo span {
+    color: #7c7065;
+}
+
+/* VEÍCULO EM USO - PERFIL DO MOTORISTA */
+
+.MOTORISTAPAG_Login_modal_texto_aux {
+    color: var(--Fame_muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.MOTORISTAPAG_Login_lista_veiculos_uso {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card {
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.22);
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.ativo {
+    border-color: rgba(39, 199, 111, 0.65);
+    background: rgba(39, 199, 111, 0.10);
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo strong {
+    color: var(--Fame_gold);
+    font-size: 0.88rem;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_topo span {
+    font-size: 0.68rem;
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+    white-space: nowrap;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.ativo .MOTORISTAPAG_Login_veiculo_uso_topo span {
+    background: rgba(39, 199, 111, 0.16);
+    color: #27c76f;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card p {
+    margin-top: 6px;
+    color: var(--Fame_muted);
+    font-size: 0.75rem;
+    line-height: 1.35;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card button {
+    margin-top: 10px !important;
+    text-align: center !important;
+    font-weight: 800;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_card.em_analise {
+    opacity: 0.72;
+}
+
+.MOTORISTAPAG_Login_veiculo_uso_vazio {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(197,169,141,0.08);
+    border: 1px dashed rgba(197,169,141,0.28);
+    color: var(--Fame_muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* TEMA CLARO - VEÍCULO EM USO */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_card,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_vazio {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_topo strong {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_veiculo_uso_card p,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_texto_aux {
+    color: #7c7065;
+}
+
+/* DADOS PESSOAIS DO MOTORISTA */
+
+.MOTORISTAPAG_Login_dados_lista {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.MOTORISTAPAG_Login_dados_linha {
+    position: relative;
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197,169,141,0.08);
+    border: 1px solid rgba(197,169,141,0.18);
+}
+
+.MOTORISTAPAG_Login_dados_linha span {
+    display: block;
+    color: var(--Fame_muted);
+    font-size: 0.68rem;
+    margin-bottom: 4px;
+}
+
+.MOTORISTAPAG_Login_dados_linha strong {
+    display: block;
+    color: var(--Fame_text);
+    font-size: 0.84rem;
+    line-height: 1.35;
+    word-break: break-word;
+    white-space: pre-line;
+}
+
+.MOTORISTAPAG_Login_dados_linha small {
+    display: inline-block;
+    margin-top: 6px;
+    color: #efaa44;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.MOTORISTAPAG_Login_dados_linha.bloqueado {
+    opacity: 0.88;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha strong {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_dados_linha span {
+    color: #7c7065;
+}
+.MOTORISTAPAG_Login_btn_editar_campo {
+    margin-top: 8px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 10px;
+    background: rgba(123, 84, 56, 0.14);
+    color: #7b5438;
+    font-size: 0.7rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+body:not(.TNP_TEMA_CLARO) .MOTORISTAPAG_Login_btn_editar_campo {
+    background: rgba(197,169,141,0.12);
+    color: var(--Fame_gold);
+}
+/* ==================================================
+   AJUSTES VISUAIS - MODAIS DE EDIÇÃO DO MOTORISTA
+================================================== */
+
+/* Campos de edição mais visíveis */
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(197, 169, 141, 0.55);
+    border-radius: 12px;
+    color: var(--Fame_text);
+    min-height: 46px;
+    box-shadow: inset 0 0 0 1px rgba(197, 169, 141, 0.08);
+}
+
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input:focus {
+    outline: none;
+    border-color: var(--Fame_gold);
+    background: rgba(197, 169, 141, 0.10);
+    box-shadow: 0 0 0 3px rgba(197, 169, 141, 0.16);
+}
+
+.MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group label {
+    color: var(--Fame_gold);
+    font-weight: 800;
+}
+
+/* Botão EDITAR dos cards de dados pessoais */
+.MOTORISTAPAG_Login_btn_editar_campo {
+    margin-top: 10px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(197, 169, 141, 0.65);
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+}
+
+.MOTORISTAPAG_Login_btn_editar_campo:hover {
+    background: rgba(197, 169, 141, 0.25);
+}
+
+/* Botão de enviar código via WhatsApp mais destacado */
+#MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp {
+    background: #25D366;
+    color: #ffffff;
+    border: 1px solid rgba(37, 211, 102, 0.85);
+    font-weight: 900;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.24);
+}
+
+#MOTORISTAPAG_Login_btn_enviar_codigo_whatsapp:disabled {
+    background: rgba(37, 211, 102, 0.35);
+    color: rgba(255, 255, 255, 0.82);
+    border-color: rgba(37, 211, 102, 0.35);
+    opacity: 1;
+}
+
+/* Botão confirmar e salvar mais forte */
+#MOTORISTAPAG_Login_btn_confirmar_whatsapp,
+#MOTORISTAPAG_Login_btn_salvar_nome,
+#MOTORISTAPAG_Login_btn_salvar_nascimento {
+    border-radius: 14px;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    box-shadow: 0 8px 20px rgba(197, 169, 141, 0.22);
+}
+/* TEMA CLARO - CAMPOS E BOTÕES DOS MODAIS DO MOTORISTA */
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input {
+    background: #ffffff;
+    border: 1.5px solid rgba(123, 84, 56, 0.45);
+    color: #1f1f1f;
+    box-shadow: inset 0 0 0 1px rgba(123, 84, 56, 0.06);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group input:focus {
+    border-color: #7b5438;
+    background: #fffaf5;
+    box-shadow: 0 0 0 3px rgba(123, 84, 56, 0.14);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_modal_home_box .PRIMEIRAPAG_Login_form_group label {
+    color: #7b5438;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo {
+    background: #7b5438;
+    border-color: #7b5438;
+    color: #ffffff;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_btn_editar_campo:hover {
+    background: #5f3f2b;
+}
+
+.MOTORISTAPAG_Login_dados_linha strong {
+    white-space: pre-line;
+    line-height: 1.35;
+}
+/* CONFIGURAÇÕES MOTORISTA - GERENCIAR VEÍCULOS */
+
+.MOTORISTAPAG_Login_config_topo {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.MOTORISTAPAG_Login_config_voltar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.MOTORISTAPAG_Login_config_topo h3 {
+    color: var(--Fame_gold);
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+.MOTORISTAPAG_Login_config_topo p {
+    color: var(--Fame_muted);
+    font-size: 0.82rem;
+    line-height: 1.35;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: 14px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_aviso strong {
+    color: var(--Fame_gold);
+}
+
+.MOTORISTAPAG_Login_lista_gerenciar_veiculos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card,
+.MOTORISTAPAG_Login_gerenciar_veiculos_vazio {
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.em_uso {
+    border-color: rgba(80, 220, 130, 0.55);
+    background: rgba(80, 220, 130, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.em_revisao {
+    border-color: rgba(245, 158, 11, 0.55);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_card.recusado {
+    border-color: rgba(239, 68, 68, 0.55);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_topo {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_topo strong {
+    color: var(--Fame_gold);
+    font-size: 0.95rem;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_status {
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(197, 169, 141, 0.16);
+    color: var(--Fame_gold);
+    font-size: 0.68rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_info {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--Fame_text);
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_docs {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.10);
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha span:last-child {
+    font-weight: 800;
+    color: var(--Fame_gold);
+    text-align: right;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_acoes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.MOTORISTAPAG_Login_gerenciar_veiculos_acoes .PRIMEIRAPAG_Login_btn {
+    margin-top: 0;
+    padding: 0.78rem;
+    font-size: 0.82rem;
+}
+
+.MOTORISTAPAG_Login_btn_excluir_veiculo {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.38);
+    color: #fca5a5;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_card,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_vazio,
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.30);
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
+    background: #f7f2ec;
+}
+
+/* AJUSTE DA TELA GERENCIAR VEÍCULOS */
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos {
+    padding: 22px 16px 90px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_voltar {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo h3 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_config_topo p {
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_screen_gerenciar_veiculos .MOTORISTAPAG_Login_gerenciar_veiculos_aviso {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    font-size: 0.76rem;
+}
+
+.MOTORISTAPAG_Login_btn_gerenciar_veiculo {
+    margin-top: 10px;
+    padding: 0.72rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
+}
+
+        
+ </style>
+</head>
+<body>
+<div class="Fame_moldura">
+
+    <div id="TESTEMOTORISTA_content_area" class="Fame_content">
+
+        <!-- LOGIN TESTE DO MOTORISTA -->
+        <div id="TESTEMOTORISTA_screen_login" class="PRIMEIRAPAG_Login_screen active">
+
+            <div class="PRIMEIRAPAG_Login_header">
+                <h1>TNP MoB</h1>
+                <p class="PRIMEIRAPAG_Login_subtitle">
+                    Login de teste para acessar a Home do Motorista
+                </p>
+            </div>
+
+            <div
+                id="TESTEMOTORISTA_error_login"
+                class="PRIMEIRAPAG_Login_error"
+            ></div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="TESTEMOTORISTA_input_email">E-mail</label>
+                <input
+                    type="email"
+                    id="TESTEMOTORISTA_input_email"
+                    placeholder="Digite seu e-mail"
+                >
+            </div>
+
+            <div class="PRIMEIRAPAG_Login_form_group">
+                <label for="TESTEMOTORISTA_input_senha">Senha</label>
+                <input
+                    type="password"
+                    id="TESTEMOTORISTA_input_senha"
+                    placeholder="Digite sua senha"
+                >
+            </div>
+
+            <button
+                id="TESTEMOTORISTA_btn_login"
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+                onclick="TESTEMOTORISTA_func_logar()"
+            >
+                ENTRAR COMO MOTORISTA
+            </button>
+
+            <button
+                type="button"
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="TESTEMOTORISTA_func_limparLogin()"
+            >
+                LIMPAR CAMPOS
+            </button>
+
+            <div class="PRIMEIRAPAG_Login_footer_suporte">
+                Tela separada para teste da Home do Motorista.
+            </div>
+
+        </div>
+
+        <!-- A HOME DO MOTORISTA ENTRA AQUI DEPOIS -->
+<!-- HOME OPERACIONAL DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_screen_home" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_home_operacional">
+
+    <!-- FUNDO MAPA -->
+    <div id="MOTORISTAPAG_Login_mapa_fundo" class="MOTORISTAPAG_Login_mapa_fundo">
+        <div class="MOTORISTAPAG_Login_rota_fake MOTORISTAPAG_Login_rota_1"></div>
+        <div class="MOTORISTAPAG_Login_rota_fake MOTORISTAPAG_Login_rota_2"></div>
+        <div class="MOTORISTAPAG_Login_pin_play">▶</div>
+        <div class="MOTORISTAPAG_Login_carro_fake">🚗</div>
+    </div>
+
+    <!-- TOPO -->
+    <div class="MOTORISTAPAG_Login_home_topo">
+
+       <button
+    type="button"
+    class="MOTORISTAPAG_Login_home_btn_menu"
+    onclick="MOTORISTAPAG_Login_func_abrirMenuLateral()"
+>
+    <div class="menu_icon_hamburguer">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</button>
+
+<button
+    type="button"
+    class="MOTORISTAPAG_Login_home_ganhos"
+    onclick="MOTORISTAPAG_Login_func_abrirGanhos()"
+>
+    <span id="MOTORISTAPAG_Login_home_ganhos_valor">R$0,00</span>
+
+    <span
+        id="MOTORISTAPAG_Login_btn_ocultar_ganhos"
+        class="MOTORISTAPAG_Login_icone_ocultar_ganhos"
+        onclick="MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event)"
+    >
+        👁️
+    </span>
+</button>
+
+        <button
+            type="button"
+            class="MOTORISTAPAG_Login_home_btn_sino"
+            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Notificações', 'Aqui ficarão avisos, chamadas, suporte e notificações importantes.')"
+        >
+            🔔
+        </button>
+
+    </div>
+
+    <!-- BOTÕES LATERAIS DO MAPA -->
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_home_btn_mapa MOTORISTAPAG_Login_home_btn_reportar"
+        onclick="MOTORISTAPAG_Login_func_abrirReportarProblema()"
+    >
+        ⚠️
+    </button>
+
+    <button
+        type="button"
+        class="MOTORISTAPAG_Login_home_btn_mapa MOTORISTAPAG_Login_home_btn_camadas"
+        onclick="MOTORISTAPAG_Login_func_abrirCamadasMapa()"
+    >
+        🗺️
+    </button>
+
+    
+	
+	<!-- MENU LATERAL -->
+    <div
+        id="MOTORISTAPAG_Login_menu_overlay"
+        class="MOTORISTAPAG_Login_menu_overlay"
+        onclick="MOTORISTAPAG_Login_func_fecharMenuLateral()"
+    ></div>
+
+    <div id="MOTORISTAPAG_Login_menu_lateral" class="MOTORISTAPAG_Login_menu_lateral">
+        <div class="MOTORISTAPAG_Login_menu_header">
+            <div class="menu_icon_hamburguer">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+            <strong id="MOTORISTAPAG_Login_nome_menu">Motorista</strong>
+            <span id="MOTORISTAPAG_Login_email_menu">-</span>
+        </div>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPerfilMotorista()">
+		👤 Meu perfil
+		</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Histórico', 'Aqui ficarão as corridas aceitas, concluídas e canceladas.')">🕘 Histórico</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Solicitar ajuda', 'Aqui o motorista poderá pedir suporte.')">❓ Solicitar ajuda</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mensagens', 'Aqui ficarão mensagens e avisos.')">💬 Mensagens</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão orientações e recursos de segurança.')">🛡️ Central de segurança</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirGanhos()">💰 Meus ganhos</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista()">
+		⚙️ Configurações
+		</button>
+        <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">🙋 Usar como passageiro</button>
+        <button onclick="TESTEMOTORISTA_func_sair()">🚪 Sair</button>
+    </div>
+	<!-- MODAL PERFIL DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_motorista" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Perfil do Motorista</h3>
+
+        <div class="MOTORISTAPAG_Login_perfil_topo">
+            <div class="MOTORISTAPAG_Login_perfil_avatar">
+                <img id="MOTORISTAPAG_Login_perfil_foto" src="" alt="Foto do motorista">
+                <span id="MOTORISTAPAG_Login_perfil_avatar_fallback">🚗</span>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_perfil_info">
+                <strong id="MOTORISTAPAG_Login_perfil_nome">Motorista</strong>
+                <span id="MOTORISTAPAG_Login_perfil_email">-</span>
+                <small id="MOTORISTAPAG_Login_perfil_status">Status: carregando...</small>
+            </div>
+        </div>
+
+<div class="MOTORISTAPAG_Login_perfil_resumo">
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_aceitacao">100%</strong>
+        <span>Aceitação</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_avaliacao">5.0</strong>
+        <span>Nota</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_finalizacoes">0</strong>
+        <span>Finalizações</span>
+    </div>
+</div>
+
+<!-- MODAL Nivel 1 -->
+
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Status</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status do cadastro', 'Aqui o motorista verá se está aprovado, em análise ou com pendência.')">
+                🧾 Status do cadastro
+                <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
+            </button>
+			
+			<button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
+				🚘 Veículo em uso
+			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
+			</button>
+			
+			<strong>Cadastro</strong>			
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()">
+				👤 Dados pessoais
+			</button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
+                📄 Documentos do motorista
+            </button>
+		</div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Recebimentos</strong>
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Pix para recebimento', 'Aqui o motorista poderá revisar a chave Pix para receber corridas.')">
+                💸 Pix para recebimento
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('ID TNP e cashback', 'Aqui ficarão ID TNP, benefícios e cashback do motorista.')">
+                🟤 ID TNP / Cashback
+            </button>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Segurança</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Termos do motorista', 'Aqui ficarão termos específicos para motoristas.')">
+                📜 Termos do motorista
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão recursos de segurança e suporte em viagem.')">
+                🛡️ Central de segurança
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Suporte', 'Aqui o motorista poderá falar com o suporte.')">
+                ❓ Suporte
+            </button>
+        </div>
+
+    </div>
+</div>
+	
+
+
+
+<!-- MODAL VEÍCULO EM USO -->
+<div id="MOTORISTAPAG_Login_modal_veiculo_em_uso" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Veículo em uso</h3>
+
+<div id="MOTORISTAPAG_Login_error_veiculo_em_uso" class="PRIMEIRAPAG_Login_error"></div>
+
+        <p class="MOTORISTAPAG_Login_modal_texto_aux">
+            Escolha qual veículo aprovado você quer usar para trabalhar agora.
+        </p>
+
+        <div id="MOTORISTAPAG_Login_lista_veiculos_uso" class="MOTORISTAPAG_Login_lista_veiculos_uso">
+            <!-- veículos aparecem aqui pelo JS -->
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+            onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Gerenciar veículos', 'Para adicionar ou trocar veículo, acesse Configurações > Gerenciar veículos.')"
+        >
+            GERENCIAR VEÍCULOS
+        </button>
+    </div>
+</div>	
+	
+<!-- MODAL CONFIGURAÇÕES -->
+<div id="MOTORISTAPAG_Login_modal_configuracoes" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Configurações</h3>
+
+        <button onclick="MOTORISTAPAG_Login_func_alternarTemaMotorista()">
+            🌓 Trocar tema claro/escuro
+        </button>
+
+		<button onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()">
+			🚘 Gerenciar veículos
+		</button>
+		
+		
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
+            ⚙️ Preferências do motorista
+        </button>
+		
+		
+    </div>
+</div>
+
+
+    <!-- PAINEL INFERIOR OPERACIONAL -->
+    <div class="MOTORISTAPAG_Login_home_painel">
+
+           <div class="MOTORISTAPAG_Login_home_puxador"></div>
+
+        <!-- CARD PROMOCIONAL PEQUENO -->
+        <div id="MOTORISTAPAG_Login_home_card_promo" class="MOTORISTAPAG_Login_home_card_promo">
+            <div>
+                <strong>Ganhe mais corridas</strong>
+                <span>Fique online para receber chamadas próximas.</span>
+            </div>
+
+            <button
+                type="button"
+                onclick="MOTORISTAPAG_Login_func_fecharCardPromocao()"
+            >
+                ×
+            </button>
+        </div>
+
+        <!-- BARRA PRINCIPAL -->
+        <div class="MOTORISTAPAG_Login_home_barra_acoes">
+
+            <button
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
+                onclick="MOTORISTAPAG_Login_func_abrirFerramentas()"
+            >
+                ⚙️
+            </button>
+
+            <button
+                id="MOTORISTAPAG_Login_btn_conectar"
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_conectar"
+                onclick="MOTORISTAPAG_Login_func_botaoConectar()"
+            >
+                CONECTAR
+            </button>
+
+            <button
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
+                onclick="MOTORISTAPAG_Login_func_abrirChamadas()"
+            >
+                📋
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL FERRAMENTAS -->
+    <div id="MOTORISTAPAG_Login_modal_ferramentas" class="MOTORISTAPAG_Login_modal_home">
+        <div class="MOTORISTAPAG_Login_modal_home_box">
+            <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
+
+            <h3>Ferramentas de aceitação</h3>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Definir meu destino', 'Aqui o motorista poderá definir um destino por até 3 vezes no dia.')">
+                📍 Definir meu destino
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências de serviços', 'Aqui depois entram categorias e preferências de chamadas.')">
+                ⚙️ Preferências de serviços
+            </button>
+
+            <h3>Status da solicitação</h3>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Teste de status', 'Aqui depois o sistema mostrará análise de conexão, categorias e disponibilidade.')">
+                ⏱️ Teste de status
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Eventos futuros', 'Aqui depois ficarão horas dirigidas, agenda e avisos.')">
+                📅 Eventos futuros
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL CAMADAS -->
+    <div id="MOTORISTAPAG_Login_modal_camadas" class="MOTORISTAPAG_Login_modal_home">
+        <div class="MOTORISTAPAG_Login_modal_home_box">
+            <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
+
+            <h3>Ver informações</h3>
+
+            <label class="MOTORISTAPAG_Login_modal_check">
+                <span>Mapa de chamadas</span>
+                <input type="checkbox">
+            </label>
+
+            <label class="MOTORISTAPAG_Login_modal_check">
+                <span>Mapa de tarifas</span>
+                <input type="checkbox">
+            </label>
+
+            <label class="MOTORISTAPAG_Login_modal_check">
+                <span>Trânsito</span>
+                <input type="checkbox">
+            </label>
+
+            <button class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary" onclick="MOTORISTAPAG_Login_func_fecharModais()">
+                CONFIRMAR
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL REPORTAR -->
+    <div id="MOTORISTAPAG_Login_modal_reportar" class="MOTORISTAPAG_Login_modal_home">
+        <div class="MOTORISTAPAG_Login_modal_home_box">
+            <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
+
+            <h3>Reportar um problema</h3>
+
+            <div class="MOTORISTAPAG_Login_reportar_grid">
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Trânsito', 'Reporte de trânsito registrado em teste.')">🚗<span>Trânsito</span></button>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Polícia', 'Reporte de polícia registrado em teste.')">👮<span>Polícia</span></button>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Acidente', 'Reporte de acidente registrado em teste.')">🚑<span>Acidente</span></button>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Perigo', 'Reporte de perigo registrado em teste.')">⚠️<span>Perigo</span></button>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Faixa fechada', 'Reporte de faixa fechada registrado em teste.')">⛔<span>Faixa fechada</span></button>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mau tempo', 'Reporte de mau tempo registrado em teste.')">🌧️<span>Mau tempo</span></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CHAMADAS -->
+    <div id="MOTORISTAPAG_Login_modal_chamadas" class="MOTORISTAPAG_Login_modal_home">
+        <div class="MOTORISTAPAG_Login_modal_home_box">
+            <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
+
+            <h3>Chamadas disponíveis</h3>
+
+            <div class="MOTORISTAPAG_Login_chamada_fake">
+                <strong>Centro → Bairro Novo</strong>
+                <span>3,2 km • 8 min • R$ 18,50</span>
+                <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Chamada teste', 'Aqui depois o motorista poderá aceitar a corrida.')">
+                    ACEITAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL GANHOS -->
+    <div id="MOTORISTAPAG_Login_modal_ganhos" class="MOTORISTAPAG_Login_modal_home">
+        <div class="MOTORISTAPAG_Login_modal_home_box">
+            <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
+
+            <h3>Ganhos e recompensas</h3>
+
+<div id="MOTORISTAPAG_Login_error_ganhos" class="PRIMEIRAPAG_Login_error"></div>
+
+            <div class="MOTORISTAPAG_Login_ganhos_box">
+                <strong>R$0,00</strong>
+                <span>Ganhos desta semana</span>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_ganhos_linha">
+                <span>Solicitações</span>
+                <strong>0</strong>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_ganhos_linha">
+                <span>Recompensas</span>
+                <strong>R$0,00</strong>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_ganhos_linha">
+                <span>Meta semanal</span>
+                <strong>0 / R$1.000</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+</div>
+
+
+
+
+<script>	
+	  // ========== FIREBASE CONFIG ==========
+    const TESTEMOTORISTA_config_firebase = {
+        apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
+        authDomain: "tnp-mob.firebaseapp.com",
+        projectId: "tnp-mob",
+        storageBucket: "tnp-mob.firebasestorage.app",
+        messagingSenderId: "775995955512",
+        appId: "1:775995955512:web:07d865e4480e0bf33909cd"
+    };
+
+    firebase.initializeApp(TESTEMOTORISTA_config_firebase);
+
+    const TESTEMOTORISTA_auth = firebase.auth();
+const TESTEMOTORISTA_db = firebase.firestore();
+const TESTEMOTORISTA_storage = firebase.storage();
+const PRIMEIRAPAG_Login_storage = TESTEMOTORISTA_storage;
+
+
+	
+	        // ========== UTILITÁRIOS essa função já tem na outra pagina principal ==========
+			
+let MOTORISTAPAG_Login_arquivoNovoVeiculoCrlvPendente = null;
+let MOTORISTAPAG_Login_arquivoNovoVeiculoFotoPlacaPendente = null;
+
+let MOTORISTAPAG_Login_novoVeiculoCrlvPronto = false;
+let MOTORISTAPAG_Login_novoVeiculoFotoPlacaPronta = false;
+			
+			
+
+function PRIMEIRAPAG_Login_func_mostrarErro(idErro, mensagem) {
+    const erro = document.getElementById(idErro);
+
+    if (!erro) {
+        alert(mensagem);
+        return;
+    }
+
+    erro.innerText = mensagem;
+    erro.style.display = 'block';
+
+    try {
+        erro.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    } catch (e) {
+        console.warn('Não foi possível rolar até o erro:', e);
+    }
+}
+
+function PRIMEIRAPAG_Login_func_limparErros() {
+    document.querySelectorAll('.PRIMEIRAPAG_Login_error').forEach(function(erro) {
+        erro.innerText = '';
+        erro.style.display = 'none';
+    });
+}				
+			
+	
+	
+	// ========== PONTE PARA TESTAR A HOME SEM ALTERAR O CÓDIGO FINAL ==========
+// Essas referências simulam o app principal dentro deste arquivo de teste.
+// Assim a Home usa MOTORISTAPAG_Login_ e PRIMEIRAPAG_Login_ normalmente.
+
+const PRIMEIRAPAG_Login_auth = TESTEMOTORISTA_auth;
+const PRIMEIRAPAG_Login_db = TESTEMOTORISTA_db;
+
+function PRIMEIRAPAG_Login_func_irPara(telaId) {
+    document.querySelectorAll('.PRIMEIRAPAG_Login_screen').forEach(screen => {
+    screen.classList.remove('active');
+    });
+
+    const homeMotorista = document.getElementById('MOTORISTAPAG_Login_screen_home');
+
+    if (homeMotorista) {
+        homeMotorista.classList.remove('active');
+    }
+
+    if (telaId === 'PRIMEIRAPAG_Login_screen_main') {
+        return TESTEMOTORISTA_func_irPara('TESTEMOTORISTA_screen_login');
+    }
+
+    const tela = document.getElementById(telaId);
+
+    if (!tela) {
+        console.warn("Tela não encontrada no teste:", telaId);
+        return;
+    }
+
+    tela.classList.add('active');
+
+    const area = document.getElementById('TESTEMOTORISTA_content_area');
+
+    if (area) {
+        area.scrollTop = 0;
+    }
+}
+
+function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
+    MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+        "Usar como passageiro",
+        "No app principal este botão vai abrir a Home do Passageiro. Aqui no teste ele fica apenas como aviso."
+    );
+}
+	
+	
+    // ========== UTILITÁRIOS TESTE ==========
+    function TESTEMOTORISTA_func_irPara(telaId) {
+        const tela = document.getElementById(telaId);
+
+        if (!tela) {
+            console.warn("Tela não encontrada:", telaId);
+            return;
+        }
+
+        document.querySelectorAll('.PRIMEIRAPAG_Login_screen').forEach(screen => {
+    screen.classList.remove('active');
+		});
+
+        const homeMotorista = document.getElementById('MOTORISTAPAG_Login_screen_home');
+
+        if (homeMotorista) {
+            homeMotorista.classList.remove('active');
+        }
+
+        tela.classList.add('active');
+
+        const area = document.getElementById('TESTEMOTORISTA_content_area');
+
+        if (area) {
+            area.scrollTop = 0;
+        }
+
+        TESTEMOTORISTA_func_limparErro();
+    }
+
+    function TESTEMOTORISTA_func_mostrarErro(mensagem) {
+        const erro = document.getElementById('TESTEMOTORISTA_error_login');
+
+        if (!erro) return;
+
+        erro.innerText = mensagem;
+        erro.style.display = 'block';
+    }
+	
+    function TESTEMOTORISTA_func_limparErro() {
+        const erro = document.getElementById('TESTEMOTORISTA_error_login');
+
+        if (!erro) return;
+
+        erro.innerText = "";
+        erro.style.display = 'none';
+    }
+	
+	function TESTEMOTORISTA_func_limparLogin() {
+    const email = document.getElementById('TESTEMOTORISTA_input_email');
+    const senha = document.getElementById('TESTEMOTORISTA_input_senha');
+    const erro = document.getElementById('TESTEMOTORISTA_error_login');
+
+    if (email) email.value = "";
+    if (senha) senha.value = "";
+
+    if (erro) {
+        erro.innerText = "";
+        erro.style.display = "none";
+    }
+}
+	
+    function TESTEMOTORISTA_func_emailValido(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // ========== LOGIN TESTE ==========
+    async function TESTEMOTORISTA_func_logar() {
+        const email = document.getElementById('TESTEMOTORISTA_input_email').value.trim();
+        const senha = document.getElementById('TESTEMOTORISTA_input_senha').value;
+        const btn = document.getElementById('TESTEMOTORISTA_btn_login');
+
+        if (!email || !senha) {
+            return TESTEMOTORISTA_func_mostrarErro("Preencha e-mail e senha.");
+        }
+
+        if (!TESTEMOTORISTA_func_emailValido(email)) {
+            return TESTEMOTORISTA_func_mostrarErro("Digite um e-mail válido.");
+        }
+
+        try {
+            if (btn) {
+                btn.disabled = true;
+                btn.innerText = "Entrando...";
+            }
+
+            const cred = await TESTEMOTORISTA_auth.signInWithEmailAndPassword(email, senha);
+            const user = cred.user;
+
+            await TESTEMOTORISTA_func_prepararMotoristaAprovado(user.uid);
+            await MOTORISTAPAG_Login_func_carregarHomeMotorista();
+			
+        } catch (erro) {
+            console.error("Erro no login teste motorista:", erro);
+
+            let mensagem = "Erro ao entrar. Confira e-mail e senha.";
+
+            if (erro.code === "auth/invalid-credential") {
+                mensagem = "E-mail ou senha incorretos.";
+            }
+
+            if (erro.code === "auth/too-many-requests") {
+                mensagem = "Muitas tentativas. Aguarde alguns minutos.";
+            }
+
+            TESTEMOTORISTA_func_mostrarErro(mensagem);
+
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = "Entrar como motorista teste";
+            }
+        }
+    }
+
+    async function TESTEMOTORISTA_func_prepararMotoristaAprovado(uid) {
+        await TESTEMOTORISTA_db
+            .collection('usuarios')
+            .doc(uid)
+            .set({
+                tipo: "motorista",
+                perfis: {
+                    passageiro: true,
+                    motorista: true
+                },
+                motoristaStatus: "aprovado",
+                etapaCadastro: "motorista_home_teste",
+                etapaCadastroMotorista: "home_teste",
+                atualizadoEm: new Date()
+            }, { merge: true });
+
+        await TESTEMOTORISTA_db
+            .collection('motoristas')
+            .doc(uid)
+            .set({
+                statusAnalise: "aprovado",
+                motoristaStatus: "aprovado",
+                podeAceitarCorrida: true,
+                cadastroAprovado: true,
+                motoristaOnline: false,
+                disponivelParaCorridas: false,
+
+                pixConfirmacaoRecebimento: {
+                    status: "pago",
+                    pago: true
+                },
+
+                termosMotoristaAceitos: true,
+                idTnpInformado: true,
+
+                atualizadoEm: new Date()
+            }, { merge: true });
+    }
+
+    async function TESTEMOTORISTA_func_sair() {
+        try {
+            await TESTEMOTORISTA_auth.signOut();
+        } catch (e) {}
+
+        TESTEMOTORISTA_func_irPara('TESTEMOTORISTA_screen_login');
+    }
+	async function MOTORISTAPAG_Login_func_carregarHomeMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_home');
+	MOTORISTAPAG_Login_func_carregarTemaMotoristaSalvo();
+
+    const content = document.getElementById('TESTEMOTORISTA_content_area');
+
+    if (content) {
+        content.classList.add('MOTORISTAPAG_Login_home_ativa');
+    }
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nome = u.nomeDocumento || u.nome || m.nome || "Motorista";
+        const email = u.email || user.email || "-";
+        const foto = u.fotoPerfilUrl || u.selfieUrl || m.fotoPerfilUrl || "";
+
+        const nomeMenu = document.getElementById('MOTORISTAPAG_Login_nome_menu');
+        const emailMenu = document.getElementById('MOTORISTAPAG_Login_email_menu');
+        const fotoMenu = document.getElementById('MOTORISTAPAG_Login_foto_menu');
+        const btnConectar = document.getElementById('MOTORISTAPAG_Login_btn_conectar');
+
+        if (nomeMenu) nomeMenu.innerText = nome;
+        if (emailMenu) emailMenu.innerText = email;
+
+        if (foto && fotoMenu) {
+            fotoMenu.src = foto + (foto.includes("?") ? "&v=" : "?v=") + Date.now();
+        }
+
+        const statusAnalise = m.statusAnalise || m.motoristaStatus || u.motoristaStatus || "em_analise";
+        const podeAceitar = m.podeAceitarCorrida === true;
+
+        if (btnConectar) {
+            if (podeAceitar === true || statusAnalise === "aprovado") {
+                btnConectar.innerText = "CONECTAR";
+                btnConectar.dataset.estado = "offline";
+                btnConectar.disabled = false;
+            } else if (
+                statusAnalise === "reprovado" ||
+                statusAnalise === "bloqueado" ||
+                statusAnalise === "pendente_correcao"
+            ) {
+                btnConectar.innerText = "VER PENDÊNCIA";
+                btnConectar.dataset.estado = "pendencia";
+                btnConectar.disabled = false;
+            } else {
+                btnConectar.innerText = "EM ANÁLISE";
+                btnConectar.dataset.estado = "analise";
+                btnConectar.disabled = false;
+            }
+        }
+		const ganhosOculto = localStorage.getItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO");
+
+if (ganhosOculto === "sim") {
+    const valor = document.getElementById('MOTORISTAPAG_Login_home_ganhos_valor');
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_ocultar_ganhos');
+
+    if (valor) {
+        valor.dataset.valorReal = valor.innerText || "R$0,00";
+        valor.innerText = "••••";
+        valor.dataset.oculto = "true";
+    }
+
+    if (btn) {
+        btn.innerText = "🙈";
+    }
+}
+
+    } catch (erro) {
+        console.error("Erro ao carregar home do motorista:", erro);
+    }
+}
+function MOTORISTAPAG_Login_func_abrirMenuLateral() {
+    const overlay = document.getElementById('MOTORISTAPAG_Login_menu_overlay');
+    const menu = document.getElementById('MOTORISTAPAG_Login_menu_lateral');
+
+    if (overlay) overlay.classList.add('active');
+    if (menu) menu.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_fecharMenuLateral() {
+    const overlay = document.getElementById('MOTORISTAPAG_Login_menu_overlay');
+    const menu = document.getElementById('MOTORISTAPAG_Login_menu_lateral');
+
+    if (overlay) overlay.classList.remove('active');
+    if (menu) menu.classList.remove('active');
+}
+
+function MOTORISTAPAG_Login_func_fecharModais() {
+    document.querySelectorAll('.MOTORISTAPAG_Login_modal_home').forEach(modal => {
+        modal.classList.remove('active');
+    });
+}
+
+function MOTORISTAPAG_Login_func_abrirFerramentas() {
+    MOTORISTAPAG_Login_func_fecharModais();
+    document.getElementById('MOTORISTAPAG_Login_modal_ferramentas')?.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirCamadasMapa() {
+    MOTORISTAPAG_Login_func_fecharModais();
+    document.getElementById('MOTORISTAPAG_Login_modal_camadas')?.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirReportarProblema() {
+    MOTORISTAPAG_Login_func_fecharModais();
+    document.getElementById('MOTORISTAPAG_Login_modal_reportar')?.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirChamadas() {
+    MOTORISTAPAG_Login_func_fecharModais();
+    document.getElementById('MOTORISTAPAG_Login_modal_chamadas')?.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirGanhos() {
+    MOTORISTAPAG_Login_func_fecharModais();
+    document.getElementById('MOTORISTAPAG_Login_modal_ganhos')?.classList.add('active');
+}
+
+function MOTORISTAPAG_Login_func_abrirPaginaProvisoria(titulo, texto) {
+    alert(titulo + "\n\n" + texto);
+}
+
+function MOTORISTAPAG_Login_func_fecharCardPromocao() {
+    const card = document.getElementById('MOTORISTAPAG_Login_home_card_promo');
+
+    if (card) {
+        card.style.display = "none";
+    }
+}
+
+function MOTORISTAPAG_Login_func_botaoConectar() {
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_conectar');
+
+    if (!btn) return;
+
+    const estado = btn.dataset.estado || "offline";
+
+    if (estado === "analise") {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Cadastro em análise",
+            "Seu cadastro de motorista ainda está sendo analisado. Quando for aprovado, este botão será liberado para conectar."
+        );
+    }
+
+    if (estado === "pendencia") {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            "Pendência no cadastro",
+            "Existe uma pendência no seu cadastro. Abra Meu perfil para revisar as informações."
+        );
+    }
+
+    if (estado === "offline") {
+        btn.dataset.estado = "online";
+        btn.innerText = "SAIR";
+        btn.classList.add('MOTORISTAPAG_Login_home_btn_online');
+        return;
+    }
+
+    btn.dataset.estado = "offline";
+    btn.innerText = "CONECTAR";
+    btn.classList.remove('MOTORISTAPAG_Login_home_btn_online');
+}
+
+
+
+
+
+//-- MODAL CONFIGURAÇÕES -->
+function MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista() {
+    MOTORISTAPAG_Login_func_fecharMenuLateral();
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_configuracoes');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+}
+function MOTORISTAPAG_Login_func_alternarTemaMotorista() {
+    const temaClaroAtivo = document.body.classList.contains('TNP_TEMA_CLARO');
+
+    if (temaClaroAtivo) {
+        document.body.classList.remove('TNP_TEMA_CLARO');
+        localStorage.setItem('TNP_MOB_TEMA', 'escuro');
+    } else {
+        document.body.classList.add('TNP_TEMA_CLARO');
+        localStorage.setItem('TNP_MOB_TEMA', 'claro');
+    }
+}
+
+function MOTORISTAPAG_Login_func_carregarTemaMotoristaSalvo() {
+    const temaSalvo = localStorage.getItem('TNP_MOB_TEMA');
+
+    if (temaSalvo === 'claro') {
+        document.body.classList.add('TNP_TEMA_CLARO');
+    } else {
+        document.body.classList.remove('TNP_TEMA_CLARO');
+    }
+}
+function MOTORISTAPAG_Login_func_alternarVisibilidadeGanhos(event) {
+    if (event) {
+        event.stopPropagation();
+    }
+
+    const valor = document.getElementById('MOTORISTAPAG_Login_home_ganhos_valor');
+    const btn = document.getElementById('MOTORISTAPAG_Login_btn_ocultar_ganhos');
+
+    if (!valor || !btn) return;
+
+    const oculto = valor.dataset.oculto === "true";
+
+    if (oculto) {
+        valor.innerText = valor.dataset.valorReal || "R$0,00";
+        valor.dataset.oculto = "false";
+        btn.innerText = "👁️";
+        localStorage.setItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO", "nao");
+    } else {
+        valor.dataset.valorReal = valor.innerText;
+        valor.innerText = "••••";
+        valor.dataset.oculto = "true";
+        btn.innerText = "🙈";
+        localStorage.setItem("TNP_MOB_MOTORISTA_GANHOS_OCULTO", "sim");
+    }
+}
+function MOTORISTAPAG_Login_func_abrirPerfilMotorista() {
+    MOTORISTAPAG_Login_func_fecharMenuLateral();
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_perfil_motorista');
+
+    if (modal) {
+        modal.classList.add('active');
+    }
+
+    MOTORISTAPAG_Login_func_preencherPerfilMotorista();
+}
+async function MOTORISTAPAG_Login_func_preencherPerfilMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) return;
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const nome = u.nomeDocumento || u.nome || m.nome || "Motorista";
+        const email = u.email || user.email || "-";
+        const foto = u.fotoPerfilUrl || u.selfieUrl || m.fotoPerfilUrl || "";
+
+        const statusAnalise = m.statusAnalise || m.motoristaStatus || u.motoristaStatus || "em_analise";
+        const podeAceitar = m.podeAceitarCorrida === true;
+
+        const nomeEl = document.getElementById('MOTORISTAPAG_Login_perfil_nome');
+        const emailEl = document.getElementById('MOTORISTAPAG_Login_perfil_email');
+        const fotoEl = document.getElementById('MOTORISTAPAG_Login_perfil_foto');
+        const fallbackEl = document.getElementById('MOTORISTAPAG_Login_perfil_avatar_fallback');
+        const statusEl = document.getElementById('MOTORISTAPAG_Login_perfil_status');
+        const badgeEl = document.getElementById('MOTORISTAPAG_Login_perfil_badge_status');
+
+        if (nomeEl) nomeEl.innerText = nome;
+        if (emailEl) emailEl.innerText = email;
+
+        if (foto && fotoEl) {
+            fotoEl.src = foto + (foto.includes("?") ? "&v=" : "?v=") + Date.now();
+            fotoEl.style.display = "block";
+            if (fallbackEl) fallbackEl.style.display = "none";
+        } else {
+            if (fotoEl) {
+                fotoEl.removeAttribute('src');
+                fotoEl.style.display = "none";
+            }
+            if (fallbackEl) fallbackEl.style.display = "flex";
+        }
+
+        let textoStatus = "Em análise";
+
+        if (podeAceitar === true || statusAnalise === "aprovado") {
+            textoStatus = "Aprovado";
+        }
+
+        if (
+            statusAnalise === "reprovado" ||
+            statusAnalise === "bloqueado" ||
+            statusAnalise === "pendente_correcao"
+        ) {
+            textoStatus = "Pendência";
+        }
+
+        if (statusEl) statusEl.innerText = "Status: " + textoStatus;
+        if (badgeEl) badgeEl.innerText = textoStatus;
+
+    } catch (erro) {
+        console.error("Erro ao preencher perfil do motorista:", erro);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<button
+    style="
+        position: fixed;
+        right: 14px;
+        bottom: 140px;
+        z-index: 9999;
+        width: auto;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(197, 169, 141, 0.45);
+        background: rgba(30, 27, 25, 0.85);
+        color: #c5a98d;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        opacity: 0.75;
+    "
+    onclick="location.reload()"
+>
+    ATUALIZAR
+</button>
+
+</body>
+</html>
