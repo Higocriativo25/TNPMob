@@ -3011,7 +3011,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 }
 
         
- </style>
+</style>
 </head>
 <body>
 <div class="Fame_moldura">
@@ -3142,143 +3142,6 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     >
         🗺️
     </button>
-
-    
-	
-	<!-- MENU LATERAL -->
-    <div
-        id="MOTORISTAPAG_Login_menu_overlay"
-        class="MOTORISTAPAG_Login_menu_overlay"
-        onclick="MOTORISTAPAG_Login_func_fecharMenuLateral()"
-    ></div>
-
-    <div id="MOTORISTAPAG_Login_menu_lateral" class="MOTORISTAPAG_Login_menu_lateral">
-        <div class="MOTORISTAPAG_Login_menu_header">
-            <div class="menu_icon_hamburguer">
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-            <strong id="MOTORISTAPAG_Login_nome_menu">Motorista</strong>
-            <span id="MOTORISTAPAG_Login_email_menu">-</span>
-        </div>
-
-        <button onclick="MOTORISTAPAG_Login_func_abrirPerfilMotorista()">
-		👤 Meu perfil
-		</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Histórico', 'Aqui ficarão as corridas aceitas, concluídas e canceladas.')">🕘 Histórico</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Solicitar ajuda', 'Aqui o motorista poderá pedir suporte.')">❓ Solicitar ajuda</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mensagens', 'Aqui ficarão mensagens e avisos.')">💬 Mensagens</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão orientações e recursos de segurança.')">🛡️ Central de segurança</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirGanhos()">💰 Meus ganhos</button>
-        <button onclick="MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista()">
-		⚙️ Configurações
-		</button>
-        <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">🙋 Usar como passageiro</button>
-        <button onclick="TESTEMOTORISTA_func_sair()">🚪 Sair</button>
-    </div>
-	<!-- MODAL PERFIL DO MOTORISTA -->
-<div id="MOTORISTAPAG_Login_modal_perfil_motorista" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
-    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
-
-        <button
-            class="MOTORISTAPAG_Login_modal_fechar"
-            onclick="MOTORISTAPAG_Login_func_fecharModais()"
-        >
-            ×
-        </button>
-
-        <h3>Perfil do Motorista</h3>
-
-        <div class="MOTORISTAPAG_Login_perfil_topo">
-            <div class="MOTORISTAPAG_Login_perfil_avatar">
-                <img id="MOTORISTAPAG_Login_perfil_foto" src="" alt="Foto do motorista">
-                <span id="MOTORISTAPAG_Login_perfil_avatar_fallback">🚗</span>
-            </div>
-
-            <div class="MOTORISTAPAG_Login_perfil_info">
-                <strong id="MOTORISTAPAG_Login_perfil_nome">Motorista</strong>
-                <span id="MOTORISTAPAG_Login_perfil_email">-</span>
-                <small id="MOTORISTAPAG_Login_perfil_status">Status: carregando...</small>
-            </div>
-        </div>
-
-<div class="MOTORISTAPAG_Login_perfil_resumo">
-    <div>
-        <strong id="MOTORISTAPAG_Login_perfil_aceitacao">100%</strong>
-        <span>Aceitação</span>
-    </div>
-
-    <div>
-        <strong id="MOTORISTAPAG_Login_perfil_avaliacao">5.0</strong>
-        <span>Nota</span>
-    </div>
-
-    <div>
-        <strong id="MOTORISTAPAG_Login_perfil_finalizacoes">0</strong>
-        <span>Finalizações</span>
-    </div>
-</div>
-
-<!-- MODAL Nivel 1 -->
-
-
-        <div class="MOTORISTAPAG_Login_perfil_secao">
-            <strong>Status</strong>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status do cadastro', 'Aqui o motorista verá se está aprovado, em análise ou com pendência.')">
-                🧾 Status do cadastro
-                <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
-            </button>
-			
-			<button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
-				🚘 Veículo em uso
-			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
-			</button>
-			
-			<strong>Cadastro</strong>			
-            <button onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()">
-				👤 Dados pessoais
-			</button>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
-                📄 Documentos do motorista
-            </button>
-		</div>
-
-        <div class="MOTORISTAPAG_Login_perfil_secao">
-            <strong>Recebimentos</strong>
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Pix para recebimento', 'Aqui o motorista poderá revisar a chave Pix para receber corridas.')">
-                💸 Pix para recebimento
-            </button>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('ID TNP e cashback', 'Aqui ficarão ID TNP, benefícios e cashback do motorista.')">
-                🟤 ID TNP / Cashback
-            </button>
-        </div>
-
-        <div class="MOTORISTAPAG_Login_perfil_secao">
-            <strong>Segurança</strong>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Termos do motorista', 'Aqui ficarão termos específicos para motoristas.')">
-                📜 Termos do motorista
-            </button>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão recursos de segurança e suporte em viagem.')">
-                🛡️ Central de segurança
-            </button>
-
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Suporte', 'Aqui o motorista poderá falar com o suporte.')">
-                ❓ Suporte
-            </button>
-        </div>
-
-    </div>
-</div>
-	
-
-
-
 <!-- MODAL VEÍCULO EM USO -->
 <div id="MOTORISTAPAG_Login_modal_veiculo_em_uso" class="MOTORISTAPAG_Login_modal_home">
     <div class="MOTORISTAPAG_Login_modal_home_box">
@@ -3309,91 +3172,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
         </button>
     </div>
 </div>	
-	
-<!-- MODAL CONFIGURAÇÕES -->
-<div id="MOTORISTAPAG_Login_modal_configuracoes" class="MOTORISTAPAG_Login_modal_home">
-    <div class="MOTORISTAPAG_Login_modal_home_box">
-        <button
-            class="MOTORISTAPAG_Login_modal_fechar"
-            onclick="MOTORISTAPAG_Login_func_fecharModais()"
-        >
-            ×
-        </button>
-
-        <h3>Configurações</h3>
-
-        <button onclick="MOTORISTAPAG_Login_func_alternarTemaMotorista()">
-            🌓 Trocar tema claro/escuro
-        </button>
-
-		<button onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()">
-			🚘 Gerenciar veículos
-		</button>
-		
-		
-
-        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
-            ⚙️ Preferências do motorista
-        </button>
-		
-		
-    </div>
-</div>
-
-
-    <!-- PAINEL INFERIOR OPERACIONAL -->
-    <div class="MOTORISTAPAG_Login_home_painel">
-
-           <div class="MOTORISTAPAG_Login_home_puxador"></div>
-
-        <!-- CARD PROMOCIONAL PEQUENO -->
-        <div id="MOTORISTAPAG_Login_home_card_promo" class="MOTORISTAPAG_Login_home_card_promo">
-            <div>
-                <strong>Ganhe mais corridas</strong>
-                <span>Fique online para receber chamadas próximas.</span>
-            </div>
-
-            <button
-                type="button"
-                onclick="MOTORISTAPAG_Login_func_fecharCardPromocao()"
-            >
-                ×
-            </button>
-        </div>
-
-        <!-- BARRA PRINCIPAL -->
-        <div class="MOTORISTAPAG_Login_home_barra_acoes">
-
-            <button
-                type="button"
-                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
-                onclick="MOTORISTAPAG_Login_func_abrirFerramentas()"
-            >
-                ⚙️
-            </button>
-
-            <button
-                id="MOTORISTAPAG_Login_btn_conectar"
-                type="button"
-                class="MOTORISTAPAG_Login_home_btn_conectar"
-                onclick="MOTORISTAPAG_Login_func_botaoConectar()"
-            >
-                CONECTAR
-            </button>
-
-            <button
-                type="button"
-                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
-                onclick="MOTORISTAPAG_Login_func_abrirChamadas()"
-            >
-                📋
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- MODAL FERRAMENTAS -->
+ <!-- MODAL FERRAMENTAS -->
     <div id="MOTORISTAPAG_Login_modal_ferramentas" class="MOTORISTAPAG_Login_modal_home">
         <div class="MOTORISTAPAG_Login_modal_home_box">
             <button class="MOTORISTAPAG_Login_modal_fechar" onclick="MOTORISTAPAG_Login_func_fecharModais()">×</button>
@@ -3513,15 +3292,292 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
             </div>
         </div>
     </div>
+	
+<!-- MODAL CONFIGURAÇÕES -->
+<div id="MOTORISTAPAG_Login_modal_configuracoes" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box">
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Configurações</h3>
+
+        <button onclick="MOTORISTAPAG_Login_func_alternarTemaMotorista()">
+            🌓 Trocar tema claro/escuro
+        </button>
+
+		<button onclick="MOTORISTAPAG_Login_func_abrirGerenciarVeiculos()">
+			🚘 Gerenciar veículos
+		</button>
+		
+		
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Preferências', 'Aqui depois ficarão notificações, sons, vibração e preferências do motorista.')">
+            ⚙️ Preferências do motorista
+        </button>
+		
+		
+    </div>
 </div>
 
 
+    <!-- PAINEL INFERIOR OPERACIONAL -->
+    <div class="MOTORISTAPAG_Login_home_painel">
+
+           <div class="MOTORISTAPAG_Login_home_puxador"></div>
+
+        <!-- CARD PROMOCIONAL PEQUENO -->
+        <div id="MOTORISTAPAG_Login_home_card_promo" class="MOTORISTAPAG_Login_home_card_promo">
+            <div>
+                <strong>Ganhe mais corridas</strong>
+                <span>Fique online para receber chamadas próximas.</span>
+            </div>
+
+            <button
+                type="button"
+                onclick="MOTORISTAPAG_Login_func_fecharCardPromocao()"
+            >
+                ×
+            </button>
+        </div>
+
+        <!-- BARRA PRINCIPAL -->
+        <div class="MOTORISTAPAG_Login_home_barra_acoes">
+
+            <button
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
+                onclick="MOTORISTAPAG_Login_func_abrirFerramentas()"
+            >
+                ⚙️
+            </button>
+
+            <button
+                id="MOTORISTAPAG_Login_btn_conectar"
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_conectar"
+                onclick="MOTORISTAPAG_Login_func_botaoConectar()"
+            >
+                CONECTAR
+            </button>
+
+            <button
+                type="button"
+                class="MOTORISTAPAG_Login_home_btn_acao_lateral"
+                onclick="MOTORISTAPAG_Login_func_abrirChamadas()"
+            >
+                📋
+            </button>
+
+        </div>
+
+    </div>
+    
+	
+	<!-- MENU LATERAL -->
+    <div
+        id="MOTORISTAPAG_Login_menu_overlay"
+        class="MOTORISTAPAG_Login_menu_overlay"
+        onclick="MOTORISTAPAG_Login_func_fecharMenuLateral()"
+    ></div>
+
+    <div id="MOTORISTAPAG_Login_menu_lateral" class="MOTORISTAPAG_Login_menu_lateral">
+        <div class="MOTORISTAPAG_Login_menu_header">
+            <div class="menu_icon_hamburguer">
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+            <strong id="MOTORISTAPAG_Login_nome_menu">Motorista</strong>
+            <span id="MOTORISTAPAG_Login_email_menu">-</span>
+        </div>
+
+        <button onclick="MOTORISTAPAG_Login_func_abrirPerfilMotorista()">
+		👤 Meu perfil
+		</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Histórico', 'Aqui ficarão as corridas aceitas, concluídas e canceladas.')">🕘 Histórico</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Solicitar ajuda', 'Aqui o motorista poderá pedir suporte.')">❓ Solicitar ajuda</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Mensagens', 'Aqui ficarão mensagens e avisos.')">💬 Mensagens</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão orientações e recursos de segurança.')">🛡️ Central de segurança</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirGanhos()">💰 Meus ganhos</button>
+        <button onclick="MOTORISTAPAG_Login_func_abrirConfiguracoesMotorista()">
+		⚙️ Configurações
+		</button>
+        <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">🙋 Usar como passageiro</button>
+        <button onclick="TESTEMOTORISTA_func_sair()">🚪 Sair</button>
+    </div>
+	<!-- MODAL PERFIL DO MOTORISTA -->
+<div id="MOTORISTAPAG_Login_modal_perfil_motorista" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Perfil do Motorista</h3>
+
+        <div class="MOTORISTAPAG_Login_perfil_topo">
+            <div class="MOTORISTAPAG_Login_perfil_avatar">
+                <img id="MOTORISTAPAG_Login_perfil_foto" src="" alt="Foto do motorista">
+                <span id="MOTORISTAPAG_Login_perfil_avatar_fallback">🚗</span>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_perfil_info">
+                <strong id="MOTORISTAPAG_Login_perfil_nome">Motorista</strong>
+                <span id="MOTORISTAPAG_Login_perfil_email">-</span>
+                <small id="MOTORISTAPAG_Login_perfil_status">Status: carregando...</small>
+            </div>
+        </div>
+
+<div class="MOTORISTAPAG_Login_perfil_resumo">
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_aceitacao">100%</strong>
+        <span>Aceitação</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_avaliacao">5.0</strong>
+        <span>Nota</span>
+    </div>
+
+    <div>
+        <strong id="MOTORISTAPAG_Login_perfil_finalizacoes">0</strong>
+        <span>Finalizações</span>
+    </div>
 </div>
 
+<!-- MODAL Nivel 1 -->
+
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Status</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalStatusCadastro()">
+				🧾 Status do cadastro
+				<span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
+			</button>
+			
+			<button onclick="MOTORISTAPAG_Login_func_abrirModalVeiculoEmUso()">
+				🚘 Veículo em uso
+			<span id="MOTORISTAPAG_Login_perfil_badge_veiculo">Selecionar</span>
+			</button>
+			
+			<strong>Cadastro</strong>			
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalDadosPessoaisMotorista()">
+				👤 Dados pessoais
+			</button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Documentos do motorista', 'Aqui ficarão CNH, selfie com CNH e documentos enviados.')">
+                📄 Documentos do motorista
+            </button>
+		</div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Recebimentos</strong>
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Pix para recebimento', 'Aqui o motorista poderá revisar a chave Pix para receber corridas.')">
+                💸 Pix para recebimento
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('ID TNP e cashback', 'Aqui ficarão ID TNP, benefícios e cashback do motorista.')">
+                🟤 ID TNP / Cashback
+            </button>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_perfil_secao">
+            <strong>Segurança</strong>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Termos do motorista', 'Aqui ficarão termos específicos para motoristas.')">
+                📜 Termos do motorista
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Central de segurança', 'Aqui ficarão recursos de segurança e suporte em viagem.')">
+                🛡️ Central de segurança
+            </button>
+
+            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Suporte', 'Aqui o motorista poderá falar com o suporte.')">
+                ❓ Suporte
+            </button>
+        </div>
+
+    </div>
+	
 </div>
+	
 
+<!--  MODAL STATUS DO CADASTRO -->
+<div id="MOTORISTAPAG_Login_modal_status_cadastro" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
 
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
 
+        <h3>Status do cadastro</h3>
+
+        <div class="MOTORISTAPAG_Login_status_cadastro_topo">
+            <div class="MOTORISTAPAG_Login_status_cadastro_icone">✅</div>
+
+            <strong id="MOTORISTAPAG_Login_status_cadastro_titulo">
+                Cadastro aprovado
+            </strong>
+
+            <p id="MOTORISTAPAG_Login_status_cadastro_texto">
+                Seu cadastro de motorista foi aprovado. Você já pode ficar online para receber chamadas.
+            </p>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_status_cadastro_lista">
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Cadastro do motorista</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Documentos conferidos</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Veículo aprovado</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Pix para recebimento</span>
+                <small>Configurado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Termos do motorista</span>
+                <small>Aceito</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ ID TNP / Cashback</span>
+                <small>Ativo</small>
+            </div>
+
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ENTENDI
+        </button>
+
+    </div>
+</div>
 
 <script>	
 	  // ========== FIREBASE CONFIG ==========
