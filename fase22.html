@@ -3903,7 +3903,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     accept="image/*"
     capture="environment"
     onchange="TNP_Login_func_prepararArquivoCorrigirPendencia(event)"
-	>
+>
 
 	<button
     type="button"
@@ -4121,11 +4121,9 @@ function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
                 btn.innerText = "Entrando...";
             }
 
-            const cred = await TESTEMOTORISTA_auth.signInWithEmailAndPassword(email, senha);
-            const user = cred.user;
+            await TESTEMOTORISTA_auth.signInWithEmailAndPassword(email, senha);
 
-            await TESTEMOTORISTA_func_prepararMotoristaAprovado(user.uid);
-            await MOTORISTAPAG_Login_func_carregarHomeMotorista();
+			await MOTORISTAPAG_Login_func_carregarHomeMotorista();
 			
         } catch (erro) {
             console.error("Erro no login teste motorista:", erro);
@@ -10133,20 +10131,14 @@ function TNP_Login_func_abrirCameraCorrigirPendencia() {
         return;
     }
 
-    const tipo = TNP_Login_pendenciaAtual.tipoPendencia;
+    input.value = '';
+    input.setAttribute('accept', 'image/*');
+    input.setAttribute('capture', 'environment');
 
-    if (
-        tipo === 'selfieComCnh' ||
-        tipo === 'selfieDocumento'
-    ) {
-        input.setAttribute('capture', 'user');
-    } else {
-        input.setAttribute('capture', 'environment');
-    }
-
-    input.click();
+    setTimeout(() => {
+        input.click();
+    }, 80);
 }
-
 
 
 
@@ -10577,41 +10569,110 @@ function TNP_Login_func_montarAtualizacaoCampo(caminhoBase, dados) {
 
     return update;
 }
-function TNP_Login_func_prepararArquivoCorrigirPendencia(event) {
-    const arquivo = event.target.files && event.target.files[0];
+async function TNP_Login_func_prepararArquivoCorrigirPendencia(event) {
+    const arquivoOriginal = event.target.files && event.target.files[0];
+
     const previewArea = document.getElementById('TNP_Login_corrigir_pendencia_preview_area');
     const preview = document.getElementById('TNP_Login_corrigir_pendencia_preview');
     const btn = document.getElementById('TNP_Login_corrigir_pendencia_btn_enviar');
     const erro = document.getElementById('TNP_Login_corrigir_pendencia_error');
+    const infoCompressao = document.getElementById('TNP_Login_corrigir_pendencia_info_compressao');
 
     if (erro) {
         erro.innerText = '';
         erro.style.display = 'none';
     }
 
-    if (!arquivo) return;
+    if (infoCompressao) {
+        infoCompressao.innerText = '';
+        infoCompressao.style.display = 'none';
+    }
 
-    if (!arquivo.type.startsWith('image/')) {
+    if (!arquivoOriginal) return;
+
+    if (!arquivoOriginal.type.startsWith('image/')) {
         if (erro) {
-            erro.innerText = 'Escolha uma imagem válida.';
+            erro.innerText = 'Tire uma foto válida.';
             erro.style.display = 'block';
         }
+
+        event.target.value = '';
         return;
     }
 
-    TNP_Login_arquivoCorrecaoPendente = arquivo;
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'PREPARANDO FOTO...';
+        }
 
-    if (preview) {
-        preview.src = URL.createObjectURL(arquivo);
+        const arquivoCompactado = await TNP_Login_func_comprimirImagem(
+            arquivoOriginal,
+            900,
+            0.7
+        );
+
+        const tamanhoOriginal = arquivoOriginal.size;
+        const tamanhoFinal = arquivoCompactado.size;
+        const economia = tamanhoOriginal - tamanhoFinal;
+
+        TNP_Login_arquivoCorrecaoPendente = {
+            arquivoOriginal: arquivoOriginal,
+            arquivoCompactado: arquivoCompactado,
+            tamanhoOriginal: tamanhoOriginal,
+            tamanhoFinal: tamanhoFinal,
+            economia: economia
+        };
+
+        if (preview) {
+            preview.src = URL.createObjectURL(arquivoCompactado);
+        }
+
+        if (previewArea) {
+            previewArea.style.display = 'block';
+        }
+
+        if (infoCompressao) {
+            infoCompressao.style.display = 'block';
+            infoCompressao.innerText =
+                'Compressão: ' +
+                TNP_Login_func_formatarTamanhoArquivo(tamanhoOriginal) +
+                ' → ' +
+                TNP_Login_func_formatarTamanhoArquivo(tamanhoFinal) +
+                ' | economizou ' +
+                TNP_Login_func_formatarTamanhoArquivo(economia);
+        }
+
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'ENVIAR CORREÇÃO';
+        }
+
+    } catch (e) {
+        console.error('Erro ao preparar correção:', e);
+
+        if (erro) {
+            erro.innerText = 'Erro ao preparar a foto. Tire outra foto e tente novamente.';
+            erro.style.display = 'block';
+        }
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'ENVIAR CORREÇÃO';
+        }
+
+    } finally {
+        event.target.value = '';
+    }
+}
+function TNP_Login_func_formatarTamanhoArquivo(bytes) {
+    if (!bytes || bytes <= 0) return '0 KB';
+
+    if (bytes < 1024 * 1024) {
+        return Math.round(bytes / 1024) + ' KB';
     }
 
-    if (previewArea) {
-        previewArea.style.display = 'block';
-    }
-
-    if (btn) {
-        btn.disabled = false;
-    }
+    return (bytes / (1024 * 1024)).toFixed(1).replace('.', ',') + ' MB';
 }
 
 function TNP_Login_func_comprimirImagem(arquivo, larguraMaxima = 1200, qualidade = 0.72) {
