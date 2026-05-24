@@ -4407,22 +4407,27 @@ const requerAnaliseAdmin = m.requerAnaliseAdmin === true || u.requerAnaliseAdmin
 
 const fotoCnhStatus = m.documentosMotorista?.fotoCnh?.status || '';
 const selfieCnhStatus = m.documentosMotorista?.selfieComCnh?.status || '';
-const documentosVeiculoStatus = m.documentosVeiculoStatus || '';
-
 const veiculoAtual = Array.isArray(m.veiculos)
     ? m.veiculos.find(v => v.emUso === true) || m.veiculos[0]
     : null;
-
-const veiculoStatus = veiculoAtual?.status || '';
-
 const fotoCnhOk = fotoCnhStatus === 'aprovado';
 const selfieCnhOk = selfieCnhStatus === 'aprovado';
 const documentosMotoristaOk = fotoCnhOk && selfieCnhOk;
 const documentosOk = documentosMotoristaOk;
 
+const crlvStatusTopo =
+    m.documentosVeiculo?.crlv?.status ||
+    veiculoAtual?.documentos?.crlv?.status ||
+    '';
+
+const fotoVeiculoPlacaStatusTopo =
+    m.documentosVeiculo?.fotoVeiculoPlaca?.status ||
+    veiculoAtual?.documentos?.fotoVeiculoPlaca?.status ||
+    '';
+
 const documentosVeiculoOk =
-    documentosVeiculoStatus === 'aprovado' ||
-    veiculoStatus === 'aprovado';
+    crlvStatusTopo === 'aprovado' &&
+    fotoVeiculoPlacaStatusTopo === 'aprovado';
 
 const pixOk =
     m.pixConfirmacaoRecebimento?.pago === true ||
@@ -4447,6 +4452,13 @@ const podeAceitar =
 
 let statusFinal = 'pendente';
 
+const tudoAprovado =
+    documentosMotoristaOk === true &&
+    documentosVeiculoOk === true &&
+    pixOk === true &&
+    termosOk === true &&
+    idTnpOk === true;
+
 if (
     statusGeral === 'reprovado' ||
     statusGeral === 'bloqueado' ||
@@ -4454,18 +4466,22 @@ if (
 ) {
     statusFinal = 'pendencia';
 } else if (
+    podeAceitar === true &&
+    requerAnaliseAdmin !== true &&
+    tudoAprovado === true
+) {
+    statusFinal = 'aprovado';
+} else if (
     requerAnaliseAdmin === true ||
     statusGeral === 'pendente_analise_admin' ||
     fotoCnhStatus === 'pendente_analise' ||
     selfieCnhStatus === 'pendente_analise' ||
-    documentosVeiculoStatus === 'pendente_analise' ||
-    veiculoStatus === 'pendente_analise'
+    crlvStatusTopo === 'pendente_analise' ||
+    fotoVeiculoPlacaStatusTopo === 'pendente_analise'
 ) {
     statusFinal = 'analise';
-} else if (podeAceitar === true) {
-    statusFinal = 'aprovado';
 }
-
+}
         if (statusFinal === 'aprovado') {
             if (icone) icone.innerText = '✅';
             if (titulo) titulo.innerText = 'Cadastro aprovado';
