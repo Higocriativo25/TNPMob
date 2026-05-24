@@ -4704,6 +4704,11 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
             Abra o aplicativo do seu banco, pague o Pix de R$ 0,01 e aguarde a confirmação automática.
         </p>
 
+		<div id="MOTORISTAPAG_Login_pix_cronometro" class="MOTORISTAPAG_Login_pix_aviso">
+			Aguardando confirmação automática por até 02:00.
+		</div>
+
+
         <img
             id="MOTORISTAPAG_Login_pix_qrcode_img"
             class="MOTORISTAPAG_Login_pix_qrcode"
@@ -4726,6 +4731,27 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         <div class="MOTORISTAPAG_Login_pix_aviso">
             Após pagar, aguarde alguns instantes. A confirmação será feita automaticamente pelo sistema.
         </div>
+
+
+	<div id="MOTORISTAPAG_Login_pix_acoes_demora" class="PRIMEIRAPAG_Login_hidden">
+
+		<button
+			class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+			type="button"
+			onclick="MOTORISTAPAG_Login_func_verificarPagamentoPixMotorista()"
+		>
+			JÁ PAGUEI / VERIFICAR PAGAMENTO
+		</button>
+
+		<button
+			class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+			type="button"
+			onclick="MOTORISTAPAG_Login_func_gerarPixConfirmacao()"
+		>
+			GERAR NOVO PIX
+		</button>
+
+	</div>
 
     </div>
 
@@ -12051,6 +12077,8 @@ MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao();
 
 let MOTORISTAPAG_Login_pixConfirmacaoCodigo = '';
 let MOTORISTAPAG_Login_unsubscribePixConfirmacao = null;
+let MOTORISTAPAG_Login_timerPixConfirmacao = null;
+let MOTORISTAPAG_Login_segundosPixConfirmacao = 120;
 
 function MOTORISTAPAG_Login_func_carregarTelaPixConfirmacao() {
     PRIMEIRAPAG_Login_func_irPara('MOTORISTAPAG_Login_screen_pix_confirmacao');
@@ -12175,8 +12203,10 @@ function MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPix) {
     }
 
     if (codigoBox) {
-        codigoBox.innerText = MOTORISTAPAG_Login_pixConfirmacaoCodigo;
-    }
+    codigoBox.innerText = MOTORISTAPAG_Login_pixConfirmacaoCodigo;
+	}
+
+	MOTORISTAPAG_Login_func_iniciarCronometroPixConfirmacao();
 }
 
 function MOTORISTAPAG_Login_func_copiarPixConfirmacao() {
@@ -12193,7 +12223,64 @@ function MOTORISTAPAG_Login_func_copiarPixConfirmacao() {
         });
 }
 
-function MOTORISTAPAG_Login_func_mostrarPixConfirmado() {
+function MOTORISTAPAG_Login_func_iniciarCronometroPixConfirmacao() {
+    const cronometro = document.getElementById('MOTORISTAPAG_Login_pix_cronometro');
+    const acoesDemora = document.getElementById('MOTORISTAPAG_Login_pix_acoes_demora');
+
+    MOTORISTAPAG_Login_func_pararCronometroPixConfirmacao();
+
+    MOTORISTAPAG_Login_segundosPixConfirmacao = 120;
+
+    if (acoesDemora) {
+        acoesDemora.classList.add('PRIMEIRAPAG_Login_hidden');
+    }
+
+    MOTORISTAPAG_Login_func_atualizarTextoCronometroPix();
+
+    MOTORISTAPAG_Login_timerPixConfirmacao = setInterval(() => {
+        MOTORISTAPAG_Login_segundosPixConfirmacao--;
+
+        MOTORISTAPAG_Login_func_atualizarTextoCronometroPix();
+
+        if (MOTORISTAPAG_Login_segundosPixConfirmacao <= 0) {
+            MOTORISTAPAG_Login_func_pararCronometroPixConfirmacao();
+
+            if (cronometro) {
+                cronometro.innerText =
+                    "Ainda não identificamos a confirmação automática. Se você já pagou, toque em verificar pagamento.";
+            }
+
+            if (acoesDemora) {
+                acoesDemora.classList.remove('PRIMEIRAPAG_Login_hidden');
+            }
+        }
+    }, 1000);
+}
+
+function MOTORISTAPAG_Login_func_atualizarTextoCronometroPix() {
+    const cronometro = document.getElementById('MOTORISTAPAG_Login_pix_cronometro');
+
+    if (!cronometro) return;
+
+    const minutos = String(Math.floor(MOTORISTAPAG_Login_segundosPixConfirmacao / 60)).padStart(2, '0');
+    const segundos = String(MOTORISTAPAG_Login_segundosPixConfirmacao % 60).padStart(2, '0');
+
+    cronometro.innerText =
+        `Aguardando confirmação automática por até ${minutos}:${segundos}.`;
+}
+
+function MOTORISTAPAG_Login_func_pararCronometroPixConfirmacao() {
+    if (MOTORISTAPAG_Login_timerPixConfirmacao) {
+        clearInterval(MOTORISTAPAG_Login_timerPixConfirmacao);
+        MOTORISTAPAG_Login_timerPixConfirmacao = null;
+    }
+}
+
+async function MOTORISTAPAG_Login_func_mostrarPixConfirmado() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    MOTORISTAPAG_Login_func_pararCronometroPixConfirmacao();
+
     const boxInicial = document.getElementById('MOTORISTAPAG_Login_pix_box_inicial');
     const boxAguardando = document.getElementById('MOTORISTAPAG_Login_pix_box_aguardando');
     const boxConfirmado = document.getElementById('MOTORISTAPAG_Login_pix_box_confirmado');
@@ -12201,6 +12288,90 @@ function MOTORISTAPAG_Login_func_mostrarPixConfirmado() {
     if (boxInicial) boxInicial.classList.add('PRIMEIRAPAG_Login_hidden');
     if (boxAguardando) boxAguardando.classList.add('PRIMEIRAPAG_Login_hidden');
     if (boxConfirmado) boxConfirmado.classList.remove('PRIMEIRAPAG_Login_hidden');
+
+    if (!user) return;
+
+    await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).set({
+        bloqueadoPorPagamentoMotorista: false,
+        motoristaStatus: 'cadastro_iniciado',
+        etapaCadastroMotorista: 'termos_motorista',
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
+        bloqueadoPorPagamentoMotorista: false,
+        etapaCadastro: 'motorista_termos',
+        etapaCadastroMotorista: 'termos_motorista',
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+}
+
+async function MOTORISTAPAG_Login_func_verificarPagamentoPixMotorista() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    try {
+        const docMotorista = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const dadosMotorista = docMotorista.exists ? docMotorista.data() : {};
+        const pix = dadosMotorista.pixConfirmacaoRecebimento || {};
+
+        if (pix.status === 'pago' || pix.pago === true) {
+            await MOTORISTAPAG_Login_func_mostrarPixConfirmado();
+            return;
+        }
+
+        const confirmar = confirm(
+            'Ainda não identificamos a confirmação automática do Pix.\n\n' +
+            'Você pode continuar o cadastro, mas sua aprovação ficará pendente até o pagamento ser confirmado.\n\n' +
+            'Deseja continuar mesmo assim?'
+        );
+
+        if (!confirmar) return;
+
+        await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: true,
+            podeAceitarCorrida: false,
+            motoristaStatus: 'pendente_pagamento',
+            etapaCadastroMotorista: 'termos_motorista',
+
+            pixConfirmacaoRecebimento: {
+                ...pix,
+                status: 'pendente_confirmacao',
+                pago: false,
+                motoristaClicouJaPaguei: true,
+                precisaConfirmarPagamento: true,
+                marcadoPendenteEm: firebase.firestore.FieldValue.serverTimestamp()
+            },
+
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: true,
+            podeAceitarCorrida: false,
+            motoristaStatus: 'pendente_pagamento',
+            etapaCadastro: 'motorista_termos',
+            etapaCadastroMotorista: 'termos_motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
+
+    } catch (erro) {
+        console.error('Erro ao verificar pagamento Pix:', erro);
+
+        PRIMEIRAPAG_Login_func_mostrarErro(
+            'MOTORISTAPAG_Login_error_pix_confirmacao',
+            'Não foi possível verificar o pagamento agora. Tente novamente.'
+        );
+    }
 }
 
 async function MOTORISTAPAG_Login_func_continuarParaTermosMotorista() {
