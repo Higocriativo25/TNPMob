@@ -583,6 +583,19 @@
 .MOTORISTAPAG_Login_screen_documentos_veiculo {
     padding: 22px 18px 120px;
 }		
+.TNP_Login_corrigir_pendencia_info_compressao {
+    display: none;
+    margin: 8px 0 10px;
+    padding: 9px 10px;
+    border-radius: 12px;
+    background: rgba(34, 197, 94, 0.10);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+    color: #50dc82;
+    font-size: 0.74rem;
+    text-align: center;
+    line-height: 1.35;
+    font-weight: 700;
+}
 
 /* ==================================================
    14. MODAL TNP
@@ -620,6 +633,150 @@
             line-height: 1.5;
             color: #e0e0e0;
         }
+		
+		/* STATUS DO CADASTRO - CARDS BONITOS */
+.MOTORISTAPAG_Login_status_cadastro_lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.MOTORISTAPAG_Login_status_card {
+    padding: 12px;
+    border-radius: 16px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.18);
+}
+
+.MOTORISTAPAG_Login_status_card_topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.MOTORISTAPAG_Login_status_card_icone {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(197, 169, 141, 0.14);
+    flex-shrink: 0;
+    font-size: 17px;
+}
+
+.MOTORISTAPAG_Login_status_card_info {
+    flex: 1;
+    min-width: 0;
+}
+
+.MOTORISTAPAG_Login_status_card_info strong {
+    display: block;
+    color: var(--Fame_text);
+    font-size: 0.84rem;
+    line-height: 1.25;
+}
+
+.MOTORISTAPAG_Login_status_card_info small {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.MOTORISTAPAG_Login_status_badge_ok {
+    background: rgba(34, 197, 94, 0.16);
+    color: #22c55e;
+}
+
+.MOTORISTAPAG_Login_status_badge_analise {
+    background: rgba(245, 158, 11, 0.16);
+    color: #f59e0b;
+}
+
+.MOTORISTAPAG_Login_status_badge_pendente {
+    background: rgba(239, 68, 68, 0.14);
+    color: #ef4444;
+}
+
+.MOTORISTAPAG_Login_status_card_texto {
+    margin-top: 8px;
+    color: var(--Fame_muted);
+    font-size: 0.74rem;
+    line-height: 1.35;
+}
+
+.MOTORISTAPAG_Login_status_card_acao {
+    display: block;
+    width: 82%;
+    margin: 14px auto 0 auto;
+    padding: 11px 14px;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+    border-radius: 14px;
+    background: linear-gradient(135deg, #7b5438, #4d2b1a);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 900;
+    text-align: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 6px 16px rgba(77, 43, 26, 0.22);
+    transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.MOTORISTAPAG_Login_status_card_acao:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+.MOTORISTAPAG_Login_status_card_acao:active {
+    transform: translateY(0);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_status_card {
+    background: #ffffff;
+    border-color: rgba(123, 84, 56, 0.22);
+}
+
+body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_status_card_info strong {
+    color: #1f1f1f;
+}
+
+/* AJUSTE VISUAL - STATUS DO CADASTRO */
+.MOTORISTAPAG_Login_status_card {
+    border: 3px solid transparent;
+    background:
+        linear-gradient(var(--Fame_card), var(--Fame_card)) padding-box,
+        linear-gradient(
+            135deg,
+            rgba(123, 84, 56, 0.85),
+            rgba(197, 169, 141, 0.45),
+            rgba(77, 43, 26, 0.85)
+        ) border-box;
+    box-shadow: 0 6px 16px rgba(77, 43, 26, 0.08);
+}
+
+.MOTORISTAPAG_Login_status_card_acao,
+#MOTORISTAPAG_Login_modal_status_cadastro .PRIMEIRAPAG_Login_btn_primary {
+    width: 85%;
+    margin: 14px auto 0 auto;
+    display: block;
+    background: linear-gradient(135deg, #7b5438, #4d2b1a);
+    color: #ffffff;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+    border-radius: 14px;
+    text-align: center;
+    font-weight: 900;
+    box-shadow: 0 6px 16px rgba(77, 43, 26, 0.22);
+}
+
+#MOTORISTAPAG_Login_modal_status_cadastro .PRIMEIRAPAG_Login_btn_primary:hover {
+    filter: brightness(1.08);
+}
 
 /* ==================================================
    15. CLASSES AUXILIARES
@@ -3012,8 +3169,158 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     border-radius: 12px;
 }
 
+/* MODAL UNIVERSAL - CORRIGIR PENDÊNCIA */
+.TNP_Login_corrigir_pendencia_box {
+    text-align: center;
+}
+
+.TNP_Login_corrigir_pendencia_icone {
+    width: 62px;
+    height: 62px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: rgba(245, 158, 11, 0.14);
+    border: 1px solid rgba(245, 158, 11, 0.28);
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.TNP_Login_corrigir_pendencia_box h3 {
+    color: var(--Fame_gold);
+    font-size: 1.08rem;
+    margin-bottom: 8px;
+}
+
+.TNP_Login_corrigir_pendencia_box > p {
+    color: var(--Fame_text);
+    font-size: 0.84rem;
+    line-height: 1.45;
+    margin-bottom: 12px;
+}
+
+.TNP_Login_corrigir_pendencia_motivo_box {
+    text-align: left;
+    padding: 12px;
+    border-radius: 16px;
+    background:
+        linear-gradient(var(--Fame_card), var(--Fame_card)) padding-box,
+        linear-gradient(135deg, rgba(123, 84, 56, 0.9), rgba(197, 169, 141, 0.55), rgba(77, 43, 26, 0.9)) border-box;
+    border: 2px solid transparent;
+    margin-bottom: 14px;
+}
+
+.TNP_Login_corrigir_pendencia_motivo_box strong {
+    display: block;
+    color: var(--Fame_gold);
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+}
+
+.TNP_Login_corrigir_pendencia_motivo_box p {
+    color: var(--Fame_text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+.TNP_Login_corrigir_pendencia_preview_area {
+    display: none;
+    margin: 12px 0;
+}
+
+.TNP_Login_corrigir_pendencia_preview_area img {
+    width: 100%;
+    max-height: 230px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid rgba(123, 84, 56, 0.75);
+}
+
+.TNP_Login_corrigir_pendencia_file_label {
+    display: block;
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.12);
+    border: 1px dashed rgba(123, 84, 56, 0.65);
+    color: var(--Fame_gold);
+    text-align: center;
+    font-weight: 900;
+    cursor: pointer;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-size: 0.82rem;
+}
+
+.TNP_Login_corrigir_pendencia_file_input {
+    display: none;
+}
+
+#TNP_Login_corrigir_pendencia_btn_enviar {
+    width: 85%;
+    margin: 14px auto 0;
+    display: block;
+    background: linear-gradient(135deg, #7b5438, #4d2b1a);
+    color: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+}
+
+/* AJUSTE FINAL - BOTÕES DO MODAL UNIVERSAL DE CORREÇÃO */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label,
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar {
+    display: block !important;
+    width: 82% !important;
+    max-width: 360px !important;
+    margin: 14px auto 0 auto !important;
+    padding: 14px 16px !important;
+
+    border-radius: 18px !important;
+    font-size: 0.92rem !important;
+    font-weight: 900 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2px !important;
+
+    cursor: pointer !important;
+    box-shadow: 0 7px 18px rgba(77, 43, 26, 0.16) !important;
+}
+
+/* Botão TIRAR NOVA FOTO - bege com letra preta/marrom */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label {
+    background: linear-gradient(135deg, #f8f2ec, #efe5dc) !important;
+    color: #2b1b12 !important;
+    border: 2px solid rgba(123, 84, 56, 0.65) !important;
+}
+
+/* Botão ENVIAR CORREÇÃO quando ainda está desativado */
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:disabled {
+    background: linear-gradient(135deg, #c8b7aa, #a89588) !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    border: 2px solid rgba(123, 84, 56, 0.25) !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+}
+
+/* Botão ENVIAR CORREÇÃO liberado depois da foto */
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:not(:disabled) {
+    background: linear-gradient(135deg, #7b5438, #4d2b1a) !important;
+    color: #ffffff !important;
+    border: 2px solid rgba(197, 169, 141, 0.55) !important;
+    box-shadow: 0 8px 20px rgba(77, 43, 26, 0.28) !important;
+}
+
+/* Efeito ao tocar */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label:active,
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:not(:disabled):active {
+    transform: scale(0.98) !important;
+}
+
         
- </style>
+</style>
 </head>
 
 <body>
@@ -3525,6 +3832,81 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     </button>
  </div>
 </div>
+
+
+
+<!-- MODAL UNIVERSAL: CORRIGIR PENDÊNCIA Serve pra todos dois e já ta no app principal-->
+<div id="TNP_Login_modal_corrigir_pendencia" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box TNP_Login_corrigir_pendencia_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="TNP_Login_func_fecharModalCorrigirPendencia()"
+        >
+            ×
+        </button>
+
+        <div class="TNP_Login_corrigir_pendencia_icone" id="TNP_Login_corrigir_pendencia_icone">
+            ⚠️
+        </div>
+
+        <h3 id="TNP_Login_corrigir_pendencia_titulo">
+            Corrigir pendência
+        </h3>
+
+        <p id="TNP_Login_corrigir_pendencia_texto">
+            O administrador solicitou correção de uma informação.
+        </p>
+
+        <div class="TNP_Login_corrigir_pendencia_motivo_box">
+            <strong>Motivo da correção</strong>
+            <p id="TNP_Login_corrigir_pendencia_motivo">
+                Aguardando motivo informado pelo administrador.
+            </p>
+        </div>
+
+        <div id="TNP_Login_corrigir_pendencia_preview_area" class="TNP_Login_corrigir_pendencia_preview_area">
+            <img id="TNP_Login_corrigir_pendencia_preview" src="" alt="Prévia do novo arquivo">
+        </div>
+		<div
+			id="TNP_Login_corrigir_pendencia_info_compressao"
+			class="TNP_Login_corrigir_pendencia_info_compressao"
+		></div>
+       <input
+    type="file"
+    id="TNP_Login_corrigir_pendencia_input"
+    class="TNP_Login_corrigir_pendencia_file_input"
+    accept="image/*"
+    capture="environment"
+    onchange="TNP_Login_func_prepararArquivoCorrigirPendencia(event)"
+	>
+
+	<button
+    type="button"
+    id="TNP_Login_corrigir_pendencia_btn_camera"
+    class="TNP_Login_corrigir_pendencia_file_label"
+    onclick="TNP_Login_func_abrirCameraCorrigirPendencia()"
+	>
+    TIRAR NOVA FOTO
+	</button>
+
+        <div id="TNP_Login_corrigir_pendencia_error" class="PRIMEIRAPAG_Login_error"></div>
+
+        <button
+            id="TNP_Login_corrigir_pendencia_btn_enviar"
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="TNP_Login_func_enviarCorrecaoPendencia()"
+            disabled
+        >
+            ENVIAR CORREÇÃO
+        </button>
+
+    </div>
+</div>
+<!-- Fim MODAL UNIVERSAL: CORRIGIR PENDÊNCIA Serve pra todos dois e já ta no app principal-->
+
+
+
 <!-- TELA 5: TIPO DE CONTA - PREFIXO QUARTAPAG -->
 <div id="QUARTAPAG_Login_screen_tipo_conta" class="PRIMEIRAPAG_Login_screen">
 
@@ -4728,6 +5110,9 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         <button onclick="PASSAGEIROPAG_Login_func_carregarHomePassageiro()">🙋 Usar como passageiro</button>
         <button onclick="TESTEMOTORISTA_func_sair()">🚪 Sair</button>
     </div>
+	
+		
+	
 <!-- TELA MOTORISTA 11: DIRECIONADOS dO MENU LATERAL -->
 	<!-- MODAL PERFIL DO MOTORISTA -->
 <div id="MOTORISTAPAG_Login_modal_perfil_motorista" class="MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_perfil_grande">
@@ -4777,7 +5162,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         <div class="MOTORISTAPAG_Login_perfil_secao">
             <strong>Status</strong>
 
-            <button onclick="MOTORISTAPAG_Login_func_abrirPaginaProvisoria('Status do cadastro', 'Aqui o motorista verá se está aprovado, em análise ou com pendência.')">
+            <button onclick="MOTORISTAPAG_Login_func_abrirModalStatusCadastro()">
                 🧾 Status do cadastro
                 <span id="MOTORISTAPAG_Login_perfil_badge_status">Aprovado</span>
             </button>
@@ -4827,6 +5212,79 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     </div>
 </div>
 <!-- MODAL Nivel 2 🧾 Status do cadastro -->
+
+<!-- TELA MOTORISTA 11: MODAL STATUS DO CADASTRO -->
+
+<div id="MOTORISTAPAG_Login_modal_status_cadastro" class="MOTORISTAPAG_Login_modal_home">
+    <div class="MOTORISTAPAG_Login_modal_home_box MOTORISTAPAG_Login_perfil_box">
+
+        <button
+            class="MOTORISTAPAG_Login_modal_fechar"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ×
+        </button>
+
+        <h3>Status do cadastro</h3>
+
+        <div class="MOTORISTAPAG_Login_status_cadastro_topo">
+            <div class="MOTORISTAPAG_Login_status_cadastro_icone">✅</div>
+
+            <strong id="MOTORISTAPAG_Login_status_cadastro_titulo">
+                Cadastro aprovado
+            </strong>
+
+            <p id="MOTORISTAPAG_Login_status_cadastro_texto">
+                Seu cadastro de motorista foi aprovado. Você já pode ficar online para receber chamadas.
+            </p>
+        </div>
+
+        <div class="MOTORISTAPAG_Login_status_cadastro_lista">
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Cadastro do motorista</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Documentos conferidos</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Veículo aprovado</span>
+                <small>Aprovado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Pix para recebimento</span>
+                <small>Configurado</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ Termos do motorista</span>
+                <small>Aceito</small>
+            </div>
+
+            <div class="MOTORISTAPAG_Login_status_cadastro_item">
+                <span>✅ ID TNP / Cashback</span>
+                <small>Ativo</small>
+            </div>
+
+        </div>
+
+        <button
+            class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+            onclick="MOTORISTAPAG_Login_func_fecharModais()"
+        >
+            ENTENDI
+        </button>
+
+    </div>
+</div>
+
+</div>
+
 
 
 <!-- MODAL Nivel 2 🚘 Veículo em uso -->
@@ -8176,6 +8634,546 @@ async function TERCEIRAPAG_Login_func_validarCodigoZap() {
         );
     }
 }
+
+
+// MODAL UNIVERSAL: CORRIGIR PENDÊNCIA
+// Serve para motorista e futuramente passageiro
+// =====================================================
+
+let TNP_Login_pendenciaAtual = null;
+let TNP_Login_arquivoCorrecaoPendente = null;
+
+function TNP_Login_func_fecharModalCorrigirPendencia() {
+    const modal = document.getElementById('TNP_Login_modal_corrigir_pendencia');
+    const input = document.getElementById('TNP_Login_corrigir_pendencia_input');
+    const previewArea = document.getElementById('TNP_Login_corrigir_pendencia_preview_area');
+    const preview = document.getElementById('TNP_Login_corrigir_pendencia_preview');
+    const infoCompressao = document.getElementById('TNP_Login_corrigir_pendencia_info_compressao');
+    const erro = document.getElementById('TNP_Login_corrigir_pendencia_error');
+    const btnEnviar = document.getElementById('TNP_Login_corrigir_pendencia_btn_enviar');
+
+    if (modal) modal.classList.remove('active');
+
+    TNP_Login_pendenciaAtual = null;
+    TNP_Login_arquivoCorrecaoPendente = null;
+
+    if (input) input.value = '';
+
+    if (preview) {
+        preview.removeAttribute('src');
+    }
+
+    if (previewArea) {
+        previewArea.style.display = 'none';
+    }
+
+    if (infoCompressao) {
+        infoCompressao.innerText = '';
+        infoCompressao.style.display = 'none';
+    }
+
+    if (erro) {
+        erro.innerText = '';
+        erro.style.display = 'none';
+    }
+
+    if (btnEnviar) {
+        btnEnviar.disabled = true;
+        btnEnviar.innerText = 'ENVIAR CORREÇÃO';
+    }
+}
+
+async function TNP_Login_func_abrirModalCorrigirPendencia(origem, tipoPendencia) {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            'Login necessário',
+            'Faça login novamente para corrigir essa pendência.'
+        );
+    }
+
+    const modal = document.getElementById('TNP_Login_modal_corrigir_pendencia');
+    const titulo = document.getElementById('TNP_Login_corrigir_pendencia_titulo');
+    const texto = document.getElementById('TNP_Login_corrigir_pendencia_texto');
+    const motivoEl = document.getElementById('TNP_Login_corrigir_pendencia_motivo');
+
+    if (!modal) {
+        alert('Modal de correção não encontrado.');
+        return;
+    }
+
+    TNP_Login_func_fecharModalCorrigirPendencia();
+
+    const config = TNP_Login_func_configPendencia(origem, tipoPendencia);
+
+    if (!config) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            'Pendência não configurada',
+            'Essa pendência ainda não foi configurada no sistema.'
+        );
+    }
+
+    try {
+        const docRef = origem === 'motorista'
+            ? PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid)
+            : PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid);
+
+        const snap = await docRef.get();
+        const dados = snap.exists ? snap.data() : {};
+
+        const status = TNP_Login_func_lerCampoAninhado(dados, config.campoStatus) || '';
+        const motivo = TNP_Login_func_lerCampoAninhado(dados, config.campoMotivo) || '';
+
+        const podeCorrigir =
+            status === 'reprovado' ||
+            status === 'pendente_correcao' ||
+            status === 'corrigir';
+
+        if (!podeCorrigir) {
+            return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+                'Correção indisponível',
+                'Essa etapa não está liberada para reenvio. Se estiver em análise, aguarde a conferência do administrador.'
+            );
+        }
+
+        TNP_Login_pendenciaAtual = {
+            origem: origem,
+            tipoPendencia: tipoPendencia,
+            config: config
+        };
+
+        if (titulo) titulo.innerText = config.titulo;
+        if (texto) texto.innerText = config.texto;
+        if (motivoEl) motivoEl.innerText = motivo || 'O administrador solicitou uma correção nesta etapa.';
+
+        modal.classList.add('active');
+
+    } catch (erro) {
+        console.error('Erro ao abrir modal de correção:', erro);
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            'Erro ao carregar pendência',
+            'Não foi possível carregar os dados da pendência agora.'
+        );
+    }
+}
+
+function TNP_Login_func_configPendencia(origem, tipoPendencia) {
+    const configs = {
+        motorista: {
+            fotoCnh: {
+                titulo: 'Reenviar foto da CNH',
+                texto: 'Envie uma nova foto da CNH conforme a orientação do administrador.',
+                pastaStorage: 'documentos',
+                campoFirestore: 'documentosMotorista.fotoCnh',
+                campoStatus: 'documentosMotorista.fotoCnh.status',
+                campoMotivo: 'documentosMotorista.fotoCnh.motivoReprovacao'
+            },
+
+            selfieComCnh: {
+                titulo: 'Reenviar selfie com CNH',
+                texto: 'Envie uma nova selfie com a CNH conforme a orientação do administrador.',
+                pastaStorage: 'documentos',
+                campoFirestore: 'documentosMotorista.selfieComCnh',
+                campoStatus: 'documentosMotorista.selfieComCnh.status',
+                campoMotivo: 'documentosMotorista.selfieComCnh.motivoReprovacao'
+            },
+
+            crlv: {
+                titulo: 'Reenviar CRLV',
+                texto: 'Envie uma nova foto do documento do veículo conforme a orientação do administrador.',
+                pastaStorage: 'documentos-veiculo',
+                campoFirestore: 'documentosVeiculo.crlv',
+                campoStatus: 'documentosVeiculo.crlv.status',
+                campoMotivo: 'documentosVeiculo.crlv.motivoReprovacao'
+            },
+
+            fotoVeiculoPlaca: {
+                titulo: 'Reenviar foto do veículo',
+                texto: 'Envie uma nova foto mostrando o veículo e a placa com nitidez.',
+                pastaStorage: 'documentos-veiculo',
+                campoFirestore: 'documentosVeiculo.fotoVeiculoPlaca',
+                campoStatus: 'documentosVeiculo.fotoVeiculoPlaca.status',
+                campoMotivo: 'documentosVeiculo.fotoVeiculoPlaca.motivoReprovacao'
+            }
+        },
+
+        passageiro: {
+            selfieDocumento: {
+                titulo: 'Reenviar selfie com documento',
+                texto: 'Envie uma nova selfie com documento conforme a orientação do administrador.',
+                pastaStorage: 'documentos',
+                campoFirestore: 'selfieDocumentoExtra',
+                campoStatus: 'selfieDocumentoExtraStatus',
+                campoMotivo: 'selfieDocumentoExtraMotivoReprovacao'
+            },
+
+            comprovanteEndereco: {
+                titulo: 'Reenviar comprovante de endereço',
+                texto: 'Envie um novo comprovante de endereço legível.',
+                pastaStorage: 'documentos',
+                campoFirestore: 'comprovanteEndereco',
+                campoStatus: 'comprovanteEnderecoStatus',
+                campoMotivo: 'comprovanteEnderecoMotivoReprovacao'
+            }
+        }
+    };
+
+    return configs?.[origem]?.[tipoPendencia] || null;
+}
+
+function TNP_Login_func_lerCampoAninhado(obj, caminho) {
+    return caminho.split('.').reduce((atual, chave) => {
+        return atual && atual[chave] !== undefined ? atual[chave] : undefined;
+    }, obj);
+}
+
+function TNP_Login_func_montarAtualizacaoCampo(caminhoBase, dados) {
+    const update = {};
+
+    Object.keys(dados).forEach(chave => {
+        update[`${caminhoBase}.${chave}`] = dados[chave];
+    });
+
+    return update;
+}
+
+function TNP_Login_func_abrirCameraCorrigirPendencia() {
+    const input = document.getElementById('TNP_Login_corrigir_pendencia_input');
+
+    if (!input) {
+        alert('Câmera não encontrada.');
+        return;
+    }
+
+    if (!TNP_Login_pendenciaAtual) {
+        alert('Nenhuma pendência selecionada.');
+        return;
+    }
+
+    input.value = '';
+    input.setAttribute('accept', 'image/*');
+    input.setAttribute('capture', 'environment');
+
+    setTimeout(() => {
+        input.click();
+    }, 80);
+}
+
+function TNP_Login_func_formatarTamanhoArquivo(bytes) {
+    if (!bytes || bytes <= 0) return '0 KB';
+
+    if (bytes < 1024 * 1024) {
+        return Math.round(bytes / 1024) + ' KB';
+    }
+
+    return (bytes / (1024 * 1024)).toFixed(1).replace('.', ',') + ' MB';
+}
+
+function TNP_Login_func_comprimirImagem(arquivo, larguraMaxima = 900, qualidade = 0.7) {
+    return new Promise((resolve, reject) => {
+        if (!arquivo || !arquivo.type.startsWith('image/')) {
+            return resolve(arquivo);
+        }
+
+        const leitor = new FileReader();
+
+        leitor.onload = function(event) {
+            const img = new Image();
+
+            img.onload = function() {
+                let largura = img.width;
+                let altura = img.height;
+
+                if (largura > altura) {
+                    if (largura > larguraMaxima) {
+                        altura = Math.round(altura * (larguraMaxima / largura));
+                        largura = larguraMaxima;
+                    }
+                } else {
+                    if (altura > larguraMaxima) {
+                        largura = Math.round(largura * (larguraMaxima / altura));
+                        altura = larguraMaxima;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = largura;
+                canvas.height = altura;
+
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, largura, altura);
+
+                canvas.toBlob(
+                    function(blob) {
+                        if (!blob) {
+                            return reject(new Error('Erro ao comprimir imagem.'));
+                        }
+
+                        const arquivoFinal = new File(
+                            [blob],
+                            'correcao-pendencia-tnp-mob.jpg',
+                            {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            }
+                        );
+
+                        resolve(arquivoFinal);
+                    },
+                    'image/jpeg',
+                    qualidade
+                );
+            };
+
+            img.onerror = function() {
+                reject(new Error('Erro ao carregar imagem.'));
+            };
+
+            img.src = event.target.result;
+        };
+
+        leitor.onerror = function() {
+            reject(new Error('Erro ao ler arquivo.'));
+        };
+
+        leitor.readAsDataURL(arquivo);
+    });
+}
+
+async function TNP_Login_func_prepararArquivoCorrigirPendencia(event) {
+    const arquivoOriginal = event.target.files && event.target.files[0];
+
+    const previewArea = document.getElementById('TNP_Login_corrigir_pendencia_preview_area');
+    const preview = document.getElementById('TNP_Login_corrigir_pendencia_preview');
+    const infoCompressao = document.getElementById('TNP_Login_corrigir_pendencia_info_compressao');
+    const erro = document.getElementById('TNP_Login_corrigir_pendencia_error');
+    const btnEnviar = document.getElementById('TNP_Login_corrigir_pendencia_btn_enviar');
+
+    if (erro) {
+        erro.innerText = '';
+        erro.style.display = 'none';
+    }
+
+    if (infoCompressao) {
+        infoCompressao.innerText = '';
+        infoCompressao.style.display = 'none';
+    }
+
+    if (!arquivoOriginal) return;
+
+    if (!arquivoOriginal.type.startsWith('image/')) {
+        if (erro) {
+            erro.innerText = 'Tire uma foto válida.';
+            erro.style.display = 'block';
+        }
+
+        event.target.value = '';
+        return;
+    }
+
+    try {
+        if (btnEnviar) {
+            btnEnviar.disabled = true;
+            btnEnviar.innerText = 'PREPARANDO FOTO...';
+        }
+
+        const arquivoCompactado = await TNP_Login_func_comprimirImagem(
+            arquivoOriginal,
+            900,
+            0.7
+        );
+
+        const tamanhoOriginal = arquivoOriginal.size;
+        const tamanhoFinal = arquivoCompactado.size;
+        const economia = tamanhoOriginal - tamanhoFinal;
+
+        TNP_Login_arquivoCorrecaoPendente = {
+            arquivoOriginal: arquivoOriginal,
+            arquivoCompactado: arquivoCompactado,
+            tamanhoOriginal: tamanhoOriginal,
+            tamanhoFinal: tamanhoFinal,
+            economia: economia
+        };
+
+        if (preview) {
+            preview.src = URL.createObjectURL(arquivoCompactado);
+        }
+
+        if (previewArea) {
+            previewArea.style.display = 'block';
+        }
+
+        if (infoCompressao) {
+            infoCompressao.style.display = 'block';
+            infoCompressao.innerText =
+                'Compressão: ' +
+                TNP_Login_func_formatarTamanhoArquivo(tamanhoOriginal) +
+                ' → ' +
+                TNP_Login_func_formatarTamanhoArquivo(tamanhoFinal) +
+                ' | economizou ' +
+                TNP_Login_func_formatarTamanhoArquivo(economia);
+        }
+
+        if (btnEnviar) {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = 'ENVIAR CORREÇÃO';
+        }
+
+    } catch (erroPreparar) {
+        console.error('Erro ao preparar imagem de correção:', erroPreparar);
+
+        if (erro) {
+            erro.innerText = 'Erro ao preparar a foto. Tire outra foto e tente novamente.';
+            erro.style.display = 'block';
+        }
+
+        if (btnEnviar) {
+            btnEnviar.disabled = true;
+            btnEnviar.innerText = 'ENVIAR CORREÇÃO';
+        }
+
+    } finally {
+        event.target.value = '';
+    }
+}
+
+async function TNP_Login_func_enviarCorrecaoPendencia() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const erro = document.getElementById('TNP_Login_corrigir_pendencia_error');
+    const btnEnviar = document.getElementById('TNP_Login_corrigir_pendencia_btn_enviar');
+
+    if (erro) {
+        erro.innerText = '';
+        erro.style.display = 'none';
+    }
+
+    if (!user) {
+        if (erro) {
+            erro.innerText = 'Faça login novamente para enviar a correção.';
+            erro.style.display = 'block';
+        }
+        return;
+    }
+
+    if (!TNP_Login_pendenciaAtual || !TNP_Login_arquivoCorrecaoPendente) {
+        if (erro) {
+            erro.innerText = 'Tire uma nova foto antes de enviar.';
+            erro.style.display = 'block';
+        }
+        return;
+    }
+
+    try {
+        if (btnEnviar) {
+            btnEnviar.disabled = true;
+            btnEnviar.innerText = 'ENVIANDO...';
+        }
+
+        const origem = TNP_Login_pendenciaAtual.origem;
+        const tipoPendencia = TNP_Login_pendenciaAtual.tipoPendencia;
+        const config = TNP_Login_pendenciaAtual.config;
+
+        const nomeArquivo = `${tipoPendencia}_${Date.now()}.jpg`;
+
+        const caminhoStorage = origem === 'motorista'
+            ? `motoristas/${user.uid}/${config.pastaStorage}/${nomeArquivo}`
+            : `usuarios/${user.uid}/${config.pastaStorage}/${nomeArquivo}`;
+
+        const storageRef = PRIMEIRAPAG_Login_storage
+            .ref()
+            .child(caminhoStorage);
+
+        const arquivoCompactado = TNP_Login_arquivoCorrecaoPendente.arquivoCompactado;
+
+        await storageRef.put(arquivoCompactado, {
+            contentType: 'image/jpeg'
+        });
+
+        const url = await storageRef.getDownloadURL();
+
+        const dadosAtualizados = {
+            enviado: true,
+            url: url,
+            caminho: caminhoStorage,
+            status: 'pendente_analise',
+            motivoReprovacao: '',
+            tamanhoOriginal: TNP_Login_arquivoCorrecaoPendente.tamanhoOriginal,
+            tamanhoFinal: TNP_Login_arquivoCorrecaoPendente.tamanhoFinal,
+            economiaBytes: TNP_Login_arquivoCorrecaoPendente.economia,
+            reenviadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        const update = TNP_Login_func_montarAtualizacaoCampo(
+            config.campoFirestore,
+            dadosAtualizados
+        );
+
+        update.requerAnaliseAdmin = true;
+        update.atualizadoEm = firebase.firestore.FieldValue.serverTimestamp();
+
+        if (origem === 'motorista') {
+            if (
+                tipoPendencia === 'fotoCnh' ||
+                tipoPendencia === 'selfieComCnh'
+            ) {
+                update.fotosCnhStatus = 'pendente_analise';
+            }
+
+            if (
+                tipoPendencia === 'crlv' ||
+                tipoPendencia === 'fotoVeiculoPlaca'
+            ) {
+                update.documentosVeiculoStatus = 'pendente_analise';
+            }
+
+            update.etapaCadastroMotorista = 'analise_final_motorista';
+        }
+
+        const docRef = origem === 'motorista'
+            ? PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid)
+            : PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid);
+
+        await docRef.update(update);
+
+        TNP_Login_func_fecharModalCorrigirPendencia();
+
+        MOTORISTAPAG_Login_func_abrirModalStatusCadastro();
+
+    } catch (e) {
+        console.error('Erro ao enviar correção de pendência:', e);
+
+        if (erro) {
+            erro.innerText =
+                'Erro ao enviar: ' +
+                (e.code || e.message || 'erro desconhecido');
+
+            erro.style.display = 'block';
+        }
+
+    } finally {
+        if (btnEnviar) {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = 'ENVIAR CORREÇÃO';
+        }
+    }
+}
+
+
+//-- Fim MODAL UNIVERSAL: CORRIGIR PENDÊNCIA Serve pra todos dois e já ta no app principal-->
+
+
+
+
+
+
+
+
+
 // ========== TELA 5: TIPO DE CONTA COM PREFIXO QUARTAPAG ==========
 
 let QUARTAPAG_Login_var_tipoConta = "passageiro";
@@ -11650,6 +12648,466 @@ function MOTORISTAPAG_Login_func_abrirPerfilMotorista() {
 
     MOTORISTAPAG_Login_func_preencherPerfilMotorista();
 }
+
+
+// -- TELA MOTORISTA 11: MODAL STATUS DO CADASTRO -->
+async function MOTORISTAPAG_Login_func_abrirModalStatusCadastro() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const modal = document.getElementById('MOTORISTAPAG_Login_modal_status_cadastro');
+    const titulo = document.getElementById('MOTORISTAPAG_Login_status_cadastro_titulo');
+    const texto = document.getElementById('MOTORISTAPAG_Login_status_cadastro_texto');
+    const lista = document.querySelector('.MOTORISTAPAG_Login_status_cadastro_lista');
+    const icone = document.querySelector('.MOTORISTAPAG_Login_status_cadastro_icone');
+
+    if (!modal) {
+        console.warn('Modal Status do Cadastro não encontrado.');
+        return;
+    }
+
+    modal.classList.add('active');
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        if (titulo) titulo.innerText = 'Usuário não encontrado';
+        if (texto) texto.innerText = 'Faça login novamente para consultar o status do cadastro.';
+        return;
+    }
+
+    try {
+        const userDoc = await PRIMEIRAPAG_Login_db
+            .collection('usuarios')
+            .doc(user.uid)
+            .get();
+
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const u = userDoc.exists ? userDoc.data() : {};
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+const statusGeral =
+    m.status?.geral ||
+    u.status?.geral ||
+    m.statusAnalise ||
+    u.statusAnalise ||
+    m.motoristaStatus ||
+    u.motoristaStatus ||
+    'em_analise';
+
+const requerAnaliseAdmin = m.requerAnaliseAdmin === true || u.requerAnaliseAdmin === true;
+
+const fotoCnhStatus = m.documentosMotorista?.fotoCnh?.status || '';
+const selfieCnhStatus = m.documentosMotorista?.selfieComCnh?.status || '';
+const veiculoAtual = Array.isArray(m.veiculos)
+    ? m.veiculos.find(v => v.emUso === true) || m.veiculos[0]
+    : null;
+const fotoCnhOk = fotoCnhStatus === 'aprovado';
+const selfieCnhOk = selfieCnhStatus === 'aprovado';
+const documentosMotoristaOk = fotoCnhOk && selfieCnhOk;
+const documentosOk = documentosMotoristaOk;
+
+const crlvStatusTopo =
+    m.documentosVeiculo?.crlv?.status ||
+    veiculoAtual?.documentos?.crlv?.status ||
+    '';
+
+const fotoVeiculoPlacaStatusTopo =
+    m.documentosVeiculo?.fotoVeiculoPlaca?.status ||
+    veiculoAtual?.documentos?.fotoVeiculoPlaca?.status ||
+    '';
+
+const documentosVeiculoOk =
+    crlvStatusTopo === 'aprovado' &&
+    fotoVeiculoPlacaStatusTopo === 'aprovado';
+
+const pixOk =
+    m.pixConfirmacaoRecebimento?.pago === true ||
+    m.pixConfirmacaoRecebimento?.status === 'pago';
+
+const termosOk = m.termosMotoristaAceitos === true;
+const idTnpOk = m.idTnpInformado === true || m.idTnpConcluido === true;
+
+const cadastroOk =
+    m.cadastroAprovado === true &&
+    requerAnaliseAdmin !== true &&
+    statusGeral === 'aprovado';
+
+const veiculoOk = documentosVeiculoOk;
+
+const podeAceitar =
+    m.podeAceitarCorrida === true &&
+    requerAnaliseAdmin !== true &&
+    statusGeral === 'aprovado' &&
+    documentosMotoristaOk === true &&
+    documentosVeiculoOk === true;
+
+let statusFinal = 'pendente';
+
+const tudoAprovado =
+    documentosMotoristaOk === true &&
+    documentosVeiculoOk === true &&
+    pixOk === true &&
+    termosOk === true &&
+    idTnpOk === true;
+
+const temBloqueioReal =
+    requerAnaliseAdmin === true ||
+    statusGeral === 'reprovado' ||
+    statusGeral === 'bloqueado' ||
+    statusGeral === 'pendente_correcao';
+
+const temDocumentoEmAnalise =
+    fotoCnhStatus === 'pendente_analise' ||
+    selfieCnhStatus === 'pendente_analise' ||
+    crlvStatusTopo === 'pendente_analise' ||
+    fotoVeiculoPlacaStatusTopo === 'pendente_analise';
+
+const motoristaLiberado =
+    m.podeAceitarCorrida === true ||
+    m.cadastroAprovado === true ||
+    m.statusAnalise === 'aprovado' ||
+    m.motoristaStatus === 'aprovado';
+
+if (temBloqueioReal) {
+    statusFinal = 'pendencia';
+} else if (
+    tudoAprovado === true &&
+    motoristaLiberado === true
+) {
+    statusFinal = 'aprovado';
+} else if (
+    temDocumentoEmAnalise === true ||
+    statusGeral === 'pendente_analise_admin'
+) {
+    statusFinal = 'analise';
+}
+
+        if (statusFinal === 'aprovado') {
+            if (icone) icone.innerText = '✅';
+            if (titulo) titulo.innerText = 'Cadastro aprovado';
+            if (texto) {
+                texto.innerText = 'Seu cadastro de motorista foi aprovado. Você já pode ficar online para receber chamadas.';
+            }
+        }
+
+        if (statusFinal === 'analise') {
+            if (icone) icone.innerText = '⏳';
+            if (titulo) titulo.innerText = 'Cadastro em análise';
+            if (texto) {
+                texto.innerText = 'Seus dados foram enviados e estão em análise. Assim que forem aprovados, você poderá receber chamadas.';
+            }
+        }
+
+        if (statusFinal === 'pendente') {
+            if (icone) icone.innerText = '⚠️';
+            if (titulo) titulo.innerText = 'Cadastro pendente';
+            if (texto) {
+                texto.innerText = 'Ainda existem etapas obrigatórias para concluir antes de receber chamadas.';
+            }
+        }
+
+        if (statusFinal === 'pendencia') {
+            if (icone) icone.innerText = '🚫';
+            if (titulo) titulo.innerText = 'Cadastro com pendência';
+            if (texto) {
+                texto.innerText = 'Existe uma pendência no cadastro. Revise as informações ou aguarde orientação do suporte.';
+            }
+        }
+
+if (lista) {
+    function criarCardStatus(nome, status, textoAuxiliar, acaoTexto, acaoFuncao) {
+        let icone = '⚠️';
+        let badgeClasse = 'MOTORISTAPAG_Login_status_badge_pendente';
+        let statusTexto = 'Pendente';
+
+        if (status === 'ok') {
+            icone = '✅';
+            badgeClasse = 'MOTORISTAPAG_Login_status_badge_ok';
+            statusTexto = 'Concluído';
+        }
+
+        if (status === 'analise') {
+            icone = '⏳';
+            badgeClasse = 'MOTORISTAPAG_Login_status_badge_analise';
+            statusTexto = 'Em análise';
+        }
+
+        if (status === 'revisao') {
+            icone = '❌';
+            badgeClasse = 'MOTORISTAPAG_Login_status_badge_pendente';
+            statusTexto = 'Corrigir';
+        }
+
+        const botao = acaoTexto && acaoFuncao
+            ? `<button class="MOTORISTAPAG_Login_status_card_acao" onclick="${acaoFuncao}">${acaoTexto}</button>`
+            : '';
+
+        return `
+            <div class="MOTORISTAPAG_Login_status_card">
+                <div class="MOTORISTAPAG_Login_status_card_topo">
+                    <div class="MOTORISTAPAG_Login_status_card_icone">${icone}</div>
+
+                    <div class="MOTORISTAPAG_Login_status_card_info">
+                        <strong>${nome}</strong>
+                        <small class="${badgeClasse}">${statusTexto}</small>
+                    </div>
+                </div>
+
+                <div class="MOTORISTAPAG_Login_status_card_texto">
+                    ${textoAuxiliar}
+                </div>
+
+                ${botao}
+            </div>
+        `;
+    }
+
+    const crlvStatus =
+        m.documentosVeiculo?.crlv?.status ||
+        veiculoAtual?.documentos?.crlv?.status ||
+        '';
+
+    const fotoVeiculoPlacaStatus =
+        m.documentosVeiculo?.fotoVeiculoPlaca?.status ||
+        veiculoAtual?.documentos?.fotoVeiculoPlaca?.status ||
+        '';
+
+    const fotoCnhRevisao =
+        fotoCnhStatus === 'reprovado' ||
+        fotoCnhStatus === 'pendente_correcao' ||
+        fotoCnhStatus === 'corrigir';
+
+    const selfieCnhRevisao =
+        selfieCnhStatus === 'reprovado' ||
+        selfieCnhStatus === 'pendente_correcao' ||
+        selfieCnhStatus === 'corrigir';
+
+    const crlvRevisao =
+        crlvStatus === 'reprovado' ||
+        crlvStatus === 'pendente_correcao' ||
+        crlvStatus === 'corrigir';
+
+    const fotoVeiculoPlacaRevisao =
+        fotoVeiculoPlacaStatus === 'reprovado' ||
+        fotoVeiculoPlacaStatus === 'pendente_correcao' ||
+        fotoVeiculoPlacaStatus === 'corrigir';
+
+    lista.innerHTML = `
+        ${criarCardStatus(
+            'Cadastro do motorista',
+            cadastroOk ? 'ok' : statusFinal === 'analise' ? 'analise' : 'pendente',
+            cadastroOk
+                ? 'Cadastro liberado pelo administrador.'
+                : 'Seu cadastro ainda depende da análise final do administrador.',
+            '',
+            ''
+        )}
+
+        ${criarCardStatus(
+            'Foto da CNH',
+            fotoCnhOk ? 'ok' : fotoCnhRevisao ? 'revisao' : 'analise',
+            fotoCnhOk
+                ? 'Foto da CNH aprovada.'
+                : fotoCnhRevisao
+                    ? 'O administrador pediu correção da foto da CNH.'
+                    : 'Foto da CNH aguardando análise.',
+            fotoCnhRevisao ? 'Reenviar foto da CNH' : '',
+            fotoCnhRevisao ? "TNP_Login_func_abrirModalCorrigirPendencia('motorista', 'fotoCnh')" : ''
+        )}
+
+        ${criarCardStatus(
+            'Selfie com CNH',
+            selfieCnhOk ? 'ok' : selfieCnhRevisao ? 'revisao' : 'analise',
+            selfieCnhOk
+                ? 'Selfie com CNH aprovada.'
+                : selfieCnhRevisao
+                    ? 'O administrador pediu correção da selfie com CNH.'
+                    : 'Selfie com CNH aguardando análise.',
+            selfieCnhRevisao ? 'Reenviar selfie com CNH' : '',
+            selfieCnhRevisao ? "TNP_Login_func_abrirModalCorrigirPendencia('motorista', 'selfieComCnh')" : ''
+        )}
+
+        ${criarCardStatus(
+            'CRLV / Documento do veículo',
+            crlvStatus === 'aprovado' ? 'ok' : crlvRevisao ? 'revisao' : 'analise',
+            crlvStatus === 'aprovado'
+                ? 'Documento do veículo aprovado.'
+                : crlvRevisao
+                    ? 'O administrador pediu correção do documento do veículo.'
+                    : 'Documento do veículo aguardando análise.',
+            crlvRevisao ? 'Reenviar CRLV' : '',
+            crlvRevisao ? "TNP_Login_func_abrirModalCorrigirPendencia('motorista', 'crlv')" : ''
+        )}
+
+        ${criarCardStatus(
+            'Foto do veículo com placa',
+            fotoVeiculoPlacaStatus === 'aprovado' ? 'ok' : fotoVeiculoPlacaRevisao ? 'revisao' : 'analise',
+            fotoVeiculoPlacaStatus === 'aprovado'
+                ? 'Foto do veículo com placa aprovada.'
+                : fotoVeiculoPlacaRevisao
+                    ? 'O administrador pediu correção da foto do veículo com placa.'
+                    : 'Foto do veículo com placa aguardando análise.',
+            fotoVeiculoPlacaRevisao ? 'Reenviar foto do veículo' : '',
+            fotoVeiculoPlacaRevisao ? "TNP_Login_func_abrirModalCorrigirPendencia('motorista', 'fotoVeiculoPlaca')" : ''
+        )}
+
+        ${criarCardStatus(
+            'Pix para recebimento',
+            pixOk ? 'ok' : 'pendente',
+            pixOk
+                ? 'Conta de recebimento confirmada.'
+                : 'Confirme o Pix para liberar recebimentos.',
+            '',
+            ''
+        )}
+
+        ${criarCardStatus(
+            'Termos do motorista',
+            termosOk ? 'ok' : 'pendente',
+            termosOk
+                ? 'Termos do motorista aceitos.'
+                : 'Você precisa aceitar os termos do motorista.',
+            '',
+            ''
+        )}
+
+        ${criarCardStatus(
+            'ID TNP / Cashback',
+            idTnpOk ? 'ok' : 'pendente',
+            idTnpOk
+                ? 'ID TNP informado e vinculado ao cadastro.'
+                : 'Informe seu ID TNP para concluir essa etapa.',
+            '',
+            ''
+        )}
+    `;
+}
+   
+
+    } catch (erro) {
+        console.error('Erro ao carregar status do cadastro:', erro);
+
+        if (icone) icone.innerText = '⚠️';
+        if (titulo) titulo.innerText = 'Erro ao carregar status';
+        if (texto) texto.innerText = 'Não foi possível consultar o status agora. Tente novamente em instantes.';
+    }
+}
+
+async function MOTORISTAPAG_Login_func_abrirReenvioDocumentosMotorista() {
+    MOTORISTAPAG_Login_func_fecharModais();
+
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user) {
+        return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            'Login necessário',
+            'Faça login novamente para reenviar seus documentos.'
+        );
+    }
+
+    try {
+        const motoristaDoc = await PRIMEIRAPAG_Login_db
+            .collection('motoristas')
+            .doc(user.uid)
+            .get();
+
+        const m = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+        const fotoCnhStatus = m.documentosMotorista?.fotoCnh?.status || '';
+        const selfieCnhStatus = m.documentosMotorista?.selfieComCnh?.status || '';
+
+        const fotoCnhMotivo = m.documentosMotorista?.fotoCnh?.motivoReprovacao || '';
+        const selfieCnhMotivo = m.documentosMotorista?.selfieComCnh?.motivoReprovacao || '';
+
+        const fotoCnhPrecisaCorrigir =
+            fotoCnhStatus === 'reprovado' ||
+            fotoCnhStatus === 'pendente_correcao' ||
+            fotoCnhStatus === 'corrigir';
+
+        const selfieCnhPrecisaCorrigir =
+            selfieCnhStatus === 'reprovado' ||
+            selfieCnhStatus === 'pendente_correcao' ||
+            selfieCnhStatus === 'corrigir';
+
+        if (!fotoCnhPrecisaCorrigir && !selfieCnhPrecisaCorrigir) {
+            return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+                'Documentos em análise',
+                'Seus documentos do motorista ainda estão em análise. Aguarde a conferência do administrador.'
+            );
+        }
+
+        if (fotoCnhPrecisaCorrigir && selfieCnhPrecisaCorrigir) {
+            return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+                'Reenviar documentos do motorista',
+                'O administrador solicitou correção da foto da CNH e da selfie com CNH.\n\n' +
+                'Foto da CNH: ' + (fotoCnhMotivo || 'Correção solicitada.') + '\n\n' +
+                'Selfie com CNH: ' + (selfieCnhMotivo || 'Correção solicitada.') + '\n\n' +
+                'Aqui vamos abrir a tela para reenviar os dois documentos.'
+            );
+        }
+
+        if (fotoCnhPrecisaCorrigir) {
+            return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+                'Reenviar foto da CNH',
+                'O administrador solicitou correção da foto da CNH.\n\n' +
+                'Motivo: ' + (fotoCnhMotivo || 'Correção solicitada.') + '\n\n' +
+                'Aqui vamos abrir direto a tela de envio da foto da CNH.'
+            );
+        }
+
+        if (selfieCnhPrecisaCorrigir) {
+            return MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+                'Reenviar selfie com CNH',
+                'O administrador solicitou correção da selfie com CNH.\n\n' +
+                'Motivo: ' + (selfieCnhMotivo || 'Correção solicitada.') + '\n\n' +
+                'Aqui vamos abrir direto a tela de envio da selfie com CNH.'
+            );
+        }
+
+    } catch (erro) {
+        console.error('Erro ao abrir reenvio de documentos do motorista:', erro);
+
+        MOTORISTAPAG_Login_func_abrirPaginaProvisoria(
+            'Erro ao carregar documentos',
+            'Não foi possível verificar quais documentos precisam de correção agora. Tente novamente em instantes.'
+        );
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //-- MODAL Dados pessoais nivel 1 -->
