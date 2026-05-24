@@ -4459,25 +4459,34 @@ const tudoAprovado =
     termosOk === true &&
     idTnpOk === true;
 
-if (
+const temBloqueioReal =
+    requerAnaliseAdmin === true ||
     statusGeral === 'reprovado' ||
     statusGeral === 'bloqueado' ||
-    statusGeral === 'pendente_correcao'
-) {
-    statusFinal = 'pendencia';
-} else if (
-    podeAceitar === true &&
-    requerAnaliseAdmin !== true &&
-    tudoAprovado === true
-) {
-    statusFinal = 'aprovado';
-} else if (
-    requerAnaliseAdmin === true ||
-    statusGeral === 'pendente_analise_admin' ||
+    statusGeral === 'pendente_correcao';
+
+const temDocumentoEmAnalise =
     fotoCnhStatus === 'pendente_analise' ||
     selfieCnhStatus === 'pendente_analise' ||
     crlvStatusTopo === 'pendente_analise' ||
-    fotoVeiculoPlacaStatusTopo === 'pendente_analise'
+    fotoVeiculoPlacaStatusTopo === 'pendente_analise';
+
+const motoristaLiberado =
+    m.podeAceitarCorrida === true ||
+    m.cadastroAprovado === true ||
+    m.statusAnalise === 'aprovado' ||
+    m.motoristaStatus === 'aprovado';
+
+if (temBloqueioReal) {
+    statusFinal = 'pendencia';
+} else if (
+    tudoAprovado === true &&
+    motoristaLiberado === true
+) {
+    statusFinal = 'aprovado';
+} else if (
+    temDocumentoEmAnalise === true ||
+    statusGeral === 'pendente_analise_admin'
 ) {
     statusFinal = 'analise';
 }
