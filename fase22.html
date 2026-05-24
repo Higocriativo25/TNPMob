@@ -3266,31 +3266,55 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     border: 1px solid rgba(197, 169, 141, 0.35);
 }
 
-/* AJUSTE FINAL - BOTÃO REENVIAR DO STATUS */
-#MOTORISTAPAG_Login_modal_status_cadastro .MOTORISTAPAG_Login_status_card_acao {
+/* AJUSTE FINAL - BOTÕES DO MODAL UNIVERSAL DE CORREÇÃO */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label,
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar {
     display: block !important;
-    width: 78% !important;
+    width: 82% !important;
+    max-width: 360px !important;
     margin: 14px auto 0 auto !important;
-    padding: 11px 14px !important;
+    padding: 14px 16px !important;
 
-    background: linear-gradient(135deg, #7b5438, #4d2b1a) !important;
-    color: #ffffff !important;
-
-    border: 1px solid rgba(197, 169, 141, 0.45) !important;
-    border-radius: 14px !important;
-
-    font-size: 0.78rem !important;
+    border-radius: 18px !important;
+    font-size: 0.92rem !important;
     font-weight: 900 !important;
     text-align: center !important;
     text-transform: uppercase !important;
+    letter-spacing: 0.2px !important;
 
-    box-shadow: 0 6px 16px rgba(77, 43, 26, 0.28) !important;
     cursor: pointer !important;
+    box-shadow: 0 7px 18px rgba(77, 43, 26, 0.16) !important;
 }
 
-#MOTORISTAPAG_Login_modal_status_cadastro .MOTORISTAPAG_Login_status_card_acao:hover {
-    filter: brightness(1.08);
-    transform: translateY(-1px);
+/* Botão TIRAR NOVA FOTO - bege com letra preta/marrom */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label {
+    background: linear-gradient(135deg, #f8f2ec, #efe5dc) !important;
+    color: #2b1b12 !important;
+    border: 2px solid rgba(123, 84, 56, 0.65) !important;
+}
+
+/* Botão ENVIAR CORREÇÃO quando ainda está desativado */
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:disabled {
+    background: linear-gradient(135deg, #c8b7aa, #a89588) !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    border: 2px solid rgba(123, 84, 56, 0.25) !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    opacity: 1 !important;
+}
+
+/* Botão ENVIAR CORREÇÃO liberado depois da foto */
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:not(:disabled) {
+    background: linear-gradient(135deg, #7b5438, #4d2b1a) !important;
+    color: #ffffff !important;
+    border: 2px solid rgba(197, 169, 141, 0.55) !important;
+    box-shadow: 0 8px 20px rgba(77, 43, 26, 0.28) !important;
+}
+
+/* Efeito ao tocar */
+#TNP_Login_modal_corrigir_pendencia .TNP_Login_corrigir_pendencia_file_label:active,
+#TNP_Login_modal_corrigir_pendencia #TNP_Login_corrigir_pendencia_btn_enviar:not(:disabled):active {
+    transform: scale(0.98) !important;
 }
 
         
