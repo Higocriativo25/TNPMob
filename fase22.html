@@ -3896,17 +3896,23 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
 			id="TNP_Login_corrigir_pendencia_info_compressao"
 			class="TNP_Login_corrigir_pendencia_info_compressao"
 		></div>
-        <label for="TNP_Login_corrigir_pendencia_input" class="TNP_Login_corrigir_pendencia_file_label">
-            ESCOLHER NOVA FOTO
-        </label>
+       <input
+    type="file"
+    id="TNP_Login_corrigir_pendencia_input"
+    class="TNP_Login_corrigir_pendencia_file_input"
+    accept="image/*"
+    capture="environment"
+    onchange="TNP_Login_func_prepararArquivoCorrigirPendencia(event)"
+	>
 
-        <input
-            type="file"
-            id="TNP_Login_corrigir_pendencia_input"
-            class="TNP_Login_corrigir_pendencia_file_input"
-            accept="image/*"
-            onchange="TNP_Login_func_prepararArquivoCorrigirPendencia(event)"
-        >
+	<button
+    type="button"
+    id="TNP_Login_corrigir_pendencia_btn_camera"
+    class="TNP_Login_corrigir_pendencia_file_label"
+    onclick="TNP_Login_func_abrirCameraCorrigirPendencia()"
+	>
+    TIRAR NOVA FOTO
+	</button>
 
         <div id="TNP_Login_corrigir_pendencia_error" class="PRIMEIRAPAG_Login_error"></div>
 
