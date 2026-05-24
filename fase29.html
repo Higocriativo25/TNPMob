@@ -6336,98 +6336,6 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
 
 
-
-	
-	
-	
-
-
-
-
-
-
-<!-- TELA 7: ÁREA DO PASSAGEIRO / CONVITE PARA COMPLETAR CADASTRO - PREFIXO SEXTAPAG -->
-<div id="SEXTAPAG_Login_screen_area_passageiro" class="PRIMEIRAPAG_Login_screen">
-
-    <div class="PRIMEIRAPAG_Login_error" id="SEXTAPAG_Login_error_area_passageiro"></div>
-
-    <h3 class="PRIMEIRAPAG_Login_step_title">Área do passageiro</h3>
-
-    <div class="PRIMEIRAPAG_Login_cadastro_info_box">
-        <h4>Bem-vindo ao TNP MoB</h4>
-        <p>
-            Seu cadastro rápido foi concluído. Você já pode conhecer o app,
-            mas recomendamos completar seu perfil para usar com mais segurança.
-        </p>
-    </div>
-
-    <div class="PRIMEIRAPAG_Login_status_box">
-        <strong>Complete seu cadastro</strong><br><br>
-
-        Por segurança sua, do motorista e de toda a comunidade TNP MoB,
-        finalize seu perfil completo.<br><br>
-
-        Você pode usar o app inicialmente, mas algumas verificações serão solicitadas
-        conforme o uso da plataforma.
-
-        <div class="PRIMEIRAPAG_Login_progress_wrap">
-            <div class="PRIMEIRAPAG_Login_progress_text">
-                <span>Progresso do perfil</span>
-                <span id="SEXTAPAG_Login_txt_progresso_perfil">Cadastro rápido concluído</span>
-            </div>
-            <div class="PRIMEIRAPAG_Login_progress_bar_fake">
-                <div id="SEXTAPAG_Login_barra_progresso_perfil" class="SEXTAPAG_Login_progress_45"></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="PRIMEIRAPAG_Login_status_box">
-        <strong>Ativação TNP e cashback</strong><br><br>
-
-        Sem ID TNP informado e sem pagamento de ativação, você poderá usar até
-        <strong>10 corridas iniciais</strong>.<br><br>
-
-        Se realizar o pagamento de ativação pelo app, sua conta continua liberada.
-        Se informar seu ID TNP, você também poderá liberar benefícios e cashback.
-
-        <div class="PRIMEIRAPAG_Login_progress_wrap">
-            <div class="PRIMEIRAPAG_Login_progress_text">
-                <span>Corridas sem ativação</span>
-                <span id="SEXTAPAG_Login_txt_corridas_tnp">0 de 10</span>
-            </div>
-            <div class="PRIMEIRAPAG_Login_progress_bar_fake">
-                <div id="SEXTAPAG_Login_barra_corridas_tnp" class="SEXTAPAG_Login_progress_0"></div>
-            </div>
-        </div>
-
-        <div
-            id="SEXTAPAG_Login_aviso_limite_tnp"
-            class="PRIMEIRAPAG_Login_aviso_analise PRIMEIRAPAG_Login_hidden PRIMEIRAPAG_Login_mt_14"
-        ></div>
-    </div>
-
-    <button
-        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
-        onclick="SEXTAPAG_Login_func_iniciarCadastroCompleto()"
-    >
-        COMPLETAR PERFIL
-    </button>
-
-    <button
-        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-        onclick="SEXTAPAG_Login_func_continuarParaApp()"
-    >
-        CONTINUAR PARA O APP
-    </button>
-
-    <button
-        class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-        onclick="PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main')"
-    >
-        SAIR
-    </button>
-
-</div>
 <!-- TELA 8: DADOS PESSOAIS DO PASSAGEIRO - PREFIXO SETIMAPAG -->
 <div id="SETIMAPAG_Login_screen_dados_pessoais" class="PRIMEIRAPAG_Login_screen">
 
@@ -6738,14 +6646,30 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 
     <div class="PRIMEIRAPAG_Login_error" id="DECIMAPRIMEIRAPAG_Login_error_revisao"></div>
 
-    <h3 class="PRIMEIRAPAG_Login_step_title">Revisão final</h3>
+    <h3 id="DECIMAPRIMEIRAPAG_Login_titulo_revisao_final" class="PRIMEIRAPAG_Login_step_title">
+    Revisão final
+    </h3>
 
-    <div class="PRIMEIRAPAG_Login_cadastro_info_box" id="DECIMAPRIMEIRAPAG_Login_box_mensagem_revisao">
-    <h4 id="DECIMAPRIMEIRAPAG_Login_titulo_mensagem_revisao">Confira seus dados</h4>
+<div id="DECIMAPRIMEIRAPAG_Login_card_mensagem_revisao" class="PRIMEIRAPAG_Login_cadastro_info_box">
+    <h4 id="DECIMAPRIMEIRAPAG_Login_titulo_mensagem_revisao">
+        Confira seus dados
+    </h4>
+
     <p id="DECIMAPRIMEIRAPAG_Login_texto_mensagem_revisao">
         Antes de finalizar o cadastro principal, confira se as informações estão corretas.
         Depois disso, você poderá seguir para a etapa TNP e cashback.
     </p>
+
+    <div class="PRIMEIRAPAG_Login_progress_wrap">
+        <div class="PRIMEIRAPAG_Login_progress_text">
+            <span>Andamento do perfil</span>
+            <span id="DECIMAPRIMEIRAPAG_Login_txt_porcentagem_perfil">0%</span>
+        </div>
+
+        <div class="PRIMEIRAPAG_Login_progress_bar_fake">
+            <div id="DECIMAPRIMEIRAPAG_Login_barra_porcentagem_perfil"></div>
+        </div>
+    </div>
 </div>
 
     <div class="PRIMEIRAPAG_Login_status_box PRIMEIRAPAG_Login_text_left">
@@ -6870,11 +6794,11 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         EDITAR CONTATO
     </button>
 </div>
-    <div class="PRIMEIRAPAG_Login_aviso_analise">
-        Confira seus dados antes de continuar. 
-		 
-		Na próxima etapa caso não tenha informado você poderá informar seu ID TNP para ativar cashback e benefícios.
-    </div>
+    <div id="DECIMAPRIMEIRAPAG_Login_card_aviso_revisao_final" class="PRIMEIRAPAG_Login_aviso_analise">
+    Confira seus dados antes de continuar. Na próxima etapa
+    caso não tenha informado você poderá informar seu ID TNP
+    para ativar cashback e benefícios.
+	</div>
 
 <div style="padding-bottom:120px;">
 <button
@@ -7444,7 +7368,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
   </div>
     </div>
 
-    <script>
+<script>
         // ========== CONFIGURAÇÃO FIREBASE ==========
         const PRIMEIRAPAG_Login_config_firebase = {
             apiKey: "AIzaSyAN13M1GGwYmyQA4131HB23cGX1SLWmlsQ",
@@ -15897,205 +15821,6 @@ async function MOTORISTAPAG_Login_func_excluirVeiculoGerenciado(veiculoId) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ========== TELA 7: ÁREA DO PASSAGEIRO COM PREFIXO SEXTAPAG ==========
-
-async function PASSAGEIROPAG_Login_func_carregarHomePassageiro() {
-    const SEXTAPAG_Login_user = PRIMEIRAPAG_Login_auth.currentUser;
-
-    if (!SEXTAPAG_Login_user) {
-        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
-    }
-
-    try {
-        const SEXTAPAG_Login_doc = await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(SEXTAPAG_Login_user.uid)
-            .get();
-
-        if (SEXTAPAG_Login_doc.exists) {
-            const SEXTAPAG_Login_dados = SEXTAPAG_Login_doc.data();
-
-            const SEXTAPAG_Login_corridasUsadas =
-                SEXTAPAG_Login_dados.corridasUsadasSemTnp ||
-                SEXTAPAG_Login_dados.corridasUsadasSemCadastro ||
-                0;
-
-            const SEXTAPAG_Login_limite =
-                SEXTAPAG_Login_dados.corridasSemTnpLimite || 10;
-
-            const SEXTAPAG_Login_percentualCorridas = Math.min(
-                (SEXTAPAG_Login_corridasUsadas / SEXTAPAG_Login_limite) * 100,
-                100
-            );
-
-            const SEXTAPAG_Login_txtCorridas = document.getElementById('SEXTAPAG_Login_txt_corridas_tnp');
-            const SEXTAPAG_Login_barraCorridas = document.getElementById('SEXTAPAG_Login_barra_corridas_tnp');
-            const SEXTAPAG_Login_avisoLimite = document.getElementById('SEXTAPAG_Login_aviso_limite_tnp');
-
-            if (SEXTAPAG_Login_txtCorridas) {
-                SEXTAPAG_Login_txtCorridas.innerText =
-                    `${SEXTAPAG_Login_corridasUsadas} de ${SEXTAPAG_Login_limite}`;
-            }
-
-            if (SEXTAPAG_Login_barraCorridas) {
-                SEXTAPAG_Login_barraCorridas.style.width = `${SEXTAPAG_Login_percentualCorridas}%`;
-            }
-
-            if (SEXTAPAG_Login_avisoLimite) {
-                if (SEXTAPAG_Login_corridasUsadas >= SEXTAPAG_Login_limite) {
-                    SEXTAPAG_Login_avisoLimite.style.display = "block";
-                    SEXTAPAG_Login_avisoLimite.innerText =
-                        "Seu limite inicial sem TNP/ativação foi atingido. Informe seu ID TNP ou faça a ativação para continuar usando sem bloqueios.";
-                } else if (SEXTAPAG_Login_corridasUsadas >= SEXTAPAG_Login_limite - 2) {
-                    SEXTAPAG_Login_avisoLimite.style.display = "block";
-                    SEXTAPAG_Login_avisoLimite.innerText =
-                        "Você está perto do limite inicial. Para evitar bloqueios, informe seu ID TNP ou faça a ativação.";
-                } else {
-                    SEXTAPAG_Login_avisoLimite.style.display = "none";
-                    SEXTAPAG_Login_avisoLimite.innerText = "";
-                }
-            }
-
-            let SEXTAPAG_Login_progressoPerfil = 45;
-            let SEXTAPAG_Login_textoPerfil = "Cadastro rápido concluído";
-
-            if (SEXTAPAG_Login_dados.dadosPessoaisConcluidos) {
-                SEXTAPAG_Login_progressoPerfil = 60;
-                SEXTAPAG_Login_textoPerfil = "Dados pessoais concluídos";
-            }
-
-            if (SEXTAPAG_Login_dados.enderecoConcluido) {
-                SEXTAPAG_Login_progressoPerfil = 72;
-                SEXTAPAG_Login_textoPerfil = "Endereço concluído";
-            }
-
-            if (SEXTAPAG_Login_dados.contatoEmergenciaConcluido) {
-                SEXTAPAG_Login_progressoPerfil = 84;
-                SEXTAPAG_Login_textoPerfil = "Contato de emergência concluído";
-            }
-
-            if (SEXTAPAG_Login_dados.cadastroPrincipalConcluido) {
-                SEXTAPAG_Login_progressoPerfil = 92;
-                SEXTAPAG_Login_textoPerfil = "Cadastro principal concluído";
-            }
-
-            if (SEXTAPAG_Login_dados.cadastroCompleto === true) {
-                SEXTAPAG_Login_progressoPerfil = 100;
-                SEXTAPAG_Login_textoPerfil = "Cadastro completo";
-            }
-
-            const SEXTAPAG_Login_txtPerfil = document.getElementById('SEXTAPAG_Login_txt_progresso_perfil');
-            const SEXTAPAG_Login_barraPerfil = document.getElementById('SEXTAPAG_Login_barra_progresso_perfil');
-
-            if (SEXTAPAG_Login_txtPerfil) {
-                SEXTAPAG_Login_txtPerfil.innerText = SEXTAPAG_Login_textoPerfil;
-            }
-
-            if (SEXTAPAG_Login_barraPerfil) {
-                SEXTAPAG_Login_barraPerfil.style.width = `${SEXTAPAG_Login_progressoPerfil}%`;
-            }
-        }
-
-        PRIMEIRAPAG_Login_func_irPara('SEXTAPAG_Login_screen_area_passageiro');
-
-    } catch (SEXTAPAG_Login_erro) {
-        PRIMEIRAPAG_Login_func_irPara('SEXTAPAG_Login_screen_area_passageiro');
-    }
-}
-
-async function SEXTAPAG_Login_func_iniciarCadastroCompleto() {
-    const user = PRIMEIRAPAG_Login_auth.currentUser;
-
-    if (!user) {
-        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
-    }
-
-    try {
-        const doc = await PRIMEIRAPAG_Login_db
-            .collection('usuarios')
-            .doc(user.uid)
-            .get();
-
-        if (!doc.exists) {
-            return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
-        }
-
-        const dados = doc.data();
-
-        if (dados.dadosPessoaisConcluidos !== true || dados.etapaCadastroCompleto === "dados_pessoais") {
-            return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
-        }
-
-        if (dados.enderecoConcluido !== true || dados.etapaCadastroCompleto === "endereco") {
-            return PRIMEIRAPAG_Login_func_irPara('OITAVAPAG_Login_screen_endereco');
-        }
-
-        if (dados.contatoEmergenciaConcluido !== true || dados.etapaCadastroCompleto === "contato_emergencia") {
-            return PRIMEIRAPAG_Login_func_irPara('NONAPAG_Login_screen_contato_emergencia');
-        }
-
-        if (dados.cadastroPrincipalConcluido !== true || dados.etapaCadastroCompleto === "revisao_final") {
-            return DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
-        }
-
-        if (dados.etapaCadastroCompleto === "tnp" || dados.cadastroTnpConcluido !== true) {
-            return PRIMEIRAPAG_Login_func_irPara('DECIMASEGUNDAPAG_Login_screen_tnp');
-        }
-
-return PASSAGEIROPAG_Login_func_carregarHomePassageiro();
-
-} catch (erro) {
-    console.error("Erro ao iniciar cadastro completo:", erro);
-    return PRIMEIRAPAG_Login_func_irPara('SETIMAPAG_Login_screen_dados_pessoais');
-}
-}
-
-function SEXTAPAG_Login_func_continuarParaApp() {
-    PASSAGEIROPAG_Login_func_carregarHomePassageiro();
-}		
 		
 // ========== DADOS PESSOAIS DO PASSAGEIRO COM PREFIXO SETIMAPAG ==========
 
@@ -17379,6 +17104,136 @@ if (NONAPAG_Login_editandoContato) {
 }	
 // ========== TELA 11: REVISÃO FINAL COM PREFIXO DECIMAPRIMEIRAPAG ==========
 
+function DECIMAPRIMEIRAPAG_Login_func_calcularProgressoPerfil(dadosUsuario) {
+    let porcentagem = 0;
+    let texto = "Cadastro não iniciado";
+
+    if (dadosUsuario.cadastroRapidoConcluido === true) {
+        porcentagem = 45;
+        texto = "Cadastro rápido concluído";
+    }
+
+    if (dadosUsuario.dadosPessoaisConcluidos === true) {
+        porcentagem = 60;
+        texto = "Dados pessoais concluídos";
+    }
+
+    if (dadosUsuario.enderecoConcluido === true) {
+        porcentagem = 72;
+        texto = "Endereço concluído";
+    }
+
+    if (dadosUsuario.contatoEmergenciaConcluido === true) {
+        porcentagem = 84;
+        texto = "Contato de emergência concluído";
+    }
+
+    if (dadosUsuario.cadastroPrincipalConcluido === true) {
+        porcentagem = 92;
+        texto = "Cadastro principal concluído";
+    }
+
+    if (dadosUsuario.cadastroCompleto === true) {
+        porcentagem = 100;
+        texto = "Perfil completo";
+    }
+
+    return {
+        porcentagem,
+        texto
+    };
+}
+
+function DECIMAPRIMEIRAPAG_Login_func_atualizarCardsPerfil(dadosUsuario) {
+    const tituloTela = document.getElementById('DECIMAPRIMEIRAPAG_Login_titulo_revisao_final');
+
+    const cardMensagem = document.getElementById('DECIMAPRIMEIRAPAG_Login_card_mensagem_revisao');
+    const tituloMensagem = document.getElementById('DECIMAPRIMEIRAPAG_Login_titulo_mensagem_revisao');
+    const textoMensagem = document.getElementById('DECIMAPRIMEIRAPAG_Login_texto_mensagem_revisao');
+
+    const cardAvisoFinal = document.getElementById('DECIMAPRIMEIRAPAG_Login_card_aviso_revisao_final');
+
+    const txtPorcentagem = document.getElementById('DECIMAPRIMEIRAPAG_Login_txt_porcentagem_perfil');
+    const barraPorcentagem = document.getElementById('DECIMAPRIMEIRAPAG_Login_barra_porcentagem_perfil');
+
+    const btnFinalizar = document.getElementById('DECIMAPRIMEIRAPAG_Login_btn_finalizar');
+    const btnIrHome = document.getElementById('DECIMAPRIMEIRAPAG_Login_btn_ir_home_passageiro');
+
+    const progresso = DECIMAPRIMEIRAPAG_Login_func_calcularProgressoPerfil(dadosUsuario);
+    const perfilCompleto = progresso.porcentagem >= 100;
+
+    if (txtPorcentagem) {
+        txtPorcentagem.innerText = `${progresso.porcentagem}% — ${progresso.texto}`;
+    }
+
+    if (barraPorcentagem) {
+        barraPorcentagem.style.width = `${progresso.porcentagem}%`;
+    }
+
+    if (perfilCompleto) {
+        if (tituloTela) {
+            tituloTela.innerText = "Perfil 100%";
+        }
+
+        if (cardMensagem) {
+            cardMensagem.style.display = "block";
+        }
+
+        if (tituloMensagem) {
+            tituloMensagem.innerText = "Perfil completo";
+        }
+
+        if (textoMensagem) {
+            textoMensagem.innerText =
+                "Seu perfil está completo. Agora você já pode usar sua conta de passageiro com mais segurança.";
+        }
+
+        if (cardAvisoFinal) {
+            cardAvisoFinal.style.display = "none";
+        }
+
+        if (btnFinalizar) {
+            btnFinalizar.style.display = "none";
+        }
+
+        if (btnIrHome) {
+            btnIrHome.style.display = "block";
+            btnIrHome.innerText = "IR PARA PÁGINA INICIAL DO PASSAGEIRO";
+        }
+
+        return;
+    }
+
+    if (tituloTela) {
+        tituloTela.innerText = "Revisão final";
+    }
+
+    if (cardMensagem) {
+        cardMensagem.style.display = "block";
+    }
+
+    if (tituloMensagem) {
+        tituloMensagem.innerText = "Confira seus dados";
+    }
+
+    if (textoMensagem) {
+        textoMensagem.innerText =
+            "Antes de finalizar o cadastro principal, confira se as informações estão corretas.";
+    }
+
+    if (cardAvisoFinal) {
+        cardAvisoFinal.style.display = "block";
+    }
+
+    if (btnFinalizar) {
+        btnFinalizar.style.display = "block";
+    }
+
+    if (btnIrHome) {
+        btnIrHome.style.display = "block";
+    }
+}
+
 function DECIMAPRIMEIRAPAG_Login_func_textoSeguro(valor, padrao = "-") {
     if (valor === undefined || valor === null || valor === "") {
         return padrao;
@@ -17573,7 +17428,9 @@ async function DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal() {
 
 
         const d = DECIMAPRIMEIRAPAG_Login_doc.data();
+
 		DECIMAPRIMEIRAPAG_Login_func_atualizarMensagemRevisao(d);
+		DECIMAPRIMEIRAPAG_Login_func_atualizarCardsPerfil(d);
 
         const endereco = d.endereco || {};
         const contato = d.contatoEmergencia || {};
@@ -18661,6 +18518,5 @@ document.addEventListener('DOMContentLoaded', function () {
     TESTAR SELFIE DOC
 </button>
 
-</body>
 </body>
 </html>
