@@ -3355,6 +3355,151 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_gerenciar_veiculos_doc_linha {
     margin-top: 26px;
     margin-bottom: 6px;
 }
+
+/* ==================================================
+   MODAL UNIVERSAL PIX TNP
+================================================== */
+
+.TNPPIX_modal_overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    background: rgba(0, 0, 0, 0.78);
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.TNPPIX_modal_box {
+    width: 100%;
+    max-width: 390px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: var(--Fame_card);
+    border: 1px solid rgba(197, 169, 141, 0.38);
+    border-radius: 24px;
+    padding: 22px 18px;
+    color: var(--Fame_text);
+    text-align: center;
+    position: relative;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+}
+
+.TNPPIX_modal_fechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--Fame_gold);
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.TNPPIX_icone {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 14px auto;
+    border-radius: 50%;
+    background: rgba(197, 169, 141, 0.12);
+    border: 1px solid rgba(197, 169, 141, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.TNPPIX_modal_box h3,
+.TNPPIX_modal_box h2 {
+    color: var(--Fame_gold);
+    margin-bottom: 10px;
+}
+
+.TNPPIX_texto {
+    color: var(--Fame_text);
+    font-size: 0.86rem;
+    line-height: 1.45;
+    margin-bottom: 14px;
+}
+
+.TNPPIX_status_box,
+.TNPPIX_aviso {
+    padding: 12px;
+    border-radius: 14px;
+    background: rgba(197, 169, 141, 0.08);
+    border: 1px solid rgba(197, 169, 141, 0.22);
+    color: var(--Fame_text);
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin: 12px 0;
+}
+
+.TNPPIX_status_box strong {
+    display: block;
+    color: var(--Fame_gold);
+    margin-bottom: 6px;
+}
+
+.TNPPIX_status_box span {
+    display: block;
+}
+
+.TNPPIX_qrcode {
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+    display: block;
+    margin: 14px auto;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid rgba(197, 169, 141, 0.35);
+}
+
+.TNPPIX_codigo {
+    word-break: break-all;
+    text-align: left;
+    font-family: monospace;
+    font-size: 0.68rem;
+    line-height: 1.35;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px dashed rgba(197, 169, 141, 0.35);
+    color: var(--Fame_text);
+    margin-bottom: 12px;
+}
+
+.TNPPIX_sucesso_icone {
+    font-size: 54px;
+    margin-bottom: 10px;
+}
+
+body.TNP_TEMA_CLARO .TNPPIX_modal_box {
+    background: #ffffff;
+    color: #1f1f1f;
+    border-color: rgba(123, 84, 56, 0.35);
+}
+
+body.TNP_TEMA_CLARO .TNPPIX_texto,
+body.TNP_TEMA_CLARO .TNPPIX_status_box,
+body.TNP_TEMA_CLARO .TNPPIX_aviso,
+body.TNP_TEMA_CLARO .TNPPIX_codigo {
+    color: #1f1f1f;
+}
+
+body.TNP_TEMA_CLARO .TNPPIX_status_box,
+body.TNP_TEMA_CLARO .TNPPIX_aviso {
+    background: #f7f2ec;
+    border-color: rgba(123, 84, 56, 0.25);
+}
+
+
+
         
 </style>
 </head>
@@ -4744,12 +4889,12 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 		</button>
 
 		<button
-			class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
-			type="button"
-			onclick="MOTORISTAPAG_Login_func_gerarPixConfirmacao()"
-		>
-			GERAR NOVO PIX
-		</button>
+		class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+		type="button"
+		onclick="MOTORISTAPAG_Login_func_gerarPixConfirmacao(true)"
+	>
+		GERAR NOVO PIX
+	</button>
 
 	</div>
 
@@ -7394,6 +7539,118 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
   </div>
     </div>
 
+
+<!-- MODAL UNIVERSAL PIX TNP -->
+<div id="TNPPIX_modal" class="TNPPIX_modal_overlay">
+
+    <div class="TNPPIX_modal_box">
+
+        <button
+            type="button"
+            class="TNPPIX_modal_fechar"
+            onclick="TNPPIX_func_fecharModal()"
+        >
+            ×
+        </button>
+
+        <div class="TNPPIX_icone">💠</div>
+
+        <h3 id="TNPPIX_titulo">Confirmação Pix</h3>
+
+        <p id="TNPPIX_texto" class="TNPPIX_texto">
+            Gere um Pix simbólico para confirmar sua conta.
+        </p>
+
+        <div id="TNPPIX_status_box" class="TNPPIX_status_box">
+            <strong id="TNPPIX_status_titulo">Aguardando ação</strong>
+            <span id="TNPPIX_status_texto">
+                Clique no botão abaixo para gerar o Pix.
+            </span>
+        </div>
+
+        <div id="TNPPIX_area_inicial">
+            <button
+			type="button"
+			class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+			onclick="TNPPIX_func_gerarPix(true)"
+		>
+			GERAR NOVO PIX
+		</button>
+        </div>
+
+        <div id="TNPPIX_area_pix" class="PRIMEIRAPAG_Login_hidden">
+
+            <div id="TNPPIX_cronometro" class="TNPPIX_aviso">
+                Aguardando confirmação automática por até 02:00.
+            </div>
+
+            <img
+                id="TNPPIX_qrcode_img"
+                class="TNPPIX_qrcode"
+                alt="QR Code Pix"
+            >
+
+            <div id="TNPPIX_codigo" class="TNPPIX_codigo"></div>
+
+            <button
+                type="button"
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                onclick="TNPPIX_func_copiarCodigo()"
+            >
+                COPIAR CÓDIGO PIX
+            </button>
+
+            <div id="TNPPIX_acoes_demora" class="PRIMEIRAPAG_Login_hidden">
+
+                <button
+                    type="button"
+                    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+                    onclick="TNPPIX_func_verificarPagamento()"
+                >
+                    JÁ PAGUEI / VERIFICAR PAGAMENTO
+                </button>
+
+                <button
+                    type="button"
+                    class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary"
+                    onclick="TNPPIX_func_gerarPix()"
+                >
+                    GERAR NOVO PIX
+                </button>
+
+            </div>
+
+            <div class="TNPPIX_aviso">
+                Se a confirmação demorar, você poderá verificar novamente ou gerar um novo Pix.
+            </div>
+
+        </div>
+
+        <div id="TNPPIX_area_confirmado" class="PRIMEIRAPAG_Login_hidden">
+
+            <div class="TNPPIX_sucesso_icone">✅</div>
+
+            <h3>Pix confirmado</h3>
+
+            <p id="TNPPIX_texto_confirmado" class="TNPPIX_texto">
+                Sua conta foi confirmada com sucesso.
+            </p>
+
+            <button
+                type="button"
+                class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_primary"
+                onclick="TNPPIX_func_continuarDepoisConfirmado()"
+            >
+                CONTINUAR
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Final do MODAL UNIVERSAL PIX TNP -->
 <script>
         // ========== CONFIGURAÇÃO FIREBASE ==========
         const PRIMEIRAPAG_Login_config_firebase = {
@@ -7411,6 +7668,14 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         const PRIMEIRAPAG_Login_db = firebase.firestore();
         const PRIMEIRAPAG_Login_storage = firebase.storage();
 		const PRIMEIRAPAG_Login_functions = firebase.functions();
+		
+	// ========== PIX UNIVERSAL TNP ==========
+		let TNPPIX_configAtual = null;
+		let TNPPIX_codigoAtual = '';
+		let TNPPIX_timer = null;
+		let TNPPIX_segundos = 120;
+		let TNPPIX_unsubscribe = null;
+					
         
         // ========== UTILITÁRIOS ==========
 		
@@ -12130,7 +12395,7 @@ function MOTORISTAPAG_Login_func_escutarPixConfirmacao() {
         });
 }
 
-async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
+async function MOTORISTAPAG_Login_func_gerarPixConfirmacao(forcarNovoPix = false) {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const btn = document.getElementById('MOTORISTAPAG_Login_btn_gerar_pix_confirmacao');
 
@@ -12150,16 +12415,28 @@ async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
         const gerarPagamentoTNP = PRIMEIRAPAG_Login_functions.httpsCallable('gerarPagamentoTNP');
 
         const resposta = await gerarPagamentoTNP({
-            tipoPagamento: 'confirmacao_conta_recebimento_motorista'
+            tipoPagamento: 'confirmacao_conta_recebimento_motorista',
+            forcarNovoPix: forcarNovoPix === true
         });
 
         const dados = resposta.data || {};
 
-        if (!dados.ok || !dados.pixKey) {
-            throw new Error(dados.mensagem || 'A TNP não retornou o código Pix.');
+        if (dados.ok === true && dados.pixKey) {
+            MOTORISTAPAG_Login_func_mostrarPixAguardando(dados.pixKey);
+            return;
         }
 
-        MOTORISTAPAG_Login_func_mostrarPixAguardando(dados.pixKey);
+        if (dados.reutilizar === true && dados.pixKey) {
+            MOTORISTAPAG_Login_func_mostrarPixAguardando(dados.pixKey);
+            return;
+        }
+
+        if (dados.reutilizar === true && !dados.pixKey) {
+            MOTORISTAPAG_Login_func_mostrarPixAguardandoExistente();
+            return;
+        }
+
+        throw new Error(dados.mensagem || 'A TNP não retornou o código Pix.');
 
     } catch (erro) {
         console.error('Erro ao gerar Pix real de confirmação:', erro);
@@ -12168,6 +12445,14 @@ async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
 
         if (erro && erro.message) {
             mensagem = erro.message;
+        }
+
+        if (
+            mensagem.includes('Já existe um Pix aguardando pagamento') ||
+            mensagem.includes('Pix aguardando pagamento')
+        ) {
+            MOTORISTAPAG_Login_func_mostrarPixAguardandoExistente();
+            return;
         }
 
         PRIMEIRAPAG_Login_func_mostrarErro(
@@ -12183,6 +12468,7 @@ async function MOTORISTAPAG_Login_func_gerarPixConfirmacao() {
     }
 }
 
+
 function MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPix) {
     MOTORISTAPAG_Login_pixConfirmacaoCodigo = codigoPix || '';
 
@@ -12197,16 +12483,41 @@ function MOTORISTAPAG_Login_func_mostrarPixAguardando(codigoPix) {
     if (boxConfirmado) boxConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
 
     if (imgQrCode) {
-        imgQrCode.src =
-            'https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=' +
-            encodeURIComponent(MOTORISTAPAG_Login_pixConfirmacaoCodigo);
-    }
+    imgQrCode.style.display = 'block';
+    imgQrCode.src =
+    'https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=' +
+    encodeURIComponent(MOTORISTAPAG_Login_pixConfirmacaoCodigo);
+}
 
     if (codigoBox) {
     codigoBox.innerText = MOTORISTAPAG_Login_pixConfirmacaoCodigo;
 	}
 
 	MOTORISTAPAG_Login_func_iniciarCronometroPixConfirmacao();
+}
+
+function MOTORISTAPAG_Login_func_mostrarPixAguardandoExistente() {
+    const boxInicial = document.getElementById('MOTORISTAPAG_Login_pix_box_inicial');
+    const boxAguardando = document.getElementById('MOTORISTAPAG_Login_pix_box_aguardando');
+    const boxConfirmado = document.getElementById('MOTORISTAPAG_Login_pix_box_confirmado');
+    const imgQrCode = document.getElementById('MOTORISTAPAG_Login_pix_qrcode_img');
+    const codigoBox = document.getElementById('MOTORISTAPAG_Login_pix_codigo');
+
+    if (boxInicial) boxInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (boxAguardando) boxAguardando.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (boxConfirmado) boxConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (imgQrCode) {
+        imgQrCode.removeAttribute('src');
+        imgQrCode.style.display = 'none';
+    }
+
+    if (codigoBox) {
+        codigoBox.innerText =
+            'Já existe um Pix aguardando pagamento. Se você já pagou, aguarde a confirmação ou toque em verificar pagamento.';
+    }
+
+    MOTORISTAPAG_Login_func_iniciarCronometroPixConfirmacao();
 }
 
 function MOTORISTAPAG_Login_func_copiarPixConfirmacao() {
@@ -12292,11 +12603,17 @@ async function MOTORISTAPAG_Login_func_mostrarPixConfirmado() {
     if (!user) return;
 
     await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).set({
-        bloqueadoPorPagamentoMotorista: false,
-        motoristaStatus: 'cadastro_iniciado',
-        etapaCadastroMotorista: 'termos_motorista',
-        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
+    bloqueadoPorPagamentoMotorista: false,
+    contaRecebimentoConfirmada: true,
+    etapaCadastroMotorista: 'termos_motorista',
+
+    'pixConfirmacaoRecebimento.status': 'pago',
+    'pixConfirmacaoRecebimento.pago': true,
+    'pixConfirmacaoRecebimento.precisaConfirmarPagamento': false,
+    'pixConfirmacaoRecebimento.confirmadoPeloAppEm': firebase.firestore.FieldValue.serverTimestamp(),
+
+    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+}, { merge: true });
 
     await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
         bloqueadoPorPagamentoMotorista: false,
@@ -18601,7 +18918,532 @@ if (boxConfig) {
 
 
 
+//-- MODAL UNIVERSAL PIX TNP -->
 
+// ==================================================
+// MODAL UNIVERSAL PIX TNP
+// ==================================================
+
+function TNPPIX_func_abrirModal(config) {
+    TNPPIX_configAtual = config || {};
+    TNPPIX_codigoAtual = '';
+
+    const modal = document.getElementById('TNPPIX_modal');
+    const titulo = document.getElementById('TNPPIX_titulo');
+    const texto = document.getElementById('TNPPIX_texto');
+    const statusTitulo = document.getElementById('TNPPIX_status_titulo');
+    const statusTexto = document.getElementById('TNPPIX_status_texto');
+
+    const areaInicial = document.getElementById('TNPPIX_area_inicial');
+    const areaPix = document.getElementById('TNPPIX_area_pix');
+    const areaConfirmado = document.getElementById('TNPPIX_area_confirmado');
+    const acoesDemora = document.getElementById('TNPPIX_acoes_demora');
+
+    TNPPIX_func_pararCronometro();
+    TNPPIX_func_pararEscuta();
+
+    if (TNPPIX_configAtual.origem === 'motorista') {
+        if (titulo) titulo.innerText = 'Confirmação Pix do motorista';
+
+        if (texto) {
+            texto.innerText =
+                'Para liberar sua conta como motorista, precisamos confirmar seu Pix. Sem confirmação, você pode continuar o cadastro, mas não será liberado para aceitar corridas.';
+        }
+    } else {
+        if (titulo) titulo.innerText = 'Confirmação de conta';
+
+        if (texto) {
+            texto.innerText =
+                'Após 10 corridas, pedimos uma confirmação Pix simbólica para validar sua conta. Você poderá usar até 20 corridas no total antes do bloqueio forte.';
+        }
+    }
+
+    if (statusTitulo) statusTitulo.innerText = 'Aguardando ação';
+    if (statusTexto) statusTexto.innerText = 'Clique no botão abaixo para gerar o Pix.';
+
+    if (areaInicial) areaInicial.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (areaPix) areaPix.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (areaConfirmado) areaConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (acoesDemora) acoesDemora.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+}
+
+function TNPPIX_func_fecharModal() {
+    const modal = document.getElementById('TNPPIX_modal');
+
+    TNPPIX_func_pararCronometro();
+    TNPPIX_func_pararEscuta();
+
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function TNPPIX_func_pararEscuta() {
+    if (TNPPIX_unsubscribe) {
+        TNPPIX_unsubscribe();
+        TNPPIX_unsubscribe = null;
+    }
+}
+
+async function TNPPIX_func_gerarPix(forcarNovoPix = false) {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const btn = document.getElementById('TNPPIX_btn_gerar');
+
+    if (!user) {
+        return PRIMEIRAPAG_Login_func_irPara('PRIMEIRAPAG_Login_screen_main');
+    }
+
+    if (!TNPPIX_configAtual || !TNPPIX_configAtual.tipoPagamento) {
+        alert('Configuração do Pix não encontrada.');
+        return;
+    }
+
+    try {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerText = 'GERANDO PIX...';
+        }
+
+        const gerarPagamentoTNP =
+            PRIMEIRAPAG_Login_functions.httpsCallable('gerarPagamentoTNP');
+
+        const resposta = await gerarPagamentoTNP({
+            tipoPagamento: TNPPIX_configAtual.tipoPagamento,
+            forcarNovoPix: forcarNovoPix === true
+        });
+
+        const dados = resposta.data || {};
+
+        if (dados.ok === true && dados.pixKey) {
+            TNPPIX_func_mostrarPixAguardando(dados.pixKey);
+            TNPPIX_func_escutarPagamento();
+            return;
+        }
+
+        if (dados.reutilizar === true) {
+            if (dados.pixKey) {
+                TNPPIX_func_mostrarPixAguardando(dados.pixKey);
+            } else {
+                TNPPIX_func_mostrarPixExistenteSemCodigo();
+            }
+
+            TNPPIX_func_escutarPagamento();
+            return;
+        }
+
+        throw new Error(dados.mensagem || 'Não foi possível gerar o Pix.');
+
+    } catch (erro) {
+        console.error('Erro ao gerar Pix universal:', erro);
+
+        const mensagem = erro && erro.message
+            ? erro.message
+            : 'Não foi possível gerar o Pix agora. Tente novamente.';
+
+        if (
+            mensagem.includes('Já existe um Pix aguardando pagamento') ||
+            mensagem.includes('Pix aguardando pagamento')
+        ) {
+            TNPPIX_func_mostrarPixExistenteSemCodigo();
+            TNPPIX_func_escutarPagamento();
+            return;
+        }
+
+        alert(mensagem);
+
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'GERAR PIX';
+        }
+    }
+}
+
+function TNPPIX_func_mostrarPixAguardando(codigoPix) {
+    TNPPIX_codigoAtual = codigoPix || '';
+
+    const areaInicial = document.getElementById('TNPPIX_area_inicial');
+    const areaPix = document.getElementById('TNPPIX_area_pix');
+    const areaConfirmado = document.getElementById('TNPPIX_area_confirmado');
+
+    const imgQrCode = document.getElementById('TNPPIX_qrcode_img');
+    const codigoBox = document.getElementById('TNPPIX_codigo');
+
+    const statusTitulo = document.getElementById('TNPPIX_status_titulo');
+    const statusTexto = document.getElementById('TNPPIX_status_texto');
+    const acoesDemora = document.getElementById('TNPPIX_acoes_demora');
+
+    if (areaInicial) areaInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (areaPix) areaPix.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (areaConfirmado) areaConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (statusTitulo) statusTitulo.innerText = 'Aguardando pagamento';
+    if (statusTexto) {
+        statusTexto.innerText =
+            'Pague o Pix e aguarde a confirmação automática.';
+    }
+
+    if (imgQrCode) {
+        imgQrCode.style.display = 'block';
+        imgQrCode.src =
+            'https://api.qrserver.com/v1/create-qr-code/?size=190x190&data=' +
+            encodeURIComponent(TNPPIX_codigoAtual);
+    }
+
+    if (codigoBox) {
+        codigoBox.innerText = TNPPIX_codigoAtual;
+    }
+
+    if (acoesDemora) {
+        acoesDemora.classList.add('PRIMEIRAPAG_Login_hidden');
+    }
+
+    TNPPIX_func_iniciarCronometro();
+}
+
+function TNPPIX_func_mostrarPixExistenteSemCodigo() {
+    TNPPIX_codigoAtual = '';
+
+    const areaInicial = document.getElementById('TNPPIX_area_inicial');
+    const areaPix = document.getElementById('TNPPIX_area_pix');
+    const areaConfirmado = document.getElementById('TNPPIX_area_confirmado');
+
+    const imgQrCode = document.getElementById('TNPPIX_qrcode_img');
+    const codigoBox = document.getElementById('TNPPIX_codigo');
+
+    const statusTitulo = document.getElementById('TNPPIX_status_titulo');
+    const statusTexto = document.getElementById('TNPPIX_status_texto');
+    const acoesDemora = document.getElementById('TNPPIX_acoes_demora');
+
+    if (areaInicial) areaInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (areaPix) areaPix.classList.remove('PRIMEIRAPAG_Login_hidden');
+    if (areaConfirmado) areaConfirmado.classList.add('PRIMEIRAPAG_Login_hidden');
+
+    if (statusTitulo) statusTitulo.innerText = 'Pix já gerado';
+
+    if (statusTexto) {
+        statusTexto.innerText =
+            'Já existe um Pix aguardando pagamento. Aguarde a confirmação automática ou verifique o pagamento.';
+    }
+
+    if (imgQrCode) {
+        imgQrCode.removeAttribute('src');
+        imgQrCode.style.display = 'none';
+    }
+
+    if (codigoBox) {
+        codigoBox.innerText =
+            'Já existe um Pix aguardando pagamento. Se você já pagou, aguarde a confirmação ou toque em verificar pagamento.';
+    }
+
+    if (acoesDemora) {
+        acoesDemora.classList.add('PRIMEIRAPAG_Login_hidden');
+    }
+
+    TNPPIX_func_iniciarCronometro();
+}
+
+function TNPPIX_func_escutarPagamento() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user || !TNPPIX_configAtual) return;
+
+    TNPPIX_func_pararEscuta();
+
+    const origem = TNPPIX_configAtual.origem || 'motorista';
+
+    const colecao = origem === 'motorista'
+        ? 'motoristas'
+        : 'usuarios';
+
+    TNPPIX_unsubscribe = PRIMEIRAPAG_Login_db
+        .collection(colecao)
+        .doc(user.uid)
+        .onSnapshot((doc) => {
+            if (!doc.exists) return;
+
+            const dados = doc.data() || {};
+
+            const pagamento = origem === 'motorista'
+                ? (dados.pixConfirmacaoRecebimento || {})
+                : (dados.pixConfirmacaoContaPassageiro || {});
+
+            const confirmado =
+                pagamento.status === 'pago' ||
+                pagamento.pago === true ||
+                dados.contaRecebimentoConfirmada === true ||
+                dados.confirmacaoCpfViaPix === true ||
+                dados.cpfPagadorPixConfirmado === true;
+
+            if (confirmado) {
+                TNPPIX_func_mostrarConfirmado();
+            }
+        });
+}
+
+async function TNPPIX_func_mostrarConfirmado() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    TNPPIX_func_pararCronometro();
+    TNPPIX_func_pararEscuta();
+
+    const areaInicial = document.getElementById('TNPPIX_area_inicial');
+    const areaPix = document.getElementById('TNPPIX_area_pix');
+    const areaConfirmado = document.getElementById('TNPPIX_area_confirmado');
+
+    const statusTitulo = document.getElementById('TNPPIX_status_titulo');
+    const statusTexto = document.getElementById('TNPPIX_status_texto');
+
+    if (areaInicial) areaInicial.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (areaPix) areaPix.classList.add('PRIMEIRAPAG_Login_hidden');
+    if (areaConfirmado) areaConfirmado.classList.remove('PRIMEIRAPAG_Login_hidden');
+
+    if (statusTitulo) statusTitulo.innerText = 'Pagamento confirmado';
+    if (statusTexto) statusTexto.innerText = 'O Pix foi confirmado com sucesso.';
+
+    if (!user || !TNPPIX_configAtual) return;
+
+    const origem = TNPPIX_configAtual.origem || 'motorista';
+
+    if (origem === 'motorista') {
+        await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: false,
+            contaRecebimentoConfirmada: true,
+            etapaCadastroMotorista: 'termos_motorista',
+
+            'pixConfirmacaoRecebimento.status': 'pago',
+            'pixConfirmacaoRecebimento.pago': true,
+            'pixConfirmacaoRecebimento.precisaConfirmarPagamento': false,
+            'pixConfirmacaoRecebimento.confirmadoPeloAppEm': firebase.firestore.FieldValue.serverTimestamp(),
+
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: false,
+            etapaCadastro: 'motorista_termos',
+            etapaCadastroMotorista: 'termos_motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        return;
+    }
+
+    await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
+        confirmacaoCpfViaPix: true,
+        cpfPagadorPixConfirmado: true,
+        bloqueadoPorConfirmacaoConta: false,
+        pixConfirmadoOrigem: 'passageiro',
+
+        'pixConfirmacaoContaPassageiro.status': 'pago',
+        'pixConfirmacaoContaPassageiro.pago': true,
+        'pixConfirmacaoContaPassageiro.precisaConfirmarPagamento': false,
+        'pixConfirmacaoContaPassageiro.cpfPagadorConfirmado': true,
+        'pixConfirmacaoContaPassageiro.confirmadoPeloAppEm': firebase.firestore.FieldValue.serverTimestamp(),
+
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+}
+
+function TNPPIX_func_iniciarCronometro() {
+    const acoesDemora = document.getElementById('TNPPIX_acoes_demora');
+
+    TNPPIX_func_pararCronometro();
+
+    TNPPIX_segundos = 120;
+
+    if (acoesDemora) {
+        acoesDemora.classList.add('PRIMEIRAPAG_Login_hidden');
+    }
+
+    TNPPIX_func_atualizarTextoCronometro();
+
+    TNPPIX_timer = setInterval(() => {
+        TNPPIX_segundos--;
+
+        TNPPIX_func_atualizarTextoCronometro();
+
+        if (TNPPIX_segundos <= 0) {
+            TNPPIX_func_pararCronometro();
+
+            const cronometro = document.getElementById('TNPPIX_cronometro');
+
+            if (cronometro) {
+                cronometro.innerText =
+                    'Ainda não identificamos a confirmação automática. Se você já pagou, toque em verificar pagamento.';
+            }
+
+            if (acoesDemora) {
+                acoesDemora.classList.remove('PRIMEIRAPAG_Login_hidden');
+            }
+        }
+    }, 1000);
+}
+
+function TNPPIX_func_atualizarTextoCronometro() {
+    const cronometro = document.getElementById('TNPPIX_cronometro');
+
+    if (!cronometro) return;
+
+    const minutos = String(Math.floor(TNPPIX_segundos / 60)).padStart(2, '0');
+    const segundos = String(TNPPIX_segundos % 60).padStart(2, '0');
+
+    cronometro.innerText =
+        `Aguardando confirmação automática por até ${minutos}:${segundos}.`;
+}
+
+function TNPPIX_func_pararCronometro() {
+    if (TNPPIX_timer) {
+        clearInterval(TNPPIX_timer);
+        TNPPIX_timer = null;
+    }
+}
+
+function TNPPIX_func_copiarCodigo() {
+    if (!TNPPIX_codigoAtual) {
+        return alert('Código Pix ainda não foi gerado.');
+    }
+
+    navigator.clipboard.writeText(TNPPIX_codigoAtual)
+        .then(() => {
+            alert('Código Pix copiado!');
+        })
+        .catch(() => {
+            alert('Não foi possível copiar. Toque e segure no código para copiar manualmente.');
+        });
+}
+
+async function TNPPIX_func_verificarPagamento() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+
+    if (!user || !TNPPIX_configAtual) return;
+
+    const origem = TNPPIX_configAtual.origem || 'motorista';
+
+    const colecao = origem === 'motorista'
+        ? 'motoristas'
+        : 'usuarios';
+
+    const doc = await PRIMEIRAPAG_Login_db
+        .collection(colecao)
+        .doc(user.uid)
+        .get();
+
+    const dados = doc.exists ? doc.data() : {};
+
+    const pagamento = origem === 'motorista'
+        ? (dados.pixConfirmacaoRecebimento || {})
+        : (dados.pixConfirmacaoContaPassageiro || {});
+
+    const confirmado =
+        pagamento.status === 'pago' ||
+        pagamento.pago === true ||
+        dados.contaRecebimentoConfirmada === true ||
+        dados.confirmacaoCpfViaPix === true ||
+        dados.cpfPagadorPixConfirmado === true;
+
+    if (confirmado) {
+        await TNPPIX_func_mostrarConfirmado();
+        return;
+    }
+
+    if (origem === 'motorista') {
+        const confirmar = confirm(
+            'Ainda não identificamos a confirmação automática do Pix.\n\n' +
+            'Você pode continuar o cadastro, mas sua aprovação ficará pendente até o pagamento ser confirmado.\n\n' +
+            'Deseja continuar mesmo assim?'
+        );
+
+        if (!confirmar) return;
+
+        await PRIMEIRAPAG_Login_db.collection('motoristas').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: true,
+            podeAceitarCorrida: false,
+            motoristaStatus: 'pendente_pagamento',
+            etapaCadastroMotorista: 'termos_motorista',
+
+            'pixConfirmacaoRecebimento.status': 'pendente_confirmacao',
+            'pixConfirmacaoRecebimento.pago': false,
+            'pixConfirmacaoRecebimento.motoristaClicouJaPaguei': true,
+            'pixConfirmacaoRecebimento.precisaConfirmarPagamento': true,
+            'pixConfirmacaoRecebimento.marcadoPendenteEm': firebase.firestore.FieldValue.serverTimestamp(),
+
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        await PRIMEIRAPAG_Login_db.collection('usuarios').doc(user.uid).set({
+            bloqueadoPorPagamentoMotorista: true,
+            podeAceitarCorrida: false,
+            motoristaStatus: 'pendente_pagamento',
+            etapaCadastro: 'motorista_termos',
+            etapaCadastroMotorista: 'termos_motorista',
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        TNPPIX_func_fecharModal();
+        MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
+        return;
+    }
+
+    alert('Pagamento ainda não confirmado. Você poderá continuar usando até o limite permitido.');
+    TNPPIX_func_fecharModal();
+}
+
+function TNPPIX_func_continuarDepoisConfirmado() {
+    const origem = TNPPIX_configAtual && TNPPIX_configAtual.origem
+        ? TNPPIX_configAtual.origem
+        : 'motorista';
+
+    TNPPIX_func_fecharModal();
+
+    if (origem === 'motorista') {
+        MOTORISTAPAG_Login_func_carregarTelaTermosMotorista();
+        return;
+    }
+
+    if (origem === 'passageiro') {
+        PASSAGEIROPAG_Login_func_carregarHomePassageiro();
+    }
+}
+
+function TNPPIX_func_testeAbrirModalMotorista() {
+    TNPPIX_func_abrirModal({
+        origem: 'motorista',
+        tipoPagamento: 'confirmacao_conta_recebimento_motorista'
+    });
+}
+
+function TNPPIX_func_testeAbrirModalPassageiro() {
+    TNPPIX_func_abrirModal({
+        origem: 'passageiro',
+        tipoPagamento: 'confirmacao_conta_passageiro'
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//-- Final do MODAL UNIVERSAL PIX TNP -->
 
 
 
@@ -18688,6 +19530,30 @@ document.addEventListener('DOMContentLoaded', function () {
 >
     TESTAR SELFIE DOC
 </button>
+
+<button
+    style="
+        position: fixed;
+        right: 14px;
+        bottom: 20px;
+        z-index: 9999;
+        width: auto;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(197, 169, 141, 0.45);
+        background: rgba(30, 27, 25, 0.85);
+        color: #c5a98d;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        opacity: 0.75;
+    "
+    onclick="TNPPIX_func_testeAbrirModalMotorista()"
+>
+    TESTAR PIX
+</button>
+
+
 
 </body>
 </html>
