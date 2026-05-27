@@ -350,6 +350,48 @@
             background: #111;
             cursor: pointer;
         }
+		/* FOTO DO PASSAGEIRO COMO FUNDO DO CARD */
+.ADM_doc_card {
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.ADM_doc_card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.55;
+    z-index: 0;
+}
+
+.ADM_doc_card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.10),
+        rgba(0, 0, 0, 0.58),
+        rgba(0, 0, 0, 0.82)
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+.ADM_doc_card .ADM_doc_title,
+.ADM_doc_card .ADM_doc_status,
+.ADM_doc_card .ADM_btn_row {
+    position: relative;
+    z-index: 2;
+}
+
+.ADM_doc_card .ADM_doc_title {
+    margin-top: 120px;
+}
 
         .ADM_doc_title {
             display: block;
@@ -780,12 +822,18 @@
                     </div>
                 </div>
 
-                ${ADM_alertasCadastro(data)}
-                ${ADM_secaoPessoa(data)}
-                ${ehMotorista ? ADM_secaoCnh(data) : ''}
-                ${ehMotorista ? ADM_secaoVeiculo(data) : ''}
-                ${ehMotorista ? ADM_secaoDocumentos(data) : ''}
-                ${ADM_acoesCadastro(data, ehMotorista)}
+					${ADM_alertasCadastro(data)}
+					${ADM_secaoPessoa(data)}
+
+					${!ehMotorista ? ADM_secaoFotoPerfilPassageiro(data) : ''}
+					${!ehMotorista ? ADM_secaoEnderecoPassageiro(data) : ''}
+					${!ehMotorista ? ADM_secaoPendenciasPassageiro(data) : ''}
+
+					${ehMotorista ? ADM_secaoCnh(data) : ''}
+					${ehMotorista ? ADM_secaoVeiculo(data) : ''}
+					${ehMotorista ? ADM_secaoDocumentos(data) : ''}
+
+					${ADM_acoesCadastro(data, ehMotorista)}
             </div>
         `;
     }
@@ -833,6 +881,248 @@
             </div>
         `;
     }
+	function ADM_secaoFotoPerfilPassageiro(data) {
+	const fotoPerfilUrl =
+		data.fotoPerfilUrl ||
+		data.selfieUrl ||
+		'';
+
+	const comprovanteEnderecoUrl =
+		data.comprovanteEndereco?.url ||
+		data.comprovanteEnderecoUrl ||
+		data.fotoEnderecoUrl ||
+		data.documentosPassageiro?.comprovanteEndereco?.url ||
+		'';
+
+	const documentoIdentidadeUrl =
+		data.documentoIdentidade?.url ||
+		data.documentoIdentidadeUrl ||
+		data.documentosPassageiro?.documentoIdentidade?.url ||
+		'';
+
+	const selfieDocumentoUrl =
+		data.selfieDocumentoExtra?.url ||
+		data.selfieDocumentoExtraUrl ||
+		data.selfieComDocumentoUrl ||
+		data.documentosPassageiro?.selfieComDocumento?.url ||
+		'';
+
+	const statusComprovante =
+		data.comprovanteEndereco?.status ||
+		data.comprovanteEnderecoStatus ||
+		(data.comprovanteEnderecoPendente === true ? 'pendente futuro' : 'ok');
+
+	const motivoComprovante =
+		data.comprovanteEndereco?.motivoReprovacao ||
+		data.comprovanteEnderecoMotivoReprovacao ||
+		'';
+
+	const statusDocumento =
+		data.documentoIdentidade?.status ||
+		data.documentoIdentidadeStatus ||
+		(data.documentoIdentidadePendente === true ? 'pendente futuro' : 'ok');
+
+	const motivoDocumento =
+		data.documentoIdentidade?.motivoReprovacao ||
+		data.documentoIdentidadeMotivoReprovacao ||
+		'';
+
+	const statusSelfieDocumento =
+		data.selfieDocumentoExtra?.status ||
+		data.selfieDocumentoExtraStatus ||
+		(data.selfieDocumentoExtraConcluida === true ? 'enviada' : 'pendente futura');
+
+	const motivoSelfieDocumento =
+		data.selfieDocumentoExtra?.motivoReprovacao ||
+		data.selfieDocumentoExtraMotivoReprovacao ||
+		'';
+
+	return `
+		<div class="ADM_section">
+			<span class="ADM_section_title">📸 Fotos e documentos do passageiro</span>
+
+			<div class="ADM_doc_grid">
+
+				${ADM_cardDocPassageiro(
+					data,
+					'foto_perfil',
+					'Foto de perfil',
+					fotoPerfilUrl,
+					data.fotoPerfilStatus || (data.fotoPerfilEnviada === true ? 'enviada' : 'pendente'),
+					data.fotoPerfilMotivoReprovacao || ''
+				)}
+
+				${ADM_cardDocPassageiro(
+					data,
+					'comprovante_endereco',
+					'Comprovante de endereço',
+					comprovanteEnderecoUrl,
+					statusComprovante,
+					motivoComprovante
+				)}
+
+				${ADM_cardDocPassageiro(
+					data,
+					'documento_identidade',
+					'Documento de identidade',
+					documentoIdentidadeUrl,
+					statusDocumento,
+					motivoDocumento
+				)}
+
+				${ADM_cardDocPassageiro(
+					data,
+					'selfie_documento',
+					'Selfie com documento',
+					selfieDocumentoUrl,
+					statusSelfieDocumento,
+					motivoSelfieDocumento
+				)}
+
+			</div>
+		</div>
+	`;
+}
+
+function ADM_cardDocPassageiro(data, tipo, titulo, url, status, motivo) {
+    const uid = data.id || data.uid || '';
+
+    const fotoHtml = url
+        ? `
+            <img 
+                src="${ADM_escapeAttr(url)}" 
+                alt="${ADM_escapeAttr(titulo)}" 
+                onclick="ADM_abrirModalDocumento('${ADM_escapeAttr(url)}', '${ADM_escapeAttr(titulo)}')"
+            >
+        `
+        : `
+            <div style="height:115px;display:flex;align-items:center;justify-content:center;background:#111;border-radius:10px;color:var(--Fame_muted);">
+                Sem foto
+            </div>
+        `;
+
+    let acaoPendencia = '';
+
+if (tipo === 'comprovante_endereco') {
+	acaoPendencia = `ADM_solicitarPendenciaAdminPassageiro('${ADM_escapeAttr(uid)}', 'comprovanteEndereco')`;
+}
+
+if (tipo === 'documento_identidade') {
+	acaoPendencia = `ADM_solicitarPendenciaAdminPassageiro('${ADM_escapeAttr(uid)}', 'documentoIdentidade')`;
+}
+
+if (tipo === 'selfie_documento') {
+	acaoPendencia = `ADM_solicitarPendenciaAdminPassageiro('${ADM_escapeAttr(uid)}', 'selfieDocumento')`;
+}
+
+let tipoPendenciaPassageiro = '';
+
+if (tipo === 'comprovante_endereco') {
+	tipoPendenciaPassageiro = 'comprovanteEndereco';
+}
+
+if (tipo === 'documento_identidade') {
+	tipoPendenciaPassageiro = 'documentoIdentidade';
+}
+
+if (tipo === 'selfie_documento') {
+	tipoPendenciaPassageiro = 'selfieDocumento';
+}
+
+const botoes =
+	tipo === 'foto_perfil'
+		? `
+			<div class="ADM_btn_row" style="justify-content:center;">
+				<button 
+					class="ADM_btn ADM_btn_success" 
+					onclick="ADM_aprovarFotoPerfilPassageiro('${ADM_escapeAttr(uid)}')"
+				>
+					OK
+				</button>
+
+				<button 
+					class="ADM_btn ADM_btn_danger" 
+					onclick="ADM_solicitarNovaFotoPerfilPassageiro('${ADM_escapeAttr(uid)}')"
+				>
+					Refazer
+				</button>
+			</div>
+		`
+		: `
+			<div class="ADM_btn_row" style="justify-content:center;">
+				<button 
+					class="ADM_btn ADM_btn_success" 
+					onclick="ADM_aprovarPendenciaAdminPassageiro('${ADM_escapeAttr(uid)}', '${tipoPendenciaPassageiro}')"
+				>
+					OK
+				</button>
+
+				<button 
+					class="ADM_btn ADM_btn_danger" 
+					onclick="${acaoPendencia}"
+				>
+					Refazer
+				</button>
+			</div>
+		`;
+
+    return `
+        <div class="ADM_doc_card">
+            ${fotoHtml}
+
+            <span class="ADM_doc_title">
+                ${ADM_escape(titulo)}
+            </span>
+
+            <span class="ADM_doc_status">
+                Status: ${ADM_escape(status || 'pendente')}
+                ${motivo ? '<br>Motivo: ' + ADM_escape(motivo) : ''}
+            </span>
+
+            ${botoes}
+        </div>
+    `;
+}
+
+function ADM_secaoEnderecoPassageiro(data) {
+    const e = data.endereco || {};
+
+    return `
+        <div class="ADM_section">
+            <span class="ADM_section_title">🏠 Endereço</span>
+
+            <div class="ADM_info_grid">
+                <div class="ADM_info_group"><span class="ADM_label">CEP:</span> ${ADM_escape(e.cepFormatado || data.cepFormatado || e.cep || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Rua:</span> ${ADM_escape(e.rua || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Número:</span> ${ADM_escape(e.numero || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Bairro:</span> ${ADM_escape(e.bairro || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Cidade/UF:</span> ${ADM_escape((e.cidade || 'N/A') + ' / ' + (e.estado || 'N/A'))}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Complemento:</span> ${ADM_escape(e.complemento || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Referência:</span> ${ADM_escape(e.referencia || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Endereço completo:</span> ${ADM_escape(data.enderecoFormatado || 'N/A')}</div>
+            </div>
+        </div>
+    `;
+}
+
+function ADM_secaoPendenciasPassageiro(data) {
+    return `
+        <div class="ADM_section">
+            <span class="ADM_section_title">🛡️ Segurança e verificações</span>
+
+            <div class="ADM_info_grid">
+                <div class="ADM_info_group"><span class="ADM_label">Perfil 100%:</span> ${data.perfil100 === true ? 'Sim' : 'Não'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Cadastro completo:</span> ${data.cadastroCompleto === true ? 'Sim' : 'Não'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">TNP/cashback:</span> ${data.cadastroTnpConcluido === true ? 'Concluído' : 'Pendente'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">ID TNP:</span> ${ADM_escape(data.idTnp || data.tnp?.id || 'N/A')}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Documento identidade:</span> ${data.documentoIdentidadePendente === true ? 'Pendente futuro' : 'OK'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Comprovante endereço:</span> ${data.comprovanteEnderecoPendente === true ? 'Pendente futuro' : 'OK'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Selfie com documento:</span> ${data.selfieDocumentoExtraConcluida === true ? 'Concluída' : 'Pendente futura'}</div>
+                <div class="ADM_info_group"><span class="ADM_label">Corridas sem TNP:</span> ${ADM_escape(String(data.corridasUsadasSemTnp || 0))} de ${ADM_escape(String(data.corridasSemTnpLimite || 10))}</div>
+            </div>
+        </div>
+    `;
+}
 
     function ADM_secaoCnh(data) {
         return `
@@ -866,15 +1156,98 @@
             </div>
         `;
     }
+	
+	function ADM_normalizarDocumentoImagem(doc, urlFallback = '') {
+    if (!doc && !urlFallback) return null;
+
+    if (typeof doc === 'string') {
+        return {
+            url: doc,
+            status: 'pendente_analise'
+        };
+    }
+
+    const obj = doc || {};
+
+    const url =
+        obj.url ||
+        obj.downloadURL ||
+        obj.fotoUrl ||
+        obj.imagemUrl ||
+        obj.arquivoUrl ||
+        urlFallback ||
+        '';
+
+    if (!url) return null;
+
+    return {
+        ...obj,
+        url: url,
+        status: obj.status || 'pendente_analise',
+        tamanhoFinal: obj.tamanhoFinal || obj.size || obj.tamanho || null,
+        motivoReprovacao: obj.motivoReprovacao || ''
+    };
+}
 
     function ADM_secaoDocumentos(data) {
         const docs = [];
 
-        ADM_addDocCard(docs, data, 'documentosMotorista.fotoCnh', 'Foto da CNH', data.documentosMotorista && data.documentosMotorista.fotoCnh);
-        ADM_addDocCard(docs, data, 'documentosMotorista.selfieComCnh', 'Selfie com CNH', data.documentosMotorista && data.documentosMotorista.selfieComCnh);
-        ADM_addDocCard(docs, data, 'documentosVeiculo.crlv', 'CRLV', data.documentosVeiculo && data.documentosVeiculo.crlv);
-        ADM_addDocCard(docs, data, 'documentosVeiculo.fotoVeiculoPlaca', 'Veículo com placa', data.documentosVeiculo && data.documentosVeiculo.fotoVeiculoPlaca);
+const fotoCnh = ADM_normalizarDocumentoImagem(
+    data.documentosMotorista?.fotoCnh ||
+    data.motorista?.documentosMotorista?.fotoCnh ||
+    data['documentosMotorista.fotoCnh'] ||
+    data.motorista?.['documentosMotorista.fotoCnh'] ||
+    data.fotoCnh ||
+    data.fotoCnhUrl ||
+    data.cnhFotoUrl ||
+    data.urlFotoCnh ||
+    null,
+    data.fotoCnhUrl || data.cnhFotoUrl || data.urlFotoCnh || ''
+);
 
+const selfieComCnh = ADM_normalizarDocumentoImagem(
+    data.documentosMotorista?.selfieComCnh ||
+    data.motorista?.documentosMotorista?.selfieComCnh ||
+    data['documentosMotorista.selfieComCnh'] ||
+    data.motorista?.['documentosMotorista.selfieComCnh'] ||
+    data.selfieComCnh ||
+    data.selfieComCnhUrl ||
+    data.selfieCnhUrl ||
+    data.urlSelfieComCnh ||
+    null,
+    data.selfieComCnhUrl || data.selfieCnhUrl || data.urlSelfieComCnh || ''
+);
+
+const crlv = ADM_normalizarDocumentoImagem(
+    data.documentosVeiculo?.crlv ||
+    data.motorista?.documentosVeiculo?.crlv ||
+    data['documentosVeiculo.crlv'] ||
+    data.motorista?.['documentosVeiculo.crlv'] ||
+    data.crlv ||
+    data.crlvUrl ||
+    data.fotoCrlvUrl ||
+    data.urlCrlv ||
+    null,
+    data.crlvUrl || data.fotoCrlvUrl || data.urlCrlv || ''
+);
+
+const fotoVeiculoPlaca = ADM_normalizarDocumentoImagem(
+    data.documentosVeiculo?.fotoVeiculoPlaca ||
+    data.motorista?.documentosVeiculo?.fotoVeiculoPlaca ||
+    data['documentosVeiculo.fotoVeiculoPlaca'] ||
+    data.motorista?.['documentosVeiculo.fotoVeiculoPlaca'] ||
+    data.fotoVeiculoPlaca ||
+    data.fotoVeiculoPlacaUrl ||
+    data.veiculoPlacaUrl ||
+    data.urlFotoVeiculoPlaca ||
+    null,
+    data.fotoVeiculoPlacaUrl || data.veiculoPlacaUrl || data.urlFotoVeiculoPlaca || ''
+);
+
+ADM_addDocCard(docs, data, 'documentosMotorista.fotoCnh', 'Foto da CNH', fotoCnh);
+ADM_addDocCard(docs, data, 'documentosMotorista.selfieComCnh', 'Selfie com CNH', selfieComCnh);
+ADM_addDocCard(docs, data, 'documentosVeiculo.crlv', 'CRLV', crlv);
+ADM_addDocCard(docs, data, 'documentosVeiculo.fotoVeiculoPlaca', 'Veículo com placa', fotoVeiculoPlaca);
         return `
             <div class="ADM_section">
                 <span class="ADM_section_title">📄 Documentos e fotos</span>
@@ -887,15 +1260,33 @@
 
     function ADM_addDocCard(lista, data, campo, titulo, doc) {
         if (!doc || !doc.url) {
-            lista.push(`
-                <div class="ADM_doc_card">
-                    <div style="height:115px;display:flex;align-items:center;justify-content:center;background:#111;border-radius:10px;color:var(--Fame_muted);">Sem foto</div>
-                    <span class="ADM_doc_title">${ADM_escape(titulo)}</span>
-                    <span class="ADM_doc_status">Pendente envio</span>
-                </div>
-            `);
-            return;
-        }
+    const tituloEsc = ADM_escape(titulo);
+    const uid = data.id || data.uid || '';
+
+    lista.push(`
+        <div class="ADM_doc_card">
+            <div style="height:115px;display:flex;align-items:center;justify-content:center;background:#111;border-radius:10px;color:var(--Fame_muted);">
+                Sem foto
+            </div>
+
+            <span class="ADM_doc_title">${tituloEsc}</span>
+
+            <span class="ADM_doc_status">
+                Pendente envio
+            </span>
+
+            <div class="ADM_btn_row" style="justify-content:center;">
+                <button
+                    class="ADM_btn ADM_btn_warning"
+                    onclick="ADM_solicitarEnvioDocumentoMotorista('${ADM_escapeAttr(uid)}', '${ADM_escapeAttr(campo)}', '${ADM_escapeAttr(titulo)}')"
+                >
+                    Pedir envio
+                </button>
+            </div>
+        </div>
+    `);
+    return;
+}
 
         const tituloEsc = ADM_escape(titulo);
         const status = ADM_escape(doc.status || 'pendente_analise');
@@ -916,13 +1307,23 @@
     }
 
     function ADM_acoesCadastro(data, ehMotorista) {
-        if (!ehMotorista) {
-            return `
-                <div class="ADM_card_actions">
-                    <button class="ADM_btn ADM_btn_info" onclick="ADM_copiarUid('${ADM_escapeAttr(data.id || data.uid || '')}')">COPIAR UID</button>
-                </div>
-            `;
-        }
+			if (!ehMotorista) {
+		return `
+			<div class="ADM_card_actions">
+				<button class="ADM_btn ADM_btn_warning" onclick="ADM_abrirRevisaoPassageiro('${ADM_escapeAttr(data.id || data.uid || '')}')">
+					ABRIR REVISÃO GERAL
+				</button>
+
+				<button class="ADM_btn ADM_btn_danger" onclick="ADM_solicitarNovaFotoPerfilPassageiro('${ADM_escapeAttr(data.id || data.uid || '')}')">
+					PEDIR NOVA FOTO
+				</button>
+
+				<button class="ADM_btn ADM_btn_info" onclick="ADM_copiarUid('${ADM_escapeAttr(data.id || data.uid || '')}')">
+					COPIAR UID
+				</button>
+			</div>
+		`;
+	}
 
         return `
             <div class="ADM_card_actions">
@@ -983,6 +1384,79 @@
         );
     }
 
+async function ADM_solicitarEnvioDocumentoMotorista(uid, campo, titulo) {
+    const motivo = prompt(
+        'Mensagem para o motorista:',
+        `Envie a foto obrigatória: ${titulo}.`
+    );
+
+    if (motivo === null) return;
+
+    if (!motivo.trim()) {
+        alert('Digite a mensagem para o motorista.');
+        return;
+    }
+
+    const atualizacao = {};
+
+    atualizacao[campo + '.status'] = 'pendente_envio';
+    atualizacao[campo + '.motivoReprovacao'] = motivo.trim();
+    atualizacao[campo + '.solicitadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+    atualizacao[campo + '.solicitadoPor'] = auth.currentUser ? auth.currentUser.uid : '';
+
+    atualizacao['motoristaStatus'] = 'cadastro_iniciado';
+    atualizacao['podeAceitarCorrida'] = false;
+    atualizacao['requerAnaliseAdmin'] = true;
+    atualizacao['motivoAnaliseAdmin'] = motivo.trim();
+    atualizacao['etapaCadastroMotorista'] = 'analise_final_motorista';
+    atualizacao['atualizadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
+
+    if (campo.startsWith('documentosMotorista.')) {
+    atualizacao['fotosCnhStatus'] = 'pendente_envio';
+    atualizacao['motoristaStatus'] = 'pendente_documentos';
+    atualizacao['requerAnaliseAdmin'] = true;
+
+    atualizacao['pendenciasDocumentosMotorista'] = firebase.firestore.FieldValue.arrayUnion(
+        titulo
+    );
+}
+
+    if (campo.startsWith('documentosVeiculo.')) {
+    atualizacao['documentosVeiculoStatus'] = 'pendente_envio';
+    atualizacao['motoristaStatus'] = 'pendente_documentos';
+    atualizacao['requerAnaliseAdmin'] = true;
+
+    atualizacao['pendenciasDocumentosMotorista'] = firebase.firestore.FieldValue.arrayUnion(
+        titulo
+    );
+}
+
+    await db.collection('motoristas').doc(uid).update(atualizacao);
+
+    const atualizacaoUsuario = {
+    motoristaStatus: 'pendente_documentos',
+    podeAceitarCorrida: false,
+    requerAnaliseAdmin: true,
+    motivoAnaliseAdmin: motivo.trim(),
+    pendenciasDocumentosMotorista: firebase.firestore.FieldValue.arrayUnion(titulo),
+    etapaCadastro: 'motorista_analise_final',
+    etapaCadastroMotorista: 'analise_final_motorista',
+    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+};
+
+if (campo.startsWith('documentosMotorista.')) {
+    atualizacaoUsuario.fotosCnhStatus = 'pendente_envio';
+}
+
+if (campo.startsWith('documentosVeiculo.')) {
+    atualizacaoUsuario.documentosVeiculoStatus = 'pendente_envio';
+}
+
+await db.collection('usuarios').doc(uid).set(atualizacaoUsuario, { merge: true });
+
+    alert('Solicitação enviada. O motorista ficará com pendência para enviar/refazer este documento.');
+}
+
     async function ADM_aprovarDocumento(uid, campo) {
         if (!confirm('Aprovar este documento?')) return;
 
@@ -993,7 +1467,7 @@
         atualizacao[campo + '.aprovadoPor'] = auth.currentUser ? auth.currentUser.uid : '';
         atualizacao['atualizadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
 
-        await db.collection('motoristas').doc(uid).set(atualizacao, { merge: true });
+        await db.collection('motoristas').doc(uid).update(atualizacao);
         alert('Documento aprovado.');
     }
 
@@ -1018,7 +1492,7 @@
 
         const { uid, campo } = ADM_reprovacaoAtual;
         const atualizacao = {};
-        atualizacao[campo + '.status'] = 'reprovado';
+        atualizacao[campo + '.status'] = 'pendente_correcao';
         atualizacao[campo + '.motivoReprovacao'] = motivo;
         atualizacao[campo + '.reprovadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
         atualizacao[campo + '.reprovadoPor'] = auth.currentUser ? auth.currentUser.uid : '';
@@ -1027,18 +1501,16 @@
         atualizacao['atualizadoEm'] = firebase.firestore.FieldValue.serverTimestamp();
 
         if (campo.startsWith('documentosMotorista.')) {
-            atualizacao['fotosCnhStatus'] = 'reprovado';
-            atualizacao['fotosCnhConcluidas'] = false;
-            atualizacao['etapaCadastroMotorista'] = 'fotos_cnh';
-        }
+		atualizacao['fotosCnhStatus'] = 'pendente_correcao';
+		atualizacao['etapaCadastroMotorista'] = 'analise_final_motorista';
+		}
 
         if (campo.startsWith('documentosVeiculo.')) {
-            atualizacao['documentosVeiculoStatus'] = 'reprovado';
-            atualizacao['documentosVeiculoConcluidos'] = false;
-            atualizacao['etapaCadastroMotorista'] = 'documentos_veiculo';
-        }
+		atualizacao['documentosVeiculoStatus'] = 'pendente_correcao';
+		atualizacao['etapaCadastroMotorista'] = 'analise_final_motorista';
+		}
 
-        await db.collection('motoristas').doc(uid).set(atualizacao, { merge: true });
+        await db.collection('motoristas').doc(uid).update(atualizacao);
 
         const atualizacaoUsuario = {
             motoristaStatus: 'cadastro_iniciado',
@@ -1047,88 +1519,389 @@
         };
 
         if (campo.startsWith('documentosMotorista.')) {
-            atualizacaoUsuario.etapaCadastro = 'motorista_fotos_cnh';
-            atualizacaoUsuario.etapaCadastroMotorista = 'fotos_cnh';
+            atualizacaoUsuario.etapaCadastro = 'motorista_analise_final';
+			atualizacaoUsuario.etapaCadastroMotorista = 'analise_final_motorista';
         }
 
         if (campo.startsWith('documentosVeiculo.')) {
-            atualizacaoUsuario.etapaCadastro = 'motorista_documentos_veiculo';
-            atualizacaoUsuario.etapaCadastroMotorista = 'documentos_veiculo';
+            atualizacaoUsuario.etapaCadastro = 'motorista_analise_final';
+			atualizacaoUsuario.etapaCadastroMotorista = 'analise_final_motorista';
         }
 
-        await db.collection('usuarios').doc(uid).set(atualizacaoUsuario, { merge: true });
-
+        
         ADM_fecharModalReprovacao();
         alert('Documento reprovado. O motorista voltará para refazer a etapa.');
     }
 
-    async function ADM_aprovarMotorista(uid) {
-        const motoristaDoc = await db.collection('motoristas').doc(uid).get();
-        const data = motoristaDoc.exists ? motoristaDoc.data() : {};
+	async function ADM_aprovarFotoPerfilPassageiro(uid) {
+    if (!confirm('Aprovar foto de perfil deste passageiro?')) return;
 
-        if (data.cpfConflito === true || data.cpfConflitoStatus === 'pendente_analise_suporte') {
-            alert('Não é possível aprovar: CPF em conflito. Resolva o caso antes.');
-            return;
-        }
+    await db.collection('usuarios').doc(uid).set({
+        fotoPerfilStatus: 'aprovado',
+        fotoPerfilMotivoReprovacao: '',
+        requerAnaliseAdmin: false,
+        motivoAnaliseAdmin: '',
+        bloqueadoPorCadastro: false,
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
 
-        if (data.cnhBloqueioPorVencimento === true || data.cnhValidadeStatus === 'bloqueado_cnh_vencida') {
-            alert('Não é possível aprovar: CNH bloqueada/vencida.');
-            return;
-        }
+    alert('Foto de perfil aprovada.');
+}
 
-        const dm = data.documentosMotorista || {};
-        const dv = data.documentosVeiculo || {};
+async function ADM_solicitarNovaFotoPerfilPassageiro(uid) {
+    const motivo = prompt(
+        'Motivo para pedir nova foto:',
+        'Foto inadequada ou sem nitidez. Envie uma nova foto de perfil.'
+    );
 
-        const docsOk =
-            dm.fotoCnh && dm.fotoCnh.status === 'aprovado' &&
-            dm.selfieComCnh && dm.selfieComCnh.status === 'aprovado' &&
-            dv.crlv && dv.crlv.status === 'aprovado' &&
-            dv.fotoVeiculoPlaca && dv.fotoVeiculoPlaca.status === 'aprovado';
+    if (motivo === null) return;
 
-        if (!docsOk) {
-            alert('Antes de aprovar o motorista, aprove todos os documentos: CNH, selfie CNH, CRLV e veículo com placa.');
-            return;
-        }
-
-        if (!confirm('Aprovar este motorista para aceitar corridas?')) return;
-
-        const statusFinal = {
-            geral: 'aprovado',
-            motivo: '',
-            tipo: 'motorista',
-            uid: uid,
-            cnhValidadeStatus: data.cnhValidadeStatus || 'valida',
-            cnhBloqueioPorVencimento: false,
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        };
-
-        await db.collection('motoristas').doc(uid).set({
-            cadastroCompleto: true,
-            podeAceitarCorrida: true,
-            requerAnaliseAdmin: false,
-            motoristaStatus: 'aprovado',
-            motivoAnaliseAdmin: '',
-            etapaCadastroMotorista: 'completo',
-            status: statusFinal,
-            aprovadoEm: firebase.firestore.FieldValue.serverTimestamp(),
-            aprovadoPor: auth.currentUser ? auth.currentUser.uid : '',
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        await db.collection('usuarios').doc(uid).set({
-            motoristaStatus: 'aprovado',
-            podeAceitarCorrida: true,
-            podeSolicitarCorrida: true,
-            requerAnaliseAdmin: false,
-            etapaCadastro: 'entrada_app',
-            etapaCadastroMotorista: 'completo',
-            status: statusFinal,
-            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
-        alert('Motorista aprovado com sucesso.');
+    if (!motivo.trim()) {
+        alert('Digite o motivo.');
+        return;
     }
 
+    await db.collection('usuarios').doc(uid).set({
+        fotoPerfilStatus: 'pendente_correcao',
+        fotoPerfilMotivoReprovacao: motivo.trim(),
+
+        requerAnaliseAdmin: true,
+        motivoAnaliseAdmin: motivo.trim(),
+
+        bloqueadoPorCadastro: true,
+        etapaCadastro: 'corrigir_foto_perfil',
+
+        status: {
+            geral: 'pendente_correcao_foto_perfil',
+            motivo: motivo.trim(),
+            tipo: 'passageiro',
+            uid: uid,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        },
+
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    alert('Pedido de nova foto enviado. O passageiro ficará com revisão pendente.');
+}
+
+async function ADM_abrirRevisaoPassageiro(uid) {
+    const motivo = prompt(
+        'Motivo da revisão geral:',
+        'Cadastro enviado para revisão manual do administrador.'
+    );
+
+    if (motivo === null) return;
+
+    if (!motivo.trim()) {
+        alert('Digite o motivo da revisão.');
+        return;
+    }
+
+    await db.collection('usuarios').doc(uid).set({
+        requerAnaliseAdmin: true,
+        motivoAnaliseAdmin: motivo.trim(),
+        etapaCadastro: 'revisao_admin_passageiro',
+
+        status: {
+            geral: 'revisao_admin_passageiro',
+            motivo: motivo.trim(),
+            tipo: 'passageiro',
+            uid: uid,
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        },
+
+        atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    alert('Passageiro marcado para revisão geral.');
+}
+    async function ADM_aprovarMotorista(uid) {
+    const motoristaDoc = await db.collection('motoristas').doc(uid).get();
+    const data = motoristaDoc.exists ? motoristaDoc.data() : {};
+
+    if (data.cpfConflito === true || data.cpfConflitoStatus === 'pendente_analise_suporte') {
+        alert('Não é possível aprovar: CPF em conflito. Resolva o caso antes.');
+        return;
+    }
+
+    if (data.cnhBloqueioPorVencimento === true || data.cnhValidadeStatus === 'bloqueado_cnh_vencida') {
+        alert('Não é possível aprovar: CNH bloqueada/vencida.');
+        return;
+    }
+
+    const dm = data.documentosMotorista || {};
+    const dv = data.documentosVeiculo || {};
+
+    const docsOk =
+        dm.fotoCnh && dm.fotoCnh.status === 'aprovado' &&
+        dm.selfieComCnh && dm.selfieComCnh.status === 'aprovado' &&
+        dv.crlv && dv.crlv.status === 'aprovado' &&
+        dv.fotoVeiculoPlaca && dv.fotoVeiculoPlaca.status === 'aprovado';
+
+    if (!docsOk) {
+        alert('Antes de aprovar o motorista, aprove todos os documentos: CNH, selfie CNH, CRLV e veículo com placa.');
+        return;
+    }
+
+    if (!confirm('Aprovar este motorista para aceitar corridas?')) return;
+
+    const agora = firebase.firestore.FieldValue.serverTimestamp();
+    const adminUid = auth.currentUser ? auth.currentUser.uid : '';
+
+    const statusFinal = {
+        geral: 'aprovado',
+        motivo: '',
+        tipo: 'motorista',
+        uid: uid,
+        cnhValidadeStatus: data.cnhValidadeStatus || 'valida',
+        cnhBloqueioPorVencimento: false,
+        atualizadoEm: agora
+    };
+
+    const atualizacaoMotorista = {
+        cadastroAprovado: true,
+        cadastroCompleto: true,
+
+        podeAceitarCorrida: true,
+        disponivelParaCorridas: false,
+        motoristaOnline: false,
+
+        requerAnaliseAdmin: false,
+        motivoAnaliseAdmin: '',
+
+        motoristaStatus: 'aprovado',
+        statusAnalise: 'aprovado',
+        status: statusFinal,
+
+        fotosCnhConcluidas: true,
+        fotosCnhStatus: 'aprovado',
+
+        documentosVeiculoConcluidos: true,
+        documentosVeiculoStatus: 'aprovado',
+
+        etapaCadastroMotorista: 'completo',
+
+        aprovadoEm: agora,
+        aprovadoPor: adminUid,
+        atualizadoEm: agora
+    };
+
+    atualizacaoMotorista['documentosMotorista.fotoCnh.status'] = 'aprovado';
+    atualizacaoMotorista['documentosMotorista.fotoCnh.motivoReprovacao'] = '';
+    atualizacaoMotorista['documentosMotorista.fotoCnh.aprovadoEm'] = agora;
+    atualizacaoMotorista['documentosMotorista.fotoCnh.aprovadoPor'] = adminUid;
+
+    atualizacaoMotorista['documentosMotorista.selfieComCnh.status'] = 'aprovado';
+    atualizacaoMotorista['documentosMotorista.selfieComCnh.motivoReprovacao'] = '';
+    atualizacaoMotorista['documentosMotorista.selfieComCnh.aprovadoEm'] = agora;
+    atualizacaoMotorista['documentosMotorista.selfieComCnh.aprovadoPor'] = adminUid;
+
+    atualizacaoMotorista['documentosVeiculo.crlv.status'] = 'aprovado';
+    atualizacaoMotorista['documentosVeiculo.crlv.motivoReprovacao'] = '';
+    atualizacaoMotorista['documentosVeiculo.crlv.aprovadoEm'] = agora;
+    atualizacaoMotorista['documentosVeiculo.crlv.aprovadoPor'] = adminUid;
+
+    atualizacaoMotorista['documentosVeiculo.fotoVeiculoPlaca.status'] = 'aprovado';
+    atualizacaoMotorista['documentosVeiculo.fotoVeiculoPlaca.motivoReprovacao'] = '';
+    atualizacaoMotorista['documentosVeiculo.fotoVeiculoPlaca.aprovadoEm'] = agora;
+    atualizacaoMotorista['documentosVeiculo.fotoVeiculoPlaca.aprovadoPor'] = adminUid;
+
+    await db.collection('motoristas').doc(uid).update(atualizacaoMotorista);
+
+    await db.collection('usuarios').doc(uid).set({
+        motoristaStatus: 'aprovado',
+        statusAnalise: 'aprovado',
+
+        podeAceitarCorrida: true,
+        podeSolicitarCorrida: true,
+
+        requerAnaliseAdmin: false,
+        motivoAnaliseAdmin: '',
+
+        etapaCadastro: 'entrada_app',
+        etapaCadastroMotorista: 'completo',
+
+        status: statusFinal,
+
+        atualizadoEm: agora
+    }, { merge: true });
+
+    alert('Motorista aprovado com sucesso.');
+}
+
+async function ADM_solicitarPendenciaAdminPassageiro(uid, tipoPendencia) {
+	const configs = {
+	comprovanteEndereco: {
+		tituloPrompt: 'Motivo para pedir comprovante de endereço:',
+		motivoPadrao: 'Envie um comprovante de endereço legível e atualizado.',
+		campoMapa: 'comprovanteEndereco',
+		tipoPendenciaAdmin: 'comprovanteEndereco',
+		camposExtras: {
+			comprovanteEnderecoPendente: true,
+			fotoEnderecoPendente: true
+		},
+		statusCadastroCampo: 'comprovanteEndereco'
+	},
+
+	documentoIdentidade: {
+		tituloPrompt: 'Motivo para pedir documento de identidade:',
+		motivoPadrao: 'Envie uma foto legível do seu documento de identidade.',
+		campoMapa: 'documentoIdentidade',
+		tipoPendenciaAdmin: 'documentoIdentidade',
+		camposExtras: {
+			documentoIdentidadePendente: true
+		},
+		statusCadastroCampo: 'documentos'
+	},
+
+	selfieDocumento: {
+		tituloPrompt: 'Motivo para pedir selfie com documento:',
+		motivoPadrao: 'Envie uma nova selfie segurando o documento com boa iluminação.',
+		campoMapa: 'selfieDocumentoExtra',
+		tipoPendenciaAdmin: 'selfieDocumento',
+		camposExtras: {
+			selfieDocumentoExtraPendente: true,
+			selfieDocumentoExtraConcluida: false
+		},
+		statusCadastroCampo: 'documentos'
+	}
+};
+
+	const config = configs[tipoPendencia];
+
+	if (!config) {
+		alert('Tipo de pendência não configurado.');
+		return;
+	}
+
+	const motivo = prompt(config.tituloPrompt, config.motivoPadrao);
+
+	if (motivo === null) return;
+
+	if (!motivo.trim()) {
+		alert('Digite o motivo.');
+		return;
+	}
+
+	const agora = firebase.firestore.FieldValue.serverTimestamp();
+	const adminUid = auth.currentUser ? auth.currentUser.uid : '';
+
+	const atualizacao = {
+		pendenciaAdminPassageiro: true,
+		tipoPendenciaAdminPassageiro: config.tipoPendenciaAdmin,
+		motivoPendenciaAdminPassageiro: motivo.trim(),
+
+		requerAnaliseAdmin: true,
+		motivoAnaliseAdmin: motivo.trim(),
+
+		bloqueadoPorPendenciaAdmin: false,
+
+		atualizadoEm: agora
+		};
+
+		atualizacao[config.campoMapa] = {
+		status: 'pendente_correcao',
+		motivoReprovacao: motivo.trim(),
+
+		avisosMostrados: 0,
+		limiteAvisos: 3,
+		bloquearAoIgnorar: true,
+
+		solicitadoEm: agora,
+		solicitadoPor: adminUid,
+
+		aprovadoEm: null,
+		aprovadoPor: '',
+		reprovadoEm: null,
+		reprovadoPor: '',
+		reenviadoEm: null,
+		analisadoEm: null,
+		analisadoPor: '',
+
+		url: '',
+		caminho: '',
+		enviado: false
+	};
+
+	Object.assign(atualizacao, config.camposExtras);
+
+	if (config.statusCadastroCampo === 'comprovanteEndereco') {
+	atualizacao.statusCadastroPassageiro = {
+		...(atualizacao.statusCadastroPassageiro || {}),
+		comprovanteEndereco: 'pendente_correcao'
+	};
+}
+
+if (config.statusCadastroCampo === 'documentos') {
+	atualizacao.statusCadastroPassageiro = {
+		...(atualizacao.statusCadastroPassageiro || {}),
+		documentos: 'pendente_correcao'
+	};
+}
+
+	await db.collection('usuarios').doc(uid).set(atualizacao, { merge: true });
+
+	alert('Pedido enviado ao passageiro.');
+}
+
+async function ADM_aprovarPendenciaAdminPassageiro(uid, tipoPendencia) {
+	const configs = {
+		comprovanteEndereco: {
+			campoMapa: 'comprovanteEndereco',
+			camposExtras: {
+				comprovanteEnderecoPendente: false,
+				fotoEnderecoPendente: false
+			}
+		},
+
+		documentoIdentidade: {
+			campoMapa: 'documentoIdentidade',
+			camposExtras: {
+				documentoIdentidadePendente: false
+			}
+		},
+
+		selfieDocumento: {
+			campoMapa: 'selfieDocumentoExtra',
+			camposExtras: {
+				selfieDocumentoExtraPendente: false,
+				selfieDocumentoExtraConcluida: true,
+				bloqueadoPorSelfieDocumentoExtra: false
+			}
+		}
+	};
+
+	const config = configs[tipoPendencia];
+
+	if (!config) {
+		alert('Tipo de aprovação não configurado.');
+		return;
+	}
+
+	if (!confirm('Aprovar esta pendência do passageiro?')) {
+		return;
+	}
+
+	const agora = firebase.firestore.FieldValue.serverTimestamp();
+	const adminUid = auth.currentUser ? auth.currentUser.uid : '';
+
+	const atualizacao = {
+		atualizadoEm: agora,
+		ultimaPendenciaAprovada: tipoPendencia
+	};
+
+	atualizacao[config.campoMapa + '.status'] = 'aprovado';
+	atualizacao[config.campoMapa + '.motivoReprovacao'] = '';
+	atualizacao[config.campoMapa + '.aprovadoEm'] = agora;
+	atualizacao[config.campoMapa + '.aprovadoPor'] = adminUid;
+
+	Object.assign(atualizacao, config.camposExtras);
+
+	await db.collection('usuarios').doc(uid).update(atualizacao);
+
+	alert('Pendência aprovada com sucesso.');
+}
     async function ADM_marcarAnalise(uid) {
         const motivo = prompt('Motivo da análise:', 'análise manual do administrador');
         if (motivo === null) return;
