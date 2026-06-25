@@ -8007,31 +8007,8 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
     z-index: 5;
 }
 
-/* Olho da senha no lugar certo */
-.PRIMEIRAPAG_Login_eye_btn {
-    position: absolute !important;
-    right: 10px !important;
-    top: 32px !important;
 
-    background: none !important;
-    border: none !important;
-    color: var(--Fame_muted) !important;
 
-    cursor: pointer !important;
-    font-size: 1.2rem !important;
-    z-index: 10 !important;
-
-    width: auto !important;
-    height: auto !important;
-    padding: 0 !important;
-    margin: 0 !important;
-
-    transform: none !important;
-}
-
-.PRIMEIRAPAG_Login_logo_img {
-    outline: 1px solid blue !important;
-}
 
 /* ================================
    LOGO DA TNP FINAL
@@ -8058,22 +8035,62 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
 
 /* ===== BOTÕES PRINCIPAIS NA FRENTE DA LOGO, SEM MEXER NO OLHO DA SENHA ===== */
 
-.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn,
-.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_primary,
-.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_secondary,
-.PRIMEIRAPAG_Login_tipo_cards {
-    position: relative !important;
-    z-index: 999 !important;
+./* ===== CAMPO DE SENHA COM OLHO CENTRALIZADO ===== */
+
+.PRIMEIRAPAG_Login_password_wrap {
+    position: relative;
+    width: 100%;
 }
 
-/* O olho da senha não pode virar relative */
-.PRIMEIRAPAG_Login_eye_btn {
-    position: absolute !important;
-    right: 10px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 1000 !important;
+.PRIMEIRAPAG_Login_password_wrap input {
+    width: 100%;
+    padding-right: 48px !important;
 }
+
+.PRIMEIRAPAG_Login_password_wrap .PRIMEIRAPAG_Login_eye_btn {
+    position: absolute !important;
+
+    top: calc(50% + 13px) !important;
+    right: 10px !important;
+    transform: translateY(-50%) !important;
+
+    width: 32px !important;
+    height: 32px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: none !important;
+    background: transparent !important;
+
+    color: var(--Fame_muted) !important;
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+    z-index: 50 !important;
+}
+
+/* ===== ESCONDER BARRA LATERAL DA MOLDURA, MAS MANTER ROLAGEM ===== */
+
+.Fame_content {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Edge antigo */
+}
+
+.Fame_content::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+
 
 	  
 </style>
@@ -8111,17 +8128,27 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
                 </div>
 
                 <div class="PRIMEIRAPAG_Login_form_group">
-                    <label for="PRIMEIRAPAG_Login_input_password">Senha</label>
-                    <input
-    type="password"
-    id="PRIMEIRAPAG_Login_input_password"
-    placeholder="••••••••"
-    autocomplete="current-password"
-    autocapitalize="none"
-    autocorrect="off"
->
-                    <button type="button" class="PRIMEIRAPAG_Login_eye_btn" onclick="PRIMEIRAPAG_Login_func_togglePass('PRIMEIRAPAG_Login_input_password')">👁️</button>
-                </div>
+					<label for="PRIMEIRAPAG_Login_input_password">Senha</label>
+
+					<div class="PRIMEIRAPAG_Login_password_wrap">
+						<input
+							type="password"
+							id="PRIMEIRAPAG_Login_input_password"
+							placeholder="••••••••"
+							autocomplete="current-password"
+							autocapitalize="none"
+							autocorrect="off"
+						>
+
+						<button
+							type="button"
+							class="PRIMEIRAPAG_Login_eye_btn"
+							onclick="PRIMEIRAPAG_Login_func_togglePass('PRIMEIRAPAG_Login_input_password')"
+						>
+							👁️
+						</button>
+					</div>
+				</div>
 
                 <div class="PRIMEIRAPAG_Login_link_row">
                     <span class="PRIMEIRAPAG_Login_small_link" onclick="PRIMEIRAPAG_Login_func_esqueciSenha()">Esqueci minha senha</span>
@@ -8460,16 +8487,50 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
     </div>
 
     <div class="PRIMEIRAPAG_Login_form_group">
-        <label for="SEGUNDAPAG_Login_rapido_senha">Senha</label>
-        <input type="password" id="SEGUNDAPAG_Login_rapido_senha" placeholder="••••••••">
-        <button type="button" class="PRIMEIRAPAG_Login_eye_btn" onclick="PRIMEIRAPAG_Login_func_togglePass('SEGUNDAPAG_Login_rapido_senha')">👁️</button>
-    </div>
+    <label for="SEGUNDAPAG_Login_rapido_senha">Senha</label>
 
-    <div class="PRIMEIRAPAG_Login_form_group">
-        <label for="SEGUNDAPAG_Login_rapido_confirmar_senha">Confirmar senha</label>
-        <input type="password" id="SEGUNDAPAG_Login_rapido_confirmar_senha" placeholder="••••••••">
-        <button type="button" class="PRIMEIRAPAG_Login_eye_btn" onclick="PRIMEIRAPAG_Login_func_togglePass('SEGUNDAPAG_Login_rapido_confirmar_senha')">👁️</button>
-    </div>
+		<div class="PRIMEIRAPAG_Login_password_wrap">
+			<input
+				type="password"
+				id="SEGUNDAPAG_Login_rapido_senha"
+				placeholder="••••••••"
+				autocomplete="new-password"
+				autocapitalize="none"
+				autocorrect="off"
+			>
+
+			<button
+				type="button"
+				class="PRIMEIRAPAG_Login_eye_btn"
+				onclick="PRIMEIRAPAG_Login_func_togglePass('SEGUNDAPAG_Login_rapido_senha')"
+			>
+				👁️
+			</button>
+		</div>
+	</div>
+
+	<div class="PRIMEIRAPAG_Login_form_group">
+		<label for="SEGUNDAPAG_Login_rapido_confirmar_senha">Confirmar senha</label>
+
+		<div class="PRIMEIRAPAG_Login_password_wrap">
+			<input
+				type="password"
+				id="SEGUNDAPAG_Login_rapido_confirmar_senha"
+				placeholder="••••••••"
+				autocomplete="new-password"
+				autocapitalize="none"
+				autocorrect="off"
+			>
+
+			<button
+				type="button"
+				class="PRIMEIRAPAG_Login_eye_btn"
+				onclick="PRIMEIRAPAG_Login_func_togglePass('SEGUNDAPAG_Login_rapido_confirmar_senha')"
+			>
+				👁️
+			</button>
+		</div>
+	</div>
 
     <div class="PRIMEIRAPAG_Login_aviso_analise">
         Use no mínimo 6 caracteres, com letra maiúscula, minúscula e número.
