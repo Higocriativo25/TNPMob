@@ -8089,7 +8089,100 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
     height: 0 !important;
     display: none !important;
 }
+/* ===== ESCONDER BARRA DO PAINEL DA HOME DO PASSAGEIRO ===== */
 
+.PASSAGEIROPAG_Login_painel_chamada {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Edge antigo */
+}
+
+.PASSAGEIROPAG_Login_painel_chamada::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+/* ===== ESCONDER BARRA DOS PAINÉIS DAS HOMES ===== */
+
+.PASSAGEIROPAG_Login_painel_chamada,
+.MOTORISTAPAG_Login_painel_home {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.PASSAGEIROPAG_Login_painel_chamada::-webkit-scrollbar,
+.MOTORISTAPAG_Login_painel_home::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+/* ===== ESCONDER BARRA LATERAL - CENTRAL DE AJUDA PASSAGEIRO ===== */
+
+#PASSAGEIROPAG_Login_screen_ajuda,
+#PASSAGEIROPAG_Login_ajuda_conteudo {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Edge antigo */
+}
+
+#PASSAGEIROPAG_Login_screen_ajuda::-webkit-scrollbar,
+#PASSAGEIROPAG_Login_ajuda_conteudo::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+
+/* ===== ESCONDER BARRA LATERAL - CENTRAIS DE AJUDA ===== */
+
+#PASSAGEIROPAG_Login_screen_ajuda,
+#PASSAGEIROPAG_Login_ajuda_conteudo,
+#MOTORISTAPAG_Login_screen_ajuda,
+#MOTORISTAPAG_Login_ajuda_conteudo,
+.MOTORISTAPAG_Login_modal_ajuda_box {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+#PASSAGEIROPAG_Login_screen_ajuda::-webkit-scrollbar,
+#PASSAGEIROPAG_Login_ajuda_conteudo::-webkit-scrollbar,
+#MOTORISTAPAG_Login_screen_ajuda::-webkit-scrollbar,
+#MOTORISTAPAG_Login_ajuda_conteudo::-webkit-scrollbar,
+.MOTORISTAPAG_Login_modal_ajuda_box::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
+/* ===== ESCONDER BARRA LATERAL - CENTRAL DE AJUDA ===== */
+
+#PASSAGEIROPAG_Login_screen_ajuda,
+#PASSAGEIROPAG_Login_ajuda_conteudo,
+#MOTORISTAPAG_Login_screen_ajuda,
+#MOTORISTAPAG_Login_ajuda_conteudo,
+.MOTORISTAPAG_Login_modal_ajuda_box,
+.PASSAGEIROPAG_Login_modal_ajuda_box {
+    overflow-y: auto !important;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Edge antigo */
+}
+
+#PASSAGEIROPAG_Login_screen_ajuda::-webkit-scrollbar,
+#PASSAGEIROPAG_Login_ajuda_conteudo::-webkit-scrollbar,
+#MOTORISTAPAG_Login_screen_ajuda::-webkit-scrollbar,
+#MOTORISTAPAG_Login_ajuda_conteudo::-webkit-scrollbar,
+.MOTORISTAPAG_Login_modal_ajuda_box::-webkit-scrollbar,
+.PASSAGEIROPAG_Login_modal_ajuda_box::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none !important;
+}
 
 
 	  
@@ -10150,7 +10243,6 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
 <div id="MOTORISTAPAG_Login_screen_andamento_cadastro" class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_screen_andamento_cadastro">
 
     <div class="MOTORISTAPAG_Login_andamento_topo">
-        <div class="MOTORISTAPAG_Login_andamento_icone">🚗</div>
         <h2>Andamento do Cadastro</h2>
     </div>
 
@@ -14438,20 +14530,30 @@ function PRIMEIRAPAG_Login_func_irPara(telaId) {
         return;
     }
 
-    const PRIMEIRAPAG_Login_headerTopo =
-        document.getElementById('PRIMEIRAPAG_Login_header_topo');
+    const PRIMEIRAPAG_Login_telasSemLogo = [
+    'PASSAGEIROPAG_Login_screen_home',
+    'MOTORISTAPAG_Login_screen_home'
+	];
 
-    if (PRIMEIRAPAG_Login_headerTopo) {
-        const PRIMEIRAPAG_Login_telasSemTopo = [
-            'PASSAGEIROPAG_Login_screen_home',
-            'MOTORISTAPAG_Login_screen_home'
-        ];
+	const PRIMEIRAPAG_Login_headerTopo =
+		document.getElementById('PRIMEIRAPAG_Login_header_topo');
 
-        PRIMEIRAPAG_Login_headerTopo.style.display =
-            PRIMEIRAPAG_Login_telasSemTopo.includes(telaId)
-                ? 'none'
-                : 'block';
-    }
+	if (PRIMEIRAPAG_Login_headerTopo) {
+		PRIMEIRAPAG_Login_headerTopo.style.display =
+			PRIMEIRAPAG_Login_telasSemLogo.includes(telaId)
+				? 'none'
+				: 'block';
+	}
+
+	const PRIMEIRAPAG_Login_logoArea =
+		document.querySelector('.PRIMEIRAPAG_Login_logo_area');
+
+	if (PRIMEIRAPAG_Login_logoArea) {
+		PRIMEIRAPAG_Login_logoArea.style.display =
+			PRIMEIRAPAG_Login_telasSemLogo.includes(telaId)
+				? 'none'
+				: 'flex';
+	}
 
     document.querySelectorAll('.PRIMEIRAPAG_Login_screen').forEach(s => {
         s.classList.remove('active');
