@@ -181,17 +181,27 @@
             background-color: rgba(239, 68, 68, 0.05);
         }
 		
+		/* O olho da senha fica fixo dentro do campo */
 		.PRIMEIRAPAG_Login_eye_btn {
-            position: absolute;
-            right: 10px;
-            top: 32px;
-            background: none;
-            border: none;
-            color: var(--Fame_muted);
-            cursor: pointer;
-            font-size: 1.2rem;
-            z-index: 10;
-        }
+			position: absolute !important;
+			right: 10px !important;
+			top: 32px !important;
+
+			background: none !important;
+			border: none !important;
+			color: var(--Fame_muted) !important;
+
+			cursor: pointer !important;
+			font-size: 1.2rem !important;
+			z-index: 1000 !important;
+
+			width: auto !important;
+			height: auto !important;
+			padding: 0 !important;
+			margin: 0 !important;
+
+			transform: none !important;
+		}
 		
 		
 /* ==================================================
@@ -7956,35 +7966,114 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
    LOGO DA TNP 
 ================================ */
 
-.PRIMEIRAPAG_Login_header {
-    margin-bottom: 220px; /* Puxa os campos para cima, diminuindo o espaço depois da logo */
-}
+/* ===== LOGO TNP MOB - AJUSTE SEGURO ===== */
 
 .PRIMEIRAPAG_Login_logo_area {
-    width: 100%; /* Ocupa toda a largura disponível */
-    display: flex; /* Ativa alinhamento flexível */
-    justify-content: center; /* Centraliza a logo na horizontal */
-    align-items: center; /* Centraliza a logo na vertical */
+    width: 100%;
+    height: auto;
 
-    margin-top: -120px; /* Sobe a logo */
-    margin-bottom: -250px; /* Remove espaço abaixo da logo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 8px;
+    margin-bottom: 24px;
+
+    position: relative;
+    z-index: 1;
+
+    pointer-events: none;
 }
 
 .PRIMEIRAPAG_Login_logo_img {
-    width: 320px; /* Tamanho da logo */
-    max-width: 95%; /* Impede passar da largura do card */
-    height: auto; /* Mantém a proporção original */
-    object-fit: contain; /* Mantém a logo inteira sem deformar */
-    display: block; /* Remove espaço extra de imagem */
+    width: 300px;
+    max-width: 88%;
+    height: auto;
 
-    transform: translateX(18px); /* Move a logo um pouco para a direita */
+    object-fit: contain;
+    display: block;
+
+    transform: none;
+
+    pointer-events: none;
 }
 
+/* Botões principais continuam clicáveis por cima */
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn,
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_primary,
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_secondary,
+.PRIMEIRAPAG_Login_tipo_cards {
+    position: relative;
+    z-index: 5;
+}
 
+/* Olho da senha no lugar certo */
+.PRIMEIRAPAG_Login_eye_btn {
+    position: absolute !important;
+    right: 10px !important;
+    top: 32px !important;
+
+    background: none !important;
+    border: none !important;
+    color: var(--Fame_muted) !important;
+
+    cursor: pointer !important;
+    font-size: 1.2rem !important;
+    z-index: 10 !important;
+
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    transform: none !important;
+}
+
+.PRIMEIRAPAG_Login_logo_img {
+    outline: 1px solid blue !important;
+}
 
 /* ================================
    LOGO DA TNP FINAL
 ================================ */
+
+/* ===== JOGAR LOGO PARA TRÁS SEM MUDAR TAMANHO ===== */
+
+.PRIMEIRAPAG_Login_logo_area {
+    position: relative !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+.PRIMEIRAPAG_Login_logo_img {
+    position: relative !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+.PRIMEIRAPAG_Login_screen {
+    position: relative !important;
+    z-index: 5 !important;
+}
+
+/* ===== BOTÕES PRINCIPAIS NA FRENTE DA LOGO, SEM MEXER NO OLHO DA SENHA ===== */
+
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn,
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_primary,
+.PRIMEIRAPAG_Login_screen .PRIMEIRAPAG_Login_btn_secondary,
+.PRIMEIRAPAG_Login_tipo_cards {
+    position: relative !important;
+    z-index: 999 !important;
+}
+
+/* O olho da senha não pode virar relative */
+.PRIMEIRAPAG_Login_eye_btn {
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 1000 !important;
+}
 
 	  
 </style>
@@ -7997,7 +8086,7 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
 
             <div class="PRIMEIRAPAG_Login_logo_area">
 			<img
-				src="./logo-tnp-mob-mais-letra.svg"
+				src="./logo-tnp-mob-mais2-letra.svg"
 				alt="TNP MoB"
 				class="PRIMEIRAPAG_Login_logo_img"
 			>
