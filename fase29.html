@@ -8184,6 +8184,64 @@ body.TNP_TEMA_CLARO .MOTORISTAPAG_Login_pix_acoes button:last-child {
     display: none !important;
 }
 
+#MOTORISTAPAG_Login_modal_perfil_motorista .MOTORISTAPAG_Login_perfil_box {
+    overflow-y: auto;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge antigo */
+}
+
+#MOTORISTAPAG_Login_modal_perfil_motorista .MOTORISTAPAG_Login_perfil_box::-webkit-scrollbar {
+    display: none;              /* Chrome, Edge, Safari */
+}
+
+Se quiser aplicar direto no box que aparece no DevTools, pode usar também:
+
+.MOTORISTAPAG_Login_modal_home_box.MOTORISTAPAG_Login_perfil_box {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.MOTORISTAPAG_Login_modal_home_box.MOTORISTAPAG_Login_perfil_box::-webkit-scrollbar {
+    display: none;
+}
+
+* TIRA A BARRA LATERAL DOS MODAIS DA HOME MOTORISTA,
+   MAS MANTÉM A ROLAGEM FUNCIONANDO */
+.MOTORISTAPAG_Login_modal_home_box {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.MOTORISTAPAG_Login_modal_home_box::-webkit-scrollbar {
+    display: none;
+}
+
+/* TIRA A BARRA LATERAL DA CENTRAL DE SEGURANÇA,
+   MAS MANTÉM A ROLAGEM FUNCIONANDO */
+#MOTORISTAPAG_Login_screen_central_seguranca {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#MOTORISTAPAG_Login_screen_central_seguranca::-webkit-scrollbar {
+    display: none;
+}
+
+/* TIRA A BARRA LATERAL DE TODOS OS MODAIS DA HOME MOTORISTA */
+.MOTORISTAPAG_Login_modal_home {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.MOTORISTAPAG_Login_modal_home::-webkit-scrollbar {
+    display: none;
+}
 
 	  
 </style>
@@ -20883,6 +20941,7 @@ return false;
 //-- CARD DE AVISO 1 PASSAGEIRO --> 
 
 }
+
 function PASSAGEIROPAG_Login_func_fecharCardVerificacao() {
     const card = document.getElementById('PASSAGEIROPAG_Login_card_verificacao');
 
@@ -21801,14 +21860,14 @@ let PASSAGEIROPAG_Login_segAcaoEmAndamento = false;
 let PASSAGEIROPAG_Login_segTimerCronometro = null;
 let PASSAGEIROPAG_Login_segInicioGravacaoMs = 0;
 
-const PASSAGEIROPAG_Login_segLimiteAudioMs = 10 * 60 * 1000; // 10 minutos
-const PASSAGEIROPAG_Login_segLimiteVideoMs = 3 * 60 * 1000;  // 3 minutos
+const PASSAGEIROPAG_Login_segLimiteAudioMs = 60 * 1000; // 60 segundos
+const PASSAGEIROPAG_Login_segLimiteVideoMs = 40 * 1000; // 40 segundos
 
 function PASSAGEIROPAG_Login_func_carregarCentralSeguranca() {
     const tela = document.getElementById("PASSAGEIROPAG_Login_screen_central_seguranca");
 
     if (!tela) {
-        alert("Tela Central de Segurança não encontrada no HTML.");
+        alert("Tela Central de Segurança do passageiro não encontrada no HTML.");
         return;
     }
 
@@ -21816,14 +21875,18 @@ function PASSAGEIROPAG_Login_func_carregarCentralSeguranca() {
         PASSAGEIROPAG_Login_func_fecharMenuLateral();
     }
 
-    if (typeof PRIMEIRAPAG_Login_func_irPara === "function") {
-        PRIMEIRAPAG_Login_func_irPara("PASSAGEIROPAG_Login_screen_central_seguranca");
-    } else {
-        document.querySelectorAll(".PRIMEIRAPAG_Login_screen").forEach(function (screen) {
-            screen.classList.remove("active");
-        });
+    document.querySelectorAll(".PRIMEIRAPAG_Login_screen").forEach(function(screen) {
+        screen.classList.remove("active");
+    });
 
-        tela.classList.add("active");
+    tela.classList.add("active");
+    tela.style.display = "flex";
+
+    const content = document.querySelector(".Fame_content");
+
+    if (content) {
+        content.classList.remove("PASSAGEIROPAG_Login_home_ativa");
+        content.classList.remove("MOTORISTAPAG_Login_home_ativa");
     }
 
     PASSAGEIROPAG_Login_func_limparGravacaoSeguranca();
@@ -21831,6 +21894,8 @@ function PASSAGEIROPAG_Login_func_carregarCentralSeguranca() {
 }
 
 function PASSAGEIROPAG_Login_func_fecharCentralSeguranca() {
+    const tela = document.getElementById("PASSAGEIROPAG_Login_screen_central_seguranca");
+
     if (
         PASSAGEIROPAG_Login_segMediaRecorder &&
         PASSAGEIROPAG_Login_segMediaRecorder.state === "recording"
@@ -21847,17 +21912,33 @@ function PASSAGEIROPAG_Login_func_fecharCentralSeguranca() {
         PASSAGEIROPAG_Login_func_pararStreamSeguranca();
     }
 
+    if (tela) {
+        tela.classList.remove("active");
+        tela.style.display = "none";
+    }
+
+    const home = document.getElementById("PASSAGEIROPAG_Login_screen_home");
+
+    if (home) {
+        document.querySelectorAll(".PRIMEIRAPAG_Login_screen").forEach(function(screen) {
+            screen.classList.remove("active");
+        });
+
+        home.classList.add("active");
+
+        const content = document.querySelector(".Fame_content");
+
+        if (content) {
+            content.classList.add("PASSAGEIROPAG_Login_home_ativa");
+            content.classList.remove("MOTORISTAPAG_Login_home_ativa");
+        }
+
+        return;
+    }
+
     if (typeof PASSAGEIROPAG_Login_func_carregarHomePassageiro === "function") {
         PASSAGEIROPAG_Login_func_carregarHomePassageiro();
-        return;
     }
-
-    if (typeof PASSAGEIROPAG_Login_func_carregarPerfilPassageiro === "function") {
-        PASSAGEIROPAG_Login_func_carregarPerfilPassageiro();
-        return;
-    }
-
-    alert("Central de Segurança fechada. Depois vamos ligar esse retorno na Home do passageiro.");
 }
 
 function PASSAGEIROPAG_Login_func_scrollTopoCentralSeguranca() {
@@ -21872,25 +21953,178 @@ function PASSAGEIROPAG_Login_func_ligarEmergencia190() {
     window.location.href = "tel:190";
 }
 
-function PASSAGEIROPAG_Login_func_falarSuporteSeguranca(tipo) {
-    const user = typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
-        ? PRIMEIRAPAG_Login_auth.currentUser
-        : null;
+function PASSAGEIROPAG_Login_func_gerarProtocoloSuporteSeguranca() {
+    const agora = new Date();
 
-    const emailUsuario = user && user.email ? user.email : "não informado";
-    const uidUsuario = user && user.uid ? user.uid : "não informado";
+    const ano = String(agora.getFullYear()).slice(-2);
+    const mes = String(agora.getMonth() + 1).padStart(2, "0");
+    const dia = String(agora.getDate()).padStart(2, "0");
 
-    const mensagem = encodeURIComponent(
-        "Olá, preciso de ajuda na Central de Segurança do TNP MoB.\n\n" +
-        "Tipo: " + (tipo || "Segurança") + "\n" +
-        "E-mail: " + emailUsuario + "\n" +
-        "UID: " + uidUsuario
+    const codigo = Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase();
+
+    return "TNP-" + ano + mes + dia + "-" + codigo;
+}
+
+async function PASSAGEIROPAG_Login_func_podeAbrirChamadoSeguranca(passageiroUid) {
+    const db =
+        typeof PRIMEIRAPAG_Login_db !== "undefined"
+            ? PRIMEIRAPAG_Login_db
+            : firebase.firestore();
+
+    const statusFechados = [
+        "finalizado",
+        "fechado",
+        "encerrado",
+        "resolvido",
+        "cancelado"
+    ];
+
+    const snap = await db.collection("suporteChamados")
+        .where("passageiroUid", "==", passageiroUid)
+        .get();
+
+    let totalAbertos = 0;
+
+    snap.forEach(function(doc) {
+        const chamado = doc.data() || {};
+
+        const tipoAtendimento = String(chamado.tipoAtendimento || "").toLowerCase().trim();
+        const status = String(chamado.status || "").toLowerCase().trim();
+
+        if (
+            tipoAtendimento === "seguranca" &&
+            statusFechados.indexOf(status) === -1
+        ) {
+            totalAbertos++;
+        }
+    });
+
+    if (totalAbertos >= 3) {
+        alert(
+            "Você já possui 3 chamados de segurança em aberto.\n\n" +
+            "Aguarde o suporte finalizar um atendimento antes de abrir outro."
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+async function PASSAGEIROPAG_Login_func_falarSuporteSeguranca(tipo) {
+    if (PASSAGEIROPAG_Login_segAcaoEmAndamento) return;
+
+    const user =
+        typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
+            ? PRIMEIRAPAG_Login_auth.currentUser
+            : firebase.auth().currentUser;
+
+    if (!user) {
+        alert("Você precisa estar logado para falar com o suporte.");
+        return;
+    }
+
+    const confirmar = confirm(
+        "Deseja abrir um chamado com o suporte TNP MoB?\n\n" +
+        "Sua solicitação será enviada para a Central de Ajuda dentro do aplicativo."
     );
 
-    window.open(
-        "https://wa.me/" + PASSAGEIROPAG_Login_segWhatsappSuporte + "?text=" + mensagem,
-        "_blank"
-    );
+    if (!confirmar) return;
+
+	const podeAbrirChamado = await PASSAGEIROPAG_Login_func_podeAbrirChamadoSeguranca(user.uid);
+
+	if (!podeAbrirChamado) return;
+
+	PASSAGEIROPAG_Login_segAcaoEmAndamento = true;
+
+    try {
+        const db =
+            typeof PRIMEIRAPAG_Login_db !== "undefined"
+                ? PRIMEIRAPAG_Login_db
+                : firebase.firestore();
+
+        const chamadoRef = db.collection("suporteChamados").doc();
+        const protocolo = PASSAGEIROPAG_Login_func_gerarProtocoloSuporteSeguranca();
+
+        const tipoAtendimento = tipo || "Segurança";
+
+        const textoCurto =
+            "Pedido de ajuda aberto pela Central de Segurança do passageiro.\n\n" +
+            "Tipo: " + tipoAtendimento;
+
+        await chamadoRef.set({
+            protocolo: protocolo,
+
+            origem: "passageiro",
+            origemPerfil: "passageiro",
+            destinoPerfil: "suporte",
+
+            categoria: "suporte_passageiro",
+            tipo: "chat_suporte_passageiro",
+            tipoAtendimento: "seguranca",
+            titulo: "Pedido de ajuda - Central de Segurança",
+
+            status: "em_atendimento",
+            suporteMediando: true,
+            chatDiretoLiberado: false,
+
+            passageiroUid: user.uid,
+            passageiroEmail: user.email || "",
+
+            ultimaMensagem: textoCurto,
+            ultimaMensagemTexto: textoCurto,
+            ultimaMensagemOrigem: "passageiro",
+            ultimaMensagemDestino: "suporte",
+
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await chamadoRef.collection("mensagens").add({
+            origem: "passageiro",
+            origemReal: "passageiro",
+            origemUid: user.uid,
+            exibidoComo: "Passageiro",
+
+            destinoReal: "suporte",
+            encaminhadoPara: "suporte",
+
+            tipo: "texto",
+            categoria: "seguranca",
+
+            texto: textoCurto,
+            textoOriginal: textoCurto,
+            textoExibido: textoCurto,
+
+            visivelParaMotorista: false,
+            visivelParaPassageiro: true,
+            visivelParaSuporte: true,
+
+            visibilidades: {
+                motorista: false,
+                passageiro: true,
+                suporte: true
+            },
+
+            lidaAdmin: false,
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert(
+            "Chamado enviado ao suporte TNP MoB.\n\n" +
+            "Protocolo: " + protocolo
+        );
+
+    } catch (erro) {
+        console.error("Erro ao abrir chamado de segurança:", erro);
+        alert("Não foi possível abrir o chamado no suporte. Tente novamente.");
+
+    } finally {
+        PASSAGEIROPAG_Login_segAcaoEmAndamento = false;
+    }
 }
 
 function PASSAGEIROPAG_Login_func_compartilharViagemSeguranca() {
@@ -22299,10 +22533,19 @@ function PASSAGEIROPAG_Login_func_criarArquivoCompartilhamentoSeguranca() {
         );
     }
 
+    // FOTO: mantém imagem original
+    if (tipoAtual === "foto") {
+        return new File(
+            [PASSAGEIROPAG_Login_segArquivoBlobAtual],
+            PASSAGEIROPAG_Login_segArquivoNomeAtual || "tnp-mob-seguranca-foto-" + dataAgora + ".jpg",
+            { type: PASSAGEIROPAG_Login_segArquivoBlobAtual.type || "image/jpeg" }
+        );
+    }
+
     // VÍDEO: mantém o formato original
     return new File(
         [PASSAGEIROPAG_Login_segArquivoBlobAtual],
-        PASSAGEIROPAG_Login_segArquivoNomeAtual || "tnp-mob-gravacao-seguranca.webm",
+        PASSAGEIROPAG_Login_segArquivoNomeAtual || "tnp-mob-seguranca-video-" + dataAgora + ".webm",
         { type: PASSAGEIROPAG_Login_segArquivoBlobAtual.type || "video/webm" }
     );
 }
@@ -22327,8 +22570,8 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSeguranca() {
 
         if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
             await navigator.share({
-                title: "Gravação de segurança TNP MoB",
-                text: "Gravação de segurança feita por mim no TNP MoB.",
+                title: "Arquivo de segurança TNP MoB",
+				text: "Arquivo de segurança feito por mim no TNP MoB.",
                 files: [arquivo]
             });
 
@@ -22336,17 +22579,17 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSeguranca() {
         }
 
         alert(
-            "Seu navegador não permite compartilhar esse arquivo diretamente.\n\n" +
-            "Toque em BAIXAR GRAVAÇÃO e depois envie manualmente pelo WhatsApp."
-        );
+		"Seu navegador não permite compartilhar esse arquivo diretamente.\n\n" +
+		"Toque em BAIXAR ARQUIVO e depois envie manualmente para quem precisar."
+	);
 
     } catch (erro) {
         console.warn("Compartilhamento não concluído:", erro);
 
         alert(
-            "Não foi possível compartilhar direto.\n\n" +
-            "Use a opção BAIXAR GRAVAÇÃO e envie manualmente pelo WhatsApp."
-        );
+		"Não foi possível compartilhar direto.\n\n" +
+		"Use a opção BAIXAR ARQUIVO e envie manualmente para quem precisar."
+	);
 
     } finally {
         PASSAGEIROPAG_Login_segAcaoEmAndamento = false;
@@ -22357,7 +22600,7 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
     if (PASSAGEIROPAG_Login_segAcaoEmAndamento) return;
 
     if (!PASSAGEIROPAG_Login_segArquivoBlobAtual) {
-        alert("Nenhuma gravação disponível para enviar ao suporte.");
+        alert("Nenhum arquivo de segurança disponível para enviar ao suporte.");
         return;
     }
 
@@ -22372,13 +22615,17 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
     }
 
     const confirmar = confirm(
-        "Deseja enviar esta gravação para o suporte TNP MoB?\n\n" +
-        "Uma cópia será salva com segurança no sistema e um chamado será aberto na Central de Ajuda."
-    );
+		"Deseja enviar este arquivo para o suporte TNP MoB?\n\n" +
+		"Uma cópia será salva com segurança no sistema e um chamado será aberto na Central de Ajuda."
+	);
 
     if (!confirmar) return;
 
-    PASSAGEIROPAG_Login_segAcaoEmAndamento = true;
+	const podeAbrirChamado = await PASSAGEIROPAG_Login_func_podeAbrirChamadoSeguranca(user.uid);
+
+	if (!podeAbrirChamado) return;
+
+	PASSAGEIROPAG_Login_segAcaoEmAndamento = true;
 
     const btnSuporte = document.getElementById("PASSAGEIROPAG_Login_seg_btn_compartilhar_suporte");
 
@@ -22401,7 +22648,7 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
         const arquivo = PASSAGEIROPAG_Login_func_criarArquivoCompartilhamentoSeguranca();
 
         if (!arquivo) {
-            alert("Não foi possível preparar a gravação para envio.");
+            alert("Não foi possível preparar o arquivo para envio.");
             return;
         }
 
@@ -22431,10 +22678,16 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
         const arquivoUrl = await arquivoRef.getDownloadURL();
 
         const chamadoRef = db.collection("suporteChamados").doc();
+		const protocolo = PASSAGEIROPAG_Login_func_gerarProtocoloSuporteSeguranca();
 
-        const textoCurto = "Gravação de segurança enviada pelo passageiro.";
+        const textoCurto = tipoArquivo === "foto"
+			? "Foto de segurança enviada pelo passageiro."
+			: tipoArquivo === "video"
+				? "Vídeo de segurança enviado pelo passageiro."
+				: "Áudio de segurança enviado pelo passageiro.";
 
         await chamadoRef.set({
+			protocolo: protocolo,
             origem: "passageiro",
             origemPerfil: "passageiro",
             destinoPerfil: "suporte",
@@ -22442,7 +22695,11 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
             categoria: "suporte_passageiro",
             tipo: "chat_suporte_passageiro",
             tipoAtendimento: "seguranca",
-            titulo: "Gravação de segurança do passageiro",
+            titulo: tipoArquivo === "foto"
+			? "Foto de segurança do passageiro"
+			: tipoArquivo === "video"
+				? "Vídeo de segurança do passageiro"
+				: "Áudio de segurança do passageiro",
 
             status: "em_atendimento",
             suporteMediando: true,
@@ -22504,20 +22761,15 @@ async function PASSAGEIROPAG_Login_func_compartilharArquivoSuporteSeguranca() {
             criadoEm: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        const mensagemWhatsapp = encodeURIComponent(
-            "Olá, preciso de ajuda na Central de Segurança do Passageiro TNP MoB.\n\n" +
-            "Enviei uma gravação de segurança para análise.\n\n" +
-            "UID: " + user.uid + "\n" +
-            "E-mail: " + (user.email || "não informado") + "\n" +
-            "Chamado: " + chamadoRef.id
-        );
-
-        window.open(
-            "https://wa.me/" + PASSAGEIROPAG_Login_segWhatsappSuporte + "?text=" + mensagemWhatsapp,
-            "_blank"
-        );
-
-        alert("Gravação enviada ao suporte e chamado criado na Central de Ajuda.");
+		alert(
+			(tipoArquivo === "foto"
+				? "Foto enviada ao suporte"
+				: tipoArquivo === "video"
+					? "Vídeo enviado ao suporte"
+					: "Áudio enviado ao suporte") +
+			" e chamado criado na Central de Ajuda.\n\n" +
+			"Protocolo: " + protocolo
+		);
 
     } catch (erro) {
         console.error("Erro ao compartilhar gravação do passageiro com suporte:", erro);
@@ -22554,11 +22806,92 @@ function PASSAGEIROPAG_Login_func_descartarArquivoSeguranca() {
 function PASSAGEIROPAG_Login_func_fotoSegurancaSelecionada(input) {
     if (!input || !input.files || !input.files[0]) return;
 
-    alert(
-        "Foto selecionada/registrada.\n\n" +
-        "Ela não foi enviada automaticamente ao TNP MoB.\n" +
-        "Se precisar, compartilhe por sua conta com o suporte ou guarde no aparelho."
-    );
+    const arquivoOriginal = input.files[0];
+
+    if (!arquivoOriginal.type || arquivoOriginal.type.indexOf("image/") !== 0) {
+        alert("Selecione uma foto válida.");
+        input.value = "";
+        return;
+    }
+
+    const box = document.getElementById("PASSAGEIROPAG_Login_seg_gravacao_box");
+    const status = document.getElementById("PASSAGEIROPAG_Login_seg_gravacao_status");
+    const titulo = document.getElementById("PASSAGEIROPAG_Login_seg_gravacao_titulo");
+    const btnParar = document.getElementById("PASSAGEIROPAG_Login_seg_btn_parar_gravacao");
+    const audioPreview = document.getElementById("PASSAGEIROPAG_Login_seg_audio_preview");
+    const videoPreview = document.getElementById("PASSAGEIROPAG_Login_seg_video_preview");
+    const videoResultado = document.getElementById("PASSAGEIROPAG_Login_seg_video_resultado");
+    const acoesArquivo = document.getElementById("PASSAGEIROPAG_Login_seg_acoes_arquivo");
+
+    const dataAgora = new Date().toISOString().replace(/[:.]/g, "-");
+    const extensao = arquivoOriginal.name && arquivoOriginal.name.indexOf(".") > -1
+        ? arquivoOriginal.name.split(".").pop().toLowerCase()
+        : "jpg";
+
+    const nomeFotoSeguro =
+        "tnp-mob-seguranca-foto-" + dataAgora + "." + extensao;
+
+    PASSAGEIROPAG_Login_func_pararStreamSeguranca();
+
+    clearTimeout(PASSAGEIROPAG_Login_segTimerLimite);
+    PASSAGEIROPAG_Login_segTimerLimite = null;
+
+    PASSAGEIROPAG_Login_func_pararCronometroSeguranca();
+    PASSAGEIROPAG_Login_segInicioGravacaoMs = 0;
+
+    if (PASSAGEIROPAG_Login_segArquivoUrlAtual) {
+        URL.revokeObjectURL(PASSAGEIROPAG_Login_segArquivoUrlAtual);
+    }
+
+    PASSAGEIROPAG_Login_segMediaRecorder = null;
+    PASSAGEIROPAG_Login_segMidiaChunks = [];
+
+    // AQUI É O PONTO QUE TINHA SUMIDO
+    PASSAGEIROPAG_Login_segTipoGravacao = "foto";
+    PASSAGEIROPAG_Login_segArquivoBlobAtual = arquivoOriginal;
+    PASSAGEIROPAG_Login_segArquivoUrlAtual = URL.createObjectURL(arquivoOriginal);
+    PASSAGEIROPAG_Login_segArquivoNomeAtual = nomeFotoSeguro;
+
+    if (box) {
+        box.style.display = "block";
+    }
+
+    if (titulo) {
+        titulo.innerText = "📸 Foto de segurança pronta";
+    }
+
+    if (status) {
+        status.innerText =
+            "Foto selecionada com sucesso. " +
+            "Agora toque em COMPARTILHAR COM SUPORTE TNP MoB para enviar a foto e abrir o chamado.";
+    }
+
+    if (btnParar) {
+        btnParar.disabled = false;
+        btnParar.innerText = "Parar gravação";
+        btnParar.style.display = "none";
+    }
+
+    if (audioPreview) {
+        audioPreview.removeAttribute("src");
+        audioPreview.style.display = "none";
+    }
+
+    if (videoPreview) {
+        videoPreview.srcObject = null;
+        videoPreview.style.display = "none";
+    }
+
+    if (videoResultado) {
+        videoResultado.removeAttribute("src");
+        videoResultado.style.display = "none";
+    }
+
+    if (acoesArquivo) {
+        acoesArquivo.style.display = "grid";
+    }
+
+    PASSAGEIROPAG_Login_func_centralizarBoxGravacaoSeguranca();
 
     input.value = "";
 }
@@ -27814,8 +28147,7 @@ async function MOTORISTAPAG_Login_func_salvarEnderecoCadastroMotorista() {
 	const payloadBaseUsuarioEnderecoMotorista = {
 		endereco: endereco,
 		enderecoFormatado: enderecoFormatado,
-		enderecoConcluido: true,
-
+		
 		etapaCadastroMotorista: 'contato_emergencia_motorista',
 
 		motoristaStatus: statusGeralMotorista,
@@ -28136,8 +28468,7 @@ async function MOTORISTAPAG_Login_func_salvarContatoEmergenciaMotoristatop() {
 
         const payloadBaseUsuarioContatoMotorista = {
             contatoEmergencia: contatoPrincipal,
-            contatoEmergenciaConcluido: true,
-
+            
             etapaCadastroMotorista: 'pix_motorista',
 
             motoristaStatus: statusGeralMotorista,
@@ -28161,24 +28492,13 @@ async function MOTORISTAPAG_Login_func_salvarContatoEmergenciaMotoristatop() {
 		};
 
 		if (MOTORISTAPAG_Login_veioDePassageiroTornouMotoristaContato) {
-		const MOTORISTAPAG_Login_proximaEtapaPassageiroContato =
-			MOTORISTAPAG_Login_etapaPassageiroPreservadaContato === "contato_emergencia"
-				? "revisao_final"
-				: MOTORISTAPAG_Login_etapaPassageiroPreservadaContato;
+			payloadUsuarioContatoMotorista.etapaCadastro =
+				MOTORISTAPAG_Login_etapaPassageiroPreservadaContato;
 
-		payloadUsuarioContatoMotorista.etapaCadastro =
-			MOTORISTAPAG_Login_proximaEtapaPassageiroContato;
-
-		payloadUsuarioContatoMotorista.statusCadastroPassageiro = {
-			...(usuarioAtualContatoMotorista.statusCadastroPassageiro || {}),
-			contatoEmergencia: "concluido"
-		};
-
-	} else {
-		payloadUsuarioContatoMotorista.etapaCadastro = 'motorista_pix';
-		payloadUsuarioContatoMotorista.status = statusMotoristaContato;
-	}
-
+		} else {
+			payloadUsuarioContatoMotorista.etapaCadastro = 'motorista_pix';
+			payloadUsuarioContatoMotorista.status = statusMotoristaContato;
+		}
         await usuarioRefContatoMotorista.set(payloadUsuarioContatoMotorista, { merge: true });
 
         if (btn) {
@@ -30564,8 +30884,8 @@ let MOTORISTAPAG_Login_segTimerLimite = null;
 let MOTORISTAPAG_Login_segTimerCronometro = null;
 let MOTORISTAPAG_Login_segInicioGravacaoMs = 0;
 
-const MOTORISTAPAG_Login_segLimiteAudioMs = 10 * 60 * 1000;
-const MOTORISTAPAG_Login_segLimiteVideoMs = 3 * 60 * 1000;
+const MOTORISTAPAG_Login_segLimiteAudioMs = 60 * 1000; // 60 segundos
+const MOTORISTAPAG_Login_segLimiteVideoMs = 40 * 1000; // 40 segundos
 
 function MOTORISTAPAG_Login_func_carregarCentralSeguranca() {
     const tela = document.getElementById("MOTORISTAPAG_Login_screen_central_seguranca");
@@ -30579,12 +30899,12 @@ function MOTORISTAPAG_Login_func_carregarCentralSeguranca() {
         MOTORISTAPAG_Login_func_fecharMenuLateral();
     }
 
-   if (typeof MOTORISTAPAG_Login_func_fecharModais === "function") {
-		MOTORISTAPAG_Login_func_fecharModais();
-	}
+    if (typeof MOTORISTAPAG_Login_func_fecharModais === "function") {
+        MOTORISTAPAG_Login_func_fecharModais();
+    }
 
-	tela.style.display = "block";
-	tela.classList.add("active");
+    tela.classList.add("active");
+    tela.style.display = "block";
 
     MOTORISTAPAG_Login_func_limparGravacaoSeguranca();
     MOTORISTAPAG_Login_func_scrollTopoCentralSeguranca();
@@ -30627,25 +30947,178 @@ function MOTORISTAPAG_Login_func_ligarEmergencia190() {
     window.location.href = "tel:190";
 }
 
-function MOTORISTAPAG_Login_func_falarSuporteSeguranca(tipo) {
-    const user = typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
-        ? PRIMEIRAPAG_Login_auth.currentUser
-        : null;
+function MOTORISTAPAG_Login_func_gerarProtocoloSuporteSeguranca() {
+    const agora = new Date();
 
-    const emailUsuario = user && user.email ? user.email : "não informado";
-    const uidUsuario = user && user.uid ? user.uid : "não informado";
+    const ano = String(agora.getFullYear()).slice(-2);
+    const mes = String(agora.getMonth() + 1).padStart(2, "0");
+    const dia = String(agora.getDate()).padStart(2, "0");
 
-    const mensagem = encodeURIComponent(
-        "Olá, preciso de ajuda na Central de Segurança do Motorista TNP MoB.\n\n" +
-        "Tipo: " + (tipo || "Segurança do motorista") + "\n" +
-        "E-mail: " + emailUsuario + "\n" +
-        "UID: " + uidUsuario
+    const codigo = Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase();
+
+    return "TNP-" + ano + mes + dia + "-" + codigo;
+}
+
+async function MOTORISTAPAG_Login_func_podeAbrirChamadoSeguranca(motoristaUid) {
+    const db =
+        typeof PRIMEIRAPAG_Login_db !== "undefined"
+            ? PRIMEIRAPAG_Login_db
+            : firebase.firestore();
+
+    const statusFechados = [
+        "finalizado",
+        "fechado",
+        "encerrado",
+        "resolvido",
+        "cancelado"
+    ];
+
+    const snap = await db.collection("suporteChamados")
+        .where("motoristaUid", "==", motoristaUid)
+        .get();
+
+    let totalAbertos = 0;
+
+    snap.forEach(function(doc) {
+        const chamado = doc.data() || {};
+
+        const tipoAtendimento = String(chamado.tipoAtendimento || "").toLowerCase().trim();
+        const status = String(chamado.status || "").toLowerCase().trim();
+
+        if (
+            tipoAtendimento === "seguranca" &&
+            statusFechados.indexOf(status) === -1
+        ) {
+            totalAbertos++;
+        }
+    });
+
+    if (totalAbertos >= 3) {
+        alert(
+            "Você já possui 3 chamados de segurança em aberto.\n\n" +
+            "Aguarde o suporte finalizar um atendimento antes de abrir outro."
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+async function MOTORISTAPAG_Login_func_falarSuporteSeguranca(tipo) {
+    if (MOTORISTAPAG_Login_segAcaoEmAndamento) return;
+
+    const user =
+        typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
+            ? PRIMEIRAPAG_Login_auth.currentUser
+            : firebase.auth().currentUser;
+
+    if (!user) {
+        alert("Você precisa estar logado para falar com o suporte.");
+        return;
+    }
+
+    const confirmar = confirm(
+        "Deseja abrir um chamado com o suporte TNP MoB?\n\n" +
+        "Sua solicitação será enviada para a Central de Ajuda dentro do aplicativo."
     );
 
-    window.open(
-        "https://wa.me/" + MOTORISTAPAG_Login_segWhatsappSuporte + "?text=" + mensagem,
-        "_blank"
-    );
+    if (!confirmar) return;
+
+	const podeAbrirChamado = await MOTORISTAPAG_Login_func_podeAbrirChamadoSeguranca(user.uid);
+
+	if (!podeAbrirChamado) return;
+
+	MOTORISTAPAG_Login_segAcaoEmAndamento = true;
+
+    try {
+        const db =
+            typeof PRIMEIRAPAG_Login_db !== "undefined"
+                ? PRIMEIRAPAG_Login_db
+                : firebase.firestore();
+
+        const chamadoRef = db.collection("suporteChamados").doc();
+        const protocolo = MOTORISTAPAG_Login_func_gerarProtocoloSuporteSeguranca();
+
+        const tipoAtendimento = tipo || "Segurança";
+
+        const textoCurto =
+            "Pedido de ajuda aberto pela Central de Segurança do motorista.\n\n" +
+            "Tipo: " + tipoAtendimento;
+
+        await chamadoRef.set({
+            protocolo: protocolo,
+
+            origem: "motorista",
+            origemPerfil: "motorista",
+            destinoPerfil: "suporte",
+
+            categoria: "suporte_motorista",
+            tipo: "chat_suporte_motorista",
+            tipoAtendimento: "seguranca",
+            titulo: "Pedido de ajuda - Central de Segurança",
+
+            status: "em_atendimento",
+            suporteMediando: true,
+            chatDiretoLiberado: false,
+
+            motoristaUid: user.uid,
+            motoristaEmail: user.email || "",
+
+            ultimaMensagem: textoCurto,
+            ultimaMensagemTexto: textoCurto,
+            ultimaMensagemOrigem: "motorista",
+            ultimaMensagemDestino: "suporte",
+
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp(),
+            atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await chamadoRef.collection("mensagens").add({
+            origem: "motorista",
+            origemReal: "motorista",
+            origemUid: user.uid,
+            exibidoComo: "Motorista",
+
+            destinoReal: "suporte",
+            encaminhadoPara: "suporte",
+
+            tipo: "texto",
+            categoria: "seguranca",
+
+            texto: textoCurto,
+            textoOriginal: textoCurto,
+            textoExibido: textoCurto,
+
+            visivelParaMotorista: true,
+            visivelParaPassageiro: false,
+            visivelParaSuporte: true,
+
+            visibilidades: {
+                motorista: true,
+                passageiro: false,
+                suporte: true
+            },
+
+            lidaAdmin: false,
+            criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        alert(
+            "Chamado enviado ao suporte TNP MoB.\n\n" +
+            "Protocolo: " + protocolo
+        );
+
+    } catch (erro) {
+        console.error("Erro ao abrir chamado de segurança do motorista:", erro);
+        alert("Não foi possível abrir o chamado no suporte. Tente novamente.");
+
+    } finally {
+        MOTORISTAPAG_Login_segAcaoEmAndamento = false;
+    }
 }
 
 function MOTORISTAPAG_Login_func_compartilharViagemSeguranca() {
@@ -31026,13 +31499,13 @@ function MOTORISTAPAG_Login_func_finalizarArquivoSeguranca(tipo) {
 
 function MOTORISTAPAG_Login_func_baixarArquivoSeguranca() {
     if (!MOTORISTAPAG_Login_segArquivoBlobAtual || !MOTORISTAPAG_Login_segArquivoUrlAtual) {
-        alert("Nenhuma gravação disponível para baixar.");
+        alert("Nenhum arquivo de segurança disponível para baixar.");
         return;
     }
 
     const link = document.createElement("a");
     link.href = MOTORISTAPAG_Login_segArquivoUrlAtual;
-    link.download = MOTORISTAPAG_Login_segArquivoNomeAtual || "tnp-mob-motorista-gravacao-seguranca.webm";
+    link.download = MOTORISTAPAG_Login_segArquivoNomeAtual || "tnp-mob-motorista-arquivo-seguranca.webm";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -31054,9 +31527,17 @@ function MOTORISTAPAG_Login_func_criarArquivoCompartilhamentoSeguranca() {
         );
     }
 
+    if (tipoAtual === "foto") {
+        return new File(
+            [MOTORISTAPAG_Login_segArquivoBlobAtual],
+            MOTORISTAPAG_Login_segArquivoNomeAtual || "tnp-mob-motorista-seguranca-foto-" + dataAgora + ".jpg",
+            { type: MOTORISTAPAG_Login_segArquivoBlobAtual.type || "image/jpeg" }
+        );
+    }
+
     return new File(
         [MOTORISTAPAG_Login_segArquivoBlobAtual],
-        MOTORISTAPAG_Login_segArquivoNomeAtual || "tnp-mob-motorista-gravacao-seguranca.webm",
+        MOTORISTAPAG_Login_segArquivoNomeAtual || "tnp-mob-motorista-seguranca-video-" + dataAgora + ".webm",
         { type: MOTORISTAPAG_Login_segArquivoBlobAtual.type || "video/webm" }
     );
 }
@@ -31160,7 +31641,7 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSeguranca() {
     if (MOTORISTAPAG_Login_segAcaoEmAndamento) return;
 
     if (!MOTORISTAPAG_Login_segArquivoBlobAtual) {
-        alert("Nenhuma gravação disponível para compartilhar.");
+        alert("Nenhum arquivo de segurança disponível para compartilhar.");
         return;
     }
 
@@ -31176,8 +31657,8 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSeguranca() {
 
         if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
             await navigator.share({
-                title: "Gravação de segurança TNP MoB",
-                text: "Gravação de segurança feita por mim no TNP MoB.",
+                title: "Arquivo de segurança TNP MoB",
+				text: "Arquivo de segurança feito por mim no TNP MoB.",
                 files: [arquivo]
             });
 
@@ -31185,17 +31666,17 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSeguranca() {
         }
 
         alert(
-            "Seu navegador não permite compartilhar esse arquivo diretamente.\n\n" +
-            "Toque em BAIXAR GRAVAÇÃO e depois envie manualmente pelo WhatsApp."
-        );
+				"Seu navegador não permite compartilhar esse arquivo diretamente.\n\n" +
+				"Toque em BAIXAR ARQUIVO e depois envie manualmente para quem precisar."
+			);
 
     } catch (erro) {
         console.warn("Compartilhamento não concluído:", erro);
 
         alert(
-            "Não foi possível compartilhar direto.\n\n" +
-            "Use a opção BAIXAR GRAVAÇÃO e envie manualmente pelo WhatsApp."
-        );
+				"Não foi possível compartilhar direto.\n\n" +
+				"Use a opção BAIXAR ARQUIVO e envie manualmente para quem precisar."
+			);
 
     } finally {
         MOTORISTAPAG_Login_segAcaoEmAndamento = false;
@@ -31206,13 +31687,14 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
     if (MOTORISTAPAG_Login_segAcaoEmAndamento) return;
 
     if (!MOTORISTAPAG_Login_segArquivoBlobAtual) {
-        alert("Nenhuma gravação disponível para enviar ao suporte.");
+        alert("Nenhum arquivo de segurança disponível para enviar ao suporte.");
         return;
     }
 
-    const user = PRIMEIRAPAG_Login_auth && PRIMEIRAPAG_Login_auth.currentUser
-        ? PRIMEIRAPAG_Login_auth.currentUser
-        : null;
+    const user =
+		typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
+			? PRIMEIRAPAG_Login_auth.currentUser
+			: firebase.auth().currentUser;
 
     if (!user) {
         alert("Você precisa estar logado para compartilhar com o suporte.");
@@ -31220,13 +31702,18 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
     }
 
     const confirmar = confirm(
-        "Deseja enviar esta gravação para o suporte TNP MoB?\n\n" +
-        "Uma cópia será salva com segurança no sistema e um chamado será aberto na Central de Ajuda."
-    );
+		"Deseja enviar este arquivo para o suporte TNP MoB?\n\n" +
+		"Uma cópia será salva com segurança no sistema e um chamado será aberto na Central de Ajuda."
+	);
 
     if (!confirmar) return;
 
-    MOTORISTAPAG_Login_segAcaoEmAndamento = true;
+	const podeAbrirChamado =
+		await MOTORISTAPAG_Login_func_podeAbrirChamadoSeguranca(user.uid);
+
+	if (!podeAbrirChamado) return;
+
+	MOTORISTAPAG_Login_segAcaoEmAndamento = true;
 
     const btnSuporte = document.getElementById("MOTORISTAPAG_Login_seg_btn_compartilhar_suporte");
 
@@ -31236,7 +31723,10 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
     }
 
     try {
-        const db = PRIMEIRAPAG_Login_db;
+        const db =
+		typeof PRIMEIRAPAG_Login_db !== "undefined"
+        ? PRIMEIRAPAG_Login_db
+        : firebase.firestore();
 
         const storage = typeof PRIMEIRAPAG_Login_storage !== "undefined"
             ? PRIMEIRAPAG_Login_storage
@@ -31245,7 +31735,7 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
         const arquivo = MOTORISTAPAG_Login_func_criarArquivoCompartilhamentoSeguranca();
 
         if (!arquivo) {
-            alert("Não foi possível preparar a gravação para envio.");
+           alert("Não foi possível preparar o arquivo para envio.");
             return;
         }
 
@@ -31275,10 +31765,17 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
         const arquivoUrl = await arquivoRef.getDownloadURL();
 
         const chamadoRef = db.collection("suporteChamados").doc();
+		
+		const protocolo = MOTORISTAPAG_Login_func_gerarProtocoloSuporteSeguranca();
 
-        const textoCurto = "Gravação de segurança enviada pelo motorista.";
+        const textoCurto = tipoArquivo === "foto"
+				? "Foto de segurança enviada pelo motorista."
+				: tipoArquivo === "video"
+				? "Vídeo de segurança enviado pelo motorista."
+				: "Áudio de segurança enviado pelo motorista.";
 
         await chamadoRef.set({
+			protocolo: protocolo,
             origem: "motorista",
             origemPerfil: "motorista",
             destinoPerfil: "suporte",
@@ -31286,7 +31783,11 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
             categoria: "suporte_motorista",
             tipo: "chat_suporte_motorista",
             tipoAtendimento: "seguranca",
-            titulo: "Gravação de segurança do motorista",
+            titulo: tipoArquivo === "foto"
+				? "Foto de segurança do motorista"
+				: tipoArquivo === "video"
+				? "Vídeo de segurança do motorista"
+				: "Áudio de segurança do motorista",
 
             status: "em_atendimento",
             suporteMediando: true,
@@ -31347,27 +31848,22 @@ async function MOTORISTAPAG_Login_func_compartilharArquivoSuporteSeguranca() {
             lidaAdmin: false,
             criadoEm: firebase.firestore.FieldValue.serverTimestamp()
         });
-
-        const mensagemWhatsapp = encodeURIComponent(
-            "Olá, preciso de ajuda na Central de Segurança do Motorista TNP MoB.\n\n" +
-            "Enviei uma gravação de segurança para análise.\n\n" +
-            "UID: " + user.uid + "\n" +
-            "E-mail: " + (user.email || "não informado") + "\n" +
-            "Chamado: " + chamadoRef.id
-        );
-
-        window.open(
-            "https://wa.me/" + MOTORISTAPAG_Login_segWhatsappSuporte + "?text=" + mensagemWhatsapp,
-            "_blank"
-        );
-
-        alert("Gravação enviada ao suporte e chamado criado na Central de Ajuda.");
+        
+      alert(
+			(tipoArquivo === "foto"
+				? "Foto enviada ao suporte"
+				: tipoArquivo === "video"
+					? "Vídeo enviado ao suporte"
+					: "Áudio enviado ao suporte") +
+			" e chamado criado na Central de Ajuda.\n\n" +
+			"Protocolo: " + protocolo
+		);
 
     } catch (erro) {
-        console.error("Erro ao compartilhar gravação com suporte:", erro);
-        alert("Não foi possível enviar a gravação ao suporte. Tente novamente.");
+		console.error("Erro ao compartilhar arquivo de segurança com suporte:", erro);
+		alert("Não foi possível enviar o arquivo ao suporte. Tente novamente.");
 
-    } finally {
+	} finally {
         MOTORISTAPAG_Login_segAcaoEmAndamento = false;
 
         if (btnSuporte) {
@@ -31386,13 +31882,13 @@ function MOTORISTAPAG_Login_func_descartarArquivoSeguranca() {
         return;
     }
 
-    const confirmar = confirm("Deseja descartar esta gravação? Essa ação remove o arquivo temporário da tela.");
+    const confirmar = confirm("Deseja descartar este arquivo? Essa ação remove o arquivo temporário da tela.");
 
     if (!confirmar) return;
 
     MOTORISTAPAG_Login_func_limparGravacaoSeguranca();
 
-    alert("Gravação descartada. Nenhum arquivo foi enviado.");
+    alert("Arquivo descartado. Nenhum arquivo foi enviado.");
 }
 
 /* Disponibiliza as funções para onclick no HTML */
