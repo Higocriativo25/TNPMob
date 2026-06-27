@@ -21033,11 +21033,14 @@ function PASSAGEIROPAG_Login_func_carregarHistoricoCorridas() {
 
  //--========== TELA 21 PASSAGEIRO: CENTRAL DE AJUDA  ========== // -->
  
-const PASSAGEIROPAG_Login_ajudaWhatsappSuporte = "5531996645814";
+//const PASSAGEIROPAG_Login_ajudaWhatsappSuporte = "5531996645814";
 
 let PASSAGEIROPAG_Login_ajudaTelaAtual = "inicio";
 let PASSAGEIROPAG_Login_ajudaHistorico = [];
 let PASSAGEIROPAG_Login_ajudaArtigoAtual = null;
+let PASSAGEIROPAG_Login_ajudaTimerBusca = null;
+let PASSAGEIROPAG_Login_ajudaEnviandoChamado = false;
+
 
 const PASSAGEIROPAG_Login_ajudaDados = [
     {
@@ -21658,7 +21661,7 @@ function PASSAGEIROPAG_Login_func_normalizarTextoAjuda(texto) {
 			.trim();                         // Remove espaços nas pontas
 	}
 
-let PASSAGEIROPAG_Login_ajudaTimerBusca = null;
+
 
 function PASSAGEIROPAG_Login_func_pesquisarAjudaComEspera() {
     clearTimeout(PASSAGEIROPAG_Login_ajudaTimerBusca);
@@ -21794,32 +21797,136 @@ function PASSAGEIROPAG_Login_func_feedbackAjuda(tipo) {
     }
 }
 
-function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
-    const tituloAjuda = PASSAGEIROPAG_Login_ajudaArtigoAtual
-        ? PASSAGEIROPAG_Login_ajudaArtigoAtual.titulo
-        : "Central de Ajuda";
+async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
+    if (PASSAGEIROPAG_Login_ajudaEnviandoChamado) return;
 
-    const user = typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
-        ? PRIMEIRAPAG_Login_auth.currentUser
-        : null;
+    PASSAGEIROPAG_Login_ajudaEnviandoChamado = true;
 
-    const emailUsuario = user && user.email ? user.email : "não informado";
-    const uidUsuario = user && user.uid ? user.uid : "não informado";
+    try {
+        const auth =
+            typeof PRIMEIRAPAG_Login_auth !== "undefined"
+                ? PRIMEIRAPAG_Login_auth
+                : firebase.auth();
 
-    const mensagem = encodeURIComponent(
-        "Olá, preciso de ajuda no TNP MoB.\n\n" +
-        "Assunto: " + tituloAjuda + "\n" +
-        "E-mail: " + emailUsuario + "\n" +
-        "UID: " + uidUsuario
-    );
+        const user = auth && auth.currentUser ? auth.currentUser : null;
 
-    const url = "https://wa.me/" + PASSAGEIROPAG_Login_ajudaWhatsappSuporte + "?text=" + mensagem;
+        if (!user) {
+            alert("Você precisa estar logado para falar com o suporte.");
+            return;
+        }
 
-    window.open(url, "_blank");
+        const db =
+            typeof PRIMEIRAPAG_Login_db !== "undefined"
+                ? PRIMEIRAPAG_Login_db
+                : firebase.firestore();
+
+        const artigo = PASSAGEIROPAG_Login_ajudaArtigoAtual || {};
+
+        const tituloAjuda = artigo.titulo || "Central de Ajuda";
+
+        const textoInicial =
+            "Olá, preciso de ajuda no TNP MoB.\n\n" +
+            "Assunto: " + tituloAjuda + "\n" +
+            "Origem: Central de Ajuda do passageiro\n" +
+            "E-mail: " + (user.email || "não informado") + "\n" +
+            "UID: " + user.uid;
+
+        const agora = firebase.firestore.FieldValue.serverTimestamp();
+
+        const chamadoRef = db.collection("suporteChamados").doc();
+        const mensagemRef = chamadoRef.collection("mensagens").doc();
+
+        const chamadoPayload = {
+            origem: "passageiro",
+            origemPerfil: "passageiro",
+            destinoPerfil: "suporte",
+
+            categoria: "central_ajuda",
+            tipo: "ajuda_passageiro",
+            assunto: tituloAjuda,
+
+            status: "aberto",
+            suporteMediando: true,
+            chatDiretoLiberado: false,
+
+            passageiroUid: user.uid,
+            passageiroEmail: user.email || "",
+            passageiroNome: user.displayName || "",
+
+            artigoAjudaId: artigo.id || "",
+            artigoAjudaTitulo: tituloAjuda,
+
+            ultimaMensagem: {
+                texto: textoInicial,
+                origem: "passageiro",
+                origemReal: "passageiro",
+                destinoReal: "suporte",
+                criadoEm: agora
+            },
+
+            ultimaMensagemOrigem: "passageiro",
+            ultimaMensagemDestino: "suporte",
+            ultimaMensagemTexto: textoInicial,
+
+            criadoEm: agora,
+            atualizadoEm: agora
+        };
+
+        const mensagemPayload = {
+            chamadoId: chamadoRef.id,
+
+            tipo: "texto",
+            texto: textoInicial,
+
+            origem: "passageiro",
+            origemPerfil: "passageiro",
+            origemReal: "passageiro",
+
+            destino: "suporte",
+            destinoPerfil: "suporte",
+            destinoReal: "suporte",
+
+            passageiroUid: user.uid,
+            motoristaUid: "",
+
+            enviadoPorUid: user.uid,
+
+            visivelParaPassageiro: true,
+            visivelParaSuporte: true,
+            visivelParaMotorista: false,
+
+            lidoPeloPassageiro: true,
+            lidoPorSuporte: false,
+
+            criadoEm: agora
+        };
+
+        const batch = db.batch();
+
+        batch.set(chamadoRef, chamadoPayload);
+        batch.set(mensagemRef, mensagemPayload);
+
+        await batch.commit();
+
+        alert("Sua mensagem foi enviada para a Central de Ajuda.");
+
+        PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
+
+    } catch (erro) {
+        console.error("Erro ao enviar mensagem para a Central de Ajuda:", erro);
+        alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
+    } finally {
+        PASSAGEIROPAG_Login_ajudaEnviandoChamado = false;
+    }
 }
 
 function PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda() {
-    alert("Histórico de mensagens ainda será criado depois. Por enquanto, use o botão “Preciso de ajuda” dentro de um artigo.");
+    if (typeof NOTIFICACOES_func_abrirPainelUniversal === "function") {
+        NOTIFICACOES_func_abrirPainelUniversal("passageiro");
+        return;
+    }
+
+    alert("Mensagem enviada, mas o painel de mensagens do passageiro não foi encontrado.");
 }
 
 window.PASSAGEIROPAG_Login_func_carregarCentralAjuda = PASSAGEIROPAG_Login_func_carregarCentralAjuda;
@@ -21834,7 +21941,7 @@ window.PASSAGEIROPAG_Login_func_abrirResultadoBusca = PASSAGEIROPAG_Login_func_a
 window.PASSAGEIROPAG_Login_func_feedbackAjuda = PASSAGEIROPAG_Login_func_feedbackAjuda;
 window.PASSAGEIROPAG_Login_func_abrirWhatsappAjuda = PASSAGEIROPAG_Login_func_abrirWhatsappAjuda;
 window.PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda = PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda;
- 
+
   //--========== TELA 21 PASSAGEIRO: CENTRAL DE AJUDA FINAL ========== // -->
  
 
@@ -31939,12 +32046,13 @@ function MOTORISTAPAG_Login_func_abrirPerfilMotorista() {
 
 //--========== TELA MOTORISTA: CENTRAL DE AJUDA ========== //
 
-const MOTORISTAPAG_Login_ajudaWhatsappSuporte = "5531996645814";
+// const MOTORISTAPAG_Login_ajudaWhatsappSuporte = "5531996645814";
 
 let MOTORISTAPAG_Login_ajudaTelaAtual = "inicio";
 let MOTORISTAPAG_Login_ajudaHistorico = [];
 let MOTORISTAPAG_Login_ajudaArtigoAtual = null;
 let MOTORISTAPAG_Login_ajudaTimerBusca = null;
+let MOTORISTAPAG_Login_ajudaEnviandoChamado = false;
 
 const MOTORISTAPAG_Login_ajudaDados = [
     {
@@ -32571,33 +32679,143 @@ function MOTORISTAPAG_Login_func_feedbackAjudaMotorista(tipo) {
     }
 }
 
-function MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista() {
-    const tituloAjuda = MOTORISTAPAG_Login_ajudaArtigoAtual
-        ? MOTORISTAPAG_Login_ajudaArtigoAtual.titulo
-        : "Central de Ajuda do Motorista";
+async function MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista() {
+    if (MOTORISTAPAG_Login_ajudaEnviandoChamado) return;
 
-    const user = typeof PRIMEIRAPAG_Login_auth !== "undefined" && PRIMEIRAPAG_Login_auth.currentUser
-        ? PRIMEIRAPAG_Login_auth.currentUser
-        : null;
+    MOTORISTAPAG_Login_ajudaEnviandoChamado = true;
 
-    const emailUsuario = user && user.email ? user.email : "não informado";
-    const uidUsuario = user && user.uid ? user.uid : "não informado";
+    try {
+        const auth =
+            typeof PRIMEIRAPAG_Login_auth !== "undefined"
+                ? PRIMEIRAPAG_Login_auth
+                : firebase.auth();
 
-    const mensagem = encodeURIComponent(
-        "Olá, preciso de ajuda no TNP MoB.\n\n" +
-        "Perfil: Motorista\n" +
-        "Assunto: " + tituloAjuda + "\n" +
-        "E-mail: " + emailUsuario + "\n" +
-        "UID: " + uidUsuario
-    );
+        const user = auth && auth.currentUser ? auth.currentUser : null;
 
-    const url = "https://wa.me/" + MOTORISTAPAG_Login_ajudaWhatsappSuporte + "?text=" + mensagem;
+        if (!user) {
+            alert("Você precisa estar logado para falar com o suporte.");
+            return;
+        }
 
-    window.open(url, "_blank");
+        const db =
+            typeof PRIMEIRAPAG_Login_db !== "undefined"
+                ? PRIMEIRAPAG_Login_db
+                : firebase.firestore();
+
+        const artigo = MOTORISTAPAG_Login_ajudaArtigoAtual || {};
+
+        const tituloAjuda = artigo.titulo || "Central de Ajuda do Motorista";
+
+        const textoInicial =
+            "Olá, preciso de ajuda no TNP MoB.\n\n" +
+            "Perfil: Motorista\n" +
+            "Assunto: " + tituloAjuda + "\n" +
+            "Origem: Central de Ajuda do motorista\n" +
+            "E-mail: " + (user.email || "não informado") + "\n" +
+            "UID: " + user.uid;
+
+        const agora = firebase.firestore.FieldValue.serverTimestamp();
+
+        const chamadoRef = db.collection("suporteChamados").doc();
+        const mensagemRef = chamadoRef.collection("mensagens").doc();
+
+        const chamadoPayload = {
+            origem: "motorista",
+            origemPerfil: "motorista",
+            destinoPerfil: "suporte",
+
+            categoria: "central_ajuda",
+            tipo: "ajuda_motorista",
+            assunto: tituloAjuda,
+
+            status: "aberto",
+            suporteMediando: true,
+            chatDiretoLiberado: false,
+
+            motoristaUid: user.uid,
+            motoristaEmail: user.email || "",
+            motoristaNome: user.displayName || "",
+
+            passageiroUid: "",
+
+            artigoAjudaId: artigo.id || "",
+            artigoAjudaTitulo: tituloAjuda,
+
+            ultimaMensagem: {
+                texto: textoInicial,
+                origem: "motorista",
+                origemReal: "motorista",
+                destinoReal: "suporte",
+                criadoEm: agora
+            },
+
+            ultimaMensagemOrigem: "motorista",
+            ultimaMensagemDestino: "suporte",
+            ultimaMensagemTexto: textoInicial,
+
+            criadoEm: agora,
+            atualizadoEm: agora
+        };
+
+        const mensagemPayload = {
+            chamadoId: chamadoRef.id,
+
+            tipo: "texto",
+            texto: textoInicial,
+
+            origem: "motorista",
+            origemPerfil: "motorista",
+            origemReal: "motorista",
+
+            destino: "suporte",
+            destinoPerfil: "suporte",
+            destinoReal: "suporte",
+
+            motoristaUid: user.uid,
+            passageiroUid: "",
+
+            enviadoPorUid: user.uid,
+
+            visivelParaMotorista: true,
+            visivelParaSuporte: true,
+            visivelParaPassageiro: false,
+
+            lidoPeloMotorista: true,
+            lidoPorSuporte: false,
+
+            criadoEm: agora
+        };
+
+        const batch = db.batch();
+
+        batch.set(chamadoRef, chamadoPayload);
+        batch.set(mensagemRef, mensagemPayload);
+
+        await batch.commit();
+
+        alert("Sua mensagem foi enviada para a Central de Ajuda.");
+
+        MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista();
+
+    } catch (erro) {
+        console.error("Erro ao enviar mensagem do motorista para a Central de Ajuda:", erro);
+        alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
+    } finally {
+        MOTORISTAPAG_Login_ajudaEnviandoChamado = false;
+    }
 }
 
 function MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista() {
-    alert("Histórico de mensagens do motorista ainda será ligado depois. Por enquanto, use o botão “Preciso de ajuda” dentro de um artigo.");
+    if (typeof MOTORISTAPAG_Login_func_fecharCentralAjudaMotorista === "function") {
+        MOTORISTAPAG_Login_func_fecharCentralAjudaMotorista();
+    }
+
+    if (typeof NOTIFICACOES_func_abrirPainelUniversal === "function") {
+        NOTIFICACOES_func_abrirPainelUniversal("motorista");
+        return;
+    }
+
+    alert("Mensagem enviada, mas o painel de mensagens do motorista não foi encontrado.");
 }
 
 window.MOTORISTAPAG_Login_func_carregarCentralAjudaMotorista = MOTORISTAPAG_Login_func_carregarCentralAjudaMotorista;
@@ -32611,6 +32829,7 @@ window.MOTORISTAPAG_Login_func_renderizarArtigoMotorista = MOTORISTAPAG_Login_fu
 window.MOTORISTAPAG_Login_func_feedbackAjudaMotorista = MOTORISTAPAG_Login_func_feedbackAjudaMotorista;
 window.MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista = MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista;
 window.MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista = MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista;
+window.MOTORISTAPAG_Login_func_abrirResultadoBuscaMotorista = MOTORISTAPAG_Login_func_abrirResultadoBuscaMotorista;
 
 //--========== TELA MOTORISTA: CENTRAL DE AJUDA FINAL ========== //
  
