@@ -8243,6 +8243,179 @@ Se quiser aplicar direto no box que aparece no DevTools, pode usar também:
     display: none;
 }
 
+#MOTORISTAPAG_Login_screen_pix_confirmacao {
+    overflow-y: auto;
+    padding-bottom: 40px;
+}
+
+.MOTORISTAPAG_Login_pix_box_inicial_grande {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 18px 18px 20px !important;
+}
+
+/* ESCONDER BARRA / NAVEGAÇÃO QUANDO ESTIVER NA TELA PIX MOTORISTA */
+
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_header_topo,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PRIMEIRAPAG_Login_tipo_cards,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PASSAGEIROPAG_Login_seg_botoes {
+    display: none !important;
+}
+
+/* ESCONDER NAVEGAÇÃO NA TELA PIX MOTORISTA */
+
+html:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_header_topo,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_header_topo,
+html:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PRIMEIRAPAG_Login_tipo_cards,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PRIMEIRAPAG_Login_tipo_cards,
+html:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PASSAGEIROPAG_Login_seg_botoes,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) .PASSAGEIROPAG_Login_seg_botoes {
+    display: none !important;
+}
+
+html:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_header_topo,
+body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_header_topo {
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* ESCONDER BARRA DE ROLAGEM VISUAL DA TELA PIX MOTORISTA */
+
+#MOTORISTAPAG_Login_screen_pix_confirmacao {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Edge antigo */
+}
+
+#MOTORISTAPAG_Login_screen_pix_confirmacao::-webkit-scrollbar {
+    display: none !important; /* Chrome */
+}
+
+#MOTORISTAPAG_Login_screen_pix_confirmacao .MOTORISTAPAG_Login_pix_box {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+#MOTORISTAPAG_Login_screen_pix_confirmacao .MOTORISTAPAG_Login_pix_box::-webkit-scrollbar {
+    display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* PIX MOTORISTA - BOX AGUARDANDO MAIOR */
+
+#MOTORISTAPAG_Login_screen_pix_confirmacao {
+    overflow-y: auto !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding-top: 24px !important;
+    padding-bottom: 50px !important;
+}
+
+#MOTORISTAPAG_Login_pix_box_aguardando {
+    height: auto !important;
+    max-height: none !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    padding: 18px 18px 22px !important;
+}
+
+#MOTORISTAPAG_Login_pix_box_aguardando .MOTORISTAPAG_Login_pix_aviso {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+#MOTORISTAPAG_Login_pix_box_aguardando .MOTORISTAPAG_Login_pix_qrcode {
+    width: 185px !important;
+    height: 185px !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 16px auto !important;
+}
+
+#MOTORISTAPAG_Login_pix_codigo {
+    max-height: 90px !important;
+    overflow-y: auto !important;
+    word-break: break-all !important;
+}
+
+/* PIX MOTORISTA - ABRIR LARGURA DO BOX AGUARDANDO */
+
+#MOTORISTAPAG_Login_pix_box_aguardando {
+    width: min(92%, 380px) !important;
+    max-width: 380px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+#MOTORISTAPAG_Login_pix_box_aguardando .MOTORISTAPAG_Login_pix_status_titulo,
+#MOTORISTAPAG_Login_pix_box_aguardando p,
+#MOTORISTAPAG_Login_pix_box_aguardando .MOTORISTAPAG_Login_pix_aviso {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+#MOTORISTAPAG_Login_pix_codigo {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 10px 12px !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    word-break: break-all !important;
+    overflow-wrap: anywhere !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* TIRA A BARRA LATERAL DE TODOS OS MODAIS DA HOME MOTORISTA */
+
+
+
+
+
+
+.MOTORISTAPAG_Login_pix_box_inicial_grande .MOTORISTAPAG_Login_pix_aviso,
+.MOTORISTAPAG_Login_pix_box_inicial_grande .MOTORISTAPAG_Login_pix_aviso_mei {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
 	  
 </style>
 </head>
@@ -9692,7 +9865,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         <div class="PASSAGEIROPAG_Login_card_extra" style="padding-bottom:10px;">
     <strong>💰 Promoções e benefícios</strong>
     <p>
-        Ative seu ID TNP para acompanhar cashback, benefícios e oportunidades.
+        Ative seu ID TNP para ganhar Cashback, Benefícios e Oportunidades.
     </p>
 
     <button
@@ -11381,7 +11554,7 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
         </p>
     </div>
 
-    <div id="MOTORISTAPAG_Login_pix_box_inicial" class="MOTORISTAPAG_Login_pix_box">
+    <div id="MOTORISTAPAG_Login_pix_box_inicial" class="MOTORISTAPAG_Login_pix_box MOTORISTAPAG_Login_pix_box_inicial_grande">
 
         <p>
             Gere um Pix simbólico de <strong>R$ 0,01</strong> e realize o pagamento
