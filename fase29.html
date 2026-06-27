@@ -8454,6 +8454,152 @@ body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_h
     margin-left: 8px !important;
     margin-right: 0 !important;
 }
+
+/* =========================================================
+   MENSAGENS - BOTÃO FINALIZAR ATENDIMENTO
+========================================================= */
+
+.MOTORISTAMENSAGENS_btn_finalizar_conversa {
+    width: 100%;
+    margin: 0 0 8px 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(197, 169, 141, 0.45);
+    border-radius: 999px;
+    background: rgba(197, 169, 141, 0.12);
+    color: #c5a98d;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}
+
+.MOTORISTAMENSAGENS_btn_finalizar_conversa:hover {
+    background: rgba(197, 169, 141, 0.22);
+}
+/* =========================================================
+   MENSAGENS - BOTÃO FINALIZAR PEQUENO À DIREITA
+========================================================= */
+
+.MOTORISTAMENSAGENS_conversa_envio {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.MOTORISTAMENSAGENS_finalizar_area {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-top: 7px !important;
+    padding-right: 4px !important;
+    box-sizing: border-box !important;
+}
+
+.MOTORISTAMENSAGENS_btn_finalizar_conversa {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+
+    width: auto !important;
+    min-width: 78px !important;
+    max-width: 110px !important;
+
+    padding: 6px 11px !important;
+    border-radius: 999px !important;
+
+    border: 1px solid rgba(197, 169, 141, 0.45) !important;
+    background: rgba(197, 169, 141, 0.10) !important;
+    color: #c5a98d !important;
+
+    font-size: 0.64rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.25px !important;
+    text-align: center !important;
+
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.MOTORISTAMENSAGENS_btn_finalizar_conversa:hover {
+    background: rgba(197, 169, 141, 0.20) !important;
+}
+
+/* CELULAR */
+@media (max-width: 768px) {
+    .MOTORISTAMENSAGENS_finalizar_area {
+        margin-top: 6px !important;
+        padding-right: 6px !important;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    }
+
+    .MOTORISTAMENSAGENS_btn_finalizar_conversa {
+        min-width: 74px !important;
+        max-width: 100px !important;
+        padding: 6px 10px !important;
+        font-size: 0.62rem !important;
+    }
+}
+
+/* =========================================================
+   MENSAGENS - CARD COM DATA E BOTÃO APAGAR NO RODAPÉ
+========================================================= */
+
+.MOTORISTAMENSAGENS_card_topo {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+}
+
+.MOTORISTAMENSAGENS_card_data {
+    color: rgba(224, 224, 224, 0.65) !important;
+    font-size: 0.68rem !important;
+    white-space: nowrap !important;
+    margin-left: auto !important;
+}
+
+.MOTORISTAMENSAGENS_card_rodape {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-top: 10px !important;
+}
+
+.MOTORISTAMENSAGENS_card_acoes {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+}
+
+.MOTORISTAMENSAGENS_btn_apagar_card {
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 5px 10px !important;
+    background: rgba(220, 53, 69, 0.14) !important;
+    color: #ff7b89 !important;
+    font-size: 0.58rem !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.MOTORISTAMENSAGENS_btn_apagar_card:hover {
+    background: rgba(220, 53, 69, 0.25) !important;
+}
+
+@media (max-width: 768px) {
+    .MOTORISTAMENSAGENS_card_data {
+        font-size: 0.62rem !important;
+    }
+
+    .MOTORISTAMENSAGENS_btn_apagar_card {
+        padding: 5px 8px !important;
+        font-size: 0.54rem !important;
+    }
+}
+
+
 	  
 </style>
 </head>
@@ -14590,7 +14736,7 @@ TELA MOTORISTA 9: HOME DO MOTORISTA - SUB MODAIS 2 DA HOME fINAL
                 ➤
             </button>
         </div>
-
+		
     </div>
 
 </div>
@@ -14638,6 +14784,15 @@ TELA MOTORISTA 9: HOME DO MOTORISTA - SUB MODAIS 2 DA HOME fINAL
 				➤
 			</button>
 		</div>
+	    <button
+			type="button"
+			id="MOTORISTAMENSAGENS_btn_finalizar_conversa"
+			class="MOTORISTAMENSAGENS_btn_finalizar_conversa"
+			onclick="MOTORISTAMENSAGENS_func_finalizarConversaSuporteAtual()"
+		>
+			FINALIZAR 
+		</button>
+		
 
 	</div>
 
@@ -22043,146 +22198,61 @@ async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
             return;
         }
 
-        const db =
-            typeof PRIMEIRAPAG_Login_db !== "undefined"
-                ? PRIMEIRAPAG_Login_db
-                : firebase.firestore();
-
         const artigo = PASSAGEIROPAG_Login_ajudaArtigoAtual || {};
-
-        const tituloAjuda = artigo.titulo || "Central de Ajuda";
+        const tituloAjuda = artigo.titulo || "Central de Ajuda do Passageiro";
 
         const textoInicial =
             "Olá, preciso de ajuda no TNP MoB.\n\n" +
+            "Perfil: Passageiro\n" +
             "Assunto: " + tituloAjuda + "\n" +
             "Origem: Central de Ajuda do passageiro\n" +
             "E-mail: " + (user.email || "não informado") + "\n" +
             "UID: " + user.uid;
 
-        const agora = firebase.firestore.FieldValue.serverTimestamp();
+        if (typeof TNP_MENSAGENS_func_definirContextoAtual === "function") {
+            const contextoOk = TNP_MENSAGENS_func_definirContextoAtual("passageiro");
 
-        const chamadoRef = db.collection("suporteChamados").doc();
-        const mensagemRef = chamadoRef.collection("mensagens").doc();
-
-        
-		const chamadoPayload = {
-            origem: "passageiro",
-            origemPerfil: "passageiro",
-            destinoPerfil: "suporte",
-
-            categoria: "central_ajuda",
-            tipo: "ajuda_passageiro",
-            assunto: tituloAjuda,
-
-            status: "aberto",
-            suporteMediando: true,
-            chatDiretoLiberado: false,
-
-            passageiroUid: user.uid,
-            passageiroEmail: user.email || "",
-            passageiroNome: user.displayName || "",
-
-            artigoAjudaId: artigo.id || "",
-            artigoAjudaTitulo: tituloAjuda,
-
-            ultimaMensagem: {
-                texto: textoInicial,
+            if (!contextoOk) {
+                alert("Não foi possível identificar o perfil passageiro para enviar ao suporte.");
+                return;
+            }
+        } else {
+            TNP_MENSAGENS_contextoAtual = {
                 origem: "passageiro",
-                origemReal: "passageiro",
-                destinoReal: "suporte",
-                criadoEm: agora
+                uid: user.uid,
+                colecaoPerfil: "usuarios",
+                campoUidChamado: "passageiroUid",
+                campoNome: "nomePassageiro",
+                campoNaoLidas: "naoLidasPassageiro",
+                campoVisibilidade: "visivelParaPassageiro"
+            };
+        }
+
+        if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
+            alert("Função de envio ao suporte não encontrada.");
+            return;
+        }
+
+        const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
+            {
+                tipo: "suporte",
+                chamadoId: "",
+                novaConversa: true
             },
+            textoInicial
+        );
 
-            ultimaMensagemOrigem: "passageiro",
-            ultimaMensagemDestino: "suporte",
-            ultimaMensagemTexto: textoInicial,
+        if (!enviado) {
+            alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
+            return;
+        }
 
-            criadoEm: agora,
-            atualizadoEm: agora
-        };
+        alert("Sua mensagem foi enviada para a Central de Ajuda.");
 
-        const mensagemPayload = {
-            chamadoId: chamadoRef.id,
-
-            tipo: "texto",
-            texto: textoInicial,
-
-            origem: "passageiro",
-            origemPerfil: "passageiro",
-            origemReal: "passageiro",
-
-            destino: "suporte",
-            destinoPerfil: "suporte",
-            destinoReal: "suporte",
-
-            passageiroUid: user.uid,
-            motoristaUid: "",
-
-            enviadoPorUid: user.uid,
-
-            visivelParaPassageiro: true,
-            visivelParaSuporte: true,
-            visivelParaMotorista: false,
-
-            lidoPeloPassageiro: true,
-            lidoPorSuporte: false,
-
-            criadoEm: agora
-        };
-
-        const batch = db.batch();
-
-        batch.set(chamadoRef, chamadoPayload);
-        batch.set(mensagemRef, mensagemPayload);
-
-        await batch.commit();
-
-	const PASSAGEIROPAG_Login_textoAutomaticoSuporte =
-		TNP_SUPORTE_func_mensagemAutomaticaRecebimento("passageiro");
-
-	await chamadoRef.collection("mensagens").add({
-		chamadoId: chamadoRef.id,
-
-		tipo: "resposta_automatica",
-		categoria: "suporte",
-		sistema: true,
-		respostaAutomatica: true,
-
-		texto: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
-		textoOriginal: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
-		textoExibido: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
-
-		origem: "suporte",
-		origemPerfil: "suporte",
-		origemReal: "suporte",
-		origemUid: "sistema",
-
-		destino: "passageiro",
-		destinoPerfil: "passageiro",
-		destinoReal: "passageiro",
-		encaminhadoPara: "passageiro",
-
-		passageiroUid: user.uid,
-		motoristaUid: "",
-
-		enviadoPorUid: "sistema",
-
-		visivelParaPassageiro: true,
-		visivelParaSuporte: true,
-		visivelParaMotorista: false,
-
-		lidoPeloPassageiro: false,
-		lidoPorSuporte: true,
-
-		criadoEm: firebase.firestore.FieldValue.serverTimestamp()
-	});
-
-	alert("Sua mensagem foi enviada para a Central de Ajuda.");
-
-	PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
+        PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
 
     } catch (erro) {
-        console.error("Erro ao enviar mensagem para a Central de Ajuda:", erro);
+        console.error("Erro ao enviar mensagem do passageiro para a Central de Ajuda:", erro);
         alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
     } finally {
         PASSAGEIROPAG_Login_ajudaEnviandoChamado = false;
@@ -32966,13 +33036,7 @@ async function MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista() {
             return;
         }
 
-        const db =
-            typeof PRIMEIRAPAG_Login_db !== "undefined"
-                ? PRIMEIRAPAG_Login_db
-                : firebase.firestore();
-
         const artigo = MOTORISTAPAG_Login_ajudaArtigoAtual || {};
-
         const tituloAjuda = artigo.titulo || "Central de Ajuda do Motorista";
 
         const textoInicial =
@@ -32983,84 +33047,43 @@ async function MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista() {
             "E-mail: " + (user.email || "não informado") + "\n" +
             "UID: " + user.uid;
 
-        const agora = firebase.firestore.FieldValue.serverTimestamp();
+        if (typeof TNP_MENSAGENS_func_definirContextoAtual === "function") {
+            const contextoOk = TNP_MENSAGENS_func_definirContextoAtual("motorista");
 
-        const chamadoRef = db.collection("suporteChamados").doc();
-        const mensagemRef = chamadoRef.collection("mensagens").doc();
-
-        const chamadoPayload = {
-            origem: "motorista",
-            origemPerfil: "motorista",
-            destinoPerfil: "suporte",
-
-            categoria: "central_ajuda",
-            tipo: "ajuda_motorista",
-            assunto: tituloAjuda,
-
-            status: "aberto",
-            suporteMediando: true,
-            chatDiretoLiberado: false,
-
-            motoristaUid: user.uid,
-            motoristaEmail: user.email || "",
-            motoristaNome: user.displayName || "",
-
-            passageiroUid: "",
-
-            artigoAjudaId: artigo.id || "",
-            artigoAjudaTitulo: tituloAjuda,
-
-            ultimaMensagem: {
-                texto: textoInicial,
+            if (!contextoOk) {
+                alert("Não foi possível identificar o perfil motorista para enviar ao suporte.");
+                return;
+            }
+        } else {
+            TNP_MENSAGENS_contextoAtual = {
                 origem: "motorista",
-                origemReal: "motorista",
-                destinoReal: "suporte",
-                criadoEm: agora
+                uid: user.uid,
+                colecaoPerfil: "motoristas",
+                campoUidChamado: "motoristaUid",
+                campoNome: "nomeMotorista",
+                campoNaoLidas: "naoLidasMotorista",
+                campoVisibilidade: "visivelParaMotorista"
+            };
+        }
+
+        if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
+            alert("Função de envio ao suporte não encontrada.");
+            return;
+        }
+
+        const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
+            {
+                tipo: "suporte",
+                chamadoId: "",
+                novaConversa: true
             },
+            textoInicial
+        );
 
-            ultimaMensagemOrigem: "motorista",
-            ultimaMensagemDestino: "suporte",
-            ultimaMensagemTexto: textoInicial,
-
-            criadoEm: agora,
-            atualizadoEm: agora
-        };
-
-        const mensagemPayload = {
-            chamadoId: chamadoRef.id,
-
-            tipo: "texto",
-            texto: textoInicial,
-
-            origem: "motorista",
-            origemPerfil: "motorista",
-            origemReal: "motorista",
-
-            destino: "suporte",
-            destinoPerfil: "suporte",
-            destinoReal: "suporte",
-
-            motoristaUid: user.uid,
-            passageiroUid: "",
-
-            enviadoPorUid: user.uid,
-
-            visivelParaMotorista: true,
-            visivelParaSuporte: true,
-            visivelParaPassageiro: false,
-
-            lidoPeloMotorista: true,
-            lidoPorSuporte: false,
-
-            criadoEm: agora
-        };
-
-        const batch = db.batch();
-
-        batch.set(chamadoRef, chamadoPayload);
-        batch.set(mensagemRef, mensagemPayload);
-
-        await batch.commit();
+        if (!enviado) {
+            alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
+            return;
+        }
 
         alert("Sua mensagem foi enviada para a Central de Ajuda.");
 
@@ -42533,6 +42556,40 @@ function MOTORISTAMENSAGENS_func_carregarListaTeste() {
     }).join('');
 }
 
+function MOTORISTAMENSAGENS_func_chamadoApagadoDaTelaAtual(item) {
+    item = item || {};
+
+    const dadosFirebase = item.dadosFirebase || {};
+
+    const origemAtual =
+        TNP_MENSAGENS_contextoAtual &&
+        TNP_MENSAGENS_contextoAtual.origem
+            ? String(TNP_MENSAGENS_contextoAtual.origem).toLowerCase().trim()
+            : "";
+
+    if (
+        origemAtual === "passageiro" &&
+        (
+            item.apagadoDaTelaPassageiro === true ||
+            dadosFirebase.apagadoDaTelaPassageiro === true
+        )
+    ) {
+        return true;
+    }
+
+    if (
+        origemAtual === "motorista" &&
+        (
+            item.apagadoDaTelaMotorista === true ||
+            dadosFirebase.apagadoDaTelaMotorista === true
+        )
+    ) {
+        return true;
+    }
+
+    return false;
+}
+
 function MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const contexto = TNP_MENSAGENS_contextoAtual || {};
@@ -42584,18 +42641,30 @@ function MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal() {
                 }
 
                 lista.push({
-                    id: doc.id,
-                    chamadoId: doc.id,
-                    tipo: 'suporte',
-                    titulo: dados.titulo || 'Suporte TNP MoB',
-                    ultimaMensagem: dados.ultimaMensagemTexto || 'Atendimento iniciado.',
-                    status: dados.status || 'em_atendimento',
-                    naoLidas: Number(dados[contexto.campoNaoLidas] || 0),
-                    horario: MOTORISTAMENSAGENS_func_formatarHoraFirebase(dados.atualizadoEm),
-                    dataConversa: MOTORISTAMENSAGENS_func_formatarDataFirebase(dados.criadoEm),
-                    origemTela: contexto.origem,
-                    dadosFirebase: dados
-                });
+				id: doc.id,
+				chamadoId: doc.id,
+
+				// Aqui força o card entrar na aba SUPORTE
+				tipo: 'suporte',
+
+				// Guarda o tipo original do Firebase, caso precise depois
+				tipoOriginalFirebase: dados.tipo || '',
+
+				titulo: dados.titulo || 'Suporte TNP MoB',
+				ultimaMensagem: dados.ultimaMensagemTexto || 'Atendimento iniciado.',
+				status: dados.status || 'em_atendimento',
+				naoLidas: Number(dados[contexto.campoNaoLidas] || 0),
+
+				horario: MOTORISTAMENSAGENS_func_formatarHoraFirebase(dados.atualizadoEm),
+				dataConversa: MOTORISTAMENSAGENS_func_formatarDataFirebase(dados.criadoEm),
+
+				origemTela: contexto.origem,
+
+				apagadoDaTelaPassageiro: dados.apagadoDaTelaPassageiro === true,
+				apagadoDaTelaMotorista: dados.apagadoDaTelaMotorista === true,
+
+				dadosFirebase: dados
+			});
             });
 
             lista.sort(function(a, b) {
@@ -42638,26 +42707,38 @@ function MOTORISTAMENSAGENS_func_renderizarListaSuporteFirebase() {
     const filtroAtual = MOTORISTAMENSAGENS_filtroAtual || 'todos';
 
     let filtradas = base.filter(function(item) {
-        if (!item) return false;
+		if (!item) return false;
 
-        if (filtroAtual === 'todos') {
-            return true;
-        }
+		if (MOTORISTAMENSAGENS_func_chamadoApagadoDaTelaAtual(item)) {
+			return false;
+		}
 
-        return item.tipo === filtroAtual;
-    });
+		if (filtroAtual === 'todos') {
+			return true;
+		}
+
+		return item.tipo === filtroAtual;
+	});
 
     const abertos = base.filter(function(item) {
-        const status = String(item && item.status ? item.status : '').toLowerCase().trim();
+		if (MOTORISTAMENSAGENS_func_chamadoApagadoDaTelaAtual(item)) {
+			return false;
+		}
 
-        return status !== 'finalizado' &&
-            status !== 'fechado' &&
-            status !== 'encerrado';
-    }).length;
+		const status = String(item && item.status ? item.status : '').toLowerCase().trim();
+
+		return status !== 'finalizado' &&
+			status !== 'fechado' &&
+			status !== 'encerrado';
+	}).length;
 
     const naoLidas = base.reduce(function(total, item) {
-        return total + Number(item && item.naoLidas ? item.naoLidas : 0);
-    }, 0);
+		if (MOTORISTAMENSAGENS_func_chamadoApagadoDaTelaAtual(item)) {
+			return total;
+		}
+
+		return total + Number(item && item.naoLidas ? item.naoLidas : 0);
+	}, 0);
 
     if (totalAbertos) {
         totalAbertos.innerText = abertos;
@@ -42699,21 +42780,103 @@ function TNP_MOB_func_escapeHtml(valor) {
         .replace(/'/g, '&#039;');
 }
 
+function MOTORISTAMENSAGENS_func_formatarDataHoraCard(valorData) {
+    if (!valorData) return "";
+
+    if (typeof valorData === "string") {
+        const texto = valorData.trim();
+
+        if (/^\d{2}\/\d{2}\s+\d{2}:\d{2}$/.test(texto)) {
+            return texto;
+        }
+
+        if (/^\d{2}:\d{2}$/.test(texto)) {
+            const hoje = new Date();
+
+            const dia = String(hoje.getDate()).padStart(2, "0");
+            const mes = String(hoje.getMonth() + 1).padStart(2, "0");
+
+            return dia + "/" + mes + " " + texto;
+        }
+    }
+
+    let data = null;
+
+    if (valorData && typeof valorData.toDate === "function") {
+        data = valorData.toDate();
+    } else if (valorData instanceof Date) {
+        data = valorData;
+    } else {
+        data = new Date(valorData);
+    }
+
+    if (!data || isNaN(data.getTime())) {
+        return String(valorData || "");
+    }
+
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const hora = String(data.getHours()).padStart(2, "0");
+    const minuto = String(data.getMinutes()).padStart(2, "0");
+
+    return dia + "/" + mes + " " + hora + ":" + minuto;
+}
 function MOTORISTAMENSAGENS_func_cardMensagem(item) {
     item = item || {};
 
-    const id = TNP_MENSAGENS_func_escapeHtml(item.id || item.chamadoId || '');
-    const tipo = TNP_MENSAGENS_func_escapeHtml(item.tipo || 'mensagem');
-    const titulo = TNP_MENSAGENS_func_escapeHtml(item.titulo || 'Mensagem');
-    const horario = TNP_MENSAGENS_func_escapeHtml(item.horario || '');
-    const ultimaMensagem = TNP_MENSAGENS_func_escapeHtml(item.ultimaMensagem || 'Atendimento iniciado.');
-    const nomeTipo = TNP_MENSAGENS_func_escapeHtml(MOTORISTAMENSAGENS_func_nomeTipo(item.tipo));
+    const origemAtual =
+        TNP_MENSAGENS_contextoAtual &&
+        TNP_MENSAGENS_contextoAtual.origem
+            ? String(TNP_MENSAGENS_contextoAtual.origem).toLowerCase().trim()
+            : "";
+
+    // NÃO MOSTRA NA TELA DO PASSAGEIRO SE O SUPORTE/USUÁRIO APAGOU DA TELA DELE
+    if (
+        origemAtual === "passageiro" &&
+        item.apagadoDaTelaPassageiro === true
+    ) {
+        return "";
+    }
+
+    // NÃO MOSTRA NA TELA DO MOTORISTA SE O SUPORTE/USUÁRIO APAGOU DA TELA DELE
+    if (
+        origemAtual === "motorista" &&
+        item.apagadoDaTelaMotorista === true
+    ) {
+        return "";
+    }
+
+    const idOriginal = String(item.id || item.chamadoId || "");
+    const id = TNP_MENSAGENS_func_escapeHtml(idOriginal);
+
+    const tipo = TNP_MENSAGENS_func_escapeHtml(item.tipo || "mensagem");
+    const titulo = TNP_MENSAGENS_func_escapeHtml(item.titulo || "Mensagem");
+
+    const horarioBruto =
+        item.dataHora ||
+        item.atualizadoEm ||
+        item.ultimaMensagemEm ||
+        item.criadoEm ||
+        item.horario ||
+        "";
+
+    const horario = TNP_MENSAGENS_func_escapeHtml(
+        MOTORISTAMENSAGENS_func_formatarDataHoraCard(horarioBruto)
+    );
+
+    const ultimaMensagem = TNP_MENSAGENS_func_escapeHtml(
+        item.ultimaMensagem || "Atendimento iniciado."
+    );
+
+    const nomeTipo = TNP_MENSAGENS_func_escapeHtml(
+        MOTORISTAMENSAGENS_func_nomeTipo(item.tipo)
+    );
 
     const totalNaoLidas = Number(item.naoLidas || 0);
 
     const badgeNaoLidas = totalNaoLidas > 0
         ? `<span class="MOTORISTAMENSAGENS_badge">${totalNaoLidas}</span>`
-        : '';
+        : "";
 
     return `
         <div
@@ -42723,7 +42886,7 @@ function MOTORISTAMENSAGENS_func_cardMensagem(item) {
         >
             <div class="MOTORISTAMENSAGENS_card_topo">
                 <strong>${titulo}</strong>
-                <span>${horario}</span>
+                <span class="MOTORISTAMENSAGENS_card_data">${horario}</span>
             </div>
 
             <p>${ultimaMensagem}</p>
@@ -42733,11 +42896,211 @@ function MOTORISTAMENSAGENS_func_cardMensagem(item) {
                     ${nomeTipo}
                 </span>
 
-                ${badgeNaoLidas}
+                <div class="MOTORISTAMENSAGENS_card_acoes">
+                    ${badgeNaoLidas}
+
+                    <button
+                        type="button"
+                        class="MOTORISTAMENSAGENS_btn_apagar_card"
+                        data-chamado-id="${id}"
+                        onclick="event.stopPropagation(); MOTORISTAMENSAGENS_func_apagarConversaDaTelaUsuarioCard(this.dataset.chamadoId)"
+                    >
+                        APAGAR
+                    </button>
+                </div>
             </div>
         </div>
     `;
 }
+
+
+window.MOTORISTAMENSAGENS_func_apagarConversaDaTelaUsuarioCard = async function(chamadoId) {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const contexto = TNP_MENSAGENS_contextoAtual || {};
+
+    if (!user) {
+        alert("Você precisa estar logado para apagar a conversa da tela.");
+        return;
+    }
+
+    const origem = String(contexto.origem || "").toLowerCase().trim();
+
+    if (origem !== "motorista" && origem !== "passageiro") {
+        alert("Origem do usuário não identificada.");
+        return;
+    }
+
+    chamadoId = String(chamadoId || "").trim();
+
+    if (!chamadoId) {
+        alert("Chamado não identificado.");
+        return;
+    }
+
+    const confirmar = confirm(
+        "Deseja apagar esta conversa da sua tela?\n\n" +
+        "Ela continuará salva no suporte."
+    );
+
+    if (!confirmar) return;
+
+    try {
+        const chamadoRef = PRIMEIRAPAG_Login_db
+            .collection("suporteChamados")
+            .doc(chamadoId);
+
+        const chamadoSnap = await chamadoRef.get();
+        const chamado = chamadoSnap.exists ? chamadoSnap.data() || {} : {};
+
+        const statusAtual = String(chamado.status || "").toLowerCase().trim();
+
+        const jaFinalizado =
+            statusAtual === "finalizado" ||
+            statusAtual === "fechado" ||
+            statusAtual === "encerrado";
+
+        const agora = firebase.firestore.FieldValue.serverTimestamp();
+
+        const protocolo =
+            chamado.protocolo ||
+            chamado.protocoloSuporte ||
+            chamadoId;
+
+        const textoPerfil =
+            origem === "motorista"
+                ? "motorista"
+                : "passageiro";
+
+        const textoFinalizacao =
+            "Atendimento finalizado pelo " + textoPerfil + ". " +
+            "Protocolo: " + protocolo + ". " +
+            "Obrigado pelo atendimento.";
+
+        const payloadChamado = {
+            atualizadoEm: agora
+        };
+
+        if (origem === "passageiro") {
+            payloadChamado.apagadoDaTelaPassageiro = true;
+            payloadChamado.apagadoDaTelaPassageiroEm = agora;
+            payloadChamado.apagadoDaTelaPassageiroUid = user.uid;
+        }
+
+        if (origem === "motorista") {
+            payloadChamado.apagadoDaTelaMotorista = true;
+            payloadChamado.apagadoDaTelaMotoristaEm = agora;
+            payloadChamado.apagadoDaTelaMotoristaUid = user.uid;
+        }
+
+        const batch = PRIMEIRAPAG_Login_db.batch();
+
+        // Se ainda estava aberto, finaliza antes de apagar da tela.
+        if (!jaFinalizado) {
+            const mensagemRef = chamadoRef
+                .collection("mensagens")
+                .doc();
+
+            batch.set(mensagemRef, {
+                chamadoId: chamadoId,
+
+                tipo: "finalizacao_atendimento",
+                categoria: "suporte",
+
+                origem: origem,
+                origemPerfil: origem,
+                origemReal: origem,
+                origemUid: user.uid,
+
+                destino: "suporte",
+                destinoPerfil: "suporte",
+                destinoReal: "suporte",
+                encaminhadoPara: "suporte",
+
+                exibidoComo:
+                    origem === "motorista"
+                        ? "Motorista"
+                        : "Passageiro",
+
+                texto: textoFinalizacao,
+                textoOriginal: textoFinalizacao,
+                textoExibido: textoFinalizacao,
+
+                passageiroUid:
+                    origem === "passageiro"
+                        ? user.uid
+                        : chamado.passageiroUid || "",
+
+                motoristaUid:
+                    origem === "motorista"
+                        ? user.uid
+                        : chamado.motoristaUid || "",
+
+                enviadoPorUid: user.uid,
+
+                visivelParaSuporte: true,
+                visivelParaPassageiro: origem === "passageiro",
+                visivelParaMotorista: origem === "motorista",
+
+                lidaAdmin: false,
+                lidoPorSuporte: false,
+
+                criadoEm: agora
+            });
+
+            payloadChamado.status = "finalizado";
+
+            payloadChamado.finalizadoPeloUsuario = true;
+            payloadChamado.finalizadoPorPerfil = origem;
+            payloadChamado.finalizadoPorUid = user.uid;
+            payloadChamado.finalizadoEm = agora;
+
+            payloadChamado.ultimaMensagemOrigem = origem;
+            payloadChamado.ultimaMensagemDestino = "suporte";
+            payloadChamado.ultimaMensagemTexto = textoFinalizacao;
+
+            payloadChamado.ultimaMensagem = {
+                texto: textoFinalizacao,
+                origem: origem,
+                origemReal: origem,
+                destinoReal: "suporte",
+                criadoEm: agora
+            };
+        }
+
+        batch.set(chamadoRef, payloadChamado, { merge: true });
+
+        await batch.commit();
+
+        const card = document.querySelector(
+            '.MOTORISTAMENSAGENS_card[data-conversa-id="' + chamadoId + '"]'
+        );
+
+        if (card) {
+            card.remove();
+        }
+
+        if (Array.isArray(MOTORISTAMENSAGENS_chamadosSuporteFirebase)) {
+            MOTORISTAMENSAGENS_chamadosSuporteFirebase =
+                MOTORISTAMENSAGENS_chamadosSuporteFirebase.filter(function(item) {
+                    return String(item.id || item.chamadoId || "") !== chamadoId;
+                });
+        }
+
+        MOTORISTAMENSAGENS_conversaSelecionadaAtual = null;
+
+        if (MOTORISTAMENSAGENS_chamadoSuporteAtualId === chamadoId) {
+            MOTORISTAMENSAGENS_chamadoSuporteAtualId = "";
+        }
+
+        if (typeof MOTORISTAMENSAGENS_func_renderizarListaSuporteFirebase === "function") {
+            MOTORISTAMENSAGENS_func_renderizarListaSuporteFirebase();
+        }
+
+    } catch (erro) {
+        console.error("Erro ao apagar conversa da tela:", erro);
+        alert("Não foi possível apagar a conversa agora.");
+    }
+};
 
 function MOTORISTAMENSAGENS_func_nomeTipo(tipo) {
     tipo = String(tipo || '').toLowerCase().trim();
@@ -43529,6 +43892,167 @@ function TNP_MENSAGEM_func_testarConversaMediadaCompleta() {
     });
 }
 
+async function MOTORISTAMENSAGENS_func_finalizarConversaSuporteAtual() {
+    const user = PRIMEIRAPAG_Login_auth.currentUser;
+    const contexto = TNP_MENSAGENS_contextoAtual || {};
+
+    if (!user) {
+        alert("Você precisa estar logado para finalizar a conversa.");
+        return;
+    }
+
+    const origem = String(contexto.origem || "").toLowerCase().trim();
+
+    if (origem !== "motorista" && origem !== "passageiro") {
+        alert("Origem do usuário não identificada.");
+        return;
+    }
+
+    const chamadoId =
+        MOTORISTAMENSAGENS_conversaSelecionadaAtual &&
+        (
+            MOTORISTAMENSAGENS_conversaSelecionadaAtual.id ||
+            MOTORISTAMENSAGENS_conversaSelecionadaAtual.chamadoId
+        )
+            ? (
+                MOTORISTAMENSAGENS_conversaSelecionadaAtual.id ||
+                MOTORISTAMENSAGENS_conversaSelecionadaAtual.chamadoId
+            )
+            : MOTORISTAMENSAGENS_chamadoSuporteAtualId || "";
+
+    if (!chamadoId) {
+        alert("Nenhuma conversa selecionada para finalizar.");
+        return;
+    }
+
+    const confirmar = confirm(
+        "Deseja finalizar este atendimento?\n\n" +
+        "Depois disso, se precisar de ajuda novamente, você poderá abrir uma nova conversa com o suporte."
+    );
+
+    if (!confirmar) return;
+
+    try {
+        const chamadoRef = PRIMEIRAPAG_Login_db
+            .collection("suporteChamados")
+            .doc(chamadoId);
+
+        const chamadoSnap = await chamadoRef.get();
+        const chamado = chamadoSnap.exists ? chamadoSnap.data() || {} : {};
+
+        const protocolo =
+            chamado.protocolo ||
+            chamado.protocoloSuporte ||
+            chamadoId;
+
+        const textoPerfil =
+            origem === "motorista"
+                ? "motorista"
+                : "passageiro";
+
+        const textoFinalizacao =
+            "Atendimento finalizado pelo " + textoPerfil + ".\n\n" +
+            "Protocolo: " + protocolo + "\n\n" +
+            "Obrigado pelo atendimento.";
+
+        const mensagemRef = chamadoRef
+            .collection("mensagens")
+            .doc();
+
+        const agora = firebase.firestore.FieldValue.serverTimestamp();
+
+        const batch = PRIMEIRAPAG_Login_db.batch();
+
+        batch.set(mensagemRef, {
+            chamadoId: chamadoId,
+
+            tipo: "finalizacao_atendimento",
+            categoria: "suporte",
+
+            origem: origem,
+            origemPerfil: origem,
+            origemReal: origem,
+            origemUid: user.uid,
+
+            destino: "suporte",
+            destinoPerfil: "suporte",
+            destinoReal: "suporte",
+            encaminhadoPara: "suporte",
+
+            exibidoComo:
+                origem === "motorista"
+                    ? "Motorista"
+                    : "Passageiro",
+
+            texto: textoFinalizacao,
+            textoOriginal: textoFinalizacao,
+            textoExibido: textoFinalizacao,
+
+            passageiroUid:
+                origem === "passageiro"
+                    ? user.uid
+                    : chamado.passageiroUid || "",
+
+            motoristaUid:
+                origem === "motorista"
+                    ? user.uid
+                    : chamado.motoristaUid || "",
+
+            enviadoPorUid: user.uid,
+
+            visivelParaSuporte: true,
+            visivelParaPassageiro: origem === "passageiro",
+            visivelParaMotorista: origem === "motorista",
+
+            lidaAdmin: false,
+            lidoPorSuporte: false,
+
+            criadoEm: agora
+        });
+
+        batch.set(chamadoRef, {
+            status: "finalizado",
+
+            finalizadoPeloUsuario: true,
+            finalizadoPorPerfil: origem,
+            finalizadoPorUid: user.uid,
+            finalizadoEm: agora,
+
+            ultimaMensagemOrigem: origem,
+            ultimaMensagemDestino: "suporte",
+            ultimaMensagemTexto: textoFinalizacao,
+
+            ultimaMensagem: {
+                texto: textoFinalizacao,
+                origem: origem,
+                origemReal: origem,
+                destinoReal: "suporte",
+                criadoEm: agora
+            },
+
+            atualizadoEm: agora
+        }, { merge: true });
+
+        await batch.commit();
+
+        alert(
+            "Atendimento finalizado com sucesso.\n\n" +
+            "Protocolo: " + protocolo
+        );
+
+        MOTORISTAMENSAGENS_conversaSelecionadaAtual = null;
+        MOTORISTAMENSAGENS_chamadoSuporteAtualId = "";
+
+        if (typeof MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal === "function") {
+            MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal();
+        }
+
+    } catch (erro) {
+        console.error("Erro ao finalizar atendimento:", erro);
+        alert("Não foi possível finalizar o atendimento agora.");
+    }
+}
+
 async function MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(item, textoOriginal) {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const contexto = TNP_MENSAGENS_contextoAtual || {};
@@ -43684,6 +44208,8 @@ function MOTORISTAMENSAGENS_func_enviarMensagemRoteada() {
 
     alert('Escolha uma conversa antes de enviar mensagem.');
 }
+
+
 
 async function MOTORISTAMENSAGENS_func_enviarNovaConversaSuporte() {
     const input = document.getElementById('MOTORISTAMENSAGENS_input_nova_conversa');
