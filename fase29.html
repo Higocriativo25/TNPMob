@@ -8416,6 +8416,44 @@ body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_h
     max-height: none !important;
     overflow: visible !important;
 }
+
+/* =========================================================
+   MENSAGENS - DIGITAÇÃO NORMAL DA ESQUERDA PARA DIREITA
+========================================================= */
+
+#MOTORISTAMENSAGENS_input_mensagem,
+#PASSAGEIROMENSAGENS_input_mensagem {
+    direction: ltr !important;
+    text-align: left !important;
+    unicode-bidi: normal !important;
+    writing-mode: horizontal-tb !important;
+}
+
+#MOTORISTAMENSAGENS_input_mensagem::placeholder,
+#PASSAGEIROMENSAGENS_input_mensagem::placeholder {
+    direction: ltr !important;
+    text-align: left !important;
+}
+
+.MOTORISTAMENSAGENS_input_box,
+.PASSAGEIROMENSAGENS_input_box {
+    direction: ltr !important;
+    flex-direction: row !important;
+}
+
+.MOTORISTAMENSAGENS_input_box textarea,
+.PASSAGEIROMENSAGENS_input_box textarea {
+    order: 1 !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+
+.MOTORISTAMENSAGENS_input_box button,
+.PASSAGEIROMENSAGENS_input_box button {
+    order: 2 !important;
+    margin-left: 8px !important;
+    margin-right: 0 !important;
+}
 	  
 </style>
 </head>
@@ -15081,7 +15119,24 @@ async function TNP_MOB_func_espelharDadosCompartilhadosNoMotorista(uid, dadosCom
 
 	await motoristaRef.set(payloadMotorista, { merge: true });
 }
+// =========================================================
+// SUPORTE - MENSAGEM AUTOMÁTICA DE RECEBIMENTO
+// =========================================================
 
+	window.TNP_SUPORTE_func_mensagemAutomaticaRecebimento = function(perfil) {
+		const textoPerfil =
+			perfil === "motorista"
+				? "motorista parceiro"
+				: "passageiro";
+
+		return (
+			"Olá! Recebemos sua mensagem no suporte TNP MoB.\n\n" +
+			"Muito obrigado por entrar em contato. Nossa equipe já foi notificada " +
+			"e vai analisar sua solicitação com atenção.\n\n" +
+			"Em breve você receberá uma resposta por aqui.\n\n" +
+			"Agradecemos por fazer parte da TNP MoB como " + textoPerfil + "."
+		);
+	};
 
 
 
@@ -22009,7 +22064,8 @@ async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
         const chamadoRef = db.collection("suporteChamados").doc();
         const mensagemRef = chamadoRef.collection("mensagens").doc();
 
-        const chamadoPayload = {
+        
+		const chamadoPayload = {
             origem: "passageiro",
             origemPerfil: "passageiro",
             destinoPerfil: "suporte",
@@ -22081,9 +22137,49 @@ async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
 
         await batch.commit();
 
-        alert("Sua mensagem foi enviada para a Central de Ajuda.");
+	const PASSAGEIROPAG_Login_textoAutomaticoSuporte =
+		TNP_SUPORTE_func_mensagemAutomaticaRecebimento("passageiro");
 
-        PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
+	await chamadoRef.collection("mensagens").add({
+		chamadoId: chamadoRef.id,
+
+		tipo: "resposta_automatica",
+		categoria: "suporte",
+		sistema: true,
+		respostaAutomatica: true,
+
+		texto: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
+		textoOriginal: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
+		textoExibido: PASSAGEIROPAG_Login_textoAutomaticoSuporte,
+
+		origem: "suporte",
+		origemPerfil: "suporte",
+		origemReal: "suporte",
+		origemUid: "sistema",
+
+		destino: "passageiro",
+		destinoPerfil: "passageiro",
+		destinoReal: "passageiro",
+		encaminhadoPara: "passageiro",
+
+		passageiroUid: user.uid,
+		motoristaUid: "",
+
+		enviadoPorUid: "sistema",
+
+		visivelParaPassageiro: true,
+		visivelParaSuporte: true,
+		visivelParaMotorista: false,
+
+		lidoPeloPassageiro: false,
+		lidoPorSuporte: true,
+
+		criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+	});
+
+	alert("Sua mensagem foi enviada para a Central de Ajuda.");
+
+	PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
 
     } catch (erro) {
         console.error("Erro ao enviar mensagem para a Central de Ajuda:", erro);
@@ -42243,7 +42339,28 @@ function TNP_MENSAGENS_func_definirContextoAtual(origem) {
     return true;
 }
 
+
+function TNP_MENSAGENS_func_corrigirDirecaoCampoMensagem() {
+    const campos = [
+        document.getElementById("MOTORISTAMENSAGENS_input_mensagem"),
+        document.getElementById("PASSAGEIROMENSAGENS_input_mensagem"),
+        document.getElementById("MOTORISTAMENSAGENS_input_nova_conversa"),
+        document.getElementById("PASSAGEIROMENSAGENS_input_nova_conversa")
+    ];
+
+    campos.forEach(function(campo) {
+        if (!campo) return;
+
+        campo.setAttribute("dir", "ltr");
+        campo.style.direction = "ltr";
+        campo.style.textAlign = "left";
+        campo.style.unicodeBidi = "plaintext";
+        campo.style.writingMode = "horizontal-tb";
+    });
+}
+
 function TNP_MENSAGENS_func_carregarTelaUniversal(origem) {
+
     const contextoOk = TNP_MENSAGENS_func_definirContextoAtual(origem);
 
     if (!contextoOk) return;
@@ -42290,15 +42407,35 @@ function TNP_MENSAGENS_func_carregarTelaUniversal(origem) {
     }
 
     if (typeof MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal === 'function') {
-        MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal();
-    }
+		MOTORISTAMENSAGENS_func_escutarChamadosSuporteUniversal();
+	}
+
+	setTimeout(function() {
+		TNP_MENSAGENS_func_corrigirDirecaoCampoMensagem();
+	}, 100);
 }
 
 function MOTORISTAPAG_Login_func_carregarTelaMensagensMotorista() {
+    if (typeof MOTORISTAPAG_Login_func_fecharMenuLateral === "function") {
+        MOTORISTAPAG_Login_func_fecharMenuLateral();
+    }
+
+    if (typeof PASSAGEIROPAG_Login_func_fecharMenuLateral === "function") {
+        PASSAGEIROPAG_Login_func_fecharMenuLateral();
+    }
+
     TNP_MENSAGENS_func_carregarTelaUniversal('motorista');
 }
 
 function PASSAGEIROPAG_Login_func_carregarTelaMensagensPassageiro() {
+    if (typeof PASSAGEIROPAG_Login_func_fecharMenuLateral === "function") {
+        PASSAGEIROPAG_Login_func_fecharMenuLateral();
+    }
+
+    if (typeof MOTORISTAPAG_Login_func_fecharMenuLateral === "function") {
+        MOTORISTAPAG_Login_func_fecharMenuLateral();
+    }
+
     TNP_MENSAGENS_func_carregarTelaUniversal('passageiro');
 }
 
@@ -43809,18 +43946,24 @@ function MOTORISTAMENSAGENS_func_enviarMensagemTesteLocal() {
 function MOTORISTAMENSAGENS_func_autoAjustarInputMensagem(textarea) {
     if (!textarea) return;
 
+    textarea.setAttribute("dir", "ltr");
+    textarea.style.direction = "ltr";
+    textarea.style.textAlign = "left";
+    textarea.style.unicodeBidi = "normal";
+    textarea.style.writingMode = "horizontal-tb";
+
     const alturaMinima = 28;
     const alturaMaxima = 230;
 
-    textarea.style.height = 'auto';
+    textarea.style.height = "auto";
 
     const novaAltura = Math.max(
         alturaMinima,
         Math.min(textarea.scrollHeight, alturaMaxima)
     );
 
-    textarea.style.height = novaAltura + 'px';
-    textarea.style.overflowY = textarea.scrollHeight > alturaMaxima ? 'auto' : 'hidden';
+    textarea.style.height = novaAltura + "px";
+    textarea.style.overflowY = textarea.scrollHeight > alturaMaxima ? "auto" : "hidden";
 }
 
 function MOTORISTAMENSAGENS_func_escutarMensagensProntasFirebase() {
