@@ -14784,7 +14784,8 @@ TELA MOTORISTA 9: HOME DO MOTORISTA - SUB MODAIS 2 DA HOME fINAL
 				➤
 			</button>
 		</div>
-	    <button
+	    <div style="padding-bottom:120px;">
+		<button
 			type="button"
 			id="MOTORISTAMENSAGENS_btn_finalizar_conversa"
 			class="MOTORISTAMENSAGENS_btn_finalizar_conversa"
@@ -14792,7 +14793,7 @@ TELA MOTORISTA 9: HOME DO MOTORISTA - SUB MODAIS 2 DA HOME fINAL
 		>
 			FINALIZAR 
 		</button>
-		
+		</div>
 
 	</div>
 
@@ -31773,7 +31774,7 @@ async function MOTORISTAPAG_Login_func_iniciarVideoSeguranca() {
         const stream = await navigator.mediaDevices.getUserMedia({
             audio: true,
             video: {
-                facingMode: "environment"
+                facingMode: "user"
             }
         });
 
@@ -41091,7 +41092,7 @@ async function MOTORISTAPAG_Login_func_gravarVideoSosUmMinutoParaSuporte(alertaI
             await navigator.mediaDevices.getUserMedia({
                 audio: true,
                 video: {
-                    facingMode: "environment"
+                    facingMode: "user"
                 }
             });
 
