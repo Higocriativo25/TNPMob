@@ -8600,7 +8600,65 @@ body:has(#MOTORISTAPAG_Login_screen_pix_confirmacao.active) #PRIMEIRAPAG_Login_h
 }
 
 
-	  
+/* ===== MOTORISTA - CONTATO DE EMERGÊNCIA: MOLDURA DO FORM ===== */
+
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .MOTORISTAPAG_Login_contato_emergencia_top_box {
+    width: 100%;
+    padding: 16px;
+    margin-top: 18px;
+
+    background: rgba(32, 27, 23, 0.96);
+    border: 1px solid rgba(212, 166, 116, 0.32);
+    border-radius: 18px;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* ===== MOTORISTA - AVISO DO CONTATO DE EMERGÊNCIA ===== */
+
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .MOTORISTAPAG_Login_contato_emergencia_top_aviso {
+    margin-top: 14px;
+    padding: 13px 14px;
+
+    background: rgba(212, 166, 116, 0.16);
+    border: 1px solid rgba(212, 166, 116, 0.42);
+    border-left: 4px solid #d4a674;
+    border-radius: 14px;
+
+    color: #f5dfc5;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+
+    opacity: 1;
+    text-shadow: none;
+}
+
+/* melhora a leitura dos labels dentro dessa tela */
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .PRIMEIRAPAG_Login_form_group label {
+    color: #d7b98f;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+/* melhora input e select dessa tela */
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .PRIMEIRAPAG_Login_form_group input,
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .PRIMEIRAPAG_Login_form_group select {
+    background: rgba(43, 36, 31, 0.98);
+    border: 1px solid rgba(212, 166, 116, 0.28);
+    color: #ffffff;
+    border-radius: 10px;
+}
+
+/* foco mais visível */
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .PRIMEIRAPAG_Login_form_group input:focus,
+.MOTORISTAPAG_Login_screen_contato_emergencia_top .PRIMEIRAPAG_Login_form_group select:focus {
+    border-color: #d4a674;
+    box-shadow: 0 0 0 3px rgba(212, 166, 116, 0.16);
+    outline: none;
+}	  
 </style>
 </head>
 
@@ -10257,41 +10315,49 @@ class="PRIMEIRAPAG_Login_btn PRIMEIRAPAG_Login_btn_secondary PRIMEIRAPAG_Login_m
   
 
 <!-- //--========== TELA 21 PASSAGEIRO: CENTRAL DE AJUDA ========== // -->
-<div id="PASSAGEIROPAG_Login_screen_ajuda" class="PRIMEIRAPAG_Login_screen PASSAGEIROPAG_Login_screen_ajuda">
+<div id="PASSAGEIROPAG_Login_screen_ajuda"
+     class="PRIMEIRAPAG_Login_screen MOTORISTAPAG_Login_modal_home MOTORISTAPAG_Login_modal_ajuda PASSAGEIROPAG_Login_screen_ajuda">
 
-    <div class="PASSAGEIROPAG_Login_ajuda_topo">
-        <button type="button"
-                class="PASSAGEIROPAG_Login_ajuda_btn_voltar"
-                onclick="PASSAGEIROPAG_Login_func_ajudaVoltar()">
-            ←
-        </button>
+    <div class="MOTORISTAPAG_Login_modal_ajuda_box">
 
-        <div class="PASSAGEIROPAG_Login_ajuda_topo_textos">
-            <h2 id="PASSAGEIROPAG_Login_ajuda_titulo_topo">Central de Ajuda</h2>
-            <p id="PASSAGEIROPAG_Login_ajuda_subtitulo_topo">Olá, como podemos ajudar?</p>
+        <div class="MOTORISTAPAG_Login_ajuda_topo_modal">
+
+            <button type="button"
+                    class="MOTORISTAPAG_Login_ajuda_topo_btn"
+                    onclick="PASSAGEIROPAG_Login_func_ajudaVoltar()">
+                ←
+            </button>
+
+            <div class="MOTORISTAPAG_Login_ajuda_topo_centro">
+                <h2 id="PASSAGEIROPAG_Login_ajuda_titulo_topo">Central de Ajuda</h2>
+                <p id="PASSAGEIROPAG_Login_ajuda_subtitulo_topo">Olá, como podemos ajudar?</p>
+            </div>
+
+            <button type="button"
+                    class="MOTORISTAPAG_Login_ajuda_topo_btn"
+                    onclick="PASSAGEIROPAG_Login_func_fecharCentralAjuda()">
+                ×
+            </button>
+
         </div>
 
-        <button type="button"
-                class="PASSAGEIROPAG_Login_ajuda_btn_fechar"
-                onclick="PASSAGEIROPAG_Login_func_fecharCentralAjuda()">
-            ×
-        </button>
-    </div>
+        <div class="PASSAGEIROPAG_Login_ajuda_busca_box">
+            <span>🔍</span>
+            <input type="text"
+                   id="PASSAGEIROPAG_Login_ajuda_input_busca"
+                   placeholder="Pesquisar artigos de ajuda"
+                   oninput="PASSAGEIROPAG_Login_func_pesquisarAjudaComEspera()">
+        </div>
 
-    <div class="PASSAGEIROPAG_Login_ajuda_busca_box">
-        <span>🔍</span>
-        <input type="text"
-			   id="PASSAGEIROPAG_Login_ajuda_input_busca"
-			   placeholder="Pesquisar artigos de ajuda"
-			   oninput="PASSAGEIROPAG_Login_func_pesquisarAjudaComEspera()">
-    </div>
+        <div id="PASSAGEIROPAG_Login_ajuda_conteudo"
+             class="PASSAGEIROPAG_Login_ajuda_conteudo">
+            <!-- CONTEÚDO GERADO PELO JAVASCRIPT -->
+        </div>
 
-    <div id="PASSAGEIROPAG_Login_ajuda_conteudo" class="PASSAGEIROPAG_Login_ajuda_conteudo">
-        <!-- CONTEÚDO GERADO PELO JAVASCRIPT -->
     </div>
 
 </div>
-   <!-- //--========== TELA 21 PASSAGEIRO: CENTRAL DE AJUDA FINAL ========== // -->
+<!-- //--========== TELA 21 PASSAGEIRO: CENTRAL DE AJUDA FINAL ========== // -->
     
   
  <!--// ============  TELA 22 PASSAGEIRO - MENSAGENS  ============= // -->  
@@ -15294,7 +15360,37 @@ async function TNP_MOB_func_espelharDadosCompartilhadosNoMotorista(uid, dadosCom
 		);
 	};
 
+async function TNP_AJUDA_func_contarChamadosAbertosPerfil(perfil, uid) {
+    const db = firebase.firestore();
 
+    const campoUid = perfil === "motorista" ? "motoristaUid" : "passageiroUid";
+
+    const statusFinalizados = [
+        "encerrado",
+        "finalizado",
+        "fechado",
+        "resolvido",
+        "cancelado"
+    ];
+
+    const snap = await db.collection("suporteChamados")
+        .where(campoUid, "==", uid)
+        .limit(20)
+        .get();
+
+    let totalAbertos = 0;
+
+    snap.forEach(function(doc) {
+        const dados = doc.data() || {};
+        const status = String(dados.status || "").toLowerCase();
+
+        if (!statusFinalizados.includes(status)) {
+            totalAbertos++;
+        }
+    });
+
+    return totalAbertos;
+}
 
         // ========== TELA 1: LOGIN ==========
         function PRIMEIRAPAG_Login_func_selecionarTipoLogin(PRIMEIRAPAG_tipo) {
@@ -20515,6 +20611,7 @@ function DECIMASEGUNDAPAG_Login_func_irParaEtapaPendente(dados) {
     DECIMAPRIMEIRAPAG_Login_func_carregarRevisaoFinal();
 }
 
+
 async function DECIMASEGUNDAPAG_Login_func_salvarIdTnp() {
     const DECIMASEGUNDAPAG_Login_user = PRIMEIRAPAG_Login_auth.currentUser;
     const DECIMASEGUNDAPAG_Login_btn = document.getElementById('DECIMASEGUNDAPAG_Login_btn_salvar_tnp');
@@ -22229,19 +22326,31 @@ async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
             };
         }
 
-        if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
-            alert("Função de envio ao suporte não encontrada.");
-            return;
-        }
+        const totalChamadosAbertos = await TNP_AJUDA_func_contarChamadosAbertosPerfil("passageiro", user.uid);
 
-        const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
-            {
-                tipo: "suporte",
-                chamadoId: "",
-                novaConversa: true
-            },
-            textoInicial
-        );
+		if (totalChamadosAbertos >= 3) {
+			alert(
+				"Você já possui 3 chamados abertos com o suporte.\n\n" +
+				"Finalize ou aguarde a conclusão de um chamado antes de abrir outro."
+			);
+
+			PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda();
+			return;
+		}
+
+		if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
+			alert("Função de envio ao suporte não encontrada.");
+			return;
+		}
+
+		const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
+			{
+				tipo: "suporte",
+				chamadoId: "",
+				novaConversa: true
+			},
+			textoInicial
+		);
 
         if (!enviado) {
             alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
@@ -22261,12 +22370,32 @@ async function PASSAGEIROPAG_Login_func_abrirWhatsappAjuda() {
 }
 
 function PASSAGEIROPAG_Login_func_abrirHistoricoMensagensAjuda() {
-    if (typeof NOTIFICACOES_func_abrirPainelUniversal === "function") {
-        NOTIFICACOES_func_abrirPainelUniversal("passageiro");
+    const telaAjuda = document.getElementById("PASSAGEIROPAG_Login_screen_ajuda");
+    const inputBusca = document.getElementById("PASSAGEIROPAG_Login_ajuda_input_busca");
+
+    if (inputBusca) {
+        inputBusca.value = "";
+    }
+
+    PASSAGEIROPAG_Login_ajudaTelaAtual = "inicio";
+    PASSAGEIROPAG_Login_ajudaHistorico = [];
+    PASSAGEIROPAG_Login_ajudaArtigoAtual = null;
+
+    if (telaAjuda) {
+        telaAjuda.style.display = "none";
+        telaAjuda.classList.remove("active");
+    }
+
+    if (typeof TNP_MENSAGENS_func_definirContextoAtual === "function") {
+        TNP_MENSAGENS_func_definirContextoAtual("passageiro");
+    }
+
+    if (typeof PASSAGEIROPAG_Login_func_carregarTelaMensagensPassageiro === "function") {
+        PASSAGEIROPAG_Login_func_carregarTelaMensagensPassageiro("suporte");
         return;
     }
 
-    alert("Mensagem enviada, mas o painel de mensagens do passageiro não foi encontrado.");
+    alert("Mensagem enviada, mas a função da tela de mensagens do passageiro não foi encontrada.");
 }
 
 window.PASSAGEIROPAG_Login_func_carregarCentralAjuda = PASSAGEIROPAG_Login_func_carregarCentralAjuda;
@@ -30232,6 +30361,71 @@ function MOTORISTAPAG_Login_func_obterIdTnpExistente(usuarioDados, motoristaDado
     ).replace(/\D/g, "").slice(0, 10);
 }
 
+// ========== LINKS E AJUDA TNP MOTORISTA ==========
+
+function MOTORISTAPAG_Login_func_abrirLinkTnpMotorista() {
+    const MOTORISTAPAG_Login_linkTnp = "https://app.todosnospodemos.com.br/cadastro/125752";
+
+    window.open(MOTORISTAPAG_Login_linkTnp, "_blank");
+}
+
+function MOTORISTAPAG_Login_func_abrirVideoTnpMotorista() {
+    // Se o modal explicativo do passageiro já existe no HTML, reaproveita ele.
+    if (typeof DECIMASEGUNDAPAG_Login_func_abrirModalAjudaTnp === "function") {
+        DECIMASEGUNDAPAG_Login_func_abrirModalAjudaTnp();
+        return;
+    }
+
+    // Se depois você criar um modal separado do motorista, ele abre aqui.
+    const modalMotorista = document.getElementById("MOTORISTAPAG_Login_modal_tnp");
+
+    if (modalMotorista) {
+        modalMotorista.style.display = "flex";
+        return;
+    }
+
+    alert("Vídeo explicativo da TNP ainda não foi encontrado nesta tela.");
+}
+
+function MOTORISTAPAG_Login_func_fecharModalAjudaTnpMotorista() {
+    const modalMotorista = document.getElementById("MOTORISTAPAG_Login_modal_tnp");
+
+    if (modalMotorista) {
+        modalMotorista.style.display = "none";
+        return;
+    }
+
+    if (typeof DECIMASEGUNDAPAG_Login_func_fecharModalAjudaTnp === "function") {
+        DECIMASEGUNDAPAG_Login_func_fecharModalAjudaTnp();
+    }
+}
+
+function MOTORISTAPAG_Login_func_maskIdTnpMotorista(input) {
+    if (!input) return;
+
+    let valor = String(input.value || "").replace(/\D/g, "");
+
+    if (valor.length > 10) {
+        valor = valor.substring(0, 10);
+    }
+
+    input.value = valor;
+}
+
+window.MOTORISTAPAG_Login_func_abrirLinkTnpMotorista =
+    MOTORISTAPAG_Login_func_abrirLinkTnpMotorista;
+
+window.MOTORISTAPAG_Login_func_abrirVideoTnpMotorista =
+    MOTORISTAPAG_Login_func_abrirVideoTnpMotorista;
+
+window.MOTORISTAPAG_Login_func_fecharModalAjudaTnpMotorista =
+    MOTORISTAPAG_Login_func_fecharModalAjudaTnpMotorista;
+
+window.MOTORISTAPAG_Login_func_maskIdTnpMotorista =
+    MOTORISTAPAG_Login_func_maskIdTnpMotorista;
+
+// ========== LINKS E AJUDA TNP MOTORISTA FINAL ==========
+
 async function MOTORISTAPAG_Login_func_prepararTelaIdTnpMotorista() {
     const user = PRIMEIRAPAG_Login_auth.currentUser;
     const input = document.getElementById('MOTORISTAPAG_Login_input_id_tnp');
@@ -32384,7 +32578,7 @@ function MOTORISTAPAG_Login_func_abrirPerfilMotorista() {
 }
 //-- TELA MOTORISTA 9: HOME DO MOTORISTA - MODAL PERFIL DO MOTORISTA FINAL -->
 
-//--========== TELA MOTORISTA: CENTRAL DE AJUDA ========== //
+//--========== MODAL MOTORISTA: CENTRAL DE AJUDA ========== //
 
 // const MOTORISTAPAG_Login_ajudaWhatsappSuporte = "5531996645814";
 
@@ -33067,19 +33261,31 @@ async function MOTORISTAPAG_Login_func_abrirWhatsappAjudaMotorista() {
             };
         }
 
-        if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
-            alert("Função de envio ao suporte não encontrada.");
-            return;
-        }
+        const totalChamadosAbertos = await TNP_AJUDA_func_contarChamadosAbertosPerfil("motorista", user.uid);
 
-        const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
-            {
-                tipo: "suporte",
-                chamadoId: "",
-                novaConversa: true
-            },
-            textoInicial
-        );
+		if (totalChamadosAbertos >= 3) {
+			alert(
+				"Você já possui 3 chamados abertos com o suporte.\n\n" +
+				"Finalize ou aguarde a conclusão de um chamado antes de abrir outro."
+			);
+
+			MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista();
+			return;
+		}
+
+		if (typeof MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte !== "function") {
+			alert("Função de envio ao suporte não encontrada.");
+			return;
+		}
+
+		const enviado = await MOTORISTAMENSAGENS_func_enviarMensagemDiretaSuporte(
+			{
+				tipo: "suporte",
+				chamadoId: "",
+				novaConversa: true
+			},
+			textoInicial
+		);
 
         if (!enviado) {
             alert("Não foi possível enviar sua mensagem agora. Tente novamente em instantes.");
@@ -33103,12 +33309,24 @@ function MOTORISTAPAG_Login_func_abrirHistoricoMensagensAjudaMotorista() {
         MOTORISTAPAG_Login_func_fecharCentralAjudaMotorista();
     }
 
-    if (typeof NOTIFICACOES_func_abrirPainelUniversal === "function") {
-        NOTIFICACOES_func_abrirPainelUniversal("motorista");
+    if (typeof TNP_MENSAGENS_func_definirContextoAtual === "function") {
+        TNP_MENSAGENS_func_definirContextoAtual("motorista");
+    }
+
+    if (typeof MOTORISTAMENSAGENS_func_abrirTela === "function") {
+        MOTORISTAMENSAGENS_func_abrirTela("suporte");
         return;
     }
 
-    alert("Mensagem enviada, mas o painel de mensagens do motorista não foi encontrado.");
+    const telaMensagens = document.getElementById("MOTORISTAMENSAGENS_tela");
+
+    if (telaMensagens) {
+        telaMensagens.style.display = "flex";
+        telaMensagens.classList.add("active");
+        return;
+    }
+
+    alert("Mensagem enviada, mas a tela de mensagens do motorista não foi encontrada.");
 }
 
 window.MOTORISTAPAG_Login_func_carregarCentralAjudaMotorista = MOTORISTAPAG_Login_func_carregarCentralAjudaMotorista;
