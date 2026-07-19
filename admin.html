@@ -1731,7 +1731,9 @@
     <div class="ADM_modal_box ADM_video_sos_box" onclick="event.stopPropagation()">
         <div class="ADM_chat_suporte_topo">
             <div>
-                <h3 class="ADM_modal_title">🎥 Vídeo gravado do SOS</h3>
+                <h3 id="ADM_video_sos_titulo" class="ADM_modal_title">
+					🎥 Vídeo gravado do SOS
+				</h3>
                 <div id="ADM_video_sos_info" class="ADM_muted">
                     Aguardando transmissão do motorista...
                 </div>
@@ -2236,37 +2238,96 @@ async function ADM_buscarAbrirChamadoPorProtocolo() {
 
     if (protocoloDigitado === null) return;
 
-    const protocolo = ADM_normalizarProtocoloSuporte(protocoloDigitado);
+    const protocoloOriginal = String(protocoloDigitado || "").trim();
+    const protocoloNormalizado = ADM_normalizarProtocoloSuporte(protocoloOriginal);
 
-    if (!protocolo) {
+    if (!protocoloOriginal && !protocoloNormalizado) {
         alert("Informe um protocolo válido.");
         return;
     }
 
     try {
-        const snap = await db
+        let docEncontrado = null;
+
+        // 1. Tenta achar direto pelo ID do documento, sem mexer no texto digitado
+        const docOriginalSnap = await db
             .collection("suporteChamados")
-            .where("protocolo", "==", protocolo)
-            .limit(1)
+            .doc(protocoloOriginal)
             .get();
 
-        if (snap.empty) {
-            alert("Nenhum chamado encontrado com o protocolo:\n\n" + protocolo);
+        if (docOriginalSnap.exists) {
+            docEncontrado = docOriginalSnap;
+        }
+
+        // 2. Tenta achar pelo ID normalizado
+        if (!docEncontrado && protocoloNormalizado && protocoloNormalizado !== protocoloOriginal) {
+            const docNormalizadoSnap = await db
+                .collection("suporteChamados")
+                .doc(protocoloNormalizado)
+                .get();
+
+            if (docNormalizadoSnap.exists) {
+                docEncontrado = docNormalizadoSnap;
+            }
+        }
+
+        // 3. Tenta achar pelo campo protocolo
+        if (!docEncontrado && protocoloNormalizado) {
+            const snapProtocolo = await db
+                .collection("suporteChamados")
+                .where("protocolo", "==", protocoloNormalizado)
+                .limit(1)
+                .get();
+
+            if (!snapProtocolo.empty) {
+                docEncontrado = snapProtocolo.docs[0];
+            }
+        }
+
+        // 4. Tenta achar pelo campo protocoloSuporte
+        if (!docEncontrado && protocoloNormalizado) {
+            const snapProtocoloSuporte = await db
+                .collection("suporteChamados")
+                .where("protocoloSuporte", "==", protocoloNormalizado)
+                .limit(1)
+                .get();
+
+            if (!snapProtocoloSuporte.empty) {
+                docEncontrado = snapProtocoloSuporte.docs[0];
+            }
+        }
+
+        // 5. Se digitou com espaços/minúsculas, tenta campo protocolo com original também
+        if (!docEncontrado && protocoloOriginal) {
+            const snapProtocoloOriginal = await db
+                .collection("suporteChamados")
+                .where("protocolo", "==", protocoloOriginal)
+                .limit(1)
+                .get();
+
+            if (!snapProtocoloOriginal.empty) {
+                docEncontrado = snapProtocoloOriginal.docs[0];
+            }
+        }
+
+        if (!docEncontrado) {
+            alert(
+                "Nenhum chamado encontrado com o protocolo:\n\n" +
+                protocoloOriginal
+            );
             return;
         }
 
-        const doc = snap.docs[0];
-
-        ADM_suporteChamadosMap.set(doc.id, {
-            ...doc.data(),
-            id: doc.id,
+        ADM_suporteChamadosMap.set(docEncontrado.id, {
+            ...docEncontrado.data(),
+            id: docEncontrado.id,
             colecao: "suporteChamados"
         });
 
         ADM_setAba("mensagens");
 
         setTimeout(function() {
-            ADM_abrirMensagensChamadoSuporte(doc.id);
+            ADM_abrirMensagensChamadoSuporte(docEncontrado.id);
         }, 100);
 
     } catch (erro) {
@@ -5448,9 +5509,16 @@ function ADM_acoesCadastro(data, ehMotorista) {
             ADM_abrirRevisaoPassageiro(uid);
         });
 
-        ADM_configurarBotaoAcaoCadastro(box, "pedirNovaFoto", function() {
-            ADM_solicitarNovaFotoPerfilPassageiro(uid);
-        });
+        ADM_configurarBotaoAcaoCadastro(
+			box,
+			"pedirNovaFoto",
+			function() {
+				ADM_solicitarRevisaoFotoPerfilUsuario(
+					uid,
+					"passageiro"
+				);
+			}
+		);
 
         ADM_configurarBotaoAcaoCadastro(box, "copiarUid", function() {
             ADM_copiarUid(uid);
@@ -6602,8 +6670,114 @@ async function ADM_solicitarPendenciaAdminPassageiro(uid, tipoPendencia) {
 		return;
 	}
 
-	const agora = firebase.firestore.FieldValue.serverTimestamp();
-	const adminUid = auth.currentUser ? auth.currentUser.uid : '';
+	const agora =
+    firebase.firestore.FieldValue.serverTimestamp();
+
+const adminUid =
+    auth.currentUser
+        ? auth.currentUser.uid
+        : "";
+
+/*
+ * Busca o documento atual para preservar
+ * a foto e os demais dados já existentes.
+ */
+const usuarioRef = db
+    .collection("usuarios")
+    .doc(uid);
+
+const usuarioSnap =
+    await usuarioRef.get();
+
+const dadosAtuais =
+    usuarioSnap.exists
+        ? usuarioSnap.data()
+        : {};
+
+const mapaDocumentoAtual =
+    dadosAtuais[config.campoMapa] &&
+    typeof dadosAtuais[config.campoMapa] ===
+        "object"
+        ? dadosAtuais[config.campoMapa]
+        : {};
+
+const statusCadastroAtual =
+    dadosAtuais.statusCadastroPassageiro &&
+    typeof dadosAtuais.statusCadastroPassageiro ===
+        "object"
+        ? dadosAtuais.statusCadastroPassageiro
+        : {};
+
+const atualizacao = {
+    pendenciaAdminPassageiro: true,
+
+    tipoPendenciaAdminPassageiro:
+        config.tipoPendenciaAdmin,
+
+    motivoPendenciaAdminPassageiro:
+        motivo.trim(),
+
+    requerAnaliseAdmin: true,
+    motivoAnaliseAdmin: motivo.trim(),
+
+    bloqueadoPorPendenciaAdmin: false,
+
+    atualizadoEm: agora
+};
+
+		/*
+		 * Preserva URL, caminho, tamanho e demais
+		 * informações da foto anterior.
+		 */
+		atualizacao[config.campoMapa] = {
+			...mapaDocumentoAtual,
+
+			status: "pendente_correcao",
+			motivoReprovacao: motivo.trim(),
+
+			avisosMostrados: 0,
+			limiteAvisos: 3,
+			bloquearAoIgnorar: true,
+
+			solicitadoEm: agora,
+			solicitadoPor: adminUid,
+
+			aprovadoEm: null,
+			aprovadoPor: "",
+
+			reprovadoEm: agora,
+			reprovadoPor: adminUid,
+
+			reenviadoEm: null,
+			analisadoEm: null,
+			analisadoPor: ""
+		};
+
+		Object.assign(
+			atualizacao,
+			config.camposExtras
+		);
+
+		/*
+		 * Preserva os outros status do cadastro.
+		 */
+		atualizacao.statusCadastroPassageiro = {
+			...statusCadastroAtual,
+
+			[config.statusCadastroCampo]:
+				"pendente_correcao"
+		};
+
+		await usuarioRef.set(
+			atualizacao,
+			{
+				merge: true
+			}
+		);
+
+		alert(
+			"Solicitação enviada para o passageiro."
+		);
 
 	const atualizacao = {
 		pendenciaAdminPassageiro: true,
@@ -6618,107 +6792,634 @@ async function ADM_solicitarPendenciaAdminPassageiro(uid, tipoPendencia) {
 		atualizadoEm: agora
 		};
 
-		atualizacao[config.campoMapa] = {
-		status: 'pendente_correcao',
-		motivoReprovacao: motivo.trim(),
+		/*
+		 * Atualiza apenas os campos de controle da pendência.
+		 *
+		 * Não substitui o mapa inteiro, preservando:
+		 * url, caminho, enviado, tamanho e demais dados
+		 * da foto anterior.
+		 */
+		atualizacao[
+			config.campoMapa + ".status"
+		] = "pendente_correcao";
 
-		avisosMostrados: 0,
-		limiteAvisos: 3,
-		bloquearAoIgnorar: true,
+		atualizacao[
+			config.campoMapa + ".motivoReprovacao"
+		] = motivo.trim();
 
-		solicitadoEm: agora,
-		solicitadoPor: adminUid,
+		atualizacao[
+			config.campoMapa + ".avisosMostrados"
+		] = 0;
 
-		aprovadoEm: null,
-		aprovadoPor: '',
-		reprovadoEm: null,
-		reprovadoPor: '',
-		reenviadoEm: null,
-		analisadoEm: null,
-		analisadoPor: '',
+		atualizacao[
+			config.campoMapa + ".limiteAvisos"
+		] = 3;
 
-		url: '',
-		caminho: '',
-		enviado: false
-	};
+		atualizacao[
+			config.campoMapa + ".bloquearAoIgnorar"
+		] = true;
 
-	Object.assign(atualizacao, config.camposExtras);
+		atualizacao[
+			config.campoMapa + ".solicitadoEm"
+		] = agora;
 
-	if (config.statusCadastroCampo === 'comprovanteEndereco') {
-	atualizacao.statusCadastroPassageiro = {
-		...(atualizacao.statusCadastroPassageiro || {}),
-		comprovanteEndereco: 'pendente_correcao'
-	};
-}
+		atualizacao[
+			config.campoMapa + ".solicitadoPor"
+		] = adminUid;
 
-if (config.statusCadastroCampo === 'documentos') {
-	atualizacao.statusCadastroPassageiro = {
-		...(atualizacao.statusCadastroPassageiro || {}),
-		documentos: 'pendente_correcao'
-	};
-}
+		atualizacao[
+			config.campoMapa + ".aprovadoEm"
+		] = null;
 
+		atualizacao[
+			config.campoMapa + ".aprovadoPor"
+		] = "";
+
+		atualizacao[
+			config.campoMapa + ".reprovadoEm"
+		] = agora;
+
+		atualizacao[
+			config.campoMapa + ".reprovadoPor"
+		] = adminUid;
+
+		atualizacao[
+			config.campoMapa + ".reenviadoEm"
+		] = null;
+
+		atualizacao[
+			config.campoMapa + ".analisadoEm"
+		] = null;
+
+		atualizacao[
+			config.campoMapa + ".analisadoPor"
+		] = "";
+
+		Object.assign(
+			atualizacao,
+			config.camposExtras
+		);
+
+		/*
+		 * Atualiza somente o status específico,
+		 * sem substituir o mapa statusCadastroPassageiro.
+		 */
+		if (
+			config.statusCadastroCampo ===
+			"comprovanteEndereco"
+		) {
+			atualizacao[
+				"statusCadastroPassageiro.comprovanteEndereco"
+			] = "pendente_correcao";
+		}
+
+		if (
+			config.statusCadastroCampo ===
+			"documentos"
+		) {
+			atualizacao[
+				"statusCadastroPassageiro.documentos"
+			] = "pendente_correcao";
+		}
 	await db.collection('usuarios').doc(uid).set(atualizacao, { merge: true });
 
 	alert('Pedido enviado ao passageiro.');
 }
 
-async function ADM_aprovarPendenciaAdminPassageiro(uid, tipoPendencia) {
-	const configs = {
-		comprovanteEndereco: {
-			campoMapa: 'comprovanteEndereco',
-			camposExtras: {
-				comprovanteEnderecoPendente: false,
-				fotoEnderecoPendente: false
-			}
-		},
+async function ADM_aprovarPendenciaAdminPassageiro(
+    uid,
+    tipoPendencia
+) {
+    const configs = {
+        comprovanteEndereco: {
+            campoMapa: "comprovanteEndereco",
 
-		documentoIdentidade: {
-			campoMapa: 'documentoIdentidade',
-			camposExtras: {
-				documentoIdentidadePendente: false
-			}
-		},
+            camposExtras: {
+                comprovanteEnderecoPendente: false,
+                fotoEnderecoPendente: false
+            }
+        },
 
-		selfieDocumento: {
-			campoMapa: 'selfieDocumentoExtra',
-			camposExtras: {
-				selfieDocumentoExtraPendente: false,
-				selfieDocumentoExtraConcluida: true,
-				bloqueadoPorSelfieDocumentoExtra: false
-			}
-		}
-	};
+        documentoIdentidade: {
+            campoMapa: "documentoIdentidade",
 
-	const config = configs[tipoPendencia];
+            camposExtras: {
+                documentoIdentidadePendente: false
+            }
+        },
 
-	if (!config) {
-		alert('Tipo de aprovação não configurado.');
-		return;
-	}
+        selfieDocumento: {
+            campoMapa: "selfieDocumentoExtra",
 
-	if (!confirm('Aprovar esta pendência do passageiro?')) {
-		return;
-	}
+            camposExtras: {
+                selfieDocumentoExtraPendente: false,
+                selfieDocumentoExtraConcluida: true,
+                bloqueadoPorSelfieDocumentoExtra: false
+            }
+        }
+    };
 
-	const agora = firebase.firestore.FieldValue.serverTimestamp();
-	const adminUid = auth.currentUser ? auth.currentUser.uid : '';
+    const config = configs[tipoPendencia];
 
-	const atualizacao = {
-		atualizadoEm: agora,
-		ultimaPendenciaAprovada: tipoPendencia
-	};
+    if (!config) {
+        alert(
+            "Tipo de aprovação não configurado."
+        );
+        return;
+    }
 
-	atualizacao[config.campoMapa + '.status'] = 'aprovado';
-	atualizacao[config.campoMapa + '.motivoReprovacao'] = '';
-	atualizacao[config.campoMapa + '.aprovadoEm'] = agora;
-	atualizacao[config.campoMapa + '.aprovadoPor'] = adminUid;
+    if (
+        !confirm(
+            "Aprovar esta pendência do passageiro?"
+        )
+    ) {
+        return;
+    }
 
-	Object.assign(atualizacao, config.camposExtras);
+    const usuarioRef = db
+        .collection("usuarios")
+        .doc(uid);
 
-	await db.collection('usuarios').doc(uid).update(atualizacao);
+    const motoristaRef = db
+        .collection("motoristas")
+        .doc(uid);
 
-	alert('Pendência aprovada com sucesso.');
+    try {
+        await db.runTransaction(
+            async function(transaction) {
+
+                /*
+                 * Busca o usuário e também o motorista,
+                 * pois a mesma conta pode possuir os
+                 * dois perfis.
+                 */
+                const resultados = await Promise.all([
+                    transaction.get(usuarioRef),
+                    transaction.get(motoristaRef)
+                ]);
+
+                const usuarioSnap = resultados[0];
+                const motoristaSnap = resultados[1];
+
+                if (!usuarioSnap.exists) {
+                    throw new Error(
+                        "Usuário não encontrado."
+                    );
+                }
+
+                const usuario =
+                    usuarioSnap.data() || {};
+
+                const motorista =
+                    motoristaSnap.exists
+                        ? motoristaSnap.data() || {}
+                        : {};
+
+                const agora =
+                    firebase.firestore.FieldValue
+                        .serverTimestamp();
+
+                const adminUid =
+                    auth.currentUser
+                        ? auth.currentUser.uid
+                        : "";
+
+                /*
+                 * Status que ainda precisam manter
+                 * a conta na fila administrativa.
+                 */
+                function statusMantemNaFila(status) {
+                    return [
+                        "pendente_envio",
+                        "pendente_correcao",
+                        "pendente_analise",
+                        "em_analise",
+                        "reprovado",
+                        "recusado",
+                        "corrigir"
+                    ].includes(
+                        String(status || "").trim()
+                    );
+                }
+
+                /*
+                 * Representa os dados depois da
+                 * aprovação atual.
+                 */
+                const usuarioDepois = {
+                    ...usuario,
+
+                    [config.campoMapa]: {
+                        ...(
+                            usuario[
+                                config.campoMapa
+                            ] || {}
+                        ),
+
+                        status: "aprovado",
+                        motivoReprovacao: ""
+                    },
+
+                    ...config.camposExtras
+                };
+
+                /*
+                 * Verifica os três documentos
+                 * possíveis do passageiro.
+                 */
+                const pendenciasDocumentos = [
+                    {
+                        tipo: "selfieDocumento",
+                        mapa: "selfieDocumentoExtra"
+                    },
+
+                    {
+                        tipo: "documentoIdentidade",
+                        mapa: "documentoIdentidade"
+                    },
+
+                    {
+                        tipo: "comprovanteEndereco",
+                        mapa: "comprovanteEndereco"
+                    }
+                ].map(function(item) {
+                    const registro =
+                        usuarioDepois[item.mapa] || {};
+
+                    return {
+                        tipo: item.tipo,
+                        mapa: item.mapa,
+                        status:
+                            registro.status || "",
+                        motivo:
+                            registro.motivoReprovacao ||
+                            ""
+                    };
+                });
+
+                /*
+                 * Procura outro documento que ainda
+                 * esteja aguardando correção/análise.
+                 */
+                const proximaPendenciaDocumento =
+                    pendenciasDocumentos.find(
+                        function(item) {
+                            return statusMantemNaFila(
+                                item.status
+                            );
+                        }
+                    ) || null;
+
+                /*
+                 * Foto de perfil também pode manter
+                 * o passageiro na fila.
+                 */
+                const fotoPerfilPendente =
+                    statusMantemNaFila(
+                        usuarioDepois.fotoPerfilStatus ||
+                        usuarioDepois.selfieStatus
+                    );
+
+                /*
+                 * CPF em conflito não pode ser limpo
+                 * por aprovação de documento.
+                 */
+                const cpfPendente =
+                    usuarioDepois.cpfConflito ===
+                        true ||
+                    usuarioDepois.cpfConflitoStatus ===
+                        "pendente_analise_suporte" ||
+                    motorista.cpfConflito === true ||
+                    motorista.cpfConflitoStatus ===
+                        "pendente_analise_suporte";
+
+                /*
+                 * Se o perfil motorista também estiver
+                 * aguardando análise, preserva a fila.
+                 */
+                const motoristaPendente =
+                    motorista.requerAnaliseAdmin ===
+                    true;
+
+                /*
+                 * Revisão geral do passageiro também
+                 * deve continuar na fila.
+                 */
+                const revisaoGeralPassageiro =
+                    usuarioDepois.etapaCadastro ===
+                    "revisao_admin_passageiro";
+
+                /*
+                 * Verifica pendência universal.
+                 */
+                const tipoUniversalOriginal =
+                    String(
+                        usuarioDepois
+                            .pendenciaAdminTipo || ""
+                    ).trim();
+
+                const origemUniversal =
+                    String(
+                        usuarioDepois
+                            .pendenciaAdminOrigem || ""
+                    ).trim();
+
+                let tipoUniversal =
+                    tipoUniversalOriginal;
+
+                if (
+                    tipoUniversal ===
+                        "selfieDocumentoExtra" ||
+                    tipoUniversal ===
+                        "selfieDocumentoPassageiro" ||
+                    tipoUniversal ===
+                        "selfieComDocumento"
+                ) {
+                    tipoUniversal =
+                        "selfieDocumento";
+                }
+
+                const universalEhPendenciaAtual =
+                    tipoUniversal ===
+                        tipoPendencia &&
+                    (
+                        !origemUniversal ||
+                        origemUniversal ===
+                            "passageiro"
+                    );
+
+                const outraPendenciaUniversal =
+                    Boolean(tipoUniversal) &&
+                    !universalEhPendenciaAtual;
+
+                /*
+                 * Impede apagar uma análise que não
+                 * pertence ao documento aprovado.
+                 */
+                const motivoDocumentoAprovado =
+                    String(
+                        (
+                            usuario[
+                                config.campoMapa
+                            ] || {}
+                        ).motivoReprovacao || ""
+                    ).trim();
+
+                const tipoPassageiroAtual =
+                    String(
+                        usuario
+                            .tipoPendenciaAdminPassageiro ||
+                        ""
+                    ).trim();
+
+                const motivoAtual =
+                    String(
+                        usuario.motivoAnaliseAdmin ||
+                        ""
+                    ).trim();
+
+                const motivoAtualEraDestaPendencia =
+                    tipoPassageiroAtual ===
+                        tipoPendencia ||
+                    (
+                        motivoDocumentoAprovado &&
+                        motivoAtual ===
+                            motivoDocumentoAprovado
+                    );
+
+                const outraAnaliseNaoIdentificada =
+                    usuario.requerAnaliseAdmin ===
+                        true &&
+                    !motivoAtualEraDestaPendencia &&
+                    !proximaPendenciaDocumento &&
+                    !fotoPerfilPendente &&
+                    !cpfPendente &&
+                    !motoristaPendente &&
+                    !revisaoGeralPassageiro &&
+                    !outraPendenciaUniversal;
+
+                /*
+                 * Resultado final da fila.
+                 */
+                const aindaRequerAnalise =
+                    Boolean(
+                        proximaPendenciaDocumento ||
+                        fotoPerfilPendente ||
+                        cpfPendente ||
+                        motoristaPendente ||
+                        revisaoGeralPassageiro ||
+                        outraPendenciaUniversal ||
+                        outraAnaliseNaoIdentificada
+                    );
+
+                const atualizacao = {
+                    atualizadoEm: agora,
+
+                    ultimaPendenciaAprovada:
+                        tipoPendencia,
+
+                    [
+                        config.campoMapa +
+                        ".status"
+                    ]: "aprovado",
+
+                    [
+                        config.campoMapa +
+                        ".motivoReprovacao"
+                    ]: "",
+
+                    [
+                        config.campoMapa +
+                        ".aprovadoEm"
+                    ]: agora,
+
+                    [
+                        config.campoMapa +
+                        ".aprovadoPor"
+                    ]: adminUid,
+
+                    ...config.camposExtras
+                };
+
+                /*
+                 * Recalcula o grupo de documentos,
+                 * pois selfie e identidade usam
+                 * statusCadastroPassageiro.documentos.
+                 */
+                const selfieStatus =
+                    String(
+                        (
+                            usuarioDepois
+                                .selfieDocumentoExtra ||
+                            {}
+                        ).status || ""
+                    );
+
+                const identidadeStatus =
+                    String(
+                        (
+                            usuarioDepois
+                                .documentoIdentidade ||
+                            {}
+                        ).status || ""
+                    );
+
+                const documentosTemCorrecao = [
+                    selfieStatus,
+                    identidadeStatus
+                ].some(function(status) {
+                    return [
+                        "pendente_envio",
+                        "pendente_correcao",
+                        "reprovado",
+                        "recusado",
+                        "corrigir"
+                    ].includes(status);
+                });
+
+                const documentosTemAnalise = [
+                    selfieStatus,
+                    identidadeStatus
+                ].some(function(status) {
+                    return [
+                        "pendente_analise",
+                        "em_analise"
+                    ].includes(status);
+                });
+
+                atualizacao[
+                    "statusCadastroPassageiro.documentos"
+                ] = documentosTemCorrecao
+                    ? "pendente_correcao"
+                    : (
+                        documentosTemAnalise
+                            ? "pendente_analise"
+                            : "aprovado"
+                    );
+
+                if (
+                    tipoPendencia ===
+                    "comprovanteEndereco"
+                ) {
+                    atualizacao[
+                        "statusCadastroPassageiro.comprovanteEndereco"
+                    ] = "aprovado";
+                }
+
+                /*
+                 * Se existe outro documento pendente,
+                 * aponta os campos para ele.
+                 */
+                if (proximaPendenciaDocumento) {
+                    atualizacao
+                        .pendenciaAdminPassageiro =
+                        true;
+
+                    atualizacao
+                        .tipoPendenciaAdminPassageiro =
+                        proximaPendenciaDocumento
+                            .tipo;
+
+                    atualizacao
+                        .motivoPendenciaAdminPassageiro =
+                        proximaPendenciaDocumento
+                            .motivo || "";
+                } else {
+                    atualizacao
+                        .pendenciaAdminPassageiro =
+                        false;
+
+                    atualizacao
+                        .tipoPendenciaAdminPassageiro =
+                        "";
+
+                    atualizacao
+                        .motivoPendenciaAdminPassageiro =
+                        "";
+                }
+
+                atualizacao.requerAnaliseAdmin =
+                    aindaRequerAnalise;
+
+                /*
+                 * Mantém um motivo válido quando ainda
+                 * existe alguma análise.
+                 */
+                if (proximaPendenciaDocumento) {
+                    atualizacao.motivoAnaliseAdmin =
+                        proximaPendenciaDocumento
+                            .motivo || "";
+
+                } else if (fotoPerfilPendente) {
+                    atualizacao.motivoAnaliseAdmin =
+                        usuarioDepois
+                            .fotoPerfilMotivoReprovacao ||
+                        usuarioDepois
+                            .motivoAnaliseAdmin ||
+                        "Foto de perfil aguardando análise.";
+
+                } else if (aindaRequerAnalise) {
+                    atualizacao.motivoAnaliseAdmin =
+                        usuarioDepois
+                            .motivoAnaliseAdmin ||
+                        motorista
+                            .motivoAnaliseAdmin ||
+                        "Análise administrativa pendente.";
+
+                } else {
+                    /*
+                     * Só limpa tudo quando nenhuma
+                     * pendência restante foi encontrada.
+                     */
+                    atualizacao.motivoAnaliseAdmin =
+                        "";
+
+                    atualizacao
+                        .bloqueadoPorPendenciaAdmin =
+                        false;
+
+                    atualizacao
+                        .pendenciaAdminObrigatoria =
+                        false;
+
+                    atualizacao
+                        .pendenciaAdminOrigem =
+                        "";
+
+                    atualizacao
+                        .pendenciaAdminTipo =
+                        "";
+
+                    atualizacao
+                        .pendenciaAdminCampo =
+                        "";
+                }
+
+                transaction.update(
+                    usuarioRef,
+                    atualizacao
+                );
+            }
+        );
+
+        alert(
+            "Pendência aprovada com sucesso."
+        );
+
+    } catch (erro) {
+        console.error(
+            "Erro ao aprovar pendência do passageiro:",
+            erro
+        );
+
+        alert(
+            "Erro ao aprovar pendência: " +
+            (
+                erro.message ||
+                erro
+            )
+        );
+    }
 }
     async function ADM_marcarAnalise(uid) {
         const motivo = prompt('Motivo da análise:', 'análise manual do administrador');
