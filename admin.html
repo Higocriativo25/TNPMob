@@ -6708,82 +6708,50 @@ const statusCadastroAtual =
         ? dadosAtuais.statusCadastroPassageiro
         : {};
 
+const atualizacao = {
+    pendenciaAdminPassageiro: true,
 
-	const atualizacao = {
-		pendenciaAdminPassageiro: true,
-		tipoPendenciaAdminPassageiro: config.tipoPendenciaAdmin,
-		motivoPendenciaAdminPassageiro: motivo.trim(),
+    tipoPendenciaAdminPassageiro:
+        config.tipoPendenciaAdmin,
 
-		requerAnaliseAdmin: true,
-		motivoAnaliseAdmin: motivo.trim(),
+    motivoPendenciaAdminPassageiro:
+        motivo.trim(),
 
-		bloqueadoPorPendenciaAdmin: false,
+    requerAnaliseAdmin: true,
+    motivoAnaliseAdmin: motivo.trim(),
 
-		atualizadoEm: agora
-		};
+    bloqueadoPorPendenciaAdmin: false,
+
+    atualizadoEm: agora
+};
 
 		/*
-		 * Atualiza apenas os campos de controle da pendência.
-		 *
-		 * Não substitui o mapa inteiro, preservando:
-		 * url, caminho, enviado, tamanho e demais dados
-		 * da foto anterior.
+		 * Preserva URL, caminho, tamanho e demais
+		 * informações da foto anterior.
 		 */
-		atualizacao[
-			config.campoMapa + ".status"
-		] = "pendente_correcao";
+		atualizacao[config.campoMapa] = {
+			...mapaDocumentoAtual,
 
-		atualizacao[
-			config.campoMapa + ".motivoReprovacao"
-		] = motivo.trim();
+			status: "pendente_correcao",
+			motivoReprovacao: motivo.trim(),
 
-		atualizacao[
-			config.campoMapa + ".avisosMostrados"
-		] = 0;
+			avisosMostrados: 0,
+			limiteAvisos: 3,
+			bloquearAoIgnorar: true,
 
-		atualizacao[
-			config.campoMapa + ".limiteAvisos"
-		] = 3;
+			solicitadoEm: agora,
+			solicitadoPor: adminUid,
 
-		atualizacao[
-			config.campoMapa + ".bloquearAoIgnorar"
-		] = true;
+			aprovadoEm: null,
+			aprovadoPor: "",
 
-		atualizacao[
-			config.campoMapa + ".solicitadoEm"
-		] = agora;
+			reprovadoEm: agora,
+			reprovadoPor: adminUid,
 
-		atualizacao[
-			config.campoMapa + ".solicitadoPor"
-		] = adminUid;
-
-		atualizacao[
-			config.campoMapa + ".aprovadoEm"
-		] = null;
-
-		atualizacao[
-			config.campoMapa + ".aprovadoPor"
-		] = "";
-
-		atualizacao[
-			config.campoMapa + ".reprovadoEm"
-		] = agora;
-
-		atualizacao[
-			config.campoMapa + ".reprovadoPor"
-		] = adminUid;
-
-		atualizacao[
-			config.campoMapa + ".reenviadoEm"
-		] = null;
-
-		atualizacao[
-			config.campoMapa + ".analisadoEm"
-		] = null;
-
-		atualizacao[
-			config.campoMapa + ".analisadoPor"
-		] = "";
+			reenviadoEm: null,
+			analisadoEm: null,
+			analisadoPor: ""
+		};
 
 		Object.assign(
 			atualizacao,
@@ -6791,29 +6759,27 @@ const statusCadastroAtual =
 		);
 
 		/*
-		 * Atualiza somente o status específico,
-		 * sem substituir o mapa statusCadastroPassageiro.
+		 * Preserva os outros status do cadastro.
 		 */
-		if (
-			config.statusCadastroCampo ===
-			"comprovanteEndereco"
-		) {
-			atualizacao[
-				"statusCadastroPassageiro.comprovanteEndereco"
-			] = "pendente_correcao";
-		}
+		atualizacao.statusCadastroPassageiro = {
+			...statusCadastroAtual,
 
-		if (
-			config.statusCadastroCampo ===
-			"documentos"
-		) {
-			atualizacao[
-				"statusCadastroPassageiro.documentos"
-			] = "pendente_correcao";
-		}
-	await db.collection('usuarios').doc(uid).set(atualizacao, { merge: true });
+			[config.statusCadastroCampo]:
+				"pendente_correcao"
+		};
 
-	alert('Pedido enviado ao passageiro.');
+		await usuarioRef.set(
+			atualizacao,
+			{
+				merge: true
+			}
+		);
+
+		alert(
+			"Solicitação enviada para o passageiro."
+		);
+
+	
 }
 
 async function ADM_aprovarPendenciaAdminPassageiro(
