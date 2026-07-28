@@ -2410,6 +2410,8 @@
 
 	let ADM_abaAtual = 'motoristas';
 	let ADM_reprovacaoAtual = null;
+	
+	let ADM_termosPassageiroAtual = null;
 
 	let ADM_chamadoSuporteAtualId = null;
 	let ADM_chamadoSuporteAtual = null;
@@ -2777,6 +2779,12 @@ function ADM_abrirCentralTermos() {
     }
 
     modal.style.display = "flex";
+
+    /*
+     * Nesta primeira fase, carrega somente
+     * os Termos do Passageiro.
+     */
+    ADM_carregarResumoTermosPassageiro();
 }
 
 
@@ -2801,6 +2809,207 @@ function ADM_fecharCentralTermos(event) {
     if (modal) {
         modal.style.display = "none";
     }
+}
+
+/* =========================================================
+   CENTRAL DE TERMOS — RESUMO DOS TERMOS DO PASSAGEIRO
+========================================================= */
+
+async function ADM_carregarResumoTermosPassageiro() {
+    const campoVersao = document.getElementById(
+        "ADM_termos_passageiro_versao"
+    );
+
+    const campoData = document.getElementById(
+        "ADM_termos_passageiro_publicado_em"
+    );
+
+    const campoStatus = document.getElementById(
+        "ADM_termos_passageiro_status"
+    );
+
+    /*
+     * Estado visual enquanto consulta o Firebase.
+     */
+    if (campoVersao) {
+        campoVersao.textContent = "Carregando...";
+    }
+
+    if (campoData) {
+        campoData.textContent = "—";
+    }
+
+    ADM_definirStatusTermosPassageiro(
+        "carregando",
+        "Consultando Firebase..."
+    );
+
+    try {
+        const documento = await db
+            .collection("configuracoesTermos")
+            .doc("passageiro")
+            .get();
+
+        /*
+         * Ainda não existe uma configuração.
+         * Isso é normal na primeira utilização.
+         */
+        if (!documento.exists) {
+            ADM_termosPassageiroAtual = null;
+
+            if (campoVersao) {
+                campoVersao.textContent =
+                    "Nenhuma versão";
+            }
+
+            if (campoData) {
+                campoData.textContent = "—";
+            }
+
+            ADM_definirStatusTermosPassageiro(
+                "vazio",
+                "Pronto para criar"
+            );
+
+            return;
+        }
+
+        const dados = documento.data() || {};
+
+        ADM_termosPassageiroAtual = {
+            ...dados,
+            id: documento.id
+        };
+
+        const versao =
+            dados.versaoPublicada ||
+            dados.versaoAtual ||
+            dados.versao ||
+            "Não informada";
+
+        const status =
+            String(
+                dados.status || "configurado"
+            )
+                .toLowerCase()
+                .trim();
+
+        if (campoVersao) {
+            campoVersao.textContent = versao;
+        }
+
+        if (campoData) {
+            campoData.textContent =
+                dados.publicadoEm
+                    ? ADM_formatarData(
+                        dados.publicadoEm
+                    )
+                    : "Ainda não publicada";
+        }
+
+        if (status === "publicado") {
+            ADM_definirStatusTermosPassageiro(
+                "publicado",
+                "Publicado"
+            );
+
+            return;
+        }
+
+        if (status === "rascunho") {
+            ADM_definirStatusTermosPassageiro(
+                "rascunho",
+                "Rascunho"
+            );
+
+            return;
+        }
+
+        ADM_definirStatusTermosPassageiro(
+            "configurado",
+            status || "Configurado"
+        );
+
+    } catch (erro) {
+        console.error(
+            "Erro ao carregar os Termos do Passageiro:",
+            erro
+        );
+
+        ADM_termosPassageiroAtual = null;
+
+        if (campoVersao) {
+            campoVersao.textContent =
+                "Erro ao carregar";
+        }
+
+        if (campoData) {
+            campoData.textContent = "—";
+        }
+
+        ADM_definirStatusTermosPassageiro(
+            "erro",
+            "Falha na leitura"
+        );
+    }
+}
+
+/* =========================================================
+   CENTRAL DE TERMOS — ESTADOS DO PASSAGEIRO
+========================================================= */
+
+.ADM_central_termos_status.ADM_termos_status_carregando {
+    color: var(--Info) !important;
+}
+
+.ADM_central_termos_status.ADM_termos_status_vazio {
+    color: var(--Warning) !important;
+}
+
+.ADM_central_termos_status.ADM_termos_status_configurado {
+    color: var(--Info) !important;
+}
+
+.ADM_central_termos_status.ADM_termos_status_rascunho {
+    color: var(--Warning) !important;
+}
+
+.ADM_central_termos_status.ADM_termos_status_publicado {
+    color: var(--Success) !important;
+}
+
+.ADM_central_termos_status.ADM_termos_status_erro {
+    color: var(--Danger) !important;
+}
+
+/* =========================================================
+   CENTRAL DE TERMOS — ALTERAR STATUS VISUAL
+========================================================= */
+
+function ADM_definirStatusTermosPassageiro(
+    tipo,
+    texto
+) {
+    const campoStatus = document.getElementById(
+        "ADM_termos_passageiro_status"
+    );
+
+    if (!campoStatus) return;
+
+    campoStatus.classList.remove(
+        "ADM_termos_status_carregando",
+        "ADM_termos_status_vazio",
+        "ADM_termos_status_configurado",
+        "ADM_termos_status_rascunho",
+        "ADM_termos_status_publicado",
+        "ADM_termos_status_erro"
+    );
+
+    campoStatus.classList.add(
+        "ADM_termos_status_" + tipo
+    );
+
+    campoStatus.textContent = texto || "";
 }
 
  // ================= CENTRAL DE TERMOS FINAL =================
