@@ -985,6 +985,304 @@
     position: relative;
     z-index: 100501 !important;
 }
+
+/* =========================================================
+   CENTRAL DE TERMOS
+========================================================= */
+
+.ADM_central_termos_box {
+    width: 100%;
+    max-width: 960px;
+    max-height: 92vh;
+
+    padding: 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TOPO
+========================================================= */
+
+.ADM_central_termos_topo {
+    width: 100%;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_topo > div {
+    min-width: 0;
+}
+
+.ADM_central_termos_topo .ADM_modal_title {
+    margin: 0 0 6px;
+}
+
+.ADM_central_termos_topo .ADM_muted {
+    margin: 0;
+}
+
+
+/* =========================================================
+   AVISO
+========================================================= */
+
+.ADM_central_termos_aviso {
+    width: 100%;
+
+    margin-bottom: 18px;
+    padding: 14px;
+
+    border-radius: 14px;
+    border: 1px solid rgba(197, 169, 141, 0.22);
+
+    background: rgba(197, 169, 141, 0.07);
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_aviso strong {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: var(--Fame_gold);
+
+    font-size: 0.88rem;
+    font-weight: 900;
+}
+
+.ADM_central_termos_aviso p {
+    margin: 0;
+
+    color: var(--Fame_text);
+
+    font-size: 0.80rem;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   GRID DOS TERMOS
+========================================================= */
+
+.ADM_central_termos_grid {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.ADM_central_termos_card {
+    width: 100%;
+    min-width: 0;
+
+    padding: 16px;
+
+    border-radius: 16px;
+    border: 1px solid rgba(197, 169, 141, 0.22);
+
+    background: rgba(0, 0, 0, 0.22);
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_card_topo {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_icone {
+    width: 52px;
+    height: 52px;
+
+    flex: 0 0 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    border: 1px solid rgba(197, 169, 141, 0.25);
+
+    background: rgba(197, 169, 141, 0.10);
+
+    font-size: 1.45rem;
+    line-height: 1;
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_card_topo > div:last-child {
+    min-width: 0;
+}
+
+.ADM_central_termos_card h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 0.96rem;
+    font-weight: 900;
+    line-height: 1.3;
+}
+
+.ADM_central_termos_card_topo span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: var(--Fame_muted);
+
+    font-size: 0.74rem;
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DA VERSÃO
+========================================================= */
+
+.ADM_central_termos_info {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_info > div {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 10px;
+
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_info span {
+    color: var(--Fame_muted);
+
+    font-size: 0.72rem;
+    line-height: 1.3;
+}
+
+.ADM_central_termos_info strong {
+    max-width: 58%;
+
+    color: var(--Fame_text);
+
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: right;
+
+    overflow-wrap: anywhere;
+}
+
+.ADM_central_termos_status {
+    color: var(--Warning) !important;
+}
+
+
+/* =========================================================
+   AÇÕES
+========================================================= */
+
+.ADM_central_termos_acoes {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+
+    margin-top: 16px;
+
+    box-sizing: border-box;
+}
+
+.ADM_central_termos_acoes .ADM_btn {
+    width: 100%;
+    min-width: 0;
+}
+
+.ADM_central_termos_acoes .ADM_btn:first-child {
+    grid-column: 1 / -1;
+}
+
+.ADM_central_termos_acoes .ADM_btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .ADM_central_termos_box {
+        padding: 15px;
+    }
+
+    .ADM_central_termos_topo {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .ADM_central_termos_topo .ADM_btn {
+        width: 100%;
+    }
+
+    .ADM_central_termos_grid {
+        grid-template-columns: 1fr;
+    }
+
+}
 	
 </style>	
 </head>
@@ -1168,6 +1466,14 @@
 
 				<button class="ADM_btn ADM_btn_dark" onclick="ADM_limparBusca()">
 					LIMPAR
+				</button>
+				
+				<button
+					id="ADM_btn_central_termos"
+					class="ADM_btn ADM_btn_warning"
+					onclick="ADM_abrirCentralTermos()"
+				>
+					📜 CENTRAL DE TERMOS
 				</button>
 			</div>
             <!-- ================= BOTÕES DOS FILTROS FINAL ================= -->
@@ -1666,6 +1972,250 @@
     <!-- ================= DASHBOARD ADMIN FINAL ================= -->
 </div>
 <!-- ================= ÁREA PRINCIPAL DO PAINEL ADMIN FINAL ================= -->
+
+<!-- =========================================================
+     CENTRAL DE TERMOS
+     Controle dos termos do passageiro e motorista
+========================================================= -->
+
+<div
+    id="ADM_modal_central_termos"
+    class="ADM_modal_overlay"
+    onclick="ADM_fecharCentralTermos(event)"
+>
+    <div
+        class="ADM_modal_box ADM_central_termos_box"
+        onclick="event.stopPropagation()"
+    >
+
+        <!-- TOPO -->
+
+        <div class="ADM_central_termos_topo">
+
+            <div>
+                <h3 class="ADM_modal_title">
+                    📜 Central de Termos
+                </h3>
+
+                <p class="ADM_muted">
+                    Controle as versões oficiais dos termos apresentados
+                    no aplicativo TNP MoB.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="ADM_btn ADM_btn_dark"
+                onclick="ADM_fecharCentralTermos()"
+            >
+                FECHAR
+            </button>
+
+        </div>
+
+
+        <!-- AVISO -->
+
+        <div class="ADM_central_termos_aviso">
+
+            <strong>
+                Central de publicação
+            </strong>
+
+            <p>
+                Os termos publicados aqui serão utilizados automaticamente
+                nas telas de cadastro, consulta e atualização obrigatória
+                do aplicativo.
+            </p>
+
+        </div>
+
+
+        <!-- CARDS DOS TERMOS -->
+
+        <div class="ADM_central_termos_grid">
+
+            <!-- TERMOS DO PASSAGEIRO -->
+
+            <div class="ADM_central_termos_card">
+
+                <div class="ADM_central_termos_card_topo">
+
+                    <div class="ADM_central_termos_icone">
+                        👤
+                    </div>
+
+                    <div>
+                        <h4>
+                            Termos do passageiro
+                        </h4>
+
+                        <span>
+                            Regras gerais para usuários e passageiros
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="ADM_central_termos_info">
+
+                    <div>
+                        <span>Versão publicada</span>
+
+                        <strong id="ADM_termos_passageiro_versao">
+                            Não carregada
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Data da publicação</span>
+
+                        <strong id="ADM_termos_passageiro_publicado_em">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Situação</span>
+
+                        <strong
+                            id="ADM_termos_passageiro_status"
+                            class="ADM_central_termos_status"
+                        >
+                            Aguardando configuração
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="ADM_central_termos_acoes">
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_primary"
+                        disabled
+                    >
+                        EDITAR NOVA VERSÃO
+                    </button>
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_dark"
+                        disabled
+                    >
+                        VISUALIZAR
+                    </button>
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_info"
+                        disabled
+                    >
+                        HISTÓRICO
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- TERMOS DO MOTORISTA -->
+
+            <div class="ADM_central_termos_card">
+
+                <div class="ADM_central_termos_card_topo">
+
+                    <div class="ADM_central_termos_icone">
+                        🚕
+                    </div>
+
+                    <div>
+                        <h4>
+                            Termos do motorista
+                        </h4>
+
+                        <span>
+                            Regras específicas para motoristas parceiros
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="ADM_central_termos_info">
+
+                    <div>
+                        <span>Versão publicada</span>
+
+                        <strong id="ADM_termos_motorista_versao">
+                            Não carregada
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Data da publicação</span>
+
+                        <strong id="ADM_termos_motorista_publicado_em">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Situação</span>
+
+                        <strong
+                            id="ADM_termos_motorista_status"
+                            class="ADM_central_termos_status"
+                        >
+                            Aguardando configuração
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="ADM_central_termos_acoes">
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_primary"
+                        disabled
+                    >
+                        EDITAR NOVA VERSÃO
+                    </button>
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_dark"
+                        disabled
+                    >
+                        VISUALIZAR
+                    </button>
+
+                    <button
+                        type="button"
+                        class="ADM_btn ADM_btn_info"
+                        disabled
+                    >
+                        HISTÓRICO
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= CENTRAL DE TERMOS FINAL ================= -->
+
+
+
+
 <!-- =========================================================
      MODAL DE DOCUMENTO
      Abre imagem/documento ampliado
@@ -2210,6 +2760,50 @@ function ADM_getPassageiros() {
         document.getElementById('ADM_filtro_status').value = '';
         ADM_renderizar();
     }
+	
+ // ================= CENTRAL DE TERMOS  =================
+
+function ADM_abrirCentralTermos() {
+    const modal = document.getElementById(
+        "ADM_modal_central_termos"
+    );
+
+    if (!modal) {
+        alert(
+            "A tela da Central de Termos não foi encontrada."
+        );
+
+        return;
+    }
+
+    modal.style.display = "flex";
+}
+
+
+function ADM_fecharCentralTermos(event) {
+    /*
+     * Quando recebeu um clique no fundo,
+     * fecha somente se o clique foi no overlay.
+     */
+    if (
+        event &&
+        event.target &&
+        event.target.id !==
+            "ADM_modal_central_termos"
+    ) {
+        return;
+    }
+
+    const modal = document.getElementById(
+        "ADM_modal_central_termos"
+    );
+
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+ // ================= CENTRAL DE TERMOS FINAL =================
 	
 	function ADM_normalizarProtocoloSuporte(valor) {
     let protocolo = String(valor || "")
